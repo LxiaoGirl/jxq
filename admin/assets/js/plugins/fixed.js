@@ -1,0 +1,3 @@
+seajs.use('jquery', function () {
+
+});

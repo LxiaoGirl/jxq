@@ -1,0 +1,12 @@
+<script type="text/javascript" src="/admin/assets/js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="/admin/assets/js/jqueryui-1.10.3.min.js"></script>
+<script type="text/javascript" src="/admin/assets/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/admin/assets/js/enquire.js"></script>
+<script type="text/javascript" src="/admin/assets/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/admin/assets/js/jquery.nicescroll.min.js"></script>
+<script type="text/javascript" src="/admin/assets/plugins/codeprettifier/prettify.js"></script>
+<script type="text/javascript" src="/admin/assets/plugins/easypiechart/jquery.easypiechart.min.js"></script>
+<script type="text/javascript" src="/admin/assets/plugins/sparklines/jquery.sparklines.min.js"></script>
+<script type="text/javascript" src="/admin/assets/plugins/form-toggle/toggle.min.js"></script>
+<script type="text/javascript" src="/admin/assets/js/placeholdr.js"></script>
+<script type="text/javascript" src="/admin/assets/js/application.js"></script>
