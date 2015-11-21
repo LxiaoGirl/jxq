@@ -1,0 +1,378 @@
+body{
+  
+  overflow-x:  hidden;
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+  background:#2591ba;
+}
+input::-webkit-input-placeholder {
+color: #006eb9 !important;
+}
+input::-moz-placeholder {
+color: #006eb9 !important;
+}
+input::-ms-input-placeholder {
+color: #006eb9 !important;
+}
+/*领雪人*/
+.lxr_Main{
+  width:100%;
+  overflow:hidden;
+}
+.lxr_Main .con{
+    width:100%;
+    position: relative;
+    overflow: hidden;
+}
+.lxr_Main .con img{
+    width:100%;
+    float:left;
+}
+.lxr_Main .con .niu{
+  width:100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top:-35%;
+}
+.lxr_Main .con .niu3{
+  height: 130%;
+}
+.lxr_Main .con .r-niu{
+    position: absolute;
+    width:40%;
+    right: 0;
+    top: 0;
+}
+.lxr_Main .con .l-niu{
+    position: absolute;
+    width:40%;
+    left: 0;
+    top: 0;
+}
+.lxr_Main .con .lxxr{
+  font-family: "微软雅黑";
+  font-size: 1.3em;
+  color: #f3601f;
+  text-align: center;
+  font-weight: bolder;
+  line-height: 2.4em;
+}
+.lxr_Main .con .xysl{
+  font-family: "微软雅黑";
+  font-size: 1.1em;
+  color: #666666;
+  text-align: center;
+  line-height: 2em;
+  margin-top: 0.6em;
+}
+.tpmz{
+    position:absolute;
+    top:0;
+    width:100%;
+}
+/*投雪球*/
+.txr_Main{
+    width: 100%;
+    overflow: hidden;
+}
+.txr_Main .con{
+    width: 100%;
+    position: relative;
+    display: inline-block;
+    float:left;
+}
+.txr_Main .con img{
+    width:100%;
+    float: left;
+}
+.txr_Main .con .niu{
+    position: absolute;
+    width: 74%;
+    height: 62%;
+    right: 13%;
+    top: -40%;
+}
+.txr_Main .con .niu.niu4{
+    position: absolute;
+    width: 74%;
+    height: 62%;
+    right: 13%;
+    top: 0%;
+    text-align: center;
+    font-family: "微软雅黑";
+    color:#fff;
+    font-size: 1.2em;
+}
+.txr_Main .con .xrt{
+    position: absolute;
+    bottom:0;
+    width:100%;
+}
+.txr_Main .con .qipao{
+    position: absolute;
+    width: 50%;
+    right: 10%;
+    top: 0%;
+}
+/*投雪球成功*/
+.tqcg_Main{
+    width: 100%;
+    overflow: hidden;
+}
+.tqcg_Main .con{
+    width: 100%;
+    position: relative;
+    display: inline-block;
+    float:left;
+}
+.tqcg_Main .con .xrt{
+    position: absolute;
+    bottom:0;
+}
+.tqcg_Main .con img{
+    width:100%;
+    float: left;
+}
+.tqcg_Main .con .qipao{
+    position: absolute;
+    width: 50%;
+    right: 10%;
+    top: -20%;
+}
+.tqcg_Main .con .qipao img{
+    width: 100%;
+    z-index: 20;
+}
+.tqcg_Main .con .niu{
+    position: absolute;
+    width: 74%;
+    height: 55%;
+    right: 13%;
+    bottom: 0%;
+}
+.tqcg_Main .con .dhcx{
+    position: absolute;
+    width: 60%;
+    height: 50%;
+    left: 32%;
+    bottom: 20%;
+}
+.tqcg_Main .con .dhcx input{
+    width: 70%;
+    background: none;
+    border: none;
+    font-family: "微软雅黑";
+    color:#006eb9;
+    font-size: 1.4em;
+    text-indent: 0.4em;
+}
+.tqcg_Main .con .dhcx button{
+    position: absolute;
+    width: 30%;
+    height: 2.6em;
+    background: none;
+    border: none;
+}
+
+.tqcg_Main .con .conter{
+    width:70%;
+    height: 80%;
+    position: absolute;
+    top: 10%;
+    left: 15%;
+}
+.tqcg_Main .con .conter p{
+    color: #fff;
+    font-family: "微软雅黑";
+    font-size: 1.2em;
+}
+.tqcg_Main .con .conter .wxtu{
+width: 90%;
+  height: 90%;
+  margin-top: 2%;
+  border-radius: 0.4em;
+  overflow: hidden;
+
+}
+.tqcg_Main .con .conter .wxtu img{
+    width: 100%;
+}
+/*弹出框*/
+.hid{
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top:0;
+  display: none;
+}
+.bj{
+  width: 100%;
+  background: #000;
+  opacity: 0.5;
+}
+
+.cencon{
+  width: 100%;
+  position:fixed;
+  top:30%;
+}
+.cencon img{
+  width: 100%;
+}
+.nrr{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
+.p1{
+  width: 100%;
+  text-indent: 40%;
+  margin-top: 14%;
+}
+.p1 input{
+  color: #006eb9;
+  font-size: 1.6em;
+  border:none;
+  background: none;
+}
+.p2{
+  width: 100%;
+  text-indent: 40%;
+  margin-top: 8%;
+}
+.p2 input{
+  color: #006eb9;
+  font-size: 1.6em;
+  border:none;
+  background: none;
+}
+.but1{
+  width: 18%;
+  height: 15%;
+  border: none;
+  position: absolute;
+  left: 65%;
+  top:42%;
+  background:none;
+  text-align: center;
+  font-size: 1em;
+  color:#000;
+}
+.but2{
+  width: 35%;
+  height: 20%;
+  border: none;
+  position: absolute;
+  left: 30%;
+  top:60%;
+  background:none;
+  color:#fff;
+  font-size: 1.4em;
+  text-align: center;
+}
+.but3{
+  left: 25%;
+  top: 30%;
+  font-size: 2.4em;
+}
+.hid1{
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top:0;
+  display: none;
+}
+.bj1{
+  width: 100%;
+  background: #000;
+  opacity: 0.7;
+}
+.tpmzbt{
+    width:54%;
+    margin-left:23%;
+    bottom:0;
+    position:absolute;
+    display: none;
+}
+.zj{
+    display: none;
+}
+.br{
+    display:none;
+}
+.hid2{
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top:0;
+  display: none;
+}
+.bj2{
+  width: 100%;
+  background: #000;
+  opacity: 0.7;
+}
+.cencon img{
+  float:left;
+  width: 100%;
+}
+.imlc{
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   top:0;
+   overflow: hidden;
+}
+.fdn{
+  width:10%;
+  height: 20%;
+  position: absolute;
+}
+.lfn{
+  left: 18%;
+  top:32%;
+}
+.rin{
+  left: 71%;
+  top:28%;
+}
+.ljlc{
+  background:url(../images/lj-2.png) repeat-y;
+  width: 100%;
+  padding:0 20%;
+  overflow:hidden;
+  background-size: 100% 100%;
+  position:relative;
+}
+.ljlc p{
+  color:#666666;
+  font-size: 1.4em;
+  line-height: 2em;
+}
+.ljlc img{
+  width: 100%;
+}
+.ljlc input{
+  width: 40%;
+  height: 40%;
+  background:#000;
+  position: absolute;
+  left: 30%;
+  top:18%;
+  border:none;
+  background: none;
+}
+.cencon{
+    top:10%;
+}
+.cencon1{
+    top:0;
+}
+.wyydxr{
+    display:none;
+}
+.ckwdxr{
+    display:none;
+}
