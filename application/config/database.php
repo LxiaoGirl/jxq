@@ -48,11 +48,7 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-//服务器地址
-//$db['default']['hostname'] = 'rds7mzeybkz0dwztryo9d.mysql.rds.aliyuncs.com';
-//$db['default']['username'] = 'ckz';
-//$db['default']['password'] = 'c7k8z9719xtwl';
-//$db['default']['database'] = 'p2p';
+
 
 //本地地址
 //$db['default']['hostname'] = '127.0.0.1';
