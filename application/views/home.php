@@ -20,7 +20,7 @@
         <div class="row">
             <div class="row_1">
                 <div class="home_gg_after_banner_con" id="announcement-top">
-                    <p><a href="" class="link_url">【最新公告】<span class="title"></span></a></p>
+                    <p><a href="" class="link_url">【最新动态】<span class="title"></span></a></p>
                 </div>
             </div>
         </div>
@@ -174,13 +174,13 @@
                     </li>
                 </ul>
             </div>
-            <div class="xssp">
+            <!--<div class="xssp">
                 <h1>新手视频</h1>
                 <a href=""><img src="../../../assets/images/bigpic/video_getin.jpg" alt=""></a>
                 <p>投资人每个月会收到借款人相同金额的还款，一直到整个投资周期结束。月收益是由部分本金和当月利息组成的，这种方式可提高投资人的资金流动性。</p>
-            </div>
+            </div>-->
             <div class="gfgg">
-                <h1>官方公告<a href="<?php echo site_url('about/news'); ?>" class="fr">查看全部公告 > </a></h1>
+                <h1>官方动态<a href="<?php echo site_url('about/news'); ?>" class="fr">查看全部动态 > </a></h1>
                 <div id="announcement-down">
                     <p class="gg"><a href="" class="link_url"><font class="key">1</font><span class="title"></span></a></p>
                 </div>
@@ -191,7 +191,7 @@
                     <img src="../../../assets/images/bigpic/love_charity.jpg" alt="">
                     <p>
                         已筹集</br>
-                        <font>516,489,461,315</font>
+                        <font><?php echo price_format($public_fund,2,false) ?></font>
                         元
                     </p>
                 </a>

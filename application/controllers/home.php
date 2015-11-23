@@ -39,6 +39,9 @@ class Home extends MY_Controller{
 			$data['total'] = $temp['total']['data'];
 		}
 
+		//公益基金
+		$data['public_fund'] = '100000';
+
 		$this->load->view('home',$data);
 	}
 

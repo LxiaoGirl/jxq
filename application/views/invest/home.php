@@ -33,7 +33,7 @@
                 <div class="row">
                     <div class="prepd40">
                         <div class="invest_home_gg_con" id="announcement-top">
-                            <p><a href="" class="link_url">【最新公告】<span class="title"></span></a></p>
+                            <p><a href="" class="link_url">【最新动态】<span class="title"></span></a></p>
                         </div>
                     </div>
                 </div>

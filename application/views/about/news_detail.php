@@ -29,7 +29,7 @@
    
    <div class="news_detail_right">
    <div class="news_right1">
-   <p class="clearfix">通知公告<span><a href="#">更多</a></span></p>
+   <p class="clearfix">通知公告<span><a href="<?php echo site_url('about/news'); ?>">更多</a></span></p>
    <ul class="news_detail_list" id="gg">
    <li class="title"></li>
    </ul>
