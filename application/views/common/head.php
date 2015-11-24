@@ -92,12 +92,12 @@
                         </div>
                     </div>
                 </li>
-                <li>
-                    <a href="<?php echo site_url('borrow'); ?>">我要借款</a>
+                <!--<li>
+                    <a href="<?php /*echo site_url('borrow'); */?>">我要借款</a>
                     <div class="mian_nav_li_pop"><div class="mnavtop"></div></div>
-                </li>
+                </li>-->
                 <li>
-                    <a href="<?php echo site_url('user/user/account_home'); ?>">我的账户</a>
+                    <a href="<?php echo site_url('about/commonweal'); ?>">爱心公益</a>
                     <div class="mian_nav_li_pop"><div class="mnavtop"></div></div>
                 </li>
                 <li>

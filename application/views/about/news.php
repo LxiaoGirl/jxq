@@ -33,14 +33,13 @@
       </li>
     </a>
   </ul>
-  <div class="news_more"><img src="../../../../assets/images/about/news/news_more.png" width="175" height="41"></div>
+    <div class="news_more" id="more-button"><img src="../../../../assets/images/about/news/news_more.png" width="175" height="41"></div>
   </div>
   <div class="clear"></div>
   </div>
 <!--footer start-->
 <?php $this->load->view('common/footer'); ?>
 <!--footer end-->
-
 <script type="text/javascript">
   seajs.config({
     base: '/assets/js/',

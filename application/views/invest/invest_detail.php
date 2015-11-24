@@ -69,7 +69,7 @@
                     <form action="" method="" accept-charset="utf-8">
                         <div class="inpandbut">
                             <?php  if($project['new_status'] == 1 || $project['new_status'] == 2): ?>
-                            <input class="invest-amount" type="text" maxlength="10" placeholder="输入投资金额" <?php  if($project['new_status'] == 1): ?>style="display: none;" <?php endif; ?>><button id="invest-all" type="button" <?php  if($project['new_status'] == 1): ?>style="display: none;" <?php endif; ?>>全投</button>
+                            <input class="invest-amount" type="text" maxlength="10" value="<?php echo $project['amount']-$project['receive']; ?>" placeholder="输入投资金额" <?php  if($project['new_status'] == 1): ?>style="display: none;" <?php endif; ?>><button id="invest-all" type="button" <?php  if($project['new_status'] == 1): ?>style="display: none;" <?php endif; ?>>全投</button>
                             <?php endif; ?>
                         </div>
                         <div class="tip"></div>
@@ -243,6 +243,17 @@
                     $(".invest-amount").val(my_balance>invest_max?invest_max:my_balance);
                 });
                 $('.cal').css({'display':'','visibility':'hidden'});
+
+                if(isNaN($('.invest-amount').val())){
+                    $('.invest-amount').val('');
+                }else{
+                    if($('.invest-amount').val() > 0){
+                        var interest = calculator($('.invest-amount').val(),'<?php echo $project['rate']; ?>','<?php echo $project['months']; ?>','<?php echo $project['mode']; ?>');
+                        $('.cal').css('visibility','visible').find('font').text(interest);
+                    }else{
+                        $('.cal').css('visibility','hidden').find('font').text(0);
+                    }
+                }
             }
 
             //倒计时处理

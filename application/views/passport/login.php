@@ -58,10 +58,34 @@ seajs.use(['jquery','sys','jqform','validator'],function(){
     var pit_1=0,pit_2=0;
     $('.but').find('#reg_xyb').click(function () {
 	    //提交 的时候 验证一下 记住密码时的处理
+        var tip = $('.js_mobile').parent().parent().find('.pit').eq(0),
+            text = '';
+        if ($('.js_mobile').val() == '') {
+            text = '<i class="icon-tip-no"></i>请输入手机号';
+            pit_1=0;
+        } else if (! /^1[0-9]{10}$/.test($('.js_mobile').val())) {
+            text = '<i class="icon-tip-no"></i>请输入正确的手机号码';
+            pit_1=0;
+        } else {
+            pit_1=1;
+            text = '<i class="icon-tip-yes"></i>';
+        }
+        tip.html(text);
         if(pit_1 == 0){
             $('.js_mobile').focus();
             return false;
         }
+        var tip = $('js_mm').parent().parent().find('.pit').eq(0),
+            text = '';
+        if ($('js_mm').val() == '') {
+            text = '<i class="icon-tip-no"></i>请输入密码';
+            pit_2=0;
+        } else {
+            pit_2=1;
+            text = '<i class="icon-tip-yes"></i>';
+        }
+        tip.html(text);
+
         if(pit_2 == 0){
             $('.js_mm').focus();
             return false;
@@ -86,7 +110,7 @@ seajs.use(['jquery','sys','jqform','validator'],function(){
             });
         }
     });
-    $('#reg_1').validate({
+   /* $('#reg_1').validate({
         '.js_mobile': {
             filtrate: 'required mobile',
             callback: function (index) {
@@ -120,7 +144,7 @@ seajs.use(['jquery','sys','jqform','validator'],function(){
                 tip.html(text);
             }
         },
-    });
+    });*/
 });
 </script>
 </body>
