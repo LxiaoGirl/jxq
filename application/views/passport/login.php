@@ -21,7 +21,7 @@
                     <div class="inp_pit">
                         <div class="inp">
                             <img src="../../../../assets/images/passport/yh_icon.png">
-                            <input class="reg_sj js_mobile" type="text" name="sjh" value="<?php echo $mobile; ?>" placeholder="手机号/用户名" maxlength="11" />
+                            <input class="reg_sj js_mobile" type="text" name="sjh" value="<?php echo $mobile; ?>" placeholder="手机号/用户名/邮箱" maxlength="50" />
                         </div>
                         <div class="pit"></div>
                     </div>
@@ -61,12 +61,14 @@ seajs.use(['jquery','sys','jqform','validator'],function(){
         var tip = $('.js_mobile').parent().parent().find('.pit').eq(0),
             text = '';
         if ($('.js_mobile').val() == '') {
-            text = '<i class="icon-tip-no"></i>请输入手机号';
+            text = '<i class="icon-tip-no"></i>请输入手机号/用户名/邮箱';
             pit_1=0;
-        } else if (! /^1[0-9]{10}$/.test($('.js_mobile').val())) {
-            text = '<i class="icon-tip-no"></i>请输入正确的手机号码';
-            pit_1=0;
-        } else {
+        }
+//        else if (! /^1[0-9]{10}$/.test($('.js_mobile').val())) {
+//            text = '<i class="icon-tip-no"></i>请输入正确的手机号码';
+//            pit_1=0;
+//        }
+        else {
             pit_1=1;
             text = '<i class="icon-tip-yes"></i>';
         }

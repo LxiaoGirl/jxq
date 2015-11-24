@@ -1275,7 +1275,14 @@ class User_model extends CI_Model{
         $data = $temp = array();
 
         if( ! empty($mobile)){
-            $temp['where'] = array('where'=>array('mobile' => $mobile));
+			if($this->_is_mobile($mobile)){
+				$temp['field'] = 'mobile';
+			}elseif(preg_match('/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i', $mobile)){
+				$temp['field'] = 'email';
+			}else{
+				$temp['field'] = 'user_name';
+			}
+            $temp['where'] = array('where'=>array($temp['field'] => $mobile));
             $data = $this->c->get_row(self::user, $temp['where']);
         }
         unset($temp);
