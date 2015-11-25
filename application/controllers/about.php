@@ -33,7 +33,7 @@ class About extends MY_Controller{
         $temp['category']       = item('about_major_event_cat_id')?item('about_major_event_cat_id'):0;
         $temp['page_id']        = 1;
         $temp['page_size']      = 100;
-        $temp['order_by']       = 'update_time DESC';
+        $temp['order_by']       = '';
         $temp['keyword']        = '';
         //查询数据
         $temp['company_event']  = $this->other->get_news($temp['category'],$temp['page_id'],$temp['page_size'],$temp['order_by'],$temp['keyword']);

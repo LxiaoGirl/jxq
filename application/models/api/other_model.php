@@ -1,5 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * 帮助类 新闻类 处理model
+ * Class Other_model
+ */
 class Other_model extends CI_Model{
 	const article = 'article'; // 新闻
 	const article_category = 'article_category'; // 新闻分类
@@ -108,7 +112,7 @@ class Other_model extends CI_Model{
 		$temp['where'] =array(
 			'where'=>array('status'=>1),
 			'select'=>'id,title,description,link_url,add_time,cat_id,source,update_time,content',
-			'order_by'=>'sortrank ASC,update_time DESC'
+			'order_by'=>'sortrank DESC,update_time DESC'
 		);
 
 		if($cat_id){

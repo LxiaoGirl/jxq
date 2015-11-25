@@ -37,13 +37,13 @@ $config['oss_bind_hostname'] = 'http://image.zgwjjf.com'; //FALSE
 $config['sms_space_time']                   = 90; //短信发送间隔时间
 
 
-$config['announcement_home_top_cat_id']     = 0; //主页头部公告新闻分类id
-$config['announcement_home_bottom_cat_id']  = 0; //主页底部公告新闻分类id
-$config['announcement_news_cat_id']         = 0; //公司动态详情页公告新闻分类id
-$config['banner_home_cat_id']               = 0; //主页banner新闻分类id
-$config['about_major_event_cat_id']         = 0; //关于我们之公司大事件新闻分类id
+$config['announcement_home_top_cat_id']     = 43; //主页头部公告新闻分类id
+$config['announcement_home_bottom_cat_id']  = 43; //主页底部公告新闻分类id
+$config['announcement_news_cat_id']         = 43; //公司动态详情页公告新闻分类id
+$config['banner_home_cat_id']               = 44; //主页banner新闻分类id
+$config['about_major_event_cat_id']         = 42; //关于我们之公司大事件新闻分类id
 $config['about_media_cat_id']               = 1; //关于我们之媒体报道新闻分类id
 $config['about_news_cat_id']                = 10; //关于我们之公司动态新闻分类id
-$config['help_news_cat_id']                 = 2; //关于我们之公司动态新闻分类id
-$config['invest_home_tips_cat_id']          = 1; //小贴士新闻分类id
+$config['help_news_cat_id']                 = 2; //关于我们之帮助中心新闻分类id
+$config['invest_home_tips_cat_id']          = 39; //小贴士新闻分类id
 $config['max_rate']                         = 12; //logo后面的高收益利率

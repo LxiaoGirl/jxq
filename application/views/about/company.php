@@ -24,9 +24,11 @@
 				<UL class="ks-switchable-content">
 					<?php if($data):$count_data = count($data);foreach($data as $k=>$v): ?>
 						<?php if($k+1 == 1 || (($k+1)>1 && ($k+1)%5 == 1)): ?><LI> <?php endif; ?>
-						<div class="about_bigt<?php echo (($k+1)%5 == 0)?5:($k+1)%5; ?>  <?php echo (in_array(($k+1)%5,array(1,2)))?'big_top':'big_bot'; ?> fl">
-							<p class="about_p1"><?php echo date('Y.m.d',$v['update_time']); ?></p>
-							<p class="about_p2"><?php echo $v['title']; ?></p>
+						<div class="about_bigt<?php echo (($k+1)%5 == 0)?5:($k+1)%5; ?>  <?php echo (in_array(($k+1)%5,array(1,2)))?'big_top':'big_bot'; ?> fl"
+							 onclick="window.location.href='<?php echo site_url('about/news_detail?id='.$v['id']) ?>'">
+<!--							<p class="about_p1">--><?php //echo date('Y.m.d',$v['update_time']); ?><!--</p>-->
+							<p class="about_p1"><?php echo $v['title']; ?></p>
+							<p class="about_p2"><?php echo $v['description']; ?></p>
 						</div>
 						<?php if( ($k+1 > 0 && ($k+1)%5 == 0) || $k+1 == $count_data): ?><div class="clear"></div></LI> <?php endif; ?>
 					<?php endforeach;endif; ?>
@@ -81,13 +83,28 @@
 			var html3 = $(v).find(".about_bigt3").length?$(v).find(".about_bigt3").html():'';
 			var html4 = $(v).find(".about_bigt4").length?$(v).find(".about_bigt4").html():'';
 			if($(v).find(".about_bigt3").length > 0){
-				$(v).find(".about_bigt1").html(html2);
-				$(v).find(".about_bigt3").html(html1);
 				if($(v).find(".about_bigt4").length > 0){
 					$(v).find(".about_bigt2").html(html4);
 					$(v).find(".about_bigt4").html(html3);
 				}else{
 					$(v).find(".about_bigt2").html(html3);
+					$(v).find(".about_bigt2").html('').removeClass('big_top');
+					var a3 = $(v).find(".about_bigt3").clone();
+					a3.removeClass('about_bigt3').addClass('about_bigt4');
+					$(v).find(".about_bigt3").after(a3[0]);
+				}
+				$(v).find(".about_bigt1").html(html2);
+				$(v).find(".about_bigt3").html(html1);
+			}else{
+				//有两条
+				if($(v).find(".about_bigt2").length > 0){
+					var a1 = $(v).find(".about_bigt1").clone();
+					a1.removeClass('about_bigt1').addClass('about_bigt3');
+					$(v).find(".about_bigt2").after(a1[0]);
+					$(v).find(".about_bigt1").html($(v).find(".about_bigt2").html());
+					$(v).find(".about_bigt2").html('').removeClass('big_top');
+				}else{//只有一条
+					$(v).find(".about_bigt1").addClass('about_bigt3').removeClass('about_bigt1');
 				}
 			}
 		});
