@@ -58,26 +58,5 @@
 <!--footer start-->
 <?php $this->load->view('common/footer'); ?>
 <!--footer end-->
-
-<script type="text/javascript">
-  seajs.use(['jquery','sys'],function(){
-    $(function(){
-      var page_id =1;
-      var list_html = $("#news-list").clone();
-      each_html(list_html,'/index.php/about/ajax_get_news',{'page_id':page_id,'page_size':8,'category':1},{'add_time':function(v){ return unixtime_style(v,'Y-m-d')}},true,function(obj,v){
-        obj.find('a').attr('href','<?php echo site_url('about/news_detail?id='); ?>'+ v.id)
-      });
-      page_id++;
-      $('.news_more').bind('click',function(){
-        each_html(list_html,'/index.php/about/ajax_get_news',{'page_id':page_id,'page_size':8,'category':10},{'add_time':function(v){ return unixtime_style(v,'Y-m-d')}},false,function(obj,v){
-          obj.find('a').attr('href','<?php echo site_url('about/news_detail?id='); ?>'+ v.id)
-        },function(no_data){
-          if(no_data)$('.news_more').unbind('click').remove();
-        },true);
-        page_id++;
-      });
-    });
-  });
-</script>
 </body>
 </html>

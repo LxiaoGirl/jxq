@@ -311,16 +311,16 @@
                     },true,function(obj,v){
                         switch (v.automatic_type){
                             case '1'://自动
-                                obj.find('.mobile').append('<img src="/assets/images/invest/a_zhi.png" title="自动投">');
+                                obj.find('.mobile').append('<img style="cursor: pointer;" src="/assets/images/invest/a_zhi.png" title="自动投">');
                                 break;
                             case '2'://自动
-                                obj.find('.mobile').append('<img src="/assets/images/invest/a_zhi.png" title="自动投">');
+                                obj.find('.mobile').append('<img style="cursor: pointer;" src="/assets/images/invest/a_zhi.png" title="自动投">');
                                 break;
                             case '3'://app
-                                obj.find('.mobile').append('<img src="/assets/images/invest/a_app.png" title="APP端投资">');
+                                obj.find('.mobile').append('<img style="cursor: pointer;" src="/assets/images/invest/a_app.png" title="APP端投资">');
                                 break;
                             case '4'://m
-                                obj.find('.mobile').append('<img src="/assets/images/invest/a_shou.png" title="手机端投资">');
+                                obj.find('.mobile').append('<img style="cursor: pointer;" src="/assets/images/invest/a_wap.png" title="手机端投资">');
                                 break;
                             default://pc
                         }

@@ -169,8 +169,10 @@
         <div class="invest_home_right fr">
             <div class="tzxts">
                 <h1>投资小贴士</h1>
-                <p class="fs14colblue">Q：什么是信用等级？</p>
-                <p>A：信用等级表示借款人的信用资质。借款人信用等级越高，贷款利率越低。聚雪球根据第三方公允评级模式，制订了A到F共计30个信用等级，每个等级对应不同的利率，依据借款人的信用记录和还款能力等因素，公平细致的给每一个借款申请划分相应的贷款利率区间。</p>
+                <div id="tips">
+                    <p class="fs14colblue">Q：<span class="title"></span></p>
+                    <p>A：<span class="content"></span></p>
+                </div>
             </div>
         </div>
         <!--右侧-->
@@ -182,23 +184,28 @@
 
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){
-        each_html('announcement-top','/index.php/about/ajax_get_news',{'page_id':1,'page_size':5,'category':'<?php echo item('announcement_home_top_cat_id')?item('announcement_home_top_cat_id'):0; ?>'},'',true,function(obj,v){
-            obj.find('a').attr('href','<?php echo site_url('about/news_detail?id='); ?>'+ v.id);
-        },function(){gg_pad_1();});
-        tab_1($(".invest_home_left"));
-        //未开始的倒计时
-        if($('.settime').length) {
-            $('.settime').count_down(function (obj) {
-                obj.html('可投金额：<font>' + obj.attr('data-amount') + '</font>元').siblings('a').removeClass('jjksbut').attr('href', '<?php echo site_url('invest/detail?borrow_no='); ?>' + obj.attr('data-borrow_no')).html('马上投资').attr('data-status', 2);
-            },'',function(flag,e,d,h,m,s){
-                if(d == 0 && h == 0){
-                    e.find('span').html('距开标 还剩<span class="m">'+m+'</span>分<span class="s">'+s+'</span>秒');
-                }else{
-                    e.find('.h').text(h);
-                    e.find('.d').text(d);
-                }
-            });
-        }
+        $(function(){
+            each_html('announcement-top','/index.php/about/ajax_get_news',{'page_id':1,'page_size':5,'category':'<?php echo item('announcement_home_top_cat_id')?item('announcement_home_top_cat_id'):-1; ?>'},'',true,function(obj,v){
+                obj.find('a').attr('href','<?php echo site_url('about/news_detail?id='); ?>'+ v.id);
+            },function(){gg_pad_1();});
+            tab_1($(".invest_home_left"));
+            //未开始的倒计时
+            if($('.settime').length) {
+                $('.settime').count_down(function (obj) {
+                    obj.html('可投金额：<font>' + obj.attr('data-amount') + '</font>元').siblings('a').removeClass('jjksbut').attr('href', '<?php echo site_url('invest/detail?borrow_no='); ?>' + obj.attr('data-borrow_no')).html('马上投资').attr('data-status', 2);
+                },'',function(flag,e,d,h,m,s){
+                    if(d == 0 && h == 0){
+                        e.find('span').html('距开标 还剩<span class="m">'+m+'</span>分<span class="s">'+s+'</span>秒');
+                    }else{
+                        e.find('.h').text(h);
+                        e.find('.d').text(d);
+                    }
+                });
+            }
+
+            //小贴士
+            each_html('tips','/index.php/about/ajax_get_news',{'page_id':1,'page_size':5,'category':'<?php echo item('invest_home_tips_cat_id')?item('invest_home_tips_cat_id'):0; ?>'},'',true,'','',true);
+        });
     });
 </script>
 </body>

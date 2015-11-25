@@ -2,7 +2,7 @@
 * @Author: anchen
 * @Date:   2015-10-14 10:37:00
 * @Last Modified by:   anchen
-* @Last Modified time: 2015-11-19 16:27:41
+* @Last Modified time: 2015-11-25 15:16:42
 */
 /*2015-11-10*/
 /*提示样式1*/
@@ -877,6 +877,7 @@ body{
     width:100%;
     height:32px;
     margin-bottom: 5px;
+    border-bottom: 2px solid #eceff3;
 }
 .invest_home_title font{
     margin-left: -2px;
@@ -885,7 +886,7 @@ body{
 .invest_home_title li{
     float: left;
     width:14%;
-    height:30px;
+    height:32px;
     color:#333;
     font-size: 14px;
     line-height: 30px;
@@ -893,14 +894,32 @@ body{
     cursor: pointer;
     text-align: center;
 }
+.invest_home_title li em{
+    border:2px solid #888888;
+    color:#888888;
+    border-radius: 50%;
+    width:16px;
+    height:16px;
+    display:inline-block;
+    line-height: 16px;
+    font-size: 12px;
+    position: relative;
+    left:-15px;
+}
+.invest_home_title li.active em{
+    border:2px solid #3cb5ec;
+    color:#3cb5ec;
+    border-radius: 50%;
+    width:16px;
+    height:16px;
+    display:inline-block;
+    line-height: 16px;
+    font-size: 12px;
+    position: relative;
+    left:-15px;
+}
 .invest_home_title li{
     background-position:10% 50%;
-}
-.invest_home_title span{
-    height:30px;
-    border-bottom: 2px solid #eceff3;
-    float: left;
-    width: 44%;
 }
 .invest_home_title li.cdb{
     background-image:url(../../assets/images/invest/cdb_1.png);
@@ -929,10 +948,6 @@ body{
 .invest_home_title li{
     background-repeat: no-repeat;
     background-position: 5px 50%;
-}
-.invest_home_title>li:last-child{
-    float: left;
-    width: 44%;
 }
 .invest_home_title li.active{
     border-bottom: 2px solid #3cb5ec;
@@ -3375,7 +3390,7 @@ body{
 .my_level .xxcenter .lie .left span.blue{
     background:#3cb5ec;
 }
-.my_level .xxcenter .lie .left span..green{
+.my_level .xxcenter .lie .left span.green{
     background:#97d168;
 }
 .my_level .xxcenter .lie .left span.yellow{
@@ -3383,6 +3398,12 @@ body{
 }
 .my_level .xxcenter .lie .left span.red{
     background:#f47373;
+}
+.my_level .xxcenter .lie .left span.zise{
+    background:#7e57c2;
+}
+.my_level .xxcenter .lie .left span.orange{
+    background:#f36c60;
 }
 .my_level .xxcenter .lie .con_in{
     width:809px;
@@ -3585,6 +3606,135 @@ p.border_bot b{
     margin-top: -77px;
     display:none;
 }
+.cztx li .fl.rechar{
+    width:114px;
+    line-height:40px;
+    margin-top:20px;
+    font-size:14px;
+    color:#333;
+}
+.cztx li .fr.rechar{
+    width:785px;
+    margin-top:20px;
+}
+.cztx li .fr.rechar input{
+    width:198px;
+    height:36px;
+    line-height:38px;
+    text-indent:10px;
+    font-size:14px;
+    color:#666;
+}
+.cztx li .fr.rechar p{
+    line-height:40px;
+    font-size:12px;
+    color:#666666;
+}
+.cztx li .fr.rechar p a{
+    line-height:40px;
+    font-size:12px;
+    color:#3cb5ec;
+}
+.cztx li .fr.rechar p a:hover{
+    color:#3cb5ec;
+}
+.cztx li .fr.rechar input[type="checkbox"]{
+    width:12px;
+    height:12px;
+}
+.cztx li .fr.rechar button{
+    width:100px;
+    height:40px;
+    border:none;
+    line-height:40px;
+    font-size:14px;
+    color:#fff;
+    outline:0;
+    cursor:pointer;
+    background:#3cb5ec;
+    border-radius:6px;
+    margin-left:10px;
+    -webkit-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    -ms-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: background-color;
+    -o-transition-property: background-color;
+    -ms-transition-property: background-color;
+    -moz-transition-property: background-color;
+    transition-property: background-color;
+    border:none;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -o-box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -ms-box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+}
+.cztx li .fr.rechar button:hover{
+    background:#3189e3;
+}
+.user_right .cz_pop {
+    display: none;
+    width: 350px;
+    padding: 8px;
+    background-color: rgba(4, 0, 0, 0.2);
+    position: fixed;
+    left: 50%;
+    margin-left: -175px;
+    top: 150px;
+    border-radius: 4px;
+    z-index: 99;
+}
+.user_right .cz_pop .title {
+    height: 40px;
+    width: 100%;
+    border-bottom: 1px solid #eeeeee;
+    background: #fff;
+    line-height: 40px;
+    color: #333333;
+    font-size: 14px;
+    text-indent: 14px;
+}
+.user_right .cz_pop .title font {
+    display: inline-block;
+    padding: 0 10px;
+    cursor: pointer;
+    font-size: 24px;
+}
+.user_right .cz_pop .title font:hover {
+    color:#0287d4;
+}
+.user_right .cz_pop .popbody{
+    background:#fff;
+    text-align:center;
+    padding:20px;
+}
+.user_right .cz_pop .popbody button {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+    font-size: 16px;
+    color: #fff;
+    background: #3cb5ec;
+    border: none;
+    border-radius: 4px;
+    margin-top: 20px;
+    cursor: pointer;
+    margin:10px;
+}
+.user_right .cz_pop .popbody button:hover{
+    background:#0287d4;
+}
+.user_right .cz_pop .popbody button.czsb{
+    color: #3cb5ec;
+    background: #fff;
+    border:1px solid #3cb5ec;
+}
+.user_right .cz_pop .popbody button.czsb:hover{
+    color: #fff;
+    background: #3cb5ec;
+}
+
 .user_right .tab_con.invite{
     padding:0px;
     width:939px;

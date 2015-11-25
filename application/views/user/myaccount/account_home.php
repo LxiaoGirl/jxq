@@ -18,7 +18,7 @@
     </div>
     <div class="row user">
         <!--左侧通用-->
-        <?php $this->load->view('common/user_left');?> 
+        <?php $this->load->view('common/user_left');?>
         <!--左侧通用-->
         <!--右侧-->
         <div class="user_right">

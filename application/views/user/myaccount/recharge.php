@@ -18,9 +18,10 @@
 		<?php $this->load->view('common/user_left');?>
         <!--右侧-->
         <div class="user_right">
+            <div class="black_bg"></div>
             <h1>充值</h1>
             <p class="border_bot">帐户余额（元）：<b>0.00</b></p>
-            <div class="tra_note">
+            <div class="tra_note cztx">
                 <ul class="tab_title ">
                     <li class="active">充值<font class="fr">|</font></li>
                     <a href='<?php echo site_url('user/user/recharge_jl');?>'><li>充值记录<font class="fr">|</font></li></a>
@@ -29,20 +30,25 @@
                 </ul>
                 <ul class="tab_con">
                     <li class="active">
-                        <div class="section">
-                            <span class="select spse">全部</span>|
-                            <span class="spse">一个月内</span>|
-                            <span class="spse">三个月内</span>|
-                            <span class="spse">半年内</span>|
-                            <span class="spse">一年内</span>
-                            <font style="margin-left:30px;">选择日期：</font><input type="text" class="date_picker_1">
-                            <font>至&nbsp;&nbsp;</font><input type="text" class="date_picker_2">
-                            <button>查询</button>
+                    <form id="tx" action="" method="" accept-charset="utf-8">                    
+                        <div class="zysx">
+                            <p>温馨提示：网加禁止信用卡充值、套现等行为，一经发现将予以处罚，包括但不限于：限制收款、冻结账户、永久停止服务，并会影响银行征信记录。网上银行充值过程中请耐心等待，充值成功后，请不要关闭浏览器，充值成功后返回网加，充值金额才能打入您的账号。如有问题，请联系客服。
+                            </p>
                         </div>
-                        <p class="title"><span class="wid180">流水号</span><span class="wid128">金额（元）</span><span class="wid105">手续费（元）</span><span class="wid166">时间</span><span class="wid156">账户信息</span><span class="wid160">当前状态</span></p>
-                        <p class="lie"><span class="wid180">R15092146247467</span><span class="wid128">100,000,000,000.00</span><span class="wid105">2,000.00</span><span class="wid166">2015-09-21 11:38:32</span><span class="wid156">我不知道这是啥</span><span class="wid160 green">提现成功</span></p>
-                        <p class="lie"><span class="wid180">R15092146247467</span><span class="wid128">100,000,000,000.00</span><span class="wid105">2,000.00</span><span class="wid166">2015-09-21 11:38:32</span><span class="wid156">我不知道这是啥</span><span class="wid160 red">提现中</span></p>
-                        <p class="lie"><span class="wid180">R15092146247467</span><span class="wid128">100,000,000,000.00</span><span class="wid105">2,000.00</span><span class="wid166">2015-09-21 11:38:32</span><span class="wid156">我不知道这是啥</span><span class="wid160 red">提现中</span></p>
+                        <div class="fl rechar">请输入充值金额：</div>
+                        <div class="fr rechar">
+                            <p><input type="text" name=""/> <button type="button" id="qrcz">确认充值</button></p>
+                            <p><input type="checkbox" name=""/>我同意<a href="">《聚雪球账户资金管理协议》</a></p>
+                        </div>
+                        <div class="cz_pop">
+                            <div class="title">
+                                <span>充值结果</span><font class="fr close">×</font>
+                            </div>
+                            <div class="popbody">
+                                <button type="button">充值成功</button><button class="czsb" type="button">充值失败</button>
+                            </div>
+                        </div>
+                    </form>
                     </li>
                 </ul>
             </div>
@@ -58,7 +64,18 @@
 <script type="text/javascript" src="<?php echo base_url('assets/js/plugins/jquery.date_input.pack.js')?>"></script> 
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){
-
+        $('#qrcz').click(function(){
+            $('.black_bg').fadeIn();
+            $('.cz_pop').fadeIn();
+        })
+        $('.cz_pop').find('.close').click(function(){
+            $('.black_bg').fadeOut();
+            $('.cz_pop').fadeOut();
+        })
+        $('.cz_pop').find('button').click(function(){
+            $('.black_bg').fadeOut();
+            $('.cz_pop').fadeOut();
+        })
     });
     $('.date_picker_1').date_input();
     $('.date_picker_2').date_input();

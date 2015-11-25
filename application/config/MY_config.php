@@ -45,4 +45,5 @@ $config['about_major_event_cat_id']         = 0; //关于我们之公司大事�
 $config['about_media_cat_id']               = 1; //关于我们之媒体报道新闻分类id
 $config['about_news_cat_id']                = 10; //关于我们之公司动态新闻分类id
 $config['help_news_cat_id']                 = 2; //关于我们之公司动态新闻分类id
+$config['invest_home_tips_cat_id']          = 1; //小贴士新闻分类id
 $config['max_rate']                         = 12; //logo后面的高收益利率

@@ -8,7 +8,6 @@ class User extends Login_Controller{
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->library('session');
 		$this->load->model('api/user_model','user');
 		$this->load->model('api/commons_model','commons');
 		$this->load->model('api/activity_model','activity');
@@ -18,20 +17,21 @@ class User extends Login_Controller{
 		$this->load->model('api/cash_model','cash');
 		$this->load->model('api/project_model','project');
 		$this->_is_login();
+		$this->session->set_userdata(array('uid'=>155));
 	}
 
 
 	/**
-	 * ×Ê½ğ×ÜÀÀ
+	 * èµ„é‡‘æ€»è§ˆ
 	 */
 	public function account_home(){
 		$data = $temp = array();
 		$uid=$this->session->userdata('uid');
 
-		//»ñÈ¡¸öÈË×Ê½ğ×Ü¶îÊı¾İ
+		//è·å–ä¸ªäººèµ„é‡‘æ€»é¢æ•°æ®
 		$data = $this->cash->get_user_cash_total($uid);
 
-		//»ñÈ¡Ñ©ÇòÊı¾İ
+		//è·å–é›ªçƒæ•°æ®
 		$data['snowball_num'] = $this->activity->My_snowball_total($uid);
 		$data['snowball_num'] =($data['snowball_num']['status']=='10000')? $data['snowball_num']['data']['snowball_total']:0;
 
@@ -48,7 +48,7 @@ class User extends Login_Controller{
 
 
 	/**
-	 * ÌáÏÖÁĞ±í
+	 * æç°åˆ—è¡¨
 	 */
 	public function withdrawals_jl(){
 		$uid=$this->session->userdata('uid');
@@ -69,7 +69,7 @@ class User extends Login_Controller{
 
 
 	/**
-	 * ÌáÏÖ
+	 * æç°
 	 */
 	public function withdrawals(){
 		$data = array();
@@ -85,7 +85,7 @@ class User extends Login_Controller{
 	}
 
 	/**
-	 *ÌáÏÖ²Ù×÷
+	 *æç°æ“ä½œ
 	 */
 	public function user_transfer(){
 		$uid=$this->session->userdata('uid');
@@ -100,7 +100,7 @@ class User extends Login_Controller{
 
 
 	/**
-	 * ³äÖµ
+	 * å……å€¼
 	 */
 	public function recharge(){
 		$this->load->view('user/myaccount/recharge');
@@ -109,7 +109,7 @@ class User extends Login_Controller{
 
 
 	/**
-	 * ³äÖµÁĞ±í
+	 * å……å€¼åˆ—è¡¨
 	 */
 	public function recharge_jl(){
 		$data = array();
@@ -130,16 +130,16 @@ class User extends Login_Controller{
 
 
 	/**
-	 * ½»Ò×Ã÷Ï¸
+	 * äº¤æ˜“æ˜ç»†
 	 */
 	public function transaction_details(){
 		$temp = array();
 		$data = array(
-			'type'=>isset($_GET['type'])?$this->input->get('type',true):'d',
-			'year'=>isset($_GET['year'])?$this->input->get('year',true):'',
-			'month'=>isset($_GET['month'])?$this->input->get('month',true):'',
+				'type'=>isset($_GET['type'])?$this->input->get('type',true):'d',
+				'year'=>isset($_GET['year'])?$this->input->get('year',true):'',
+				'month'=>isset($_GET['month'])?$this->input->get('month',true):'',
 		);
-		//ÑéÖ¤Ê±¼ä¶Î
+		//éªŒè¯æ—¶é—´æ®µ
 		switch($data['type']){
 			case 'd';
 				$temp['start_time'] = strtotime(date('Y-m-d').' 00:00:00');
@@ -203,7 +203,7 @@ class User extends Login_Controller{
 
 
 	/**
-	 * ÎÒµÄÑ©Çò
+	 * æˆ‘çš„é›ªçƒ
 	 */
 	public function my_xq(){
 		$data=array();
@@ -221,7 +221,7 @@ class User extends Login_Controller{
 
 
 	/**
-	 * ÎÒµÄºì°ü(Î´ÁìÈ¡)
+	 * æˆ‘çš„çº¢åŒ…(æœªé¢†å–)
 	 */
 	public function my_redbag(){
 		$data=array();
@@ -235,7 +235,7 @@ class User extends Login_Controller{
 		$this->load->view('user/myaccount/my_redbag',$data);
 	}
 	/**
-	 * ÎÒµÄºì°ü£¨ÒÑÁìÈ¡£©
+	 * æˆ‘çš„çº¢åŒ…ï¼ˆå·²é¢†å–ï¼‰
 	 */
 	public function my_redbag_lq(){
 		$data=array();
@@ -249,7 +249,7 @@ class User extends Login_Controller{
 		$this->load->view('user/myaccount/my_redbag_lq',$data);
 	}
 	/**
-	 * ÎÒµÄºì°ü£¨ÒÑ¹ıÆÚ£©
+	 * æˆ‘çš„çº¢åŒ…ï¼ˆå·²è¿‡æœŸï¼‰
 	 */
 	public function my_redbag_gq(){
 		$data=array();
@@ -265,7 +265,7 @@ class User extends Login_Controller{
 
 
 	/**
-	 * »ñµÃµ¥¸öºì°ü
+	 * è·å¾—å•ä¸ªçº¢åŒ…
 	 */
 	public function redbag_id(){
 		$data = array();
@@ -278,7 +278,7 @@ class User extends Login_Controller{
 
 
 	/**
-	 * ÁìÈ¡ºì°ü
+	 * é¢†å–çº¢åŒ…
 	 */
 	public function Receive_redbag(){
 		$data = array();
@@ -291,7 +291,7 @@ class User extends Login_Controller{
 
 
 	/**
-	 * ÏûÏ¢ÖĞĞÄ
+	 * æ¶ˆæ¯ä¸­å¿ƒ
 	 */
 	public function information(){
 		$data = $temp =array();
@@ -300,14 +300,17 @@ class User extends Login_Controller{
 		$temp['page_id'] 	= $this->c->get_page_id(10);
 		if($data['user_messages']['status']=='10000'){
 			$data['links'] 	= $this->c->get_links($data['user_messages']['data']['total'],$temp['page_id'],10);
+		}else{
+			$data['links'] = '';
 		}
+
 		$this->load->view('user/myaccount/information',$data);
 	}
 
 
 
 	/**
-	 * Í¶×Ê¼ÇÂ¼
+	 * æŠ•èµ„è®°å½•
 	 */
 	public function transaction_note(){
 		$temp = array();
@@ -317,7 +320,7 @@ class User extends Login_Controller{
 				'end_time'=>isset($_GET['end_time'])&&$this->input->get('end_time',true)?(strpos($this->input->get('end_time',true),'-')?strtotime($this->input->get('end_time',true)):$this->input->get('end_time',true)):time(),
 				'project'=>array(),
 				'links'=>''
-			);
+		);
 		$temp['page_id'] = $this->c->get_page_id(self::user_invest_log_page_size);
 		$temp['project'] = $this->project->get_user_project_list($this->session->userdata('uid'),$data['type'],$data['start_time'],$data['end_time'],$temp['page_id'],self::user_invest_log_page_size);
 		if($temp['project']['status'] == '10000' && isset($temp['project']['data']['data'])){
@@ -333,7 +336,7 @@ class User extends Login_Controller{
 
 
 	/**
-	 * ×Ô¶¯Í¶×Ê
+	 * è‡ªåŠ¨æŠ•èµ„
 	 */
 	public function auto(){
 		$this->load->view('user/myinvestment/auto');
@@ -342,7 +345,7 @@ class User extends Login_Controller{
 
 
 	/**
-	 * ¸öÈË×ÊÁÏ£¨ÕË»§ĞÅÏ¢£©
+	 * ä¸ªäººèµ„æ–™ï¼ˆè´¦æˆ·ä¿¡æ¯ï¼‰
 	 */
 	public function account_information(){
 		$data=array();
@@ -353,7 +356,7 @@ class User extends Login_Controller{
 
 
 	/**
-	 * ĞŞ¸ÄĞÕÃû
+	 * ä¿®æ”¹å§“å
 	 */
 	public function Change_name(){
 		$data = array();
@@ -374,7 +377,7 @@ class User extends Login_Controller{
 
 
 	/**
-	 * ĞŞ¸ÄÊÖ»úºÅµÚÒ»²½
+	 * ä¿®æ”¹æ‰‹æœºå·ç¬¬ä¸€æ­¥
 	 */
 	public function Change_mobile_one(){
 		$data=array();
@@ -387,7 +390,7 @@ class User extends Login_Controller{
 		exit(json_encode($data));
 	}
 	/**
-	 * ĞŞ¸ÄÊÖ»úºÅµÚ¶ş²½
+	 * ä¿®æ”¹æ‰‹æœºå·ç¬¬äºŒæ­¥
 	 */
 	public function Change_mobile_two(){
 		$data=array();
@@ -399,31 +402,31 @@ class User extends Login_Controller{
 		exit(json_encode($data));
 	}
 	/**
-	 * ·¢ËÍÓÊÏä
+	 * å‘é€é‚®ç®±
 	 */
 	public function send_mail(){
 		//$data=array();
 		$email = $this->input->get('email',true);
 		$uid = $this->session->userdata('uid');
-		$data = $this->email->send_email($uid,$email,'',site_url('user/user/email_yes'));//ÓÊÏäÑéÖ¤
+		$data = $this->email->send_email($uid,$email,'',site_url('user/user/email_yes'));//é‚®ç®±éªŒè¯
 		exit(json_encode($data));
 	}
 	/**
-	 * ÑéÖ¤³É¹¦
+	 * éªŒè¯æˆåŠŸ
 	 */
 	public function email_yes(){
 		$data = array();
-		$email = $this->input->get('from',true);//ÓÊÏäµØÖ·
-		$code = $this->input->get('code',true);//ÓÊÏäÑéÖ¤Âë
+		$email = $this->input->get('from',true);//é‚®ç®±åœ°å€
+		$code = $this->input->get('code',true);//é‚®ç®±éªŒè¯ç 
 		$uid = $this->session->userdata('uid');
-		$data = $this->email->validation_email($email,$code,2880);//2880  48Ğ¡Ê±
+		$data = $this->email->validation_email($email,$code,2880);//2880  48å°æ—¶
 		if($data['status']=='10000'){
 			$data['email'] = $this->user->mailbox_binding($uid,$email);
 		}
 		$this->load->view('user/profile/mailbox',$data);
 	}
 	/**
-	 * ¸öÈË×ÊÁÏ£¨ÕË»§°²È«£©
+	 * ä¸ªäººèµ„æ–™ï¼ˆè´¦æˆ·å®‰å…¨ï¼‰
 	 */
 	public function account_security(){
 		$data =  array();
@@ -433,51 +436,51 @@ class User extends Login_Controller{
 	}
 
 	/**
-	 * ÖØÖÃµÇÂ¼ÃÜÂë
+	 * é‡ç½®ç™»å½•å¯†ç 
 	 */
 	public function Reset_login_password(){
 		$data = array();
 		$uid = $this->session->userdata('uid');
-		$password = $this->input->get('new_password',true);//ĞÂÃÜÂë
-		$code = $this->input->get('code',true);//ĞÂÃÜÂë
+		$password = $this->input->get('new_password',true);//æ–°å¯†ç 
+		$code = $this->input->get('code',true);//æ–°å¯†ç 
 		$data = $this->user->Reset_login_password($uid,$password,$code);
 		exit(json_encode($data));
 	}
 	/**
-	 * ĞŞ¸ÄµÇÂ¼ÃÜÂë
+	 * ä¿®æ”¹ç™»å½•å¯†ç 
 	 */
 	public function Change_login_password(){
 		$data = array();
 		$uid = $this->session->userdata('uid');
-		$password = $this->input->get('password',true);//Ô­ÃÜÂë
-		$new_password = $this->input->get('new_password',true);//ĞÂÃÜÂë
+		$password = $this->input->get('password',true);//åŸå¯†ç 
+		$new_password = $this->input->get('new_password',true);//æ–°å¯†ç 
 		$data = $this->user->Change_login_password($uid,$password,$new_password);
 		exit(json_encode($data));
 	}
 	/**
-	 * ×Ê½ğÃÜÂë(ÉèÖÃ×Ê½ğÃÜÂë,ÖØÖÃ×Ê½ğÃÜÂë)
+	 * èµ„é‡‘å¯†ç (è®¾ç½®èµ„é‡‘å¯†ç ,é‡ç½®èµ„é‡‘å¯†ç )
 	 */
 	public function Fund_password(){
 		$data = array();
 		$uid = $this->session->userdata('uid');
-		$mobile = $this->input->get('mobile',true);//ÊÖ»úºÅ
-		$security = $this->input->get('security',true);//×Ê½ğÃÜÂë
-		$authcode = $this->input->get('code',true);//ÑéÖ¤Âë
-		$password = $this->input->get('password',true);//ÑéÖ¤Âë
+		$mobile = $this->input->get('mobile',true);//æ‰‹æœºå·
+		$security = $this->input->get('security',true);//èµ„é‡‘å¯†ç 
+		$authcode = $this->input->get('code',true);//éªŒè¯ç 
+		$password = $this->input->get('password',true);//éªŒè¯ç 
 		$data = $this->user->Fund_password($uid,$mobile,$security,$authcode,$password);
 		exit(json_encode($data));
 	}
 	/**
-	 * ĞŞ¸Ä×Ê½ğÃÜÂë
+	 * ä¿®æ”¹èµ„é‡‘å¯†ç 
 	 */
 	public function update_fund_password(){
 		$data = array();
 		$uid = $this->session->userdata('uid');
-		$mobile = $this->input->get('mobile',true);//ÊÖ»úºÅ
-		$security = $this->input->get('security',true);//×Ê½ğÃÜÂë
-		$security_new = $this->input->get('security_new',true);//ĞÂ×Ê½ğÃÜÂë
-		$authcode = $this->input->get('code',true);//ÑéÖ¤Âë
-		$password = $this->input->get('password',true);//µÇÂ¼ÃÜÂë
+		$mobile = $this->input->get('mobile',true);//æ‰‹æœºå·
+		$security = $this->input->get('security',true);//èµ„é‡‘å¯†ç 
+		$security_new = $this->input->get('security_new',true);//æ–°èµ„é‡‘å¯†ç 
+		$authcode = $this->input->get('code',true);//éªŒè¯ç 
+		$password = $this->input->get('password',true);//ç™»å½•å¯†ç 
 		$data = $this->user->update_fund_password($uid,$mobile,$password,$security,$security_new,$authcode);
 		exit(json_encode($data));
 	}
@@ -485,13 +488,13 @@ class User extends Login_Controller{
 
 
 	/**
-	 * ¸öÈË×ÊÁÏ£¨ÉÏ´«Í·Ïñ£©
+	 * ä¸ªäººèµ„æ–™ï¼ˆä¸Šä¼ å¤´åƒï¼‰
 	 */
 	public function head_portrait(){
 		$this->load->view('user/profile/head_portrait');
 	}
 	/**
-	 * ÒøĞĞ¿¨¹ÜÀí
+	 * é“¶è¡Œå¡ç®¡ç†
 	 */
 	public function card(){
 		$data = array();
@@ -502,7 +505,7 @@ class User extends Login_Controller{
 	}
 
 	/**
-	 * ÒøĞĞ¿¨ÅĞ¶Ï
+	 * é“¶è¡Œå¡åˆ¤æ–­
 	 */
 	public function ajax_check_card_bin(){
 		$account = $this->input->post('account',true);
@@ -510,7 +513,7 @@ class User extends Login_Controller{
 		exit(json_encode($data));
 	}
 	/**
-	 * ÑûÇëºÃÓÑ
+	 * é‚€è¯·å¥½å‹
 	 */
 	public function invite(){
 		$uid = $this->session->userdata('uid');
@@ -525,16 +528,16 @@ class User extends Login_Controller{
 		$this->load->view('user/profile/invite',$data);
 	}
 	/**
-	 * ½áËã²¿·Ö °´½áËãÊ±¼ä µÄÓÃ»§Í¶×ÊÁĞ±í
+	 * ç»“ç®—éƒ¨åˆ† æŒ‰ç»“ç®—æ—¶é—´ çš„ç”¨æˆ·æŠ•èµ„åˆ—è¡¨
 	 */
 	public function get_settle_invest_list(){
 		$uid = $this->session->userdata('uid');
-		$real_month = $this->input->get('real_month',true);//½áËãÔÂ·İ
+		$real_month = $this->input->get('real_month',true);//ç»“ç®—æœˆä»½
 		$data = $this->activity->get_settle_invest_list($real_month,$uid);
 		exit(json_encode($data));
 	}
 	/**
-	 * ÑûÇëºÃÓÑ¿Í»§ÁĞ±í
+	 * é‚€è¯·å¥½å‹å®¢æˆ·åˆ—è¡¨
 	 */
 	public function invite_customer(){
 		$uid = $this->session->userdata('uid');
@@ -552,38 +555,38 @@ class User extends Login_Controller{
 
 
 	/**
-	 * ÑûÇëºÃÓÑ¿Í»§Í¶×ÊÁĞ±í
+	 * é‚€è¯·å¥½å‹å®¢æˆ·æŠ•èµ„åˆ—è¡¨
 	 */
 	public function get_commission_list(){
-		$uid = $this->input->get('uid',true);//¿Í»§uid
+		$uid = $this->input->get('uid',true);//å®¢æˆ·uid
 		$data = $this->activity->get_commission_list($uid);
 		exit(json_encode($data));
 	}
-	/******************************************Í¨ÓÃ************************/
+	/******************************************é€šç”¨************************/
 	/**
-	 * ·¢ËÍ¶ÌĞÅ
+	 * å‘é€çŸ­ä¿¡
 	 */
 	public function send_sms(){
 		$data =  array();
 		$uid= (isset($_GET['uid']))?$this->input->get('uid',true):$this->session->userdata('uid');
-		$action = $this->input->get('action',true);//¶ÌĞÅÀàĞÍ  
-		$mobile = $this->input->get('mobile',true);//ÊÖ»úºÅÂë
+		$action = $this->input->get('action',true);//çŸ­ä¿¡ç±»å‹
+		$mobile = $this->input->get('mobile',true);//æ‰‹æœºå·ç 
 		$data = $this->send->send_sms($mobile,$action,$uid);
 		exit(json_encode($data));
 	}
 	/**
-	 * ·¢ËÍÓïÒô
+	 * å‘é€è¯­éŸ³
 	 */
 	public function send_voice(){
 		$data =  array();
 		$uid= (isset($_GET['uid']))?$this->input->get('uid',true):$this->session->userdata('uid');
-		$action = $this->input->get('action',true);//¶ÌĞÅÀàĞÍ  
-		$mobile = $this->input->get('mobile',true);//ÊÖ»úºÅÂë
+		$action = $this->input->get('action',true);//çŸ­ä¿¡ç±»å‹
+		$mobile = $this->input->get('mobile',true);//æ‰‹æœºå·ç 
 		$data = $this->send->send_voice($mobile,$action,$uid);
 		exit(json_encode($data));
 	}
 	/**
-	 * ÅĞ¶ÏÓÃ»§ÊÇ·ñÒÑ¾­µÇÂ¼
+	 * åˆ¤æ–­ç”¨æˆ·æ˜¯å¦å·²ç»ç™»å½•
 	 *
 	 * @access public
 	 * @return void
