@@ -734,3 +734,24 @@ if( ! function_exists('Grade'))
 		
 }
 }
+
+if( ! function_exists('percent')){
+    function percent($amount=0,$receive=0){
+        $receive_rate = 0;
+
+        if($receive){
+            if($receive / $amount * 100 >0 && $receive / $amount * 100<1){
+                $receive_rate = 1;
+            }else if(($receive / $amount * 100)>99 && ($receive / $amount * 100)<100){
+                $receive_rate = 99;
+            }else{
+                $receive_rate=round($receive / $amount * 100);
+            }
+        }else{
+            $receive_rate = 0;
+        }
+
+        return $receive_rate;
+
+    }
+}

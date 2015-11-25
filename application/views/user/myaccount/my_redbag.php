@@ -19,7 +19,7 @@
         <div class="user_right">
             <div class="my_level">
                 <div class="h1">
-                    <p class="top">获得的红包（个）<a href="">如何获得红包</a><a href="">红包能做什么</a></p>
+                    <p class="top">获得的红包（个）<a href="<?php echo site_url('about/help'); ?>">如何获得红包</a><a href="<?php echo site_url('about/help'); ?>">红包能做什么</a></p>
                     <p class="bot"><?php echo (!empty($redbag_num['data']['num']))?$redbag_num['data']['num']:'0'?></p>
                 </div>
                 <p class="hbmx">红包明细</p>
@@ -35,7 +35,7 @@
 						<?php foreach($redbag_noreceive['data']['data'] as $k => $v):?>
                         <p class="lie"><span class="wid15"><?php echo $v['amount'];?></span><span><?php echo $v['active'];?></span><span><?php if($v['deadline']!=0):?><?php echo my_date($v['contract_time'],2);?>至<?php echo my_date($v['deadline'],2);?><?php else:?>永久有效<?php endif;?></span><span class="wid15"><button class="cancl" type="" id="receive" value="<?php echo $v['id'];?>">领取</button></span></p>
 						<?php endforeach;?>
-						<?php echo $links;?>
+						<?php echo (isset($links))?$links:'';?>
 						<?php else:?>
 						<p class="lie"><span><?php echo $redbag_noreceive['msg'];?></span></p>
 						<?php endif;?>						

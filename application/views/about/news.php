@@ -23,7 +23,7 @@
   <div class="news_img fl"><img src="../../../../assets/images/about/news/news_img.jpg" width="169" height="622"></div>
   <div class="news_right fr">
   <ul id="news-list">
-    <a href="#" target="_blank">
+    <a href="javascript:void(0);" target="_blank">
       <li>
         <div class="news_time fl update_time">0000-00-00</div>
         <div class="news_content fl">
@@ -40,6 +40,7 @@
 <!--footer start-->
 <?php $this->load->view('common/footer'); ?>
 <!--footer end-->
+<script src="/listview-2.0.js"></script>
 <script type="text/javascript">
   seajs.config({
     base: '/assets/js/',

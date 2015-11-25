@@ -6,7 +6,7 @@
     </div>--> 
         <div class="user_left">
             <div class="user_center_pro">
-                <div class="user_icon"><img src="<?php if( ! profile('uid') || !profile('avatar')): ?>/assets/images/common/my_icon.jpg<?php else:echo profile('avatar'); endif; ?>"" width="100"></div>
+                <div class="user_icon" onclick="window.location.href='<?php echo site_url('user/user/head_portrait'); ?>'" style="cursor: pointer;"><img src="<?php if( ! profile('uid') || !profile('avatar')): ?>/assets/images/common/my_icon.jpg<?php else:echo profile('avatar'); endif; ?>"" width="100"></div>
                 <p class="tc"><?php 
 Date_default_timezone_set("PRC");
 $h=date("H"); 
@@ -16,7 +16,9 @@ else if($h<17) echo "下午好！";
 else echo "晚上好！"; 
 ?> <?php echo ( !empty(profile('user_name')))?profile('user_name'):'-' ?><span>vip<font>0</font></span></p>
                 <p class="str_img">
-                    <a href="<?php echo site_url('user/user/account_security')?>"><img src="../../../assets/images/common/user_left_1.png" title="实名认证"></a><a href="<?php echo site_url('user/user/account_information')?>"><img src="../../../assets/images/common/user_left_2.png" title="手机绑定"></a><a href="<?php echo site_url('user/user/account_information')?>"><img src="../../../assets/images/common/user_left_3.png" title="邮箱绑定"></a>
+                    <a href="<?php echo site_url('user/user/account_information')?>"><img src="../../../assets/images/common/user_left_2_ok.png" title="手机绑定"></a>
+                    <a href="<?php echo site_url('user/user/account_security')?>"><img src="<?php if(profile('clientkind') == '1'): ?>/assets/images/common/user_left_1_ok.png<?php else: ?>/assets/images/common/user_left_1.png<?php endif; ?>" title="实名认证"></a>
+                    <a href="<?php echo site_url('user/user/account_information')?>"><img src="<?php if(profile('email')): ?>/assets/images/common/user_left_3_ok.png<?php else: ?>/assets/images/common/user_left_3.png<?php endif; ?>" title="邮箱绑定"></a>
                 </p>
                 <p>安全等级<a href="<?php echo site_url('user/user/account_information');?>">去提升</a><font class="fr"><?php echo safety();?></font></p>
                 <p class="pre"><span><span style=" width:<?php echo Grade();?>;"></span></span></p>

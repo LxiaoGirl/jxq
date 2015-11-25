@@ -29,13 +29,13 @@
 		            <li class="org" onclick="window.location.href='<?php echo site_url('login/register'); ?>'">免费注册</li>
 	            <?php else: ?>
                     <li class="nav_have_son">
-                        我的聚雪球<font class="msg-count-flag"></font><em>></em>
+                        <span onclick="window.location.href='<?php echo site_url('user/user/account_home'); ?>'">我的聚雪球</span><font class="msg-count-flag"></font><em>></em>
                         <div class="nav_pop">
                             <div class="nav_pop_body1">
                                 <div class="top">
-                                    <div class="my_icon"><img src="<?php if( ! profile('uid') || !profile('avatar')): ?>/assets/images/common/my_icon.jpg<?php else:echo profile('avatar'); endif; ?>"></div>
+                                    <div class="my_icon" onclick="window.location.href='<?php echo site_url('user/user/head_portrait'); ?>'"><img src="<?php if( ! profile('uid') || !profile('avatar')): ?>/assets/images/common/my_icon.jpg<?php else:echo profile('avatar'); endif; ?>"></div>
                                     <div class="right">
-                                        <p class="login">您好，<?php if( ! profile('uid')): ?>请<a href="<?php echo site_url('login'); ?>">登录</a><?php else:echo profile('user_name'); endif; ?></p>
+                                        <p class="login" onclick="window.location.href='<?php echo site_url('user/user/account_information'); ?>'">您好，<?php if( ! profile('uid')): ?>请<a href="<?php echo site_url('login'); ?>">登录</a><?php else:echo profile('user_name'); endif; ?></p>
                                         <p><span><a href="<?php echo site_url('user/user/account_home'); ?>">个人中心</a></span>&nbsp;|&nbsp;<span><a href="<?php echo site_url('user/user/information'); ?>">消息<font class="msg-count">（0）</font></a></span></p>
                                     </div>
                                 </div>
@@ -45,6 +45,7 @@
                             </div>
                         </div>
                     </li>
+                    <li onclick="window.location.href='<?php echo site_url('login/logout'); ?>'">退出</li>
                 <?php endif; ?>
 
                 <li onclick="window.location.href='<?php echo site_url('about/help'); ?>'">帮助中心</li>

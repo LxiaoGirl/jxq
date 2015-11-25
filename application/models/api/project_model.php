@@ -1059,24 +1059,25 @@ class Project_model extends CI_Model{
 			unset($temp['data']['links']);
 			//重组数据
 			foreach($temp['data']['data'] as $key=>$val){
-				$data['data'][$key]['borrow_no'] 			= $val['borrow_no'];//项目单号
-				$data['data'][$key]['subject'] 				= $val['subject'];//项目名称
-				$data['data'][$key]['rate'] 				= $val['rate'];//项目利率
-				$data['data'][$key]['amount'] 				= $val['amount'];//借款金额
-				$data['data'][$key]['invest_time'] 			= $val['dateline'];//借款时间
-				$data['data'][$key]['interest'] 			= $this->get_project_user_interest($val['borrow_no'],$uid,$val['amount'],$val['rate'],$val['months'],$val['mode']);//预计（实收）收益
-				$data['data'][$key]['interest_start_time'] 	= $this->get_project_interest_start_time($val['status'],$val['due_date'],$val['confirm_time']);//收益计息日
-				$data['data'][$key]['interest_lately_time'] = $this->get_project_lately_repayment_time($val['borrow_no'],$uid);//还款日
+				$data['data']['data'][$key]['borrow_no'] 			= $val['borrow_no'];//项目单号
+				$data['data']['data'][$key]['subject'] 				= $val['subject'];//项目名称
+				$data['data']['data'][$key]['rate'] 				= $val['rate'];//项目利率
+				$data['data']['data'][$key]['amount'] 				= $val['amount'];//借款金额
+				$data['data']['data'][$key]['invest_time'] 			= $val['dateline'];//借款时间
+				$data['data']['data'][$key]['interest'] 			= $this->get_project_user_interest($val['borrow_no'],$uid,$val['amount'],$val['rate'],$val['months'],$val['mode']);//预计（实收）收益
+				$data['data']['data'][$key]['interest_start_time'] 	= $this->get_project_interest_start_time($val['status'],$val['due_date'],$val['confirm_time']);//收益计息日
+				$data['data']['data'][$key]['interest_lately_time'] = $this->get_project_lately_repayment_time($val['borrow_no'],$uid);//还款日
 				//项目状态
 				$temp['receive_rate'] 			= $this->_get_project_receive_rate($val['amounts'],$val['receive']);
 				$temp['status_array'] 			= $this->get_project_status($val['buy_time'],$val['due_date'],$temp['receive_rate'],$val['status']);
-				$data['data'][$key]['status'] 	= $temp['status_array']['name'];//项目状态
-				$data['data'][$key]['new_status'] 	= $temp['status_array']['new_status'];//项目新状态
+				$data['data']['data'][$key]['status'] 	= $temp['status_array']['name'];//项目状态
+//				$data['data']['data'][$key]['new_status'] 	= $temp['status_array']['new_status'];//项目新状态
 
 
 //				$temp['data']['data'][$key]['can_invest'] = $temp['status_array']['can_invest'];//项目是否可以投资
 //				$temp['data']['data'][$key]['mode'] = $this->_get_project_mode($val['mode']);//项目mode
 			}
+			$data['data']['total'] = $temp['data']['total'];
 			$data['msg'] = 'ok!';
 		}else{
 			$data['msg'] = '暂无相关信息!';

@@ -19,54 +19,61 @@
         <!--右侧-->
         <div class="user_right">
             
-            <h1>交易明细<a href="">为什么只能查最近半年的记录？</a></h1>
+            <h1>交易明细<a href="<?php echo site_url('about/help'); ?>">为什么只能查最近半年的记录？</a></h1>
             <div style="border-top:none" class="pre_mon_tra_det tra_note">
                 <ul class="tab_title tab_title_bule">
                     <font>查询范围：</font>
-                    <li class="active">今天</li>
-                    <li>一周</li>
-                    <li>一个月</li>
-                    <li>三个月</li>
-                    <li>半年</li>
-                    <li>自定义</li>
-                    <select name="year">
-                        <option value="2012">2012年</option>
-                        <option value="2013">2013年</option>
-                        <option value="2014">2014年</option>
-                        <option value="2015">2015年</option>
+                    <li <?php if($type == 'd'): ?>class="active"<?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_details?type=d'); ?>'">今天</li>
+                    <li <?php if($type == 'w'): ?>class="active"<?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_details?type=w'); ?>'">一周</li>
+                    <li <?php if($type == 'm'): ?>class="active"<?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_details?type=m'); ?>'">一个月</li>
+                    <li <?php if($type == '3m'): ?>class="active"<?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_details?type=3m'); ?>'">三个月</li>
+                    <li <?php if($type == '6m'): ?>class="active"<?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_details?type=6m'); ?>'">半年</li>
+                    <li <?php if($type == 'auto'): ?>class="active"<?php endif; ?>
+                        onclick="window.location.href='<?php echo site_url('user/user/transaction_details?type=auto&year='); ?>'+document.getElementById('year').value+'&month='+document.getElementById('month').value">自定义</li>
+                    <select name="year" id="year">
+                        <?php if(date('m') < '6'): ?>
+                        <option value="<?php echo date('Y')-1; ?>" <?php if($year == date('Y')-1): ?>selected<?php endif; ?>><?php echo date('Y'); ?>年</option>
+                        <?php endif; ?>
+                        <option value="<?php echo date('Y'); ?>" <?php if($year == date('Y')): ?>selected<?php endif; ?>><?php echo date('Y'); ?>年</option>
                     </select>
-                    <select name="moth">
-                        <option value="1">1月</option>
-                        <option value="2">2月</option>
-                        <option value="3">3月</option>
-                        <option value="4">4月</option>
-                        <option value="5">5月</option>
-                        <option value="6">6月</option>
-                        <option value="7">7月</option>
-                        <option value="8">8月</option>
-                        <option value="9">9月</option>
-                        <option value="10">10月</option>
-                        <option value="11">11月</option>
-                        <option value="12">12月</option>
+                    <select name="moth" id="month">
+
+                            <div id="year-<?php echo date('Y'); ?>" <?php if($year == date('Y')-1): ?> style="display: none;" <?php endif;?>>
+                            <?php for($i=1;$i<=date('m');$i++): ?>
+                                <option value="<?php echo $i; ?>" <?php if($month == $i): ?> selected<?php endif; ?>><?php echo $i; ?>月</option>
+                            <?php endfor; ?>
+                            </div>
+
+                            <div id="year-<?php echo date('Y'); ?>" <?php if($year == date('Y') || $year == ''): ?> style="display: none;" <?php endif;?>>
+                            <?php if(date('m') < '6'): for($ym=date('m'),$i=6+$ym;$i<=12;$i++): ?>
+                                <option value="<?php echo $i; ?>" <?php if($month == $i): ?> selected<?php endif; ?>><?php echo $i; ?>月</option>
+                            <?php endfor;endif; ?>
+                            </div>
                     </select>
                 </ul>
                 <ul class="tab_con tab_title_bule">
                     <li class="active">
                         
                         <div class="flr">
-                            <div class="fl">当前范围总计流入：<font>0.00</font>元</div><div class="fr">当前范围总计流出：<font>0.00</font>元</div>
+                            <div class="fl">当前范围总计流入：<font><?php echo price_format($cash_total['income_total'],2,false); ?></font>元</div><div class="fr">当前范围总计流出：<font><?php echo price_format($cash_total['pay_total'],2,false); ?></font>元</div>
                         </div>
                         <!--下面表格具体内容不确定-->
-                        <p class="title"><span>交易日期</span><span class="wid20">流水号</span><span>借款编号</span><span>交易描述</span><span>交易类型</span><span class="wid20">金额明细（元）</span><span>金额（元）</span></p>
-                        <p class="lie"><span>2015-09-21</span><span style="width:20%">464989761316</span><span>B15091758028772</span><span>礼金收益</span><span>礼金收益</span><span style="width:20%">200.00</span><span>50</span></p>
-                        <p class="lie"><span>2015-09-21</span><span style="width:20%">464989761316</span><span>B15091758028772</span><span>礼金收益</span><span>礼金收益</span><span style="width:20%">200.00</span><span>50</span></p>
-                        <p class="lie"><span>2015-09-21</span><span style="width:20%">464989761316</span><span>B15091758028772</span><span>礼金收益</span><span>礼金收益</span><span style="width:20%">200.00</span><span>50</span></p>
+                        <p class="title"><span>交易日期</span><span class="wid20">流水号</span><span>源编号</span><span>交易描述</span><span>交易类型</span><span class="wid20">金额明细（元）</span><span>余额（元）</span></p>
+                        <?php if($log):foreach($log as $k=>$v): ?>
+                            <p class="lie">
+                                <span><?php echo date('Y-m-d',$v['dateline']); ?></span>
+                                <span style="width:20%"><?php echo $v['id']; ?></span>
+                                <span><?php echo $v['source']; ?></span>
+                                <span><?php echo $v['remarks']; ?></span>
+                                <span><?php echo $v['type']; ?></span>
+                                <span style="width:20%"><?php echo $v['amount']; ?></span>
+                                <span><?php echo $v['balance']; ?></span>
+                            </p>
+                        <?php endforeach;else: ?>
+                            <p class="lie">暂无相关信息</p>
+                        <?php endif; ?>
+                        <?php echo $links; ?>
                     </li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
                 </ul>
             </div>
         </div>
@@ -80,6 +87,9 @@
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){
         tab($('.pre_mon_tra_det'));
+        $('#year').bind('change',function(){
+           $("#year"+$(this).val()).show().siblings().hide();
+        });
     });
 </script>
 </html>

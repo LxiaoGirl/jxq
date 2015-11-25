@@ -280,5 +280,46 @@ class Other_model extends CI_Model{
         $_GET['per_page'] = (((int)$page_id-1)*(int)$page_size);
     }
 
+	/***** 爱心公益相关 *****/
+	/**
+	 * 获取爱心公益项目列表
+	 * @param int $page_id
+	 * @param int $page_size
+	 * @param string $order_by
+	 * @return array
+	 */
+	public function get_commonweal($page_id=0,$page_size=0,$order_by=''){
+		$data = array('name'=>'爱心公益项目列表','status'=>'10001','msg'=>'服务器繁忙请稍后重试','data'=>array('data'=>array()));
+		$temp = array();
+
+		unset($temp);
+		return $data;
+	}
+
+	public function get_commonweal_detail($id=0){
+		$data = array('name'=>'爱心公益项目列表','status'=>'10001','msg'=>'服务器繁忙请稍后重试','data'=>array('data'=>array()));
+		$temp = array();
+
+		unset($temp);
+		return $data;
+	}
+
+	public function get_commonweal_log($id=0){
+		$data = array('name'=>'爱心公益项目列表','status'=>'10001','msg'=>'服务器繁忙请稍后重试','data'=>array('data'=>array()));
+		$temp = array();
+
+		unset($temp);
+		return $data;
+	}
+
+	public function get_commonweal_total(){
+		$data = array('name'=>'爱心公益项目列表','status'=>'10001','msg'=>'服务器繁忙请稍后重试','data'=>array('data'=>array()));
+		$temp = array();
+
+		unset($temp);
+		return $data;
+	}
+	/***** 爱心公益相关 *****/
+
 /*********************************wsb-2015-11-04********************************************/
 }

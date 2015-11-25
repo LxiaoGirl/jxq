@@ -19,7 +19,7 @@
         <div class="user_right">
             <div class="my_level">
                 <div class="h1">
-                    <p class="top">我的雪球（个）<a href="">如何获得雪球</a><a href="">雪球能做什么</a></p>
+                    <p class="top">我的雪球（个）<a href="<?php echo site_url('about/help'); ?>">如何获得雪球</a><a href="<?php echo site_url('about/help'); ?>">雪球能做什么</a></p>
                     <p class="bot"><?php echo isset($snowball_num)?$snowball_num:0?></p>
                 </div>
                 <p class="hbmx">雪球明细</p>
@@ -37,7 +37,7 @@
 						<p class="lie"><span class="wid38"><?php echo $snowball_list['msg'];?></span></p>
 						<?php endif;?>
                     </div>
-					<?php echo $links;?>
+					<?php echo (isset($links))?$links:'';?>
             </div>
         </div>
         <!--右侧-->

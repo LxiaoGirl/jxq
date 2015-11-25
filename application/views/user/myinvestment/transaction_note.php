@@ -6,7 +6,7 @@
 </head>
 <body>
 <!--head start-->
-  <?php $this->load->view('common/head');?>      
+  <?php $this->load->view('common/head');?>
     <!--head end-->
     <!--user start-->
     <div class="user_nav row">
@@ -20,28 +20,35 @@
             <h1>投资记录</h1>
             <div class="tra_note">
                 <ul class="tab_title tab_title_small">
-                    <li class="active">全部<font class="fr">|</font></li>
-                    <li class="">回款中<font class="fr">|</font></li>
-                    <li class="">回款完成<font class="fr">|</font></li>
-                    <li class="">热售中<font class="fr">|</font></li>
-                    <li class="">已售馨</li>
+                    <li <?php if($type == ''): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?start_time='.$start_time.'&end_time='.$end_time); ?>'">全部<font class="fr">|</font></li>
+                    <li <?php if($type == '4'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=4&start_time='.$start_time.'&end_time='.$end_time); ?>'">回款中<font class="fr">|</font></li>
+                    <li <?php if($type == '7'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=7&start_time='.$start_time.'&end_time='.$end_time); ?>'">回款完成<font class="fr">|</font></li>
+                    <li <?php if($type == '2'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=2&start_time='.$start_time.'&end_time='.$end_time); ?>'">热售中<font class="fr">|</font></li>
+                    <li <?php if($type == '3'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=3&start_time='.$start_time.'&end_time='.$end_time); ?>'">已售馨</li>
                         <div class="section">                            
-                            <font style="margin-left:30px;">选择日期：</font><input type="text" class="date_picker_1">
-                            <font>至&nbsp;&nbsp;</font><input type="text" class="date_picker_2">
-                            <button>查询</button>
+                            <font style="margin-left:30px;">选择日期：</font><input type="text" id="start-time" class="date_picker_1" value="<?php echo $start_time?date('Y-m-d',$start_time):''; ?>">
+                            <font>至&nbsp;&nbsp;</font><input type="text" id="end-time" class="date_picker_2" value="<?php echo $end_time?date('Y-m-d',$end_time):''; ?>">
+                            <button onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type='.$type); ?>'+'&start_time='+document.getElementById('start-time').value+'&end_time='+document.getElementById('end-time').value">查询</button>
                         </div>
                 </ul>
                 <ul class="tab_con">
                     <li class="active">
                         <p class="title"><span class="wid20">投资项目</span><span>年收益率</span><span class="wid20">投资金额（元）</span><span>投资时间</span><span>计息日</span><span>还款日</span><span>状态</span></p>
-                        <p class="lie"><span class="wid20"><font>车贷宝1号-27</font></br>编号：464989761316</span><span>12%</span><span class="wid20"><font>20,000.00</font></br>预计收益：200.00</span><span>2015-09-21</span><span>2015-09-21</span><span>2015-09-21</span><span>收益中</span></p>
-                        <p class="lie"><span class="wid20"><font>车贷宝1号-27</font></br>编号：464989761316</span><span>12%</span><span class="wid20"><font>20,000.00</font></br>预计收益：200.00</span><span>2015-09-21</span><span>2015-09-21</span><span>2015-09-21</span><span>收益中</span></p>
-                        <p class="lie"><span class="wid20"><font>车贷宝1号-27</font></br>编号：464989761316</span><span>12%</span><span class="wid20"><font>20,000.00</font></br>预计收益：200.00</span><span>2015-09-21</span><span>2015-09-21</span><span>2015-09-21</span><span>收益中</span></p>
+                        <?php if($project):foreach($project as $k=>$v): ?>
+                            <p class="lie">
+                                <span class="wid20"><font><?php echo $v['subject']; ?></font></br>编号：<?php echo $v['borrow_no']; ?></span>
+                                <span>12%</span>
+                                <span class="wid20"><font><?php echo $v['amount']; ?></font></br>预计收益：<?php echo $v['interest']; ?></span>
+                                <span><?php echo date('Y-m-d',$v['invest_time']); ?></span>
+                                <span><?php echo date('Y-m-d',$v['interest_start_time']); ?></span>
+                                <span><?php echo date('Y-m-d',$v['interest_lately_time']); ?></span>
+                                <span><?php echo $v['status']; ?></span>
+                            </p>
+                        <?php endforeach;else: ?>
+                            <p class="lie">暂无相关信息</p>
+                        <?php endif; ?>
+                        <?php echo $links; ?>
                     </li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
                 </ul>
             </div>
         </div>

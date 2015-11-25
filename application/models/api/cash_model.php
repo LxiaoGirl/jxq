@@ -211,16 +211,19 @@ class Cash_model extends CI_Model{
      * @param int $uid
      * @param string $type_str
      * @param string $month
+     * @param string $start_time
+     * @param string $end_time
      * @param int $page_id
      * @param int $page_size
      * @return array
+     *
      * 'amount' => string '+9585.50' (length=8)
      *  'remarks' => string '一次性本息收益' (length=21)
      *  'dateline' => string '1445497425' (length=10)
      *  'type' => string '7' (length=1)
      *  'type_name' => string '收入' (length=6)
      */
-    public function get_user_cash_list($uid=0,$type_str='',$month='',$page_id=0,$page_size=0){
+    public function get_user_cash_list($uid=0,$type_str='',$month='',$start_time='',$end_time='',$page_id=0,$page_size=0){
         $data = array(
             'name'   =>'用户资金记录',
             'status' =>'10001',
@@ -235,7 +238,7 @@ class Cash_model extends CI_Model{
 
         if($uid > 0){
             $temp['where'] = array(
-                'select' =>'amount,remarks,dateline,type,source',
+                'select' =>'id,amount,remarks,dateline,type,source,balance',
                 'where'  =>array(
                     'uid'=>$uid
                 ),
@@ -264,6 +267,14 @@ class Cash_model extends CI_Model{
                 $temp['where']['where']['dateline <='] = $temp['month_end'];
             }
 
+            //验证起始时间
+            if($start_time){
+                $temp['where']['where']['dateline >=']=$start_time;
+            }
+            if($end_time){
+                $temp['where']['where']['dateline <=']=$end_time;
+            }
+
             $temp['data'] = $this->c->show_page(self::cash,$temp['where']);
 
             unset($temp['data']['links']);
@@ -287,7 +298,7 @@ class Cash_model extends CI_Model{
                         $temp['data']['data'][$key]['amount'] = '+'. $temp['data']['data'][$key]['amount'];
                     }
                     //过滤source字段的显示
-                    unset($temp['data']['data'][$key]['source']);
+//                    unset($temp['data']['data'][$key]['source']);
                 }
 
                 $data['data'] = $temp['data'];
@@ -297,6 +308,48 @@ class Cash_model extends CI_Model{
                 $data['status'] = '10000';
             }
         }
+
+        unset($temp);
+        return $data;
+    }
+
+    public function get_user_limit_time_cash_total($uid=0,$start_time='',$end_time=''){
+        $data = array(
+            'name'   =>'用户特定时间段资金记录收支统计',
+            'status' =>'10001',
+            'msg'    =>'用户uid为空!',
+            'sign'   =>'',
+            'data'   =>array(
+                'income_total'=>0,
+                'pay_total'=>0
+            )
+        );
+        $temp = array();
+
+        if($uid > 0){
+            $temp['where'] = array(
+                'where'=>array('uid'=>$uid),
+                'select'=>'SUM(amount)',
+                'where_in'=>array(
+                    'field'=>'type',
+                    'value'=>array(1,4,7)
+                )
+            );
+            //验证起始时间
+            if($start_time){
+                $temp['where']['where']['dateline >=']=$start_time;
+            }
+            if($end_time){
+                $temp['where']['where']['dateline <=']=$end_time;
+            }
+            $data['data']['income_total'] = (float)$this->c->get_one(self::cash,$temp['where']);
+            $temp['where']['where_not_in'] = $temp['where']['where_in'];
+            unset($temp['where']['where_in']);
+            $data['data']['pay_total'] = (float)$this->c->get_one(self::cash,$temp['where']);
+            $data['status'] = '10000';
+            $data['msg'] = 'ok';
+        }
+
 
         unset($temp);
         return $data;

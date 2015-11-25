@@ -217,7 +217,7 @@
                     }else if(money > invest_max) {
                         wsb_alert('投资金额不能大于￥' + invest_max + '元!',2);
                     }else if(money > my_balance) {
-                        $(".msg").show().find('p').html('你的余额不足<a href="<?php echo site_url(''); ?>">充值</a>');
+                        $(".msg").show().find('p').html('你的余额不足<a href="<?php echo site_url('user/user/recharge'); ?>">充值</a>');
                     }else{
                         $('.black_bg').fadeIn();
                         $('.invest_zjmm_pop').fadeIn("fast",function(){

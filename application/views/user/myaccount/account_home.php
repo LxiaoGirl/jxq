@@ -43,7 +43,7 @@
                                 <span>我的雪球：<?php echo $snowball_num?>个</span>
                             </div>
                             <div class="height_half">
-                                <a href="">如何获得雪球</a><a href="">雪球能做什么</a>
+                                <a href="<?php echo site_url('about/help'); ?>">如何获得雪球</a><a href="<?php echo site_url('about/help'); ?>">雪球能做什么</a>
                             </div>
                         </div>
                         <div class="height_half">
@@ -62,21 +62,21 @@
                         <div class="precent_ec" id="acc_mian_1"></div>
                         <div class="top">可用余额（元）</div>
                         <div class="botton color_3cb5ec"><?php echo $data['balance']?></div>
-                        <div class="pre_sz"><?php echo ($data['property_total']!=0)? round($data['balance']/$data['property_total']*100) :0;?>%</div>
+                        <div class="pre_sz"><?php echo percent($data['property_total'],$data['balance']);?>%</div>
                     </div>
                     <div class="jiah">+</div>
                     <div class="precent_q">
                         <div class="precent_ec" id="acc_mian_2"></div>
                         <div class="top">待收本金（元）</div>
                         <div class="botton"><?php echo $data['wait_principal_total']?></div>
-                        <div class="pre_sz"><?php echo ($data['property_total']!=0)?round(($data['wait_principal_total'])/$data['property_total']*100):0;?>%</div>
+                        <div class="pre_sz"><?php echo percent($data['property_total'],$data['wait_principal_total']);?>%</div>
                     </div>
                     <div class="jiah">+</div>
                     <div class="precent_q">
                         <div class="precent_ec" id="acc_mian_3"></div>
                         <div class="top">冻结金额（元）</div>
                         <div class="botton"><?php echo $data['invest_freeze_total']+$data['transfer_freeze_total']?></div>
-                        <div class="pre_sz"><?php echo ($data['property_total']!=0)?round(($data['invest_freeze_total']+$data['transfer_freeze_total'])/$data['property_total']*100):0?>%</div>
+                        <div class="pre_sz"><?php echo percent($data['property_total'],$data['invest_freeze_total']+$data['transfer_freeze_total']); ?>%</div>
                     </div>
                 </div>
                 <div class="dssy">
