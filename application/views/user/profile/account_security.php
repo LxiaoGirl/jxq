@@ -842,6 +842,24 @@
 			}
 		})
         //忘记资金密码
+
+        //根据类型自动触发
+        switch ('<?php echo $type; ?>'){
+            case 'change_security':
+                if($('.szzjmm').length == 1)$('.szzjmm').click();
+                if($('.xgzjmm').length == 1)$('.xgzjmm').click();
+                break;
+            case 'find_security':
+                $('.wjzjmm').click();
+                break;
+            case 'change_password':
+                $('.xgmm').click();
+                break;
+            case 'find_password':
+                $('.wjmm').click();
+                break;
+            default:
+        }
     });
 </script>
 <!--userjs end-->                     

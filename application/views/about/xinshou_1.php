@@ -76,37 +76,37 @@
         <div class="help_man3">
             <p class="help_h1">自助服务</p>
             <ul class="help_list4 end-hidden">
-                <a href="<?php echo site_url('user/user/account_information'); ?>">
+                <a href="<?php echo site_url('user/user/account_information?type=name'); ?>">
                     <li>
                         <img src="../../../../assets/images/about/help/help3_1.png"> 
                         <p>找回用户名</p>
                     </li>
                 </a>
-                <a href="<?php echo site_url('login/forget'); ?>">
+                <a href="<?php echo profile('uid')?site_url('user/user/account_security?type=find_password'):site_url('login/forget'); ?>">
                     <li>
                         <img src="../../../../assets/images/about/help/help3_2.png"> 
                         <p>找回登录密码</p>
                     </li>
                 </a>
-                <a href="<?php echo site_url('user/user/account_security'); ?>">
+                <a href="<?php echo site_url('user/user/account_security?type=find_security'); ?>">
                     <li>
                         <img src="../../../../assets/images/about/help/help3_3.png">
                         <p>找回交易密码</p>
                     </li>
                 </a>
-                <a href="<?php echo site_url('user/user/account_information'); ?>">
+                <a href="<?php echo site_url('user/user/account_information?type=phone'); ?>">
                     <li class="last">
                         <img src="../../../../assets/images/about/help/help3_4.png"> 
                         <p>修改手机号码</p>
                     </li>
                 </a>
-                <a href="<?php echo site_url('user/user/account_security'); ?>">
+                <a href="<?php echo site_url('user/user/account_security?type=change_password'); ?>">
                     <li>
                         <img src="../../../../assets/images/about/help/help3_5.png"> 
                         <p>修改登录密码</p>
                     </li>
                 </a>
-                <a href="<?php echo site_url('user/user/account_security'); ?>">
+                <a href="<?php echo site_url('user/user/account_security?type=change_security'); ?>">
                     <li>
                         <img src="../../../../assets/images/about/help/help3_6.png"> 
                         <p>修改交易密码</p>

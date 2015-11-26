@@ -367,6 +367,10 @@ class User extends Login_Controller{
 		$data=array();
 		$uid=$this->session->userdata('uid');
 		$data['user'] = $this->user->_get_user_uid($uid);
+
+		//新手指引get来的触发类型 name-改名称 phone-改手机
+		$data['type'] = isset($_GET['type'])&&$this->input->get('type',true)?$this->input->get('type',true):'';
+
 		$this->load->view('user/profile/account_information',$data);
 	}
 
@@ -448,6 +452,10 @@ class User extends Login_Controller{
 		$data =  array();
 		$uid=$this->session->userdata('uid');
 		$data = $this->user->_get_user_uid($uid);
+
+		//新手指引get来的触发类型 find_security-找回交易密码  change_security change_password-密码
+		$data['type'] = isset($_GET['type'])&&$this->input->get('type',true)?$this->input->get('type',true):'';
+
 		$this->load->view('user/profile/account_security',$data);
 	}
 

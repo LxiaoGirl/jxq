@@ -417,7 +417,17 @@
 				
 			});
 		});
-		
+
+        //根据类型自动触发
+        switch ('<?php echo $type; ?>'){
+            case 'name':
+                $('.xgnc').click();
+                break;
+            case 'phone':
+                $('.xgsjh').click();
+                break;
+            default:
+        }
     });
    //修改姓名
 

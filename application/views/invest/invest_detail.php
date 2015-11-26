@@ -69,7 +69,7 @@
                     <form action="" method="" accept-charset="utf-8">
                         <div class="inpandbut">
                             <?php  if($project['new_status'] == 1 || $project['new_status'] == 2): ?>
-                            <input class="invest-amount" type="text" maxlength="10" value="<?php echo $project['amount']-$project['receive']; ?>" placeholder="输入投资金额" <?php  if($project['new_status'] == 1): ?>style="display: none;" <?php endif; ?>><button id="invest-all" type="button" <?php  if($project['new_status'] == 1): ?>style="display: none;" <?php endif; ?>>全投</button>
+                            <input class="invest-amount" type="text" maxlength="10" value="" placeholder="输入投资金额" <?php  if($project['new_status'] == 1): ?>style="display: none;" <?php endif; ?>><button id="invest-all" type="button" <?php  if($project['new_status'] == 1): ?>style="display: none;" <?php endif; ?>>全投</button>
                             <?php endif; ?>
                         </div>
                         <div class="tip"></div>
@@ -173,6 +173,10 @@
                 can_invest = '<?php echo $project['can_invest']?'1':'0'; ?>';
             if(invest_min > can_invest_amount)invest_min = can_invest_amount;
             if(invest_max > can_invest_amount)invest_max = can_invest_amount;
+
+            //添加最大投资为默认值
+            $(".invest-amount").val(invest_max);
+
             //提交
             var invest_submit = function(){
                 $.ajax({
@@ -290,11 +294,28 @@
                     $(this).val('');
                 }else{
                     if($(this).val() > 0){
+                        if($(this).val() > invest_max){
+                            $(this).val(invest_max);
+                        }
                         var interest = calculator($(this).val(),'<?php echo $project['rate']; ?>','<?php echo $project['months']; ?>','<?php echo $project['mode']; ?>');
                         $('.cal').css('visibility','visible').find('font').text(interest);
                     }else{
                         $('.cal').css('visibility','hidden').find('font').text(0);
                     }
+                }
+            });
+
+            //清空默认值
+            var is_focus = false;
+            $(".invest-amount").bind('focus',function(){
+                if( ! is_focus){
+                    $(".invest-amount").val('');
+                    is_focus = true;
+                }
+            }).bind('blur',function(){
+                if(is_focus && $(".invest-amount").val() == ''){
+                    $(".invest-amount").val(invest_max);
+                    is_focus = false;
                 }
             });
 
