@@ -55,8 +55,8 @@
                         <div class="nav_pop_body2">
                             <div class="ewm"><img src="../../../../assets/images/ewm/APPdown.png" width="90"></div>
                             <div class="two_but">
-                                <p><a href="">安卓版下载</a></p></br>
-                                <p><a class="ios" href="">iOS版下载</a></p>
+                                <p><a href="<?php echo site_url('snowballapp.apk'); ?>">安卓版下载</a></p></br>
+                                <p><a class="ios" href="https://appsto.re/cn/ApWE9.i">iOS版下载</a></p>
                             </div>
                         </div>
                     </div>
@@ -97,10 +97,10 @@
                     <a href="<?php /*echo site_url('borrow'); */?>">我要借款</a>
                     <div class="mian_nav_li_pop"><div class="mnavtop"></div></div>
                 </li>-->
-                <li>
-                    <a href="<?php echo site_url('about/commonweal'); ?>">爱心公益</a>
-                    <div class="mian_nav_li_pop"><div class="mnavtop"></div></div>
-                </li>
+<!--                <li>-->
+<!--                    <a href="--><?php //echo site_url('about/commonweal'); ?><!--">爱心公益</a>-->
+<!--                    <div class="mian_nav_li_pop"><div class="mnavtop"></div></div>-->
+<!--                </li>-->
                 <li>
                     <a href="<?php echo site_url('about/safe'); ?>">安全保障</a>
                     <div class="mian_nav_li_pop"><div class="mnavtop"></div></div>

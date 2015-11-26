@@ -47,3 +47,4 @@ $config['about_news_cat_id']                = 10; //关于我们之公司动态�
 $config['help_news_cat_id']                 = 2; //关于我们之帮助中心新闻分类id
 $config['invest_home_tips_cat_id']          = 39; //小贴士新闻分类id
 $config['max_rate']                         = 12; //logo后面的高收益利率
+$config['recharge_min']                     = 50; //最小充值金额

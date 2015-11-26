@@ -47,8 +47,8 @@
 			<div class="fo1_r fr">
 				<dl class="fo_dl"><dt>手机玩聚雪球</dt></dl>
 				<div class="down_l fl">
-					<a href="#"><div class="down_btn1">下载Android版</div></a>
-					<a href="#"><div class="down_btn2">下载iPhone版</div></a>
+					<a href="<?php echo site_url('snowballapp.apk'); ?>"><div class="down_btn1">下载Android版</div></a>
+					<a href="https://appsto.re/cn/ApWE9.i"><div class="down_btn2">下载iPhone版</div></a>
 				</div>
 				<div class="down_2 fl"><img src="../../../../assets/images/common/footer_erm.jpg" width="100" height="100"></div>
 			</div>
