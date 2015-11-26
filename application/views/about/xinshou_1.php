@@ -79,7 +79,7 @@
                 <a href="<?php echo site_url('user/user/account_information?type=name'); ?>">
                     <li>
                         <img src="../../../../assets/images/about/help/help3_1.png"> 
-                        <p>找回用户名</p>
+                        <p>修改用户名</p>
                     </li>
                 </a>
                 <a href="<?php echo profile('uid')?site_url('user/user/account_security?type=find_password'):site_url('login/forget'); ?>">

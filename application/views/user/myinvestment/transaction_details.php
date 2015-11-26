@@ -39,12 +39,12 @@
                     <select name="moth" id="month">
 
                             <div id="year-<?php echo date('Y'); ?>" <?php if($year == date('Y')-1): ?> style="display: none;" <?php endif;?>>
-                            <?php for($i=1;$i<=date('m');$i++): ?>
+                            <?php for($i=date('m') < '6'?1:date('m')-6,$ym=date('m');$i<=$ym;$i++): ?>
                                 <option value="<?php echo $i; ?>" <?php if($month == $i): ?> selected<?php endif; ?>><?php echo $i; ?>月</option>
-                            <?php endfor; ?>
+                            <?php endfor;?>
                             </div>
 
-                            <div id="year-<?php echo date('Y'); ?>" <?php if($year == date('Y') || $year == ''): ?> style="display: none;" <?php endif;?>>
+                            <div id="year-<?php echo date('Y-1'); ?>" <?php if($year == date('Y') || $year == ''): ?> style="display: none;" <?php endif;?>>
                             <?php if(date('m') < '6'): for($ym=date('m'),$i=6+$ym;$i<=12;$i++): ?>
                                 <option value="<?php echo $i; ?>" <?php if($month == $i): ?> selected<?php endif; ?>><?php echo $i; ?>月</option>
                             <?php endfor;endif; ?>
@@ -89,6 +89,9 @@
         tab($('.pre_mon_tra_det'));
         $('#year').bind('change',function(){
            $("#year"+$(this).val()).show().siblings().hide();
+        });
+        $('#month').bind('change',function(){
+           window.location.href='/index.php/user/user/transaction_details?type=auto&year='+$('#year').val()+'&month='+$(this).val();
         });
     });
 </script>
