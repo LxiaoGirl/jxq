@@ -11,7 +11,9 @@ class User_model extends CI_Model{
 	const BANK = 'bank'; // 验证授权
 	const card = 'user_card'; // 验证授权
 	const automatic = 'user_automatic'; // 自动投配置表
-	
+	const company = 'user_automatic'; // 子公司邀请码表
+	const recharge = 'user_recharge'; // 充值
+
 
 
     public function __construct(){
@@ -134,8 +136,6 @@ class User_model extends CI_Model{
 
 		return $data;
     }
-
-
 
 	/**
      * 注册
@@ -1691,5 +1691,124 @@ class User_model extends CI_Model{
 		}
 
 		return $inviter_uid;
+	}
+
+
+	/****************** wsb ********************************/
+
+	/**
+	 * @param string $code
+	 * @return array
+	 */
+	public function check_company_invitation_code($code=''){
+		$temp = array();
+		$data = array('name'=>'公司邀请码验证','status'=>'10001','msg'=>'邀请码不能为空!','data'=>array());
+
+		if($code != ''){
+			$data['msg'] = '查无此验证码!';
+		}
+
+		unset($temp);
+		return $data;
+	}
+
+	/**
+	 * 刷新订单
+	 * @param string $recharge_no
+	 * @param int $uid
+	 * @return array
+	 * 10000 订单已成功 10001 未成功 10002 uid为空 10003 订单号为空
+	 */
+	public function recharge_refresh($recharge_no='',$uid=0){
+		$data = array('name'=>'订单号刷新','status'=>'10001','msg'=>'订单未成功!','data'=>'');
+		$temp =array();
+		$recharge_no = authcode($recharge_no,'',TRUE);
+
+		if($uid == 0){
+			$data['msg'] = '用户uid为空!';
+			$data['status'] = '10002';
+			return $data;
+		}
+		if($recharge_no){
+			session_write_close();//關閉session 防止session鎖頁面
+			$temp['where'] = array(
+					'select'   => 'recharge_no,uid,type,amount,source,remarks,add_time,status',
+					'where'    => array('uid' => $uid,'recharge_no' => $recharge_no,'status' => '0','type' => 2)
+			);
+			$temp['data'] = $this->c->get_row(self::recharge, $temp['where']);
+			if($temp['data']){
+				$this->load->model('pay_model','pay');
+				$res = $this->pay->dingdanchaxun($recharge_no);
+				if($res['FlagInfo']['Flag3']==1 || $res['FlagInfo']['Flag3']==9){
+					$temp['update_data'] = array('status' => '1');
+					$this->db->trans_start();
+					$temp['where'] = array('where' => array('recharge_no' => $temp['data']['recharge_no']));
+					$query = $this->c->update(self::recharge, $temp['where'], $temp['update_data']);
+					if($query){
+						$query=$this->_add_cash_flow($temp['data']['uid'],$temp['data']['amount'],$temp['data']['recharge_no']);
+						if($query){
+							$this->db->trans_complete();
+							$query = $this->db->trans_status();
+							if($query){
+								session_start();
+								$temp['balance'] = $this->_get_user_balance($uid);
+								$this->session->set_userdata('balance',$temp['balance']);
+								$data['status'] = '10000';
+								$data['data'] = $temp['balance'];
+								$data['msg'] = 'ok';
+							}
+						}
+					}
+				}
+			}else{
+				session_start();
+				$temp['balance'] = $this->_get_user_balance($uid);
+				$data['data'] = $temp['balance'];
+				$data['status'] = '10000';
+			}
+		}else{
+			$data['status'] = '10003';
+		}
+
+		unset($temp);
+		return $data;
+	}
+
+	/**
+	 * 添加充值记录
+	 *
+	 * @access private
+	 * @param  integer $uid    会员ID
+	 * @param  float   $amount 充值金额
+	 * @param  string  $source 记录来源
+	 * @return boolean
+	 */
+	private function _add_cash_flow($uid = 0, $amount = 0, $source = '' , $remarks = '会员充值'){
+		$query = FALSE;
+		$temp  = array();
+
+		if( ! empty($uid) && ! empty($amount) && ! empty($source)){
+			$temp['where'] = array('where' => array('source' => $source));
+			$temp['count'] = $this->c->count(self::flow, $temp['where']);
+
+			if($temp['count'] == 0)
+			{
+				$temp['balance'] = $this->_get_user_balance($uid);
+
+				$temp['data'] = array(
+						'uid'      => $uid,
+						'type'     => 1,
+						'amount'   => $amount,
+						'balance'  => round($amount + $temp['balance'], 2),
+						'source'   => $source,
+						'remarks'  => $remarks,
+						'dateline' => time(),
+				);
+
+				$query = $this->c->insert(self::flow, $temp['data']);
+			}
+		}
+		unset($temp);
+		return $query;
 	}
 }

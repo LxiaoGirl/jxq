@@ -190,6 +190,16 @@ class Login extends MY_Controller{
 	}
 
 	/**
+	 * 注册用  ajax验证 公司邀请码是否正确
+	 */
+	public function ajax_check_company_invitation_code(){
+		if($this->input->is_ajax_request() == TRUE){
+			$data = $this->user->check_company_invitation_code($this->input->post('code',true));
+			exit(json_encode($data));
+		}
+	}
+
+	/**
 	 * 忘记密码（第一步）
 	 *
 	 * @access public

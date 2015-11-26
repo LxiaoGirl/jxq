@@ -25,7 +25,7 @@
 			            <?php echo $v['category']; ?><font class="fr">|</font>
 		            </li>
 	            <?php endforeach;endif; ?>
-                <span></span>
+                <li onclick="window.location.href='<?php echo site_url('invest/index?c=5') ?>'" class="jbb <?php if($category == 5): ?>active<?php endif; ?>" ><em>宝</em>聚保宝</li>
             </ul>
             <!--TAB头 标的名-->
             <!--公告-->
@@ -61,7 +61,80 @@
 	                        <font <?php if($months == '15-100'): ?>class="selected"<?php endif; ?> onclick="window.location.href='<?php echo site_url('invest/index?c='.$category.'&r='.$rate.'&m=15-100') ?>'">15个月以上</font>
                         </p>
                     </div>
+
                     <div class="invest_home_product">
+                        <?php if($category == 5): ?>
+                        <div class="product_of_invest_home product_of_invest_home_1">
+                            <div class="fl yi zi">
+                                <span>益</span>
+                                <p>聚益盈</p>
+                            </div>
+                            <div class="lv fl">
+                                <p class="yqb">预计年化收益率</p>
+                                13.2<font>%</font>
+                            </div>
+                            <div class="qtje fl">
+                                <p class="yqb">起投金额</p>
+                                100元
+                            </div>
+                            <div class="bzfs fl">
+                                <p class="yqb">保障方式</p>
+                                本息保障
+                            </div>
+                            <div class="fr jbb_an">
+                                <p>累计投资：1,203,264元</p>
+                                <p class='mar0'>累计入团：152,211人次</p>
+                                <a class="jb">立即投资</a>
+                            </div>
+                        </div>
+                        <div class="product_of_invest_home product_of_invest_home_1">
+                            <div class="fl wen zi">
+                                <span>稳</span>
+                                <p>聚稳盈</p>
+                            </div>
+                            <div class="lv fl">
+                                <p class="yqb">预计年化收益率</p>
+                                13.2<font>%</font>
+                            </div>
+                            <div class="qtje fl">
+                                <p class="yqb">起投金额</p>
+                                100元
+                            </div>
+                            <div class="bzfs fl">
+                                <p class="yqb">保障方式</p>
+                                本息保障
+                            </div>
+                            <div class="fr jbb_an">
+                                <p>累计投资：1,203,264元</p>
+                                <p class='mar0'>累计入团：152,211人次</p>
+                                <a class="jb sq">已售罄</a>
+                            </div>
+                        </div>
+                        <div class="product_of_invest_home product_of_invest_home_1">
+                            <div class="fl fu zi">
+                                <span>富</span>
+                                <p>聚富盈</p>
+                            </div>
+                            <div class="lv fl">
+                                <p class="yqb">预计年化收益率</p>
+                                13.2<font>%</font>
+                            </div>
+                            <div class="qtje fl">
+                                <p class="yqb">起投金额</p>
+                                100元
+                            </div>
+                            <div class="bzfs fl">
+                                <p class="yqb">保障方式</p>
+                                本息保障
+                            </div>
+                            <div class="fr jbb_an">
+                                <p>累计投资：1,203,264元</p>
+                                <p class='mar0'>累计入团：152,211人次</p>
+                                <a class="yy">立即预约</a>
+                            </div>
+                        </div>
+                        <?php else: ?>
+
 	                    <?php if($project):foreach($project as $k=>$v): ?>
 
                         <!--biao-->
@@ -157,6 +230,8 @@
 	                    <?php endforeach;else: ?>
 	                    <div class="product_of_invest_home"><p style="text-align: center;">暂无相关信息</p></div>
 	                    <?php endif; ?>
+
+                        <?php endif; ?>
                     </div>
                     <!--分页-->
 	                <?php echo $links; ?>
@@ -185,10 +260,10 @@
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){
         $(function(){
-            each_html('announcement-top','/index.php/about/ajax_get_news',{'page_id':1,'page_size':5,'category':'<?php echo item('announcement_home_top_cat_id')?item('announcement_home_top_cat_id'):-1; ?>'},'',true,function(obj,v){
+            each_html('announcement-top','/index.php/about/ajax_get_news',{'page_id':1,'page_size':5,'category':'<?php echo item('announcement_home_top_cat_id')?item('announcement_home_top_cat_id'):0; ?>'},'',true,function(obj,v){
                 obj.find('a').attr('href','<?php echo site_url('about/news_detail?id='); ?>'+ v.id);
             },function(){gg_pad_1();});
-            tab_1($(".invest_home_left"));
+            //tab_1($(".invest_home_left"));
             //未开始的倒计时
             if($('.settime').length) {
                 $('.settime').count_down(function (obj) {

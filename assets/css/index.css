@@ -2,7 +2,7 @@
 * @Author: anchen
 * @Date:   2015-10-14 10:37:00
 * @Last Modified by:   anchen
-* @Last Modified time: 2015-11-25 15:16:42
+* @Last Modified time: 2015-11-25 17:21:26
 */
 /*2015-11-10*/
 /*提示样式1*/
@@ -4737,3 +4737,255 @@ p.border_bot b{
 }
 
 /*登录注册修改密码找回密码*/
+/*聚保宝商品列表*/
+.product_of_invest_home_1{
+    height: 118px;
+}
+.product_of_invest_home_1 .zi{
+    width: 88px;
+    height: 118px;
+    border-right: 1px solid #e5e5e5;
+    text-align: center;
+}
+.product_of_invest_home_1 .zi span{
+    width: 64px;
+    height: 64px;
+    display:inline-block;
+    border-radius: 50%;
+    line-height: 64px;
+    font-size: 40px;
+    color:#fff;
+    margin-top: 17px;
+}
+.product_of_invest_home_1 .zi p{
+    font-size: 14px;
+    line-height: 26px;
+    margin:0;
+}
+.product_of_invest_home_1 .yi{
+    color:#c795df;
+}
+.product_of_invest_home_1 .wen{
+    color:#83bf73;
+}
+.product_of_invest_home_1 .fu{
+    color:#e1b480;
+}
+.product_of_invest_home_1 .yi span{
+    background:#c795df;
+}
+.product_of_invest_home_1 .wen span{
+    background:#83bf73;
+}
+.product_of_invest_home_1 .fu span{
+    background:#e1b480;
+}
+.product_of_invest_home_1 .lv{
+    color:#3cb5ec;
+    font-size:40px;
+    font-family:Arial;
+    text-align:left;
+    width:184px;
+    margin-left:38px;
+}
+.product_of_invest_home_1 .lv .font{
+    font-size:20px;
+}
+.product_of_invest_home_1 .qtje{
+    color:#555;
+    font-size:24px;
+    font-family:Arial;
+    text-align:left;
+    width:149px;
+    line-height:60px;
+}
+.product_of_invest_home_1 .bzfs{
+    color:#555;
+    font-size:20px;
+    text-align:left;
+    width:149px;
+    line-height:60px;
+}
+.product_of_invest_home_1 p{
+    color:#888888;
+    font-size:14px;
+    margin:0;
+    padding:0;
+    margin-top:10px;
+}
+.product_of_invest_home_1 .jbb_an{
+    width:160px;
+    padding-right:30px;
+    height:100%;
+}
+.product_of_invest_home_1 .jbb_an p{
+    font-size:14px;
+    color:#555;
+    margin-top:5px;
+}
+.product_of_invest_home_1 .jbb_an p.mar0{
+    font-size:14px;
+    color:#555;
+    margin:0;
+}
+.product_of_invest_home_1 .jbb_an a{
+    font-size:14px;
+    color:#fff;
+    width:160px;
+    height:36px;
+    border:none;
+    border-radius:6px;
+    background:#3cb5ec;
+    cursor:pointer;
+    outline:0;
+    display:block;
+    text-align:center;
+    line-height:34px;
+}
+.product_of_invest_home_1 .jbb_an a.jb{
+    -webkit-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    -ms-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: background-color;
+    -o-transition-property: background-color;
+    -ms-transition-property: background-color;
+    -moz-transition-property: background-color;
+    transition-property: background-color;
+}
+.product_of_invest_home_1 .jbb_an a.sq{
+    background:#cccccc;
+}
+.product_of_invest_home_1 .jbb_an a.yy{
+    background:#fff;
+    width:158px;
+    height:34px;
+    border:1px solid #3cb5ec;
+    line-height:32px;
+    color:#3cb5ec;
+}
+.product_of_invest_home_1 .jbb_an a:hover{
+    background:#3189e3;
+}
+.product_of_invest_home_1 .jbb_an a.sq:hover{
+    background:#aaa;
+}
+.product_of_invest_home_1 .jbb_an a.yy:hover{
+    background:#3cb5ec;
+    width:158px;
+    height:34px;
+    border:1px solid #3cb5ec;
+    line-height:32px;
+    color:#fff;
+}
+/*聚保宝商品列表*/
+/*聚保宝商品详情*/
+.invest_detail .invest_body_bdxx_1{
+    height:260px;
+}
+.invest_detail .invest_body_bdxx_1 .fl ul{
+    border:none;
+    padding:30px 50px;
+}
+.invest_detail .invest_body_bdxx_1 .hfzq {
+    padding: 16px 25px;
+}
+.invest_detail .invest_body_bdxx_1 .djs {
+    width: 289px;
+    height: 88px;
+    padding: 16px 10px;
+}
+.invest_detail .invest_body_bdxx .hy.fl {
+    height: 260px;
+}
+.invest_detail .invest_body_bdxx_1 .hy.fr {
+    height: 220px;
+}
+.invest_detail .invest_body_bdxx_1 .fl ul{
+    border-bottom:1px solid #eceff3;
+}
+.invest_detail .invest_body_bdxx_1 .fl ul li{
+    min-width:150px;
+}
+.invest_detail .invest_body_bdxx_1 .fl ul li span{
+    width:80px;
+    height:80px;
+    display:block;
+    border-radius:50%;
+    color:#fff;
+    font-size:52px;
+    text-align:center;
+    line-height:74px;
+}
+.invest_detail .invest_body_bdxx_1 .fl ul li span.yi{
+    background:#c795df;
+}
+.invest_detail .invest_body_bdxx_1 .fl ul li p.qdcn.col_333 {
+    color: #333;
+}
+.invest_detail .invest_body_bdxx_1 .fl ul li p.qdcn {
+    font-size: 24px;
+    line-height: 40px;
+}
+.invest_detail .invest_body_bdxx_1 .hy.fr p.jbb{
+    font-size:14px;
+    line-height:34px;
+    height:34px;
+    overflow:hidden;
+}
+.invest_detail .invest_body_bdxx_1 .hy.fr p.jbb span{
+    line-height:34px;
+}
+.invest_detail .invest_body_bdxx_1 .hy.fr p.jbb font{
+    font-size:24px;
+    color:#3cb5ec;
+    line-height:34px;
+}
+.invest_detail .invest_body_bdxx_1 .hy.fr p.but{
+    margin-top:10px;
+}
+.invest_detail .invest_body_bdxx_1 .hy.fr p input{
+    font-size:14px;
+    color:#888;
+    line-height:38px;
+    height:38px;
+    width:198px;
+    border:1px solid #dddddd;
+    text-indent:12px;
+}
+.invest_detail .invest_body_bdxx_1 .hy.fr p input[type="button"]{
+    font-size:14px;
+    color:#fff;
+    line-height:40px;
+    height:40px;
+    width:110px;
+    border:none;
+    text-indent:2px;
+    text-align:center;
+    background:#3cb5ec;
+    border-radius:6px;
+    margin-left:2px;
+    outline:0;
+    cursor:pointer;
+    -webkit-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    -ms-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: background-color;
+    -o-transition-property: background-color;
+    -ms-transition-property: background-color;
+    -moz-transition-property: background-color;
+    transition-property: background-color;
+}
+.invest_detail .invest_body_bdxx_1 .hy.fr p input[type="button"]:hover{
+    background:#3189e3;
+}
+.invest_detail .invest_detail_tab .tab_title_1 span {
+    height: 30px;
+    border-bottom: 2px solid #eceff3;
+    float: left;
+    width: 64%;
+}
+/*聚保宝商品详情*/

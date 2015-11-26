@@ -5,6 +5,7 @@ class User extends Login_Controller{
 
 	const cash_log_page_size = 5;
 	const user_invest_log_page_size = 5;
+	const recharge = 'user_recharge';
 
 	public function __construct(){
 		parent::__construct();
@@ -17,7 +18,7 @@ class User extends Login_Controller{
 		$this->load->model('api/cash_model','cash');
 		$this->load->model('api/project_model','project');
 		$this->_is_login();
-		$this->session->set_userdata(array('uid'=>155));
+//		$this->session->set_userdata(array('uid'=>155));
 	}
 
 
@@ -103,7 +104,22 @@ class User extends Login_Controller{
 	 * 充值
 	 */
 	public function recharge(){
-		$this->load->view('user/myaccount/recharge');
+
+		//验证实名
+		if($this->session->userdata('clientkind') != "1"){
+			redirect('user/user/account_security', 'refresh');
+		}
+		$data['balance'] = $this->cash->get_user_balance($this->session->userdata('uid'));
+		if($data['balance']['status'] == '10000')$data['balance'] = $data['balance']['data']['balance'];
+		$data['recharge_min'] = item('recharge_min')?item('recharge_min'):50;
+		$data['recharge_no'] = urlencode(authcode($this->c->transaction_no(self::recharge, 'recharge_no')));
+
+		$this->load->view('user/myaccount/recharge',$data);
+	}
+
+	public function ajax_recharge_auto_refresh(){
+		$data = $this->user->recharge_refresh($this->input->post('recharge_no',true),$this->session->userdata('uid'));
+		exit(json_encode($data));
 	}
 
 

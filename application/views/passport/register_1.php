@@ -40,6 +40,13 @@
                         </div>
                         <div class="pit"></div>
                     </div>
+                    <div class="inp_pit">
+                        <div class="inp">
+                            <img src="../../../../assets/images/passport/zc_suo.png">
+                            <input class="reg_sj js_yqm" type="text" name="sjh" value="" placeholder="输入一个邀请码(选填)" maxlength="20" />
+                        </div>
+                        <div class="pit"></div>
+                    </div>
                     <div class="but">
                         <button  type="submit" id="reg_wczc" class="ajax-submit-button" data-loadMsg="注册中...">完成注册</button>
                     </div>
@@ -63,7 +70,7 @@
 	        $('.fsyzm').send_sms('sms','<?php echo profile("register_mobile");?>','register',<?php echo item("sms_space_time")?item("sms_space_time"):60; ?>,'<?php echo profile("sms_last_send_time")?time()-profile("sms_last_send_time"):''; ?>');
 	        //$('.fsyzm').click();//直接触发
         });
-        var pit_3=0,pit_4=0,pit_5=0;
+        var pit_3=0,pit_4=0,pit_5=0,pit_6=0;
         $('.but').find('#reg_wczc').click(function () {
             if(pit_3 == 0){
                 $('.js_sjyzm').focus();
@@ -77,7 +84,7 @@
                 $('.js_cfmm').focus();
                 return false;
             }
-            if((pit_3+pit_4+pit_5)==3){
+            if((pit_3+pit_4+pit_5+pit_6)==4){
 	            $.ajax({
 		            type: 'POST',
                     async: false,
@@ -161,6 +168,34 @@
                     } else if (!other) {
                         text = '<i class="icon-tip-no"></i>两次填写的密码不一致';
                         pit_5=0;
+                    }
+                    tip.html(text);
+                }
+            },
+            '.js_yqm': {
+                filtrate: ' ',
+                callback: function (index) {
+                    var tip = this.parent().parent().find('.pit').eq(0),
+                        text = '<i class="icon-tip-yes"></i>';
+                        pit_6=1;
+                    if(this.val() != ''){
+                        $.ajax({
+                            type: 'POST',
+                            async: false,
+                            url: '/index.php/login/ajax_check_company_invitation_code',
+                            data: {'code':$('.js_yqm').val()},
+                            dataType: 'json',
+                            success: function (result) {
+                                if (result.status != '10000') {
+                                    text = '<i class="icon-tip-no"></i>'+result.msg;
+                                    pit_6=0;
+                                } else {
+                                    text = '<i class="icon-tip-yes"></i>';
+                                    pit_6=1;
+                                }
+                                tip.html(text);
+                            }
+                        });
                     }
                     tip.html(text);
                 }

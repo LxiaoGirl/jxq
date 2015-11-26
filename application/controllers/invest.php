@@ -69,7 +69,12 @@ class Invest extends MY_Controller{
 		}
 
 		unset($temp);
-		$this->load->view('invest/invest_detail',$data);
+
+		if($data['project']['category'] == '聚保宝'){
+			$this->load->view('invest/invest_detail_jbb',$data);
+		}else{
+			$this->load->view('invest/invest_detail',$data);
+		}
 	}
 
 	/**
