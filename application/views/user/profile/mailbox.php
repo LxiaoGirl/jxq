@@ -21,7 +21,7 @@
 				<?php if($status=='10000'):?>
                 <p><?php echo  $msg?></p>
                 <p class="small"><font id="das">3</font>秒钟后自动跳转至个人中心。</p>
-                <a href="">立即跳转</a>
+                <a href="<?php echo site_url('user/user/account_information'); ?>">立即跳转</a>
                 <script type="text/javascript">
                 var wait=3;
                 function time() {

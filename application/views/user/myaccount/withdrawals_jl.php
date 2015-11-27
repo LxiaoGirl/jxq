@@ -42,7 +42,7 @@
 						<?php if($status=='10000'):?>
 						<?php if(!empty($data['data'])):?>
 						<?php foreach($data['data'] as $k => $v):?>
-                        <p class="lie"><span class="wid180"><?php echo $v['transaction_no'];?></span><span class="wid128"><?php echo $v['amount'];?></span><span class="wid105"><?php echo $v['charge'];?></span><span class="wid166"><?php echo $v['add_time'];?></span><span class="wid156"><?php echo $v['remarks'];?></span><span class="wid160 green"><?php echo $v['status'];?></span></p>
+                        <p class="lie"><span class="wid180"><?php echo $v['transaction_no'];?></span><span class="wid128"><?php echo $v['amount'];?></span><span class="wid105"><?php echo $v['charge'];?></span><span class="wid166"><?php echo date('Y-m-d H:i',$v['add_time']);?></span><span class="wid156"><?php echo $v['remarks'];?></span><span class="wid160 green"><?php echo $v['status'];?></span></p>
 						<?php endforeach;?>
 						<?php else:?>
 						<?php echo  $msg?>

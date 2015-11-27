@@ -18,6 +18,8 @@ class User extends Login_Controller{
 		$this->load->model('api/cash_model','cash');
 		$this->load->model('api/project_model','project');
 		$this->_is_login();
+
+		$this->session->set_userdata(array('uid'=>155));
 	}
 
 
@@ -131,12 +133,38 @@ class User extends Login_Controller{
 		$uid=$this->session->userdata('uid');
 		$page_id = $this->input->get('page_id',true);
 		$time_limit=(!empty($_GET['time_limit']))?$this->input->get('time_limit',true):0;
-		$start=(!empty($_GET['start']))?strtotime($this->input->get('start',true)):0;
-		$end=(!empty($_GET['end']))?strtotime($this->input->get('end',true)):0;
-		$data = $this->cash->get_user_recharge_list($uid,'',$start,$end,$time_limit);
+
+		//验证时间段
+		switch($time_limit){
+			case '1';
+				$temp['start_time'] = strtotime(date('Y-m-01').' 00:00:00');
+				break;
+			case '2';
+				$temp['start_time'] = strtotime(date('Y-m-t',strtotime('-3 month')).' 00:00:00');
+				break;
+			case '3';
+				$temp['start_time'] = strtotime(date('Y-m-t',strtotime('-6 month')).' 00:00:00');
+				break;
+
+			case '4';
+				$temp['start_time'] = strtotime(date('Y-m-t',strtotime('-12 month')).' 00:00:00');
+				break;
+			default:
+				$temp['start_time'] = 0;
+		}
+		$temp['end_time'] = time();
+
+		$start=(!empty($_GET['start']))?strtotime($this->input->get('start',true)):$temp['start_time'];
+		$end=(!empty($_GET['end']))?strtotime($this->input->get('end',true)):$temp['end_time'];
+
+		$data = $this->cash->get_user_recharge_list($uid,'',$start,$end);
 		$temp['page_id'] 	= $this->c->get_page_id(7);
 		if($data['status']=='10000'){
-			$data['links'] 	= $this->c->get_links($data['data']['total'],$temp['page_id'],7);
+			if($data['data']['total']){
+				$data['links'] 	= $this->c->get_links($data['data']['total'],$temp['page_id'],7);
+			}else{
+				$data['links'] = '';
+			}
 		}
 		$data['balance'] = $this->cash->get_user_balance($uid);
 		$this->load->view('user/myaccount/recharge_jl',$data);

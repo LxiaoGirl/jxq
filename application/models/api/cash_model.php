@@ -387,7 +387,8 @@ class Cash_model extends CI_Model{
         if($uid > 0){
             $temp['where'] = array(
                 'select' =>'recharge_no,amount,type,remarks,add_time,status',
-                'where'  =>array('uid'=>$uid)
+                'where'  =>array('uid'=>$uid),
+                'order_by'=>'add_time DESC'
             );
 
             //验证type
@@ -673,7 +674,8 @@ class Cash_model extends CI_Model{
         if($uid > 0){
             $temp['where'] = array(
                 'select' =>'transaction_no,amount,charge,account,add_time,status,remarks',
-                'where'  =>array('uid'=>$uid)
+                'where'  =>array('uid'=>$uid),
+                'order_by'=>'add_time DESC'
             );
 			//时间类型
 			if($time!=''){

@@ -510,7 +510,7 @@
 		$('#new_password').keyup(function(){
 			var new_password = $('#new_password').val();
 			if(new_password==''){
-				$('#new_password_explain').html('原密码不能为空！');
+				$('#new_password_explain').html('新密码不能为空！');
 				return;
 			}else{
 				$('#new_password_explain').html('ok！');
@@ -520,7 +520,7 @@
 			var new_password_two = $('#new_password_two').val();
 			var new_password = $('#new_password').val();
 			if(new_password_two==''){
-				$('#new_password_explain_two').html('原密码不能为空！');
+				$('#new_password_explain_two').html('确认密码不能为空！');
 				return;
 			}else{
 				if(new_password==new_password_two){

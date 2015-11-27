@@ -28,7 +28,7 @@
             <ul class="tab_con">
                 <li class="zhxx active">
                     <p>
-                        <font >用户名</font><font class="zj"><?php echo $user['data']['user_name']?></font><font class="yc"><i class="xgnc">修改用户名</i></font>
+                        <font >用户名</font><font class="zj user_name"><?php echo $user['data']['user_name']?></font><font class="yc"><i class="xgnc">修改用户名</i></font>
                     </p>
                         <!--修改昵称_1-->
                         <div class="user_data_pop xgnc_1">
@@ -169,7 +169,7 @@
                                     </div>
                                     <div class="fr tl" style="width:65%; overflow:hidden; height:180px">
                                         <div class="popbody_p shb">验证邮件已发送...</div>
-                                        <div class="popbody_p xb">飞翔的雪球<font>，我们已经向您的邮箱</font><span id="send_mail">jxq@zgwjjf.com</span><font>发送了一封验证邮件，请您尽快查收。</font><a href=""  id="a_mail" target="_Blank">去邮箱查收。</a><font>没收到邮件?请检查您的垃圾箱或者广告箱， 邮件可能被误认为垃圾或者广告邮件。</font></div>
+                                        <div class="popbody_p xb user_name"><?php echo $user['data']['user_name']?><font>，我们已经向您的邮箱</font><span id="send_mail">jxq@zgwjjf.com</span><font>发送了一封验证邮件，请您尽快查收。</font><a href=""  id="a_mail" target="_Blank">去邮箱查收。</a><font>没收到邮件?请检查您的垃圾箱或者广告箱， 邮件可能被误认为垃圾或者广告邮件。</font></div>
                                     </div>
                                 </div>
                             </div>
@@ -329,6 +329,7 @@
         //修改手机
 
 		//修改邮箱
+		/*
 		$('#email').keyup(function(){
 			var reg= /^[a-z0-9]+([._]*[a-z0-9]+)*@[a-z0-9]+([_.][a-z0-9]+)+$/;
 			if(reg.test(this.value)){
@@ -337,6 +338,7 @@
 				$('#email_explain').html('邮箱格式好像不对，检查一下吧亲～');
 			}
 		});
+		*/
 		$('#next_email').click(function(){
 			var reg= /^[a-z0-9]+([._]*[a-z0-9]+)*@[a-z0-9]+([_.][a-z0-9]+)+$/;
 			var email = $('#email').val();
@@ -378,6 +380,9 @@
 					if(result.status=='10000'){
 						$('#email_explain').html(result.msg);
 						pop_sub_yzh($('.xgyx_1'),$('.xgyx_2'),$('.xgyx_2').find('.close'));//关闭第一到第二
+
+                        //关闭 刷新
+                        $('.xgyx_2').find('.close').bind('click',function(){ window.location.reload();});
 					}else{
 						$('#email_explain').html(result.msg);
 					}
@@ -414,7 +419,8 @@
 			$.post('/index.php/user/user/Change_name'+condition,{},function(result){
 				result = eval(result);
 				$('#new_name').html(result[0].name);
-				
+				$('.user_name').html(result[0].name);
+
 			});
 		});
 
