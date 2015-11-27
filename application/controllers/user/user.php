@@ -18,8 +18,6 @@ class User extends Login_Controller{
 		$this->load->model('api/cash_model','cash');
 		$this->load->model('api/project_model','project');
 		$this->_is_login();
-
-		$this->session->set_userdata(array('uid'=>155));
 	}
 
 
