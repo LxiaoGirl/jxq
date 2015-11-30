@@ -1347,4 +1347,18 @@ class Common_model extends CI_Model
             return 1;
         }
 	}
+
+    /**
+     * logo 后面高收益 图片
+     * @return string
+     */
+    public function get_logo_rate_image(){
+        $this->load->model('api/other_model','other');
+        $data = $this->other->get_news(item('max_rate_cat_id'),1,1);
+        if($data['status'] == '10000' && isset($data['data'])  && isset($data['data']['data'])  && isset($data['data']['data'][0])){
+            return $data['data']['data'][0]['source'];
+        }else{
+            return '';
+        }
+    }
 }

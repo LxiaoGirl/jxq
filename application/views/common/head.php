@@ -68,7 +68,8 @@
         <div class="fl">
             <ul>
                 <li><img src="../../../../assets/images/common/logo.jpg"/></li>
-                <li><img src="../../../../assets/images/common/sec_logo.jpg"/></li>
+                <?php if( !profile('logo_rate')): $logo_rate=$this->c->get_logo_rate_image();$logo_rate = $logo_rate?$logo_rate:'/assets/images/common/sec_logo.jpg';$this->session->set_userdata(array('logo_rate'=>$logo_rate));endif; ?>
+                <li><img src="<?php echo profile('logo_rate'); ?>"/></li>
             </ul>
         </div>
         <div class="fr">

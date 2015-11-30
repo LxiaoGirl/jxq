@@ -10,7 +10,8 @@ class Cash_model extends CI_Model{
     const cash          = 'cash_flow';          //资金记录表
     const recharge      = 'user_recharge';      //充值记录表
     const card          = 'user_card';          //用户银行卡记录表
-    
+    const risk          = 'risk_money';          //风险保证金
+
     const RUN_DATE      = '2015-06-12';         //网站运行时间
     const TRANSFE_MIN   = '10';                 //提现最低金额
     private $_page_size = '10';                 //分页每页记录数
@@ -91,7 +92,7 @@ class Cash_model extends CI_Model{
 
         $data['data']['user_total'] = $this->c->count(self::user);
         $data['data']['days_total'] = ceil((time()-strtotime(self::RUN_DATE))/3600/24);
-        $data['data']['risk_total'] = 1000000;
+        $data['data']['risk_total'] = $this->c->get_one(self::risk,array('where'=>array('id'=>1),'select'=>'money'));
 
         $data['status'] = '10000';
         $data['msg']    = 'ok!';
