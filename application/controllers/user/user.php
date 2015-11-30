@@ -613,6 +613,17 @@ class User extends Login_Controller{
 	}
 
 	/**
+	 * 实名认证
+	 */
+	public function real_name(){
+		$data = $this->user->real_name($this->input->post('real_name',true),$this->input->post('nric',true),$this->session->userdata('uid'));
+		if($data['status'] == '10000'){
+			$this->session->set_userdata($data['data']);
+		}
+		exit(json_encode($data));
+	}
+
+	/**
 	 * 银行卡管理
 	 */
 	public function card(){

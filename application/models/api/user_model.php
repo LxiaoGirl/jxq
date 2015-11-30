@@ -1,51 +1,52 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class User_model extends CI_Model{
-    const user     = 'user'; // 会员
-    const log      = 'user_log'; // 会员日志
-    const flow     = 'cash_flow'; // 资金记录
-    const borrow      = 'borrow'; // 借款
-    const payment     = 'borrow_payment'; // 支付记录
-    const authcode = 'authcode'; // 验证授权
-    const message = 'message'; // 发送信息
+	const user     = 'user'; // 会员
+	const log      = 'user_log'; // 会员日志
+	const flow     = 'cash_flow'; // 资金记录
+	const borrow      = 'borrow'; // 借款
+	const payment     = 'borrow_payment'; // 支付记录
+	const authcode = 'authcode'; // 验证授权
+	const message = 'message'; // 发送信息
 	const BANK = 'bank'; // 验证授权
 	const card = 'user_card'; // 验证授权
 	const automatic = 'user_automatic'; // 自动投配置表
 	const company = 'user_automatic'; // 子公司邀请码表
 	const recharge = 'user_recharge'; // 充值
+	const user_renzheng = 'user_renzheng'; // 用户实名认证是否认证表
 
 
 
-    public function __construct(){
-        parent::__construct();
+	public function __construct(){
+		parent::__construct();
 		$this->load->model('common_model','c');
 		$this->load->model('api/common/send_model','send');
 		$this->load->model('api/commons_model','common');
-    }
+	}
 
-     /**
-     * 登陆验证
-	 *$mobile 手机号 
+	/**
+	 * 登陆验证
+	 *$mobile 手机号
 	 *$password 密码
-     */
-    public function login($mobile='',$password=''){
-         $data = $temp = array();
-        $data = array('name'=>'登陆验证','status'=>'10001','msg'=>'请输入用户名密码!','data'=>array());
-             $temp['mobile']   = $mobile;
-             $temp['password'] = $password;
-			 if($temp['mobile']!=''){
-             $temp['user'] = $this->_get_user_info($temp['mobile']);
-            if( ! empty($temp['user'])){
-                $temp['minute'] = ($temp['user']['lock_time'] > time()) ? round(($temp['user']['lock_time'] - time()) / 60) : 0;
-                if($temp['minute'] == 0){
-                    $temp['password'] = $this->c->password($temp['password'], $temp['user']['hash']);
-                    if($temp['user']['password'] == $temp['password']){
-                        $this->_set_login_info($temp['user']['uid']);
-                        $this->_add_user_log('login', 'app-会员登录', $temp['user']['uid'], $temp['user']['user_name']);
-                        $data = array(
-                            'status' => 10000,
-                            'msg'  => '欢迎您的光临！',
-                            'data'  => $temp['user']
+	 */
+	public function login($mobile='',$password=''){
+		$data = $temp = array();
+		$data = array('name'=>'登陆验证','status'=>'10001','msg'=>'请输入用户名密码!','data'=>array());
+		$temp['mobile']   = $mobile;
+		$temp['password'] = $password;
+		if($temp['mobile']!=''){
+			$temp['user'] = $this->_get_user_info($temp['mobile']);
+			if( ! empty($temp['user'])){
+				$temp['minute'] = ($temp['user']['lock_time'] > time()) ? round(($temp['user']['lock_time'] - time()) / 60) : 0;
+				if($temp['minute'] == 0){
+					$temp['password'] = $this->c->password($temp['password'], $temp['user']['hash']);
+					if($temp['user']['password'] == $temp['password']){
+						$this->_set_login_info($temp['user']['uid']);
+						$this->_add_user_log('login', 'app-会员登录', $temp['user']['uid'], $temp['user']['user_name']);
+						$data = array(
+								'status' => 10000,
+								'msg'  => '欢迎您的光临！',
+								'data'  => $temp['user']
 //	                            array(
 //                                'uid'=>urlencode(authcode($temp['user']['uid'])),
 //                                'user_name'=>$temp['user']['user_name'],
@@ -53,76 +54,76 @@ class User_model extends CI_Model{
 //                                'mobile'=>$temp['user']['mobile'],
 //                                'inviter_no'=>$temp['user']['inviter_no']
 //                                )
-                        );
-                    }else{
-                        $temp['where'] = array('where' => array('mobile' => $temp['mobile']));
+						);
+					}else{
+						$temp['where'] = array('where' => array('mobile' => $temp['mobile']));
 
-                        if($temp['user']['error_num'] == 2){
-                            $temp['data'] = array('lock_time' => time() + 600);
-                            $this->c->update(self::user, $temp['where'], $temp['data']);
-                        }else{
-                            $temp['data'] = array('field' => 'error_num', 'value' => '`error_num` + 1');
-                            $this->c->set(self::user, $temp['where'], $temp['data']);
-                        }
+						if($temp['user']['error_num'] == 2){
+							$temp['data'] = array('lock_time' => time() + 600);
+							$this->c->update(self::user, $temp['where'], $temp['data']);
+						}else{
+							$temp['data'] = array('field' => 'error_num', 'value' => '`error_num` + 1');
+							$this->c->set(self::user, $temp['where'], $temp['data']);
+						}
 
-                        $data['status'] = '10001';
-                        $data['msg']  = '你输入的用户名和密码不匹配！';
-                    }
-                }else{
-                    $data['msg'] = '当前登录账号已经锁定，请在'.$temp['minute'].'分钟后再登录！';
-                }
-            }else{
-                $data['msg']  = '你输入的手机号码还未注册！';
-            }
-			 }
+						$data['status'] = '10001';
+						$data['msg']  = '你输入的用户名和密码不匹配！';
+					}
+				}else{
+					$data['msg'] = '当前登录账号已经锁定，请在'.$temp['minute'].'分钟后再登录！';
+				}
+			}else{
+				$data['msg']  = '你输入的手机号码还未注册！';
+			}
+		}
 
-        unset($temp);
-        return $data;
-    }
+		unset($temp);
+		return $data;
+	}
 
 
 
 	/**
-     * 注销登录
+	 * 注销登录
 	 *$uid 用户uid
-     */
-    public function logout($uid=0){
+	 */
+	public function logout($uid=0){
 		$temp=array();
 		$data = array('name'=>'注销','status'=>'10001','msg'=>'请输入用户名密码!','url'=>'');
 		$temp['where'] = array(
-                'select' => 'uid,user_name',
-                'where'  => array('uid' => $uid)
-            );
-        $temp['user']  = $this->c->get_row(self::user, $temp['where']);
-        if($this->session->sess_destroy()){
-			$this->_add_user_log('logout', 'app-注销登录',$temp['user']['uid'], $temp['user']['user_name']);		
+				'select' => 'uid,user_name',
+				'where'  => array('uid' => $uid)
+		);
+		$temp['user']  = $this->c->get_row(self::user, $temp['where']);
+		if($this->session->sess_destroy()){
+			$this->_add_user_log('logout', 'app-注销登录',$temp['user']['uid'], $temp['user']['user_name']);
 			$data = array(
-				'status'=>'10000',
-				'msg'=>'注销成功!'
+					'status'=>'10000',
+					'msg'=>'注销成功!'
 			);
 		}else{
 			$data = array(
-				'status'=>'10001',
-				'msg'=>'系统繁忙!'
+					'status'=>'10001',
+					'msg'=>'系统繁忙!'
 			);
-		}	
+		}
 
 		return $data;
-    }
+	}
 
 
 
 	/**
-     * 注册手机验证
+	 * 注册手机验证
 	 *$mobile 手机号
-     */
-    public function Registered_mobile($mobile=''){
-        $temp = array();
+	 */
+	public function Registered_mobile($mobile=''){
+		$temp = array();
 
 		$data = array('name'=>'手机验证','status'=>'10001','msg'=>'手机不能为空!','data'=>array());
 
 		if($mobile == '') return array('status' =>'10001', 'msg' => '手机号码不能为空！');
-        if(! $this->_is_mobile($mobile)) return array('status' =>'10001', 'msg' => '手机号码格式不正确！');
+		if(! $this->_is_mobile($mobile)) return array('status' =>'10001', 'msg' => '手机号码格式不正确！');
 
 		$temp['where'] = array('where' => array('mobile' => $mobile),'select'=>'password,uid,mobile');
 		$temp['info'] = $this->c->get_row(self::user, $temp['where']);
@@ -135,15 +136,15 @@ class User_model extends CI_Model{
 		}
 
 		return $data;
-    }
+	}
 
 	/**
-     * 注册
-	 *$mobile 手机号   
+	 * 注册
+	 *$mobile 手机号
 	 * $password 密码
 	 *$authcode 短信验证
 	 *$invite_code 邀请码
-     */
+	 */
 	public function register($mobile='',$password='',$authcode='',$invite_code=''){
 		$data = $temp = array();
 
@@ -217,16 +218,334 @@ class User_model extends CI_Model{
 		return $data;
 	}
 
+	/**
+	 * 实名认证
+	 * @param string $real_name
+	 * @param string $nric
+	 * @param int $uid
+	 * @return array
+	 */
+	public function real_name($real_name='',$nric='',$uid=0){
+		$temp = array();
+		$data = array('name'=>'实名认证','status' => '10001', 'msg' => '你提交的数据有误,请重试！', 'data' => array());
+
+		//验证必要参数
+		if($uid <= 0 || !is_numeric($uid)){
+			$data['msg'] = '用户uid为空!';
+			return $data;
+		}
+
+		$user_info = $this->c->get_row(self::user,array('where'=>array('uid'=>$uid),'select'=>'clientkind'));
+		if( ! $user_info){
+			$data['msg'] = '用户uid无效!';
+			return $data;
+		}
+		if($user_info['clientkind'] == 1){
+			$data['msg'] = '该用户已实名认证过!';
+			return $data;
+		}
+
+		if($real_name == ''){
+			$data['msg'] = '真实姓名不能为空!';
+			return $data;
+		}
+
+		if( ! preg_match("/^[\x7f-\xff]+$/", $real_name) || mb_strlen($real_name) < 2){
+			$data['msg'] = '姓名为两个及以上中文汉字!';
+			return $data;
+		}
+
+		if($nric == ''){
+			$data['msg'] = '身份证不能为空!';
+			return $data;
+		}
+
+		if( ! $this->is_nric($nric)){
+			$data['msg'] = '身份证格式不正确!';
+			return $data;
+		}
+
+		$nric_exists = $this->c->count(self::user,array('where'=>array('nric'=>$nric)));
+		if($nric_exists){
+			$data['msg'] = '该身份证已有用户认证使用过!';
+			return $data;
+		}
+
+		//查询已经提交实名认证情况
+		$temp['where'] = array(
+				'select' => 'uid,isok,code,sex',
+				'where'  => array(
+						'isok' 		 => "1",
+						'code' 		 => "1",
+						'nric'  	 => $nric,
+						'user_name'  => $real_name,
+				)
+		);
+		$temp['is_check'] = $this->c->get_one(self::user_renzheng, $temp['where']);
+
+		$this->load->library('pay');
+		if(empty($temp['is_check'])){
+			$shenfen = $this->pay->shenfenyanzheng($real_name,$nric);
+
+			$temp['data'] = array(
+					'uid' => $uid,
+					'user_name'=> $real_name,
+					'nric'     => $nric,
+					'isok' 	   => $shenfen['isok'],
+					'nric_err' => $shenfen['data']['err'],
+					'nric_add' => $shenfen['data']['address'],
+					'sex'      => $shenfen['data']['sex'],
+					'reg_date' => time(),
+					'cert_lock'=> "2",
+					'cert_err' => "2",
+					'birthday' =>$shenfen['data']['birthday'],
+					'code'     => $shenfen['code'],
+			);
+			$this->c->insert(self::user_renzheng, $temp['data']);
+		}else{
+			$shenfen['isok']="1";
+			$shenfen['code']="1";
+		}
+
+		//查询 提交失败次数和锁定时间
+		$temp['where'] = array(
+				'select' => 'cert_error,cert_lock',
+				'where'  => array(
+						'uid'  => $uid,
+				)
+		);
+		$temp['cert_error_info'] = $this->c->get_row(self::user, $temp['where']);
+
+		//检测锁定时间
+		if($temp['cert_error_info']['cert_lock'] >= time()){
+			$limit_time = $temp['cert_error_info']['cert_lock']-time();
+			if($limit_time > 3600){
+				$limit_time_str = ($limit_time/(3600*24)).'小时'.(($limit_time%(3600*24))/60).'分钟';
+			}else{
+				$limit_time_str = ($limit_time/60).'分钟';
+			}
+			$data['msg'] = '你的提交错误次数过多,请在'.$limit_time_str.'后可以再次提交';
+		}
+
+		if($shenfen['isok'] == 1){
+			switch($shenfen['code']){
+				case 1:
+					$ceshi = $this->pay->create_user($real_name,$nric);
+					if(isset($shenfen['data']['sex']) && $shenfen['data']['sex']=="M"){
+						$gender ="1";
+					}else{
+						$gender ="2";
+					}
+
+					$str = $ceshi['FundAcc']['VaccId'];
+					if(strlen($str)>13)$str=substr($str,0,8);
+					if($str=="30200394"){
+						if( ! empty($ceshi['FundAcc']['VaccId'])){//if( ! empty($ceshi['data']['sex']))// if( ! empty($ceshi['FundAcc']['VaccId']))
+							$temp['data'] = array(
+									'gender' => $gender,
+//									'user_name' => $real_name,
+									'real_name' => $real_name,
+									'nric'      => $nric,
+									'firmid' 	=> $ceshi['FundAcc']['FirmId'],
+									'vaccid'    => $ceshi['FundAcc']['VaccId'],
+									'certtype'  => $ceshi['Client']['CertType'],
+									'certdate'  => $ceshi['Client']['CertDate'],
+									'bankacc'   => $ceshi['BankAcc']['BankAcc'],
+//								'platserial' => $ceshi['BankAcc']['PlatSerial'],
+									'clientkind'=> "1",
+							);
+							$temp['where'] = array('where' => array('uid' => $uid));
+							$query = $this->c->update(self::user, $temp['where'], $temp['data']);
+
+							if( ! empty($query)){
+								$this->_add_user_log('profile', '更新个人资料！');
+								if($temp['data']['clientkind'] == "-1" || $temp['data']['clientkind']=="1"){
+									$data['msg']   = '你的认证资料已经提交!';
+									$data['status']   = '10000';
+									$data['data'] = $temp['data'];
+								}
+							}else{
+								$data['msg']   = '服务器繁忙请稍后重试!';
+							}
+						}else{
+							$data['msg']   = '银行线路繁忙，请稍后提交信息!';
+						}
+					}else{
+						$data['msg']   = '银行线路繁忙，请稍后提交信息!';
+					}
+					break;
+				case 2:
+					$temp['cert_error_info']['cert_error'] +=1;
+					switch ($temp['cert_error_info']['cert_error']){
+						case '1':
+							$time = "30秒";
+							$temp['cert_lock']=time()+30;
+							break;
+						case '2':
+							$time = "30分钟";
+							$temp['cert_lock']=time()+30*60;
+							break;
+						case '3':
+							$time = "24小时";
+							$temp['cert_lock']=time()+60*60*24;
+							break;
+						default:
+							$time = (($temp['cert_error_info']['cert_error']-2) *24)."小时";
+							$temp['cert_lock']=time()+60*60*24*($temp['cert_error_info']['cert_error']-2);
+					}
+					$temp['data'] = array('cert_error'  => $temp['cert_error_info']['cert_error'],'cert_lock'  => $temp['cert_lock']);
+					$temp['where'] = array('where' => array('uid' => $uid));
+					$query = $this->c->update(self::user, $temp['where'], $temp['data']);
+					$data['msg'] = '身份证姓名号码不一致，请仔细填写，锁定'.$time.'后可以再次提交';
+					break;
+				case 3:
+					$temp['cert_error_info']['cert_error'] +=1;
+					switch ($temp['cert_error_info']['cert_error']){
+						case '1':
+							$time = "30秒";
+							$temp['cert_lock']=time()+30;
+							break;
+						case '2':
+							$time = "30分钟";
+							$temp['cert_lock']=time()+30*60;
+							break;
+						case '3':
+							$time = "24小时";
+							$temp['cert_lock']=time()+60*60*24;
+							break;
+						default:
+							$time = (($temp['cert_error_info']['cert_error']-2) *24)."小时";
+							$temp['cert_lock']=time()+60*60*24*($temp['cert_error_info']['cert_error']-2);
+					}
+					$temp['data'] = array('cert_error'  => $temp['cert_error_info']['cert_error'],'cert_lock'  => $temp['cert_lock']);
+					$temp['where'] = array('where' => array('uid' => $uid));
+					$query = $this->c->update(self::user, $temp['where'], $temp['data']);
+					$data['msg'] = '无此身份证号码，请仔细填写，锁定'.$time.'后可以再次提交';
+					break;
+				case 50:
+					$data['msg']   = '身份证号码无效!';
+					break;
+				default:
+			}
+		}
+
+		unset($temp);
+		return $data;
+	}
+
+	/**
+	 * 验证是否正确格式身份证号码
+	 * @param string $nric
+	 * @return bool
+	 */
+
+	public function is_nric($nric=''){
+		$city_array = array(
+				11=>"北京",
+				12=>"天津",
+				13=>"河北",
+				14=>"山西",
+				15=>"内蒙古",
+				21=>"辽宁",
+				22=>"吉林",
+				23=>"黑龙江",
+				31=>"上海",
+				32=>"江苏",
+				33=>"浙江",
+				34=>"安徽",
+				35=>"福建",
+				36=>"江西",
+				37=>"山东",
+				41=>"河南",
+				42=>"湖北",
+				43=>"湖南",
+				44=>"广东",
+				45=>"广西",
+				46=>"海南",
+				50=>"重庆",
+				51=>"四川",
+				52=>"贵州",
+				53=>"云南",
+				54=>"西藏",
+				61=>"陕西",
+				62=>"甘肃",
+				63=>"青海",
+				64=>"宁夏",
+				65=>"新疆",
+				71=>"台湾",
+				81=>"香港",
+				82=>"澳门",
+				91=>"国外"
+		);
+		//长度验证
+		if( !preg_match('/^\d{17}(\d|x)$/i',$nric) && !preg_match('/^\d{15}$/i',$nric)){
+			return false;
+		}
+		//地区验证
+		if(!array_key_exists(intval(substr($nric,0,2)),$city_array)){
+			return false;
+		}
+
+		// 15位身份证验证生日，转换为18位
+		if (strlen($nric) == 15){
+			$birthday = '19'.substr($nric,6,2).'-'.substr($nric,8,2).'-'.substr($nric,10,2);
+			$d = new DateTime($birthday);
+			$dd = $d->format('Y-m-d');
+			if($birthday != $dd){
+				return false;
+			}
+			$nric = substr($nric,0,6)."19".substr($nric,6,9);//15to18
+			$bit18 = $this->_get_verify_bit($nric);//算出第18位校验码
+			$nric = $nric.$bit18;
+		}
+		// 判断是否大于2078年，小于1900年
+		$year = substr($nric,6,4);
+		if ($year<1900 || $year>2078 ){
+			return false;
+		}
+
+		//18位身份证处理
+		$birthday = substr($nric,6,4).'-'.substr($nric,10,2).'-'.substr($nric,12,2);
+		$d = new DateTime($birthday);
+		$dd = $d->format('Y-m-d');
+		if($birthday != $dd){
+			return false;
+		}
+		//身份证编码规范验证
+		$nric_base = substr($nric,0,17);
+		if(strtoupper(substr($nric,17,1)) != $this->_get_verify_bit($nric_base)){
+			return false;
+		}
+		return true;
+	}
+
+	// 计算身份证校验码，根据国家标准GB 11643-1999
+	protected function _get_verify_bit($nric_base){
+		if(strlen($nric_base) != 17){
+			return false;
+		}
+		//加权因子
+		$factor = array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2);
+		//校验码对应值
+		$verify_number_list = array('1', '0', 'X', '9', '8', '7', '6', '5', '4','3', '2');
+		$checksum = 0;
+		for ($i = 0; $i < strlen($nric_base); $i++){
+			$checksum += substr($nric_base, $i, 1) * $factor[$i];
+		}
+		$mod = $checksum % 11;
+		$verify_number = $verify_number_list[$mod];
+		return $verify_number;
+	}
 
 
 
 	/**
-     * 忘记登录密码（图形）
+	 * 忘记登录密码（图形）
 	 *$mobile 手机号
 	 *$captcha 生成的图形验证码
 	 *$code 输入的验证码
-     */
-    public function Forget_login_graphics($mobile='',$captcha='',$code=''){
+	 */
+	public function Forget_login_graphics($mobile='',$captcha='',$code=''){
 		$data = array('data'=>array(),'status'=>'10001','msg'=>'数据填写不完整!','url'=>'');
 		$temp = array();
 		$temp['captcha'] = $captcha;
@@ -234,70 +553,70 @@ class User_model extends CI_Model{
 		$temp['mobile'] = $mobile;
 		if(! $this->_is_mobile($temp['mobile'])) return array('status' =>'10001', 'msg' => '手机号码格式不正确！');
 		$temp['where'] = array(
-                'where'  => array('mobile' => $temp['mobile'])
-            );
-        $temp['user']  = $this->c->count(self::user, $temp['where']);
+				'where'  => array('mobile' => $temp['mobile'])
+		);
+		$temp['user']  = $this->c->count(self::user, $temp['where']);
 		if($temp['user']!=1) return array('status' =>'10001', 'msg' => '您的手机号没有注册！');
-			if($temp['captcha'] == $temp['code'])
-			{
-					 $data = array(
-								'status' => '10000',
-								'msg'  => '请单击获取手机验证码!',
-								'url'  => site_url('login/password'),//获取验证码页面
-								'data' => array(
-									'mobile' => $temp['mobile']
-									)
-							);
-			}
-			else
-			{
-				$data['msg'] = '你输入的验证码不正确或者已过期！';
-			}
-			
+		if($temp['captcha'] == $temp['code'])
+		{
+			$data = array(
+					'status' => '10000',
+					'msg'  => '请单击获取手机验证码!',
+					'url'  => site_url('login/password'),//获取验证码页面
+					'data' => array(
+							'mobile' => $temp['mobile']
+					)
+			);
+		}
+		else
+		{
+			$data['msg'] = '你输入的验证码不正确或者已过期！';
+		}
+
 		unset($temp);
 		return $data;
-    }
+	}
 
 
 
 	/**
-     * 忘记登录密码（手机验证）
+	 * 忘记登录密码（手机验证）
 	 *$mobile  手机号
 	 *$authcode 手机验证码
 	 *
-     */
-    public function Forget_login_mobile($mobile_yz='',$authcode=''){
-		 $data = array('data'=>array(),'status'=>'10001','msg'=>'数据填写不完整!','url'=>'');
-		 $temp = array();
-		 $temp['code']   = $authcode;
-		 $temp['is_check'] = $this->send->validation_authcode($mobile, $temp['code'],'password');
-		 if(empty($mobile)) return array('status' =>'10001', 'msg' => '请按步骤填写！','url'=>'');
-		 if($temp['is_check']['status']=='10000'){
+	 */
+	public function Forget_login_mobile($mobile_yz='',$authcode=''){
+		$data = array('data'=>array(),'status'=>'10001','msg'=>'数据填写不完整!','url'=>'');
+		$temp = array();
+		$temp['code']   = $authcode;
+		$temp['is_check'] = $this->send->validation_authcode($mobile, $temp['code'],'password');
+		if(empty($mobile)) return array('status' =>'10001', 'msg' => '请按步骤填写！','url'=>'');
+		if($temp['is_check']['status']=='10000'){
 			$data = array(
-						'status' => '10000',
-						'msg'  => '请重新设置你的密码!',
-						'url'  => site_url('login/password'),//填写修改密码页面
-						'data' => array(
+					'status' => '10000',
+					'msg'  => '请重新设置你的密码!',
+					'url'  => site_url('login/password'),//填写修改密码页面
+					'data' => array(
 							'authcode' => $temp['code']
-							) 
-					);
-			}else{
-				$data['msg'] = '你输入的手机验证码不正确或者已过期！';
-			}
+					)
+			);
+		}else{
+			$data['msg'] = '你输入的手机验证码不正确或者已过期！';
+		}
 		unset($temp);
 		return $data;
-		}
+	}
 
 
 
 	/**
-     * 忘记登录密码（登录密码）
+	 * 忘记登录密码（登录密码）
 	 *$mobile 手机号
 	 *$authcode 验证码
 	 *$password 密码
 	 *$new_password 二次密码
-     */
-    public function Forget_login_password($mobile='',$authcode='',$password='',$new_password=''){
+	 */
+	public function Forget_login_password($mobile='',$authcode='',$password='',$new_password=''){
 		$data = array('data'=>array(),'status'=>'10001','msg'=>'数据填写不完整!','url'=>'');
 		$temp = array();
 		$temp['password']   = $password;
@@ -305,10 +624,10 @@ class User_model extends CI_Model{
 		if(empty($mobile)||empty($authcode)) return array('status' =>'10001', 'msg' => '请按步骤填写！','url'=>'');
 		if($temp['password']==$temp['new_password']){
 			$temp['where'] = array(
-                'select' => 'hash,uid,user_name,password',
-                'where'  => array('mobile' => $mobile)
-            );
-            $temp['user']  = $this->c->get_row(self::user, $temp['where']);
+					'select' => 'hash,uid,user_name,password',
+					'where'  => array('mobile' => $mobile)
+			);
+			$temp['user']  = $this->c->get_row(self::user, $temp['where']);
 
 			if(! empty($temp['user'])){
 				$temp['new_password'] = $this->c->password($temp['new_password'], $temp['user']['hash']);
@@ -316,7 +635,7 @@ class User_model extends CI_Model{
 					return array('status' =>'10001', 'msg' => '你可以直接使用当前输入的密码登录，勿需更新!','url'=>'');
 				}
 			}else{
-				 return array('status' =>'10001', 'msg' => '请按步骤填写！','url'=>'');
+				return array('status' =>'10001', 'msg' => '请按步骤填写！','url'=>'');
 			}
 
 			$temp['where'] = array('where' => array('mobile' => $mobile));
@@ -325,10 +644,10 @@ class User_model extends CI_Model{
 
 			if( ! empty($temp['query'])){
 				$data = array(
-							'status' => '10000',
-							'msg'  => '密码修改成功!',
-							'url'  => site_url('login')//登陆页面
-						);
+						'status' => '10000',
+						'msg'  => '密码修改成功!',
+						'url'  => site_url('login')//登陆页面
+				);
 				$this->_add_user_log('Forget_login_password','忘记登录密码',$temp['user']['uid'],$temp['user']['user_name']);
 			}else{
 				$data['msg'] = '系统繁忙！';
@@ -344,94 +663,94 @@ class User_model extends CI_Model{
 
 
 	/**
-     * 修改登陆密码
+	 * 修改登陆密码
 	 *$uid 用户uid
 	 *$password 原密码
 	 *$new_password 新密码
 	 *
-     */
-    public function Change_login_password($uid=0,$password='',$new_password=''){
-        $data = $temp = array();
+	 */
+	public function Change_login_password($uid=0,$password='',$new_password=''){
+		$data = $temp = array();
 
-        $data = array('status' =>'10001', 'msg' => '你提交的数据有误,请重试！', 'url' => '');
-        $temp['uid']   =  $uid;
+		$data = array('status' =>'10001', 'msg' => '你提交的数据有误,请重试！', 'url' => '');
+		$temp['uid']   =  $uid;
 
-        if( ! empty($temp['uid'])){
-            $temp['where'] = array(
-                'select' => 'user_name,password,hash,mobile,uid',
-                'where'  => array('uid' => $temp['uid'])
-            );
-            $temp['user']  = $this->c->get_row(self::user, $temp['where']);
-            if( ! empty($temp['user'])){
-                //验证 今天是否已修改过密码
-                $temp['password_today'] = $this->c->count('user_log',array('where'=>array('uid'=>$temp['uid'],'module'=>'password','dateline >='=>strtotime(date('Y-m-d',time()).' 00:00:00'),'dateline <='=>time())));
-                if($temp['password_today'] > 0){
-                    $data['msg'] = '你今天已修改过一次密码了暂不能再修改！';
-                    return $data;
-                }
-                $temp['password'] = $password;
-                $temp['new_password'] = $new_password;
-                $temp['password'] = $this->c->password($temp['password'], $temp['user']['hash']);
+		if( ! empty($temp['uid'])){
+			$temp['where'] = array(
+					'select' => 'user_name,password,hash,mobile,uid',
+					'where'  => array('uid' => $temp['uid'])
+			);
+			$temp['user']  = $this->c->get_row(self::user, $temp['where']);
+			if( ! empty($temp['user'])){
+				//验证 今天是否已修改过密码
+				$temp['password_today'] = $this->c->count('user_log',array('where'=>array('uid'=>$temp['uid'],'module'=>'password','dateline >='=>strtotime(date('Y-m-d',time()).' 00:00:00'),'dateline <='=>time())));
+				if($temp['password_today'] > 0){
+					$data['msg'] = '你今天已修改过一次密码了暂不能再修改！';
+					return $data;
+				}
+				$temp['password'] = $password;
+				$temp['new_password'] = $new_password;
+				$temp['password'] = $this->c->password($temp['password'], $temp['user']['hash']);
 
-                if($temp['password'] == $temp['user']['password']){ //比对原始密码
-                        if(strlen($temp['new_password']) < 6){
-                            $data['msg'] = '请输入6位及以上新密码';
-                        }else{
-                            $temp['new_password'] = $this->c->password($temp['new_password'], $temp['user']['hash']);
-                            if($temp['new_password'] == $temp['user']['password']){
-                                $data['msg'] = '你可以直接使用当前输入的密码登录，勿需更新!';
-                            }else{
-                                $temp['where'] = array('where' => array('uid' => $temp['uid']));
-                                $temp['data']  = array('password' => $temp['new_password']);
-                                $temp['query'] = $this->c->update(self::user, $temp['where'], $temp['data']);
+				if($temp['password'] == $temp['user']['password']){ //比对原始密码
+					if(strlen($temp['new_password']) < 6){
+						$data['msg'] = '请输入6位及以上新密码';
+					}else{
+						$temp['new_password'] = $this->c->password($temp['new_password'], $temp['user']['hash']);
+						if($temp['new_password'] == $temp['user']['password']){
+							$data['msg'] = '你可以直接使用当前输入的密码登录，勿需更新!';
+						}else{
+							$temp['where'] = array('where' => array('uid' => $temp['uid']));
+							$temp['data']  = array('password' => $temp['new_password']);
+							$temp['query'] = $this->c->update(self::user, $temp['where'], $temp['data']);
 
-                                if( ! empty($temp['query'])){
-                                    $data = array(
-                                        'status' => '10000',
-                                        'msg'  => '你的密码修改成功,记得使用新密码登录!',
-                                        'url'  => ''
-                                    );
-                                    $this->_add_user_log('password', '修改登陆密码',$temp['user']['uid'],$temp['user']['user_name']);
-                                }
-                            }
-                        }
-                    
-                }else{
-                    $data['msg'] = '原密码错误';
-                }
-            }
-        }else{
-            $data['msg'] = '请先登陆！';
-            $data['url'] = site_url(self::dir.'home/index');
-        }
+							if( ! empty($temp['query'])){
+								$data = array(
+										'status' => '10000',
+										'msg'  => '你的密码修改成功,记得使用新密码登录!',
+										'url'  => ''
+								);
+								$this->_add_user_log('password', '修改登陆密码',$temp['user']['uid'],$temp['user']['user_name']);
+							}
+						}
+					}
 
-        unset($temp);
-        return $data;
-    }
+				}else{
+					$data['msg'] = '原密码错误';
+				}
+			}
+		}else{
+			$data['msg'] = '请先登陆！';
+			$data['url'] = site_url(self::dir.'home/index');
+		}
+
+		unset($temp);
+		return $data;
+	}
 
 
 
 	/**
-     * 重置登陆密码
+	 * 重置登陆密码
 	 *$uid 用户uid
 	 *$password 新密码第一次
 	 *$new_password 新密码第二次
 	 *$authcode 短信验证码
-     */
-    public function Reset_login_password($uid=0,$password='',$authcode=''){
-        $data = array('url'=>'','status'=>'10001','msg'=>'没有相关信息!');
-        $temp = array();
+	 */
+	public function Reset_login_password($uid=0,$password='',$authcode=''){
+		$data = array('url'=>'','status'=>'10001','msg'=>'没有相关信息!');
+		$temp = array();
 		$temp['where'] = array(
-                'select' => 'mobile,password,hash',
-                'where'  => array('uid' => $uid)
-            );
-        $temp['user']  = $this->c->get_row(self::user, $temp['where']);
+				'select' => 'mobile,password,hash',
+				'where'  => array('uid' => $uid)
+		);
+		$temp['user']  = $this->c->get_row(self::user, $temp['where']);
 		$temp['password'] = $password;
 		$temp['authcode'] = $authcode;
 		$temp['is_check'] = $this->send->validation_authcode($temp['user']['mobile'], $temp['authcode'], 'password');
 		$temp['password'] = $this->c->password($temp['password'], $temp['user']['hash']);
 		if(strlen($password) < 6){
-             $data['msg'] = '请输入6位及以上密码';
+			$data['msg'] = '请输入6位及以上密码';
 		}else{
 			if( $temp['is_check']['status']=='10000'){
 				$temp['where'] = array('where' => array('uid' => $uid));
@@ -440,8 +759,8 @@ class User_model extends CI_Model{
 
 				if( ! empty($temp['query'])){
 					$data = array(
-						'status'=>'10000',
-						'msg'=>'重置登陆密码成功!'
+							'status'=>'10000',
+							'msg'=>'重置登陆密码成功!'
 					);
 				}else{
 					$data['msg']='系统繁忙,请一会再试！';
@@ -450,35 +769,35 @@ class User_model extends CI_Model{
 				$data['msg']=$temp['is_check']['msg'];
 			}
 		}
-        unset($temp);
-        return $data;
-    }
+		unset($temp);
+		return $data;
+	}
 
 
 
-	 /**
-     * 修改资金密码
+	/**
+	 * 修改资金密码
 	 *$uid 用户uid
 	 *$mobile 手机号
 	 *$password 密码
 	 *$security_two 第二次输入的资金密码
 	 *$authcode 手机验证码
 	 *$security_one 第一次输入的资金密码
-     */
-    public function update_fund_password($uid=0,$mobile='',$password='',$security='',$security_new='',$authcode=''){
-        $data = array('url'=>'','status'=>'10001','msg'=>'输入的数据有误!');
+	 */
+	public function update_fund_password($uid=0,$mobile='',$password='',$security='',$security_new='',$authcode=''){
+		$data = array('url'=>'','status'=>'10001','msg'=>'输入的数据有误!');
 		$temp = array();
 		$temp['uid']   =  $uid;
-		$temp['password'] = $password;//前台设置就该资金密码是不能为空 
+		$temp['password'] = $password;//前台设置就该资金密码是不能为空
 		$temp['security'] = $security;//前台设置就该资金密码是不能为空
 		$temp['security_new'] = $security_new;//前台设置就该资金密码是不能为空
 		$temp['authcode'] = $authcode;
 		$temp['is_check'] = $this->send->validation_authcode($mobile, $temp['authcode'],'security');
 		$temp['where'] = array(
-                'select' => 'user_name,password,hash,mobile,security',
-                'where'  => array('uid' => $temp['uid'])
-            );
-        $temp['user']  = $this->c->get_row(self::user, $temp['where']);
+				'select' => 'user_name,password,hash,mobile,security',
+				'where'  => array('uid' => $temp['uid'])
+		);
+		$temp['user']  = $this->c->get_row(self::user, $temp['where']);
 		if(! empty($temp['user'])){
 			if(strlen($security_new) < 6){
 				$data['msg'] = '请输入6位及以上的资金密码！';
@@ -486,34 +805,34 @@ class User_model extends CI_Model{
 				$temp['password'] = $this->c->password($temp['password'], $temp['user']['hash']);
 				if($temp['password']==$temp['user']['password']){
 					if($temp['is_check']['status']=='10000'){
-							$temp['security'] = $this->c->password($security, $temp['user']['hash']);
-							if($temp['security']==$temp['user']['security']){
-								$temp['security_new'] = $this->c->password($temp['security_new'], $temp['user']['hash']);
-								if($temp['security_new']!=$temp['security']){
-									$temp['data'] = array('security' => $temp['security_new']);
-									$temp['where'] = array('where' => array('uid' => $temp['uid']));
-									$temp['query'] = $this->c->update(self::user, $temp['where'], $temp['data']);
-									if( ! empty($temp['query'])){
-										$this->_add_user_log('security', '修改交易密码',$temp['uid'],$temp['user']['user_name']);
-										$data = array(
+						$temp['security'] = $this->c->password($security, $temp['user']['hash']);
+						if($temp['security']==$temp['user']['security']){
+							$temp['security_new'] = $this->c->password($temp['security_new'], $temp['user']['hash']);
+							if($temp['security_new']!=$temp['security']){
+								$temp['data'] = array('security' => $temp['security_new']);
+								$temp['where'] = array('where' => array('uid' => $temp['uid']));
+								$temp['query'] = $this->c->update(self::user, $temp['where'], $temp['data']);
+								if( ! empty($temp['query'])){
+									$this->_add_user_log('security', '修改交易密码',$temp['uid'],$temp['user']['user_name']);
+									$data = array(
 											'status' => '10000',
 											'msg'  => '恭喜你交易密码修改成功！',
 											'url'  => '',//是否需要跳转
 											'data' => array(
-												'security' => $temp['security']//存入session security
+													'security' => $temp['security']//存入session security
 											)
-										);
-									}else{
-										$data['msg']='系统繁忙！';
-									}
+									);
 								}else{
-									$data['status']='10004';
-									$data['msg']='资金密码相同步需要修改！';
+									$data['msg']='系统繁忙！';
 								}
-						   }else{
-							   $data['status']='10004';
-							   $data['msg']='原资金密码不正确！';
-						   }
+							}else{
+								$data['status']='10004';
+								$data['msg']='资金密码相同步需要修改！';
+							}
+						}else{
+							$data['status']='10004';
+							$data['msg']='原资金密码不正确！';
+						}
 					}else{
 						$data['status']='10002';
 						$data['msg']=$temp['is_check']['msg'];
@@ -526,22 +845,22 @@ class User_model extends CI_Model{
 		}else{
 			$data['msg']='非法操作！';
 		}
-        unset($temp);
-        return $data;
-    }
+		unset($temp);
+		return $data;
+	}
 
 
 
 	/**
-     * 资金密码(设置资金密码,重置资金密码)
+	 * 资金密码(设置资金密码,重置资金密码)
 	 *$uid 用户uid
 	 *$mobile 手机号
 	 *$password 密码
 	 *$security_new 第二次输入的资金密码
 	 *$authcode 手机验证码
 	 *$security 第一次输入的资金密码
-     */
-   public function Fund_password($uid=0,$mobile='',$security='',$authcode='',$password = ''){
+	 */
+	public function Fund_password($uid=0,$mobile='',$security='',$authcode='',$password = ''){
 		$data = array('url'=>'','status'=>'10001','msg'=>'输入的数据有误!');
 		$temp = array();
 		$temp['uid']   =  $uid;
@@ -549,34 +868,34 @@ class User_model extends CI_Model{
 		$temp['authcode'] = $authcode;
 		$temp['is_check'] = $this->send->validation_authcode($mobile, $temp['authcode'],'security');
 		$temp['where'] = array(
-                'select' => 'user_name,password,hash,mobile',
-                'where'  => array('uid' => $temp['uid'])
-            );
-        $temp['user']  = $this->c->get_row(self::user, $temp['where']);
+				'select' => 'user_name,password,hash,mobile',
+				'where'  => array('uid' => $temp['uid'])
+		);
+		$temp['user']  = $this->c->get_row(self::user, $temp['where']);
 		if(strlen($security) < 6){
 			$data['msg'] = '请输入6位及以上的资金密码！';
-		}else{	
+		}else{
 			if(! empty($temp['user'])){
 				$temp['password'] = $this->c->password($password, $temp['user']['hash']);
 				if($temp['password']==$temp['user']['password']){
 					if($temp['is_check']['status']=='10000'){
-									$temp['security'] = $this->c->password($temp['security'], $temp['user']['hash']);
-									$temp['data'] = array('security' => $temp['security']);
-									$temp['where'] = array('where' => array('uid' => $temp['uid']));
-									$temp['query'] = $this->c->update(self::user, $temp['where'], $temp['data']);
-									if( ! empty($temp['query'])){
-										$this->_add_user_log('security', '修改交易密码',$temp['uid'],$temp['user']['user_name']);
-										$data = array(
-											'status' => '10000',
-											'msg'  => '恭喜你交易密码修改成功！',
-											'url'  => '',
-											'data' => array(
-												'security' => $temp['security']//存入session security
-											)
-										);
-								   }else{
-										$data['msg']='系统繁忙！';
-								   }
+						$temp['security'] = $this->c->password($temp['security'], $temp['user']['hash']);
+						$temp['data'] = array('security' => $temp['security']);
+						$temp['where'] = array('where' => array('uid' => $temp['uid']));
+						$temp['query'] = $this->c->update(self::user, $temp['where'], $temp['data']);
+						if( ! empty($temp['query'])){
+							$this->_add_user_log('security', '修改交易密码',$temp['uid'],$temp['user']['user_name']);
+							$data = array(
+									'status' => '10000',
+									'msg'  => '恭喜你交易密码修改成功！',
+									'url'  => '',
+									'data' => array(
+											'security' => $temp['security']//存入session security
+									)
+							);
+						}else{
+							$data['msg']='系统繁忙！';
+						}
 					}else{
 						$data['status']='10002';
 						$data['msg']=$temp['is_check']['msg'];
@@ -588,66 +907,66 @@ class User_model extends CI_Model{
 			}else{
 				$data['msg']='非法操作！';
 			}
-			
+
 		}
 		unset($temp);
-        return $data;
-	 }
+		return $data;
+	}
 
 
 
 	/**
-     * 修改姓名
+	 * 修改姓名
 	 *$name  姓名
 	 *$uid 用户uid
-     */
-    public function Change_name($name='',$uid=0){
-        $data = array('url'=>'','status'=>'10001','msg'=>'没有相关信息!');
-        $temp = array();
+	 */
+	public function Change_name($name='',$uid=0){
+		$data = array('url'=>'','status'=>'10001','msg'=>'没有相关信息!');
+		$temp = array();
 		$temp['name'] = $name;
 		$temp['uid']   =  $uid;
 		$temp['where'] = array('where' => array('user_name' => $temp['name']));
 		$temp['count'] = $this->c->get_row(self::user, $temp['where']);
 		if(empty($temp['name'])){ $data['msg'] = '昵称不能为空哦~'; return $data;}
 		if(empty($temp['count'])){
-				$data=array(
+			$data=array(
 					'status'=>'10000',
 					'msg'=>'可以使用!',
 					'url'=>''//跳转到修改成功页面
-				);
+			);
 		}else{
 			$data['msg']='昵称已存在！';
 		}
 		if($uid!=0){
 			$temp['data'] = array(
-            'user_name' => $temp['name']
-			 );
+					'user_name' => $temp['name']
+			);
 			$temp['where'] = array('where' => array('uid' => $temp['uid']));
 			$query = $this->c->update(self::user, $temp['where'], $temp['data']);
 			if( ! empty($query)){
 				$data=array(
-					'status'=>'10000',
-					'msg'=>'修改成功!',
-					'url'=>''//跳转到修改成功页面
+						'status'=>'10000',
+						'msg'=>'修改成功!',
+						'url'=>''//跳转到修改成功页面
 				);
 			}else{
 				$data['msg'] = '服务器繁忙,请稍后再试！';
 			}
 		}
-        unset($temp);
-        return $data;
-    }
+		unset($temp);
+		return $data;
+	}
 
 
 
 	/**
-     * 修改手机第一步
+	 * 修改手机第一步
 	 *$mobile 手机号
 	 *$authcode 手机验证码
-     */
-    public function Change_mobile_one($mobile='',$authcode=''){
-        $data = array('data'=>array(),'status'=>'10001','msg'=>'数据错误!');
-        $temp = array();
+	 */
+	public function Change_mobile_one($mobile='',$authcode=''){
+		$data = array('data'=>array(),'status'=>'10001','msg'=>'数据错误!');
+		$temp = array();
 		$temp['authcode'] = $authcode;//短信验证
 		$temp['is_check'] = $this->send->validation_authcode($mobile, $temp['authcode'], 'unbindphone');//验证是否过期
 		if( $temp['is_check']['status']=='10000'){
@@ -656,49 +975,49 @@ class User_model extends CI_Model{
 					'msg'=>'验证码正确！',
 					'url'=>'',//跳到第二步
 					'data' => array(
-						'authcode_new' => $temp['authcode'],//存入session authcode_new
-						'mobile' => $mobile
-						)
-				);
+							'authcode_new' => $temp['authcode'],//存入session authcode_new
+							'mobile' => $mobile
+					)
+			);
 		}else{
 			$data['msg']=$temp['is_check']['msg'];
 		}
-        unset($temp);
-        return $data;
-    }
+		unset($temp);
+		return $data;
+	}
 
 
 
 
 	/**
-     * 修改手机第二步
+	 * 修改手机第二步
 	 *$mobile 手机号
 	 *$authcode 手机验证码
 	 *$authcode_new session验证码
-     */
+	 */
 	public function Change_mobile_two($mobile='',$authcode='',$authcode_new='',$old_mobile = ''){
-        $data = array('data'=>array(),'status'=>'10001','msg'=>'数据错误!');
-        $temp = array();
+		$data = array('data'=>array(),'status'=>'10001','msg'=>'数据错误!');
+		$temp = array();
 		$temp['mobile'] = $mobile;//手机号
 		if(empty($temp['mobile'])) return array('status' =>'10001', 'msg' => '手机号码不能为空！');
-        if(! $this->_is_mobile($temp['mobile'])) return array('status' =>'10001', 'msg' => '手机号码格式不正确！');
+		if(! $this->_is_mobile($temp['mobile'])) return array('status' =>'10001', 'msg' => '手机号码格式不正确！');
 		$temp['authcode'] = $authcode;//短信验证
 		$temp['is_check'] = $this->send->validation_authcode($temp['mobile'], $temp['authcode'], 'bindphone');//验证是否过期
 		if(empty($authcode_new)) return array('status' =>'10001','msg' => '请按步骤填写！');
 		if( $temp['is_check']['status']=='10000'){
 			$temp['user'] = $this->_get_user_info($old_mobile);
 			if(! empty($temp['user'])){
-			$temp['data'] = array(
-				'mobile' => $temp['mobile']
-			 );
-			$temp['where'] = array('where' => array('mobile' => $old_mobile));
-			$temp['query'] = $this->c->update(self::user, $temp['where'], $temp['data']);
-			if(! empty($temp['query'])){
-				$this->_add_user_log('Change_mobile', '修改手机',$temp['user']['uid'],$temp['user']['user_name']);
-				$data=array(
-						'status'=>'10000',
-						'msg'=>'修改手机号码成功!',
-						'url'=>''
+				$temp['data'] = array(
+						'mobile' => $temp['mobile']
+				);
+				$temp['where'] = array('where' => array('mobile' => $old_mobile));
+				$temp['query'] = $this->c->update(self::user, $temp['where'], $temp['data']);
+				if(! empty($temp['query'])){
+					$this->_add_user_log('Change_mobile', '修改手机',$temp['user']['uid'],$temp['user']['user_name']);
+					$data=array(
+							'status'=>'10000',
+							'msg'=>'修改手机号码成功!',
+							'url'=>''
 					);
 				}else{
 					$data['msg']='系统繁忙，请稍后再试！';
@@ -709,94 +1028,94 @@ class User_model extends CI_Model{
 		}else{
 			$data['msg']=$temp['is_check']['msg'];
 		}
-        unset($temp);
-        return $data;
-    }
+		unset($temp);
+		return $data;
+	}
 
 
 
 	/**
-     * 实名认证(未改呢)
-     */
-    public function real_name_authentication(){
-        $data = $temp = array();
+	 * 实名认证(未改呢)
+	 */
+	public function real_name_authentication(){
+		$data = $temp = array();
 
-        $data = array('status' => '10001', 'msg' => '你提交的数据有误,请重试！', 'url' => '');
+		$data = array('status' => '10001', 'msg' => '你提交的数据有误,请重试！', 'url' => '');
 		$temp['uid'] = $this->session->userdata('uid');
-            if( ! empty($temp['uid']))
-            {
-				$nric = $this->input->post('nric', TRUE);
-				$real_name = $this->input->post('real_name', TRUE);
-				$temp['where'] = array(
-                                'select' => 'uid,isok,code,sex',
-                                'where'  => array(
-                                                'isok'  => "1",
-                                                'code'  => "1",
-                                                'nric'  => $nric,
-                                                'user_name'  => $real_name,
-                                            )
-                            );
-				$temp['is_check'] = $this->c->get_one(self::user_renzheng, $temp['where']);				
-				if(empty($temp['is_check'])){
-					$shenfen = $this->pay->shenfenyanzheng($this->input->post('real_name', TRUE),$this->input->post('nric', TRUE));
-					$temp['data'] = array(								   
-											'uid' => $temp['uid'],
-											'user_name' => $this->input->post('real_name', TRUE),
-											'nric' => $this->input->post('nric', TRUE),
-											'isok' => $shenfen['isok'],
-											'nric_err'      => $shenfen['data']['err'],
-											'nric_add'      => $shenfen['data']['address'],
-											'sex'      => $shenfen['data']['sex'],
-											'reg_date'      => time(),
-											'cert_lock'      => "2",
-											'cert_err'      => "2",
-											'birthday'  =>$shenfen['data']['birthday'],
-											'code'  => $shenfen['code'],
-										);
-					$this->c->insert(self::user_renzheng, $temp['data']);
-	            }else{
-					$shenfen['isok']="1";
-					$shenfen['code']="1";
+		if( ! empty($temp['uid']))
+		{
+			$nric = $this->input->post('nric', TRUE);
+			$real_name = $this->input->post('real_name', TRUE);
+			$temp['where'] = array(
+					'select' => 'uid,isok,code,sex',
+					'where'  => array(
+							'isok'  => "1",
+							'code'  => "1",
+							'nric'  => $nric,
+							'user_name'  => $real_name,
+					)
+			);
+			$temp['is_check'] = $this->c->get_one(self::user_renzheng, $temp['where']);
+			if(empty($temp['is_check'])){
+				$shenfen = $this->pay->shenfenyanzheng($this->input->post('real_name', TRUE),$this->input->post('nric', TRUE));
+				$temp['data'] = array(
+						'uid' => $temp['uid'],
+						'user_name' => $this->input->post('real_name', TRUE),
+						'nric' => $this->input->post('nric', TRUE),
+						'isok' => $shenfen['isok'],
+						'nric_err'      => $shenfen['data']['err'],
+						'nric_add'      => $shenfen['data']['address'],
+						'sex'      => $shenfen['data']['sex'],
+						'reg_date'      => time(),
+						'cert_lock'      => "2",
+						'cert_err'      => "2",
+						'birthday'  =>$shenfen['data']['birthday'],
+						'code'  => $shenfen['code'],
+				);
+				$this->c->insert(self::user_renzheng, $temp['data']);
+			}else{
+				$shenfen['isok']="1";
+				$shenfen['code']="1";
+			}
+			$temp['where'] = array(
+					'select' => 'cert_error',
+					'where'  => array(
+							'uid'  => $temp['uid'],
+					)
+			);
+			$temp['cert_error'] = $this->c->get_one(self::user, $temp['where']);
+			$data = array(
+					'status' => '10001',
+					'msg'  => "您的身份证信息有误",
+					'url'  => ""
+			);
+			if($shenfen['isok']==1&&$shenfen['code']==1){
+				$ceshi = $this->pay->create_user($this->input->post('real_name', TRUE),$this->input->post('nric', TRUE));
+				if($shenfen['data']['sex']=="M"){
+					$gender ="1";
+				}else{
+					$gender ="2";
 				}
-				$temp['where'] = array(
-                                'select' => 'cert_error',
-                                'where'  => array(
-                                                'uid'  => $temp['uid'],
-                                            )
-                            );
-				$temp['cert_error'] = $this->c->get_one(self::user, $temp['where']);
-				$data = array(
-										'status' => '10001',
-										'msg'  => "您的身份证信息有误",
-										'url'  => ""
-					);	
-				if($shenfen['isok']==1&&$shenfen['code']==1){
-					$ceshi = $this->pay->create_user($this->input->post('real_name', TRUE),$this->input->post('nric', TRUE));
-					if($shenfen['data']['sex']=="M"){
-						$gender ="1";						
-					}else{
-						$gender ="2";
-					}
-					
-				$str = $ceshi['FundAcc']['VaccId'];
-				if(strlen($str)>13) $str=substr($str,0,8); 
-				if($str=="30200394"){
-					 if( ! empty($ceshi['FundAcc']['VaccId'])) //if( ! empty($ceshi['data']['sex']))// if( ! empty($ceshi['FundAcc']['VaccId']))
-					 {
 
-								   $temp['data'] = array(								   
-										'gender' => $gender,
-										'user_name' => $this->input->post('real_name', TRUE),
-										'real_name' => $this->input->post('real_name', TRUE),
-										'nric'      => $this->input->post('nric', TRUE),
-										'firmid'  => $ceshi['FundAcc']['FirmId'],
-										'vaccid'  => $ceshi['FundAcc']['VaccId'],
-										'certtype' => $ceshi['Client']['CertType'],
-										'certdate' => $ceshi['Client']['CertDate'],
-										'bankacc' => $ceshi['BankAcc']['BankAcc'],
-										//'platserial' => $ceshi['BankAcc']['PlatSerial'],
-										'clientkind'  => "1",
-									);
+				$str = $ceshi['FundAcc']['VaccId'];
+				if(strlen($str)>13) $str=substr($str,0,8);
+				if($str=="30200394"){
+					if( ! empty($ceshi['FundAcc']['VaccId'])) //if( ! empty($ceshi['data']['sex']))// if( ! empty($ceshi['FundAcc']['VaccId']))
+					{
+
+						$temp['data'] = array(
+								'gender' => $gender,
+								'user_name' => $this->input->post('real_name', TRUE),
+								'real_name' => $this->input->post('real_name', TRUE),
+								'nric'      => $this->input->post('nric', TRUE),
+								'firmid'  => $ceshi['FundAcc']['FirmId'],
+								'vaccid'  => $ceshi['FundAcc']['VaccId'],
+								'certtype' => $ceshi['Client']['CertType'],
+								'certdate' => $ceshi['Client']['CertDate'],
+								'bankacc' => $ceshi['BankAcc']['BankAcc'],
+							//'platserial' => $ceshi['BankAcc']['PlatSerial'],
+								'clientkind'  => "1",
+						);
 						$temp['where'] = array('where' => array('uid' => $temp['uid']));
 						$query = $this->c->update(self::user, $temp['where'], $temp['data']);
 
@@ -818,351 +1137,349 @@ class User_model extends CI_Model{
 									$temp['status']='10000';
 								}
 							}elseif($temp['clientkind']=="1"){
-									//$temp['msg']   = '你的认证资料已经提交，下一步请支付10元开户费用!';
-									$temp['msg']   = '你的认证资料已经提交，聚雪球上线庆祝，减免您的开户费用!';
-									$temp['url']   = 'user/';
-									$temp['status']='10000';
-								}			
+								//$temp['msg']   = '你的认证资料已经提交，下一步请支付10元开户费用!';
+								$temp['msg']   = '你的认证资料已经提交，聚雪球上线庆祝，减免您的开户费用!';
+								$temp['url']   = 'user/';
+								$temp['status']='10000';
+							}
 							$data = array(
-										'status' => $temp['status'],
-										'msg'  => $temp['msg'],
-										'url'  => site_url($temp['url'])
-									);
+									'status' => $temp['status'],
+									'msg'  => $temp['msg'],
+									'url'  => site_url($temp['url'])
+							);
 						}else{
-						$data = array(
-										'status' => '10001',
-										'msg'  => '这也错了!',
-										'url'  => ""
+							$data = array(
+									'status' => '10001',
+									'msg'  => '这也错了!',
+									'url'  => ""
 							);
 						}
 					}else{
 						$data = array(
-										'status' => '10001',
-										'msg'  => '银行线路繁忙，请稍后提交信息!',
-										'url'  => ""
-									);					
+								'status' => '10001',
+								'msg'  => '银行线路繁忙，请稍后提交信息!',
+								'url'  => ""
+						);
 					}
 				}else{
-						$data = array(
-										'status' => '10001',
-										'msg'  => '银行线路繁忙，请稍后提交信息!',
-										'url'  => ""
-									);					
-					}
-				}elseif($shenfen['isok']==1&&$shenfen['code']==50){
-								$data = array(
-										'status' => '10001',
-										'msg'  => '身份证号码无效',
-										'url'  => ""
-									);								
-				}elseif($shenfen['isok']==1&&$shenfen['code']==2){
-					$temp['cert_error'] +=1;
-					switch ($temp['cert_error'])
-						{
-							case '1':
-								$time = "30秒";
-								$temp['cert_lock']=time()+30;
-								break;
-							case '2':
-								$time = "30分钟";
-								$temp['cert_lock']=time()+30*60;
-								break;
-							case '3':
-								$time = "24小时";
-								$temp['cert_lock']=time()+60*60*24;
-								break;
-							default:
-								$time = array();
-						}
-					$temp['data'] = array('cert_error'  => $temp['cert_error'],'cert_lock'  => $temp['cert_lock']);
-					$temp['where'] = array('where' => array('uid' => $temp['uid']));
-					$query = $this->c->update(self::user, $temp['where'], $temp['data']);
-					$this->session->set_userdata($temp['data']);
 					$data = array(
-										'status' => '10001',
-										'msg'  => '身份证姓名号码不一致，请仔细填写，锁定'.$time.'后可以再次提交',
-										'url'  => ""
-					);					
-				} 
-				elseif($shenfen['isok']==1&&$shenfen['code']==3){
-					$temp['cert_error'] +=1;
-					switch ($temp['cert_error'])
-						{
-							case '1':
-								$time = "30秒";
-								$temp['cert_lock']=time()+30;
-								break;
-							case '2':
-								$time = "30分钟";
-								$temp['cert_lock']=time()+30*60;
-								break;
-							case '3':
-								$time = "24小时";
-								$temp['cert_lock']=time()+60*60*24;
-								break;
-							default:
-								$time = array();
-						}
-					$temp['data'] = array('cert_error'  => $temp['cert_error'],'cert_lock'  => $temp['cert_lock']);
-					$temp['where'] = array('where' => array('uid' => $temp['uid']));
-					$query = $this->c->update(self::user, $temp['where'], $temp['data']);
-					$this->session->set_userdata($temp['data']);
-					$data = array(
-										'status' => '10001',
-										'msg'  => '无此身份证号码，请仔细填写，锁定'.$time.'后可以再次提交',
-										'url'  => ""
-					);						
+							'status' => '10001',
+							'msg'  => '银行线路繁忙，请稍后提交信息!',
+							'url'  => ""
+					);
 				}
+			}elseif($shenfen['isok']==1&&$shenfen['code']==50){
+				$data = array(
+						'status' => '10001',
+						'msg'  => '身份证号码无效',
+						'url'  => ""
+				);
+			}elseif($shenfen['isok']==1&&$shenfen['code']==2){
+				$temp['cert_error'] +=1;
+				switch ($temp['cert_error'])
+				{
+					case '1':
+						$time = "30秒";
+						$temp['cert_lock']=time()+30;
+						break;
+					case '2':
+						$time = "30分钟";
+						$temp['cert_lock']=time()+30*60;
+						break;
+					case '3':
+						$time = "24小时";
+						$temp['cert_lock']=time()+60*60*24;
+						break;
+					default:
+						$time = array();
+				}
+				$temp['data'] = array('cert_error'  => $temp['cert_error'],'cert_lock'  => $temp['cert_lock']);
+				$temp['where'] = array('where' => array('uid' => $temp['uid']));
+				$query = $this->c->update(self::user, $temp['where'], $temp['data']);
+				$this->session->set_userdata($temp['data']);
+				$data = array(
+						'status' => '10001',
+						'msg'  => '身份证姓名号码不一致，请仔细填写，锁定'.$time.'后可以再次提交',
+						'url'  => ""
+				);
+			}
+			elseif($shenfen['isok']==1&&$shenfen['code']==3){
+				$temp['cert_error'] +=1;
+				switch ($temp['cert_error'])
+				{
+					case '1':
+						$time = "30秒";
+						$temp['cert_lock']=time()+30;
+						break;
+					case '2':
+						$time = "30分钟";
+						$temp['cert_lock']=time()+30*60;
+						break;
+					case '3':
+						$time = "24小时";
+						$temp['cert_lock']=time()+60*60*24;
+						break;
+					default:
+						$time = array();
+				}
+				$temp['data'] = array('cert_error'  => $temp['cert_error'],'cert_lock'  => $temp['cert_lock']);
+				$temp['where'] = array('where' => array('uid' => $temp['uid']));
+				$query = $this->c->update(self::user, $temp['where'], $temp['data']);
+				$this->session->set_userdata($temp['data']);
+				$data = array(
+						'status' => '10001',
+						'msg'  => '无此身份证号码，请仔细填写，锁定'.$time.'后可以再次提交',
+						'url'  => ""
+				);
+			}
 
-            }
-        
+		}
 
-        unset($temp);
-        return $data;
-    }
+
+		unset($temp);
+		return $data;
+	}
+
+	/**
+	 * 修改头像(未写呢)
+	 */
+	public function Change_Avatar($avatar_url=''){
+		$data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
+		$temp = array();
+
+		unset($temp);
+		return $data;
+	}
 
 
 
 	/**
-     * 修改头像(未写呢)
-     */
-    public function Change_Avatar($avatar_url=''){
-        $data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
-        $temp = array();
-		
-        unset($temp);
-        return $data;
-    }
+	 * 我的等级(未定)
+	 */
+	public function My_grades($avatar_url=''){
+		$data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
+		$temp = array();
+
+		unset($temp);
+		return $data;
+	}
 
 
 
 	/**
-     * 我的等级(未定)
-     */
-    public function My_grades($avatar_url=''){
-        $data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
-        $temp = array();
-		
-        unset($temp);
-        return $data;
-    }
+	 * 等级明细记录（未定）
+	 */
+	public function Grade_list($avatar_url=''){
+		$data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
+		$temp = array();
+
+		unset($temp);
+		return $data;
+	}
 
 
 
 	/**
-     * 等级明细记录（未定）
-     */
-    public function Grade_list($avatar_url=''){
-        $data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
-        $temp = array();
+	 * 等级领取（未定）
+	 */
+	public function Level_collection($avatar_url=''){
+		$data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
+		$temp = array();
 
-        unset($temp);
-        return $data;
-    }
-
-
-
-	/**
-     * 等级领取（未定）
-     */
-    public function Level_collection($avatar_url=''){
-        $data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
-        $temp = array();
-
-        unset($temp);
-        return $data;
-    }
+		unset($temp);
+		return $data;
+	}
 
 
 
 	/**
-     * 我的消息
+	 * 我的消息
 	 *$uid 用户uid
-     */
-    public function My_message($uid=0){
-        $data = array('data'=>array(),'status'=>'10001','msg'=>'暂无消息!');
-        $temp = array();
+	 */
+	public function My_message($uid=0){
+		$data = array('data'=>array(),'status'=>'10001','msg'=>'暂无消息!');
+		$temp = array();
 		$temp['uid'] = $uid;
-        $temp['where'] = array(
-                            'select'   => 'id,subject,content,send_time,status,type',
-                            'where'    => array('uid' => $temp['uid']),
-                            'order_by' => 'id desc'
-                        );
-        $data['news'] = $this->c->show_page(self::message, $temp['where'],"",0,10);
+		$temp['where'] = array(
+				'select'   => 'id,subject,content,send_time,status,type',
+				'where'    => array('uid' => $temp['uid']),
+				'order_by' => 'id desc'
+		);
+		$data['news'] = $this->c->show_page(self::message, $temp['where'],"",0,10);
 		if(!empty($data['news']['data'])){
 			$data= array(
-				'status' => '10000',
-				'msg'=>'ok',
-				'data' => $data['news']
+					'status' => '10000',
+					'msg'=>'ok',
+					'data' => $data['news']
 			);
 		}
-        unset($temp);
-        return $data;
-    }
+		unset($temp);
+		return $data;
+	}
 
 
 
 	/**
-     * 阅读消息
+	 * 阅读消息
 	 *$id  新闻id
 	 *$uid  用户uid
-     */
-    public function Read_message($id=0,$uid=0){
-        $data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
-        $temp = array();
+	 */
+	public function Read_message($id=0,$uid=0){
+		$data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
+		$temp = array();
 		$temp['uid'] = $uid;
 		$temp['id'] = $id;
-        $temp['data'] = array(
-            'status' => 1
-        );
-        $temp['where'] = array('where' => array('uid' => $temp['uid'],'id' => $temp['id']));
-        $temp['query'] = $this->c->update(self::user, $temp['where'], $temp['data']);
+		$temp['data'] = array(
+				'status' => 1
+		);
+		$temp['where'] = array('where' => array('uid' => $temp['uid'],'id' => $temp['id']));
+		$temp['query'] = $this->c->update(self::user, $temp['where'], $temp['data']);
 		if(! empty($temp['query'])){
 			$data = array(
-				'data'=>array(),
-				'status'=>'10000',
-				'msg'=>'已阅读!'
+					'data'=>array(),
+					'status'=>'10000',
+					'msg'=>'已阅读!'
 			);
 		}else{
 			$data['msg']='已阅读!';
 		}
-        unset($temp);
-        return $data;
-    }
+		unset($temp);
+		return $data;
+	}
 
 
 
 	/**
-     * 添加银行卡
+	 * 添加银行卡
 	 *$uid 用户uid
 	 *$account 银行卡号
 	 *$bank_id 银行卡id
 	 *$bankaddr 银行地址
-     */
-    public function Add_bank_card($uid=0,$account='',$bank_id=0,$bankaddr=''){
-        $data = $temp = array();
-        $data = array('status' => '10001', 'msg' => '你提交的数据有误,请重试！', 'url' => '');
-        //$_POST['password'] = '123456';
-        //$_POST['retype'] = $this->input->post('account');
-           //$temp['authcode'] = $this->input->post('authcode',true);
-           // if(empty( $temp['authcode'])) exit(json_encode(array('code'=>1,'msg'=>'请输入短信验证码！')));
-           // $temp['is_check'] = $this->send->validation_authcode($this->session->userdata('mobile'), $temp['authcode'], 11, 5);
-            //if(empty($temp['is_check'])){
-             //   exit(json_encode(array('code'=>1,'msg'=>'你输入短信验证码错误或已过期！')));
-            //}
-			$temp['where'] = array(
-                'select' => 'user_name',
-                'where'  => array('uid' => $uid)
-            );
-            $temp['user']  = $this->c->get_row(self::user, $temp['where']);
-			if(empty($temp['user'])) return array('status' => '10001', 'msg' => '你提交的数据有误,请重试！');
-            $temp['data'] = array(
-                'card_no'   => $this->c->transaction_no(self::card, 'card_no'),
-                'uid'       => $uid,
-                'real_name' => $temp['user']['user_name'],
-                'account'   => $account,
-                'bank_id'   => $bank_id,
-                'bank_name' => '',
-                'bankaddr' => $bankaddr,
-                //'province' => $this->input->post('province', TRUE),
-                //'city' => $this->input->post('bankaddr', TRUE),
-                'remarks'   => '',
-                'dateline'  => time(),
-            );
-
-            $temp['data']['account'] = str_replace(' ', '', $temp['data']['account']);
-
-            if( ! empty($temp['data']['bank_id']))
-            {
-                $temp['data']['bank_name'] = $this->_get_bank_name($temp['data']['bank_id']);
-            }
-
-            $query = $this->c->insert(self::card, $temp['data']);
-			
-            if( ! empty($query))
-            {
-				$this->_add_user_log('Add_bank_card', '添加银行卡',$uid,$temp['user']['user_name']);
-                $data = array(
-                    'status' => '10000',
-                    'msg'  => '恭喜，你的银行卡绑定成功！',
-                    'url'  => site_url('user/account')
-                );
-            }
-
-
-        unset($temp);
-        return $data;
-    }
-
-
-
-	/**
-     * 用户银行卡列表
-	 *$bank_id 银行卡id
-	 *
-     */
-    public function bank_card_list($bank_id=''){
-        $data = array('status'=>'10001','msg'=>'有相关数据！','data'=>array());
-        $temp = array();
-
-        //为空 查询全部
-        if($bank_id == ''){
-            $data['data'] = $this->c->get_all(self::BANK,array('where'=>array('status'=>1)));
-        }else{
-            //为逗号分隔的字符串  切割成数组 查询该数组bank_id 数据
-            if(strpos($bank_id,',')){
-                $temp['bank_id_array'] = explode(',',$bank_id);
-                $data['data'] = $this->c->get_row(self::BANK,array('where'=>array('status'=>1),'where_in'=>array('field'=>'bank_id','value'=>$temp['bank_id_array'])));
-            }else{
-                //查询单条数据
-                $data['data'] = $this->c->get_row(self::BANK,array('where'=>array('bank_id'=>$bank_id,'status'=>1)));
-            }
-        }
-
-        if($data['data']){
-            $data['status'] = '10000';
-            $data['msg'] = 'ok';
-			$data['data'] = $data['data'];
-        }
-
-        unset($temp);
-        return $data;
-    }
-
-
-
-	/**
-     * 用户银行卡单条信息
-	 *$uid 用户uid
-	 *
-     */
-    public function user_bank($uid=0){
-        $data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
-        $temp = array();
+	 */
+	public function Add_bank_card($uid=0,$account='',$bank_id=0,$bankaddr=''){
+		$data = $temp = array();
+		$data = array('status' => '10001', 'msg' => '你提交的数据有误,请重试！', 'url' => '');
+		//$_POST['password'] = '123456';
+		//$_POST['retype'] = $this->input->post('account');
+		//$temp['authcode'] = $this->input->post('authcode',true);
+		// if(empty( $temp['authcode'])) exit(json_encode(array('code'=>1,'msg'=>'请输入短信验证码！')));
+		// $temp['is_check'] = $this->send->validation_authcode($this->session->userdata('mobile'), $temp['authcode'], 11, 5);
+		//if(empty($temp['is_check'])){
+		//   exit(json_encode(array('code'=>1,'msg'=>'你输入短信验证码错误或已过期！')));
+		//}
 		$temp['where'] = array(
-                'where'  => array('uid' => $uid)
-            );
-        $temp['user']  = $this->c->get_row(self::card, $temp['where']);
-		if(!empty($temp['user'])){
-			$data=array(
-				'status'=>'10000',
-				'msg'=>'ok',
-				'data' => $temp['user']
+				'select' => 'user_name',
+				'where'  => array('uid' => $uid)
+		);
+		$temp['user']  = $this->c->get_row(self::user, $temp['where']);
+		if(empty($temp['user'])) return array('status' => '10001', 'msg' => '你提交的数据有误,请重试！');
+		$temp['data'] = array(
+				'card_no'   => $this->c->transaction_no(self::card, 'card_no'),
+				'uid'       => $uid,
+				'real_name' => $temp['user']['user_name'],
+				'account'   => $account,
+				'bank_id'   => $bank_id,
+				'bank_name' => '',
+				'bankaddr' => $bankaddr,
+			//'province' => $this->input->post('province', TRUE),
+			//'city' => $this->input->post('bankaddr', TRUE),
+				'remarks'   => '',
+				'dateline'  => time(),
+		);
+
+		$temp['data']['account'] = str_replace(' ', '', $temp['data']['account']);
+
+		if( ! empty($temp['data']['bank_id']))
+		{
+			$temp['data']['bank_name'] = $this->_get_bank_name($temp['data']['bank_id']);
+		}
+
+		$query = $this->c->insert(self::card, $temp['data']);
+
+		if( ! empty($query))
+		{
+			$this->_add_user_log('Add_bank_card', '添加银行卡',$uid,$temp['user']['user_name']);
+			$data = array(
+					'status' => '10000',
+					'msg'  => '恭喜，你的银行卡绑定成功！',
+					'url'  => site_url('user/account')
 			);
 		}
-        unset($temp);
-        return $data;
-    }
+
+
+		unset($temp);
+		return $data;
+	}
+
 
 
 	/**
-     * 投资收益
+	 * 用户银行卡列表
+	 *$bank_id 银行卡id
+	 *
+	 */
+	public function bank_card_list($bank_id=''){
+		$data = array('status'=>'10001','msg'=>'有相关数据！','data'=>array());
+		$temp = array();
+
+		//为空 查询全部
+		if($bank_id == ''){
+			$data['data'] = $this->c->get_all(self::BANK,array('where'=>array('status'=>1)));
+		}else{
+			//为逗号分隔的字符串  切割成数组 查询该数组bank_id 数据
+			if(strpos($bank_id,',')){
+				$temp['bank_id_array'] = explode(',',$bank_id);
+				$data['data'] = $this->c->get_row(self::BANK,array('where'=>array('status'=>1),'where_in'=>array('field'=>'bank_id','value'=>$temp['bank_id_array'])));
+			}else{
+				//查询单条数据
+				$data['data'] = $this->c->get_row(self::BANK,array('where'=>array('bank_id'=>$bank_id,'status'=>1)));
+			}
+		}
+
+		if($data['data']){
+			$data['status'] = '10000';
+			$data['msg'] = 'ok';
+			$data['data'] = $data['data'];
+		}
+
+		unset($temp);
+		return $data;
+	}
+
+
+
+	/**
+	 * 用户银行卡单条信息
 	 *$uid 用户uid
 	 *
-     */
-    public function investment($uid=0){
-        $data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
-        $temp = array();
+	 */
+	public function user_bank($uid=0){
+		$data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
+		$temp = array();
+		$temp['where'] = array(
+				'where'  => array('uid' => $uid)
+		);
+		$temp['user']  = $this->c->get_row(self::card, $temp['where']);
+		if(!empty($temp['user'])){
+			$data=array(
+					'status'=>'10000',
+					'msg'=>'ok',
+					'data' => $temp['user']
+			);
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+	/**
+	 * 投资收益
+	 *$uid 用户uid
+	 *
+	 */
+	public function investment($uid=0){
+		$data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
+		$temp = array();
 		$query = $this->db->query("select  months ,  sum(sy) as sy ,SUM(tz) as tz from
 		(select uid, payment_no,max(months) as months,sum(tz) as tz,sum(hk)-sum(tz) as sy from
 		(select  a.uid, a.payment_no,a.borrow_no,
@@ -1176,8 +1493,8 @@ class User_model extends CI_Model{
 		ELSE
 		0
 		end) as hk,
-		 date_format(from_unixtime(a.pay_time),'%Y%m') as months from cdb_borrow_payment as a left join cdb_borrow as b 
-		on a.borrow_no=b.borrow_no where a.uid=".$uid." and b.status=7 and (a.type=1 or a.type=3) 
+		 date_format(from_unixtime(a.pay_time),'%Y%m') as months from cdb_borrow_payment as a left join cdb_borrow as b
+		on a.borrow_no=b.borrow_no where a.uid=".$uid." and b.status=7 and (a.type=1 or a.type=3)
 		) c
 		group by uid, payment_no) d where months>=".date("Ym", strtotime("-5 months"))." and months<=".date("Ym")." group by uid,months");
 		$temp['investment_month'][5]=date("Ym");
@@ -1199,18 +1516,18 @@ class User_model extends CI_Model{
 			$f=true;
 			foreach ($query->result() as $row => $v)
 			{
-			  if($v->months==$temp['investment_month'][$i]){
-				if($temp['investment']['months']==''&&$temp['investment']['sy']==''&&$temp['investment']['tz']==''){
-					$temp['investment']['months'] = $temp['investment_month_1'][$i];
-					$temp['investment']['sy'] = $v->sy;
-					$temp['investment']['tz'] = $v->tz;
-				}else{
-					$temp['investment']['months'] = $temp['investment']['months'].','.$temp['investment_month_1'][$i];
-					$temp['investment']['sy'] = $temp['investment']['sy'].','.$v->sy;
-					$temp['investment']['tz'] = $temp['investment']['tz'].','.$v->tz;
+				if($v->months==$temp['investment_month'][$i]){
+					if($temp['investment']['months']==''&&$temp['investment']['sy']==''&&$temp['investment']['tz']==''){
+						$temp['investment']['months'] = $temp['investment_month_1'][$i];
+						$temp['investment']['sy'] = $v->sy;
+						$temp['investment']['tz'] = $v->tz;
+					}else{
+						$temp['investment']['months'] = $temp['investment']['months'].','.$temp['investment_month_1'][$i];
+						$temp['investment']['sy'] = $temp['investment']['sy'].','.$v->sy;
+						$temp['investment']['tz'] = $temp['investment']['tz'].','.$v->tz;
+					}
+					$f=false;
 				}
-				$f=false;
-			  }	  			  
 			}
 			if($f){
 				if($temp['investment']['months']==''&&$temp['investment']['sy']==''&&$temp['investment']['tz']==''){
@@ -1222,59 +1539,59 @@ class User_model extends CI_Model{
 					$temp['investment']['sy'] = $temp['investment']['sy'].','.'0.00';
 					$temp['investment']['tz'] = $temp['investment']['tz'].','.'0.00';
 				}
-			  }
+			}
 		}
 		if(!empty($temp['investment'])){
 			$data=array(
-				'status'=>'10000',
-				'msg'=>'ok',
-				'data' => $temp['investment']
+					'status'=>'10000',
+					'msg'=>'ok',
+					'data' => $temp['investment']
 			);
 		}
-        unset($temp);
-        return $data;
-    }
+		unset($temp);
+		return $data;
+	}
 
 
 
 
 	/**
-     * 累计注册用户总额
-     */
-    public function registered_users_all(){
-        $data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
-        $temp = array();
+	 * 累计注册用户总额
+	 */
+	public function registered_users_all(){
+		$data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
+		$temp = array();
 		$temp['where'] = array('where' => array('mobile !=' => ''));
 		$temp['count'] = $this->c->count(self::user, $temp['where']);
 		if($temp['count']!=0){
 			$data=array(
-				'status'=>'10000',
-				'msg'=>'获得累计注册用户!',
-				'data'=>array(
-					'all_user_num'=>$temp['count']
-				)
-				);
+					'status'=>'10000',
+					'msg'=>'获得累计注册用户!',
+					'data'=>array(
+							'all_user_num'=>$temp['count']
+					)
+			);
 		}else{
 			$data['msg']='暂时没用用户注册！';
 		}
-        unset($temp);
-        return $data;
-    }
+		unset($temp);
+		return $data;
+	}
 
 
 
-    /**
-     * 获取用户信息(个人信息)
-     *
-     * @access public
-     * @param  string $mobile 手机号码
-     * @return integer
-     */
+	/**
+	 * 获取用户信息(个人信息)
+	 *
+	 * @access public
+	 * @param  string $mobile 手机号码
+	 * @return integer
+	 */
 
-    private function _get_user_info($mobile = ''){
-        $data = $temp = array();
+	private function _get_user_info($mobile = ''){
+		$data = $temp = array();
 
-        if( ! empty($mobile)){
+		if( ! empty($mobile)){
 			if($this->_is_mobile($mobile)){
 				$temp['field'] = 'mobile';
 			}elseif(preg_match('/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i', $mobile)){
@@ -1282,34 +1599,34 @@ class User_model extends CI_Model{
 			}else{
 				$temp['field'] = 'user_name';
 			}
-            $temp['where'] = array('where'=>array($temp['field'] => $mobile));
-            $data = $this->c->get_row(self::user, $temp['where']);
-        }
-        unset($temp);
-        return $data;
-    }
+			$temp['where'] = array('where'=>array($temp['field'] => $mobile));
+			$data = $this->c->get_row(self::user, $temp['where']);
+		}
+		unset($temp);
+		return $data;
+	}
 
 
 
-    /**
-     * 获取用户信息(个人信息)
-     *
-     * @access public
-     * @param  int $uid 用户uid
-     * @return integer
-     */
+	/**
+	 * 获取用户信息(个人信息)
+	 *
+	 * @access public
+	 * @param  int $uid 用户uid
+	 * @return integer
+	 */
 
-    public function _get_user_uid($uid = 0){
-        $data = $temp = array();
+	public function _get_user_uid($uid = 0){
+		$data = $temp = array();
 		$data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
 		if($uid!=0){
-            $temp['where'] = array('where' => array('uid' => $uid));
-            $data['user'] = $this->c->get_row(self::user, $temp['where']);
+			$temp['where'] = array('where' => array('uid' => $uid));
+			$data['user'] = $this->c->get_row(self::user, $temp['where']);
 			if(!empty( $data['user'])){
 				$data= array(
-					'status' => '10000',
-					'msg' => 'ok',
-					'data' => $data['user']
+						'status' => '10000',
+						'msg' => 'ok',
+						'data' => $data['user']
 				);
 			}else{
 				$data['msg'] = '非法操作！';
@@ -1317,36 +1634,36 @@ class User_model extends CI_Model{
 		}else{
 			$data['msg'] = '用户未登录！';
 		}
-        unset($temp);
-        return $data;
-    }
+		unset($temp);
+		return $data;
+	}
 
 
 
-    /**
-     * 绑定邮箱
-     *
-     * @access public
-     * @param  int $uid 用户uid
+	/**
+	 * 绑定邮箱
+	 *
+	 * @access public
+	 * @param  int $uid 用户uid
 	 * @param  string $email 用户邮箱
-     * @return integer
-     */
+	 * @return integer
+	 */
 
-    public function mailbox_binding($uid = 0 , $email = ''){
-        $data = $temp = array();
+	public function mailbox_binding($uid = 0 , $email = ''){
+		$data = $temp = array();
 		$data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
 		if(empty($email)) return array('status'=>'10001','msg'=>'邮箱不能为空!');
 		if($uid!=0){
-            $temp['data'] = array(
-            'email' => $email
-        );
-        $temp['where'] = array('where' => array('uid' => $uid));
-        $query = $this->c->update(self::user, $temp['where'], $temp['data']);
+			$temp['data'] = array(
+					'email' => $email
+			);
+			$temp['where'] = array('where' => array('uid' => $uid));
+			$query = $this->c->update(self::user, $temp['where'], $temp['data']);
 			if(!empty( $data['user'])){
 				$data= array(
-					'status' => '10000',
-					'msg' => '邮箱绑定成功！',
-					'data' => $data['user']
+						'status' => '10000',
+						'msg' => '邮箱绑定成功！',
+						'data' => $data['user']
 				);
 			}else{
 				$data['msg'] = '非法操作！';
@@ -1354,9 +1671,9 @@ class User_model extends CI_Model{
 		}else{
 			$data['msg'] = '用户未登录！';
 		}
-        unset($temp);
-        return $data;
-    }
+		unset($temp);
+		return $data;
+	}
 
 
 
@@ -1366,95 +1683,95 @@ class User_model extends CI_Model{
 
 
 	/**
-     * 更新自动投资料
-     *$uid 用户uid
-     *$statue 投标状态  0 未开启 1 开启
-     *$mode 投标类型  1 复投  2 定投
+	 * 更新自动投资料
+	 *$uid 用户uid
+	 *$statue 投标状态  0 未开启 1 开启
+	 *$mode 投标类型  1 复投  2 定投
 	 *$gdpzje 定投配置额度
- 	 *$group_id  投标配置标的类型 0全部配置
+	 *$group_id  投标配置标的类型 0全部配置
 	 *$sy_min  最小收益
 	 *$jk_max  最大期限
 	 *$pzsj_start 起始日期
 	 *$pzsj_end 结束日期
-     */
-    public function automatic_update($uid = 0,$statue = 0,$mode = 0,$group_id = 0,$sy_min = 0,$jk_max = 0,$pzsj_start = 0,$pzsj_end =0	 ,$gdpzje =0)
-    {
-        $query = FALSE;
-        $temp  = array();
-        $temp['uid'] = (int)$this->input->post('uid');
+	 */
+	public function automatic_update($uid = 0,$statue = 0,$mode = 0,$group_id = 0,$sy_min = 0,$jk_max = 0,$pzsj_start = 0,$pzsj_end =0	 ,$gdpzje =0)
+	{
+		$query = FALSE;
+		$temp  = array();
+		$temp['uid'] = (int)$this->input->post('uid');
 		$temp['statue']=$this->input->post('statue', TRUE);
 		$temp['mode']=$this->input->post('mode', TRUE);
 
 		if($temp['statue']==0){
-        if( ! empty($temp['uid']))
-        {
-			//$pzed=$this->input->post('pzje', TRUE);
-			$balance=$this->_get_user_balance($temp['uid']);
-			if($temp['mode']==2) $temp['pzed']=$this->input->post('gdpzje', TRUE);else $temp['pzed']=$balance;
-            $temp['data'] = array(			
-                                'allamount' => $this->_get_allinvest($temp['uid']),//投资总额
-								'uid'=>$temp['uid'],
-                                'balance'    => $balance,//可用余额
-                                'dateline'      => time(),//操作时间
-                                'statue'  => '1',//按钮状态（1启动，0关闭）
-                                'type'    => $this->input->post('group_id', TRUE),//项目类型（0是全部类型）
-                                'sy_min' => $this->input->post('sy_min', TRUE),//收益最小
-                                'jk_max'      => $this->input->post('jk_max', TRUE),//期限最大
-								//'pzed'     => $pzed,//配置额度
-								'pzsj_start'     => strtotime($this->input->post('pzsj_start', TRUE)),//配置期限开始
-								'pzsj_end'     => strtotime($this->input->post('pzsj_end', TRUE)),//配置期限结束
-								'mode'     => $temp['mode'],//投资模式
-								'balance_ye'     => $temp['pzed'],//可用配置余额
-                                'balance_ze'      =>$temp['pzed']//配置总额
-			);
-			
-            $temp['where'] = array('where' => array('uid' => $temp['uid']));
-			$data = $this->c->get_row(self::automatic, $temp['where']);
-			if($data['uid']!=''){
-				$query = $this->c->update(self::automatic, $temp['where'], $temp['data']);
-			}else
+			if( ! empty($temp['uid']))
 			{
-				$query = $this->c->insert(self::automatic, $temp['data']);
+				//$pzed=$this->input->post('pzje', TRUE);
+				$balance=$this->_get_user_balance($temp['uid']);
+				if($temp['mode']==2) $temp['pzed']=$this->input->post('gdpzje', TRUE);else $temp['pzed']=$balance;
+				$temp['data'] = array(
+						'allamount' => $this->_get_allinvest($temp['uid']),//投资总额
+						'uid'=>$temp['uid'],
+						'balance'    => $balance,//可用余额
+						'dateline'      => time(),//操作时间
+						'statue'  => '1',//按钮状态（1启动，0关闭）
+						'type'    => $this->input->post('group_id', TRUE),//项目类型（0是全部类型）
+						'sy_min' => $this->input->post('sy_min', TRUE),//收益最小
+						'jk_max'      => $this->input->post('jk_max', TRUE),//期限最大
+					//'pzed'     => $pzed,//配置额度
+						'pzsj_start'     => strtotime($this->input->post('pzsj_start', TRUE)),//配置期限开始
+						'pzsj_end'     => strtotime($this->input->post('pzsj_end', TRUE)),//配置期限结束
+						'mode'     => $temp['mode'],//投资模式
+						'balance_ye'     => $temp['pzed'],//可用配置余额
+						'balance_ze'      =>$temp['pzed']//配置总额
+				);
+
+				$temp['where'] = array('where' => array('uid' => $temp['uid']));
+				$data = $this->c->get_row(self::automatic, $temp['where']);
+				if($data['uid']!=''){
+					$query = $this->c->update(self::automatic, $temp['where'], $temp['data']);
+				}else
+				{
+					$query = $this->c->insert(self::automatic, $temp['data']);
+				}
+
 			}
-            
-        }
 		}
 		else{
-			$temp['data'] = array(			
-                'statue'    => '0'//投标状态
+			$temp['data'] = array(
+					'statue'    => '0'//投标状态
 			);
-		$temp['where'] = array('where' => array('uid' => $temp['uid']));
-		$query = $this->c->update(self::automatic, $temp['where'], $temp['data']);
-		$temp['data'] = array(			
-                 'automatic_type' => '2'//自动投设置
+			$temp['where'] = array('where' => array('uid' => $temp['uid']));
+			$query = $this->c->update(self::automatic, $temp['where'], $temp['data']);
+			$temp['data'] = array(
+					'automatic_type' => '2'//自动投设置
 			);
-		$temp['where'] = array('where' => array('uid' => $temp['uid'],'automatic_type'=>1));
-		$query = $this->c->update(self::payment, $temp['where'], $temp['data']);
+			$temp['where'] = array('where' => array('uid' => $temp['uid'],'automatic_type'=>1));
+			$query = $this->c->update(self::payment, $temp['where'], $temp['data']);
 		}
 		unset($temp);
-        return $query;
-    }
+		return $query;
+	}
 
 
 
 	/**
-     * 获取自动投详情
-     *$uid 用户uid
-     */
-    public function automatic_info($uid = 0){
-    	$data = $temp = array();
+	 * 获取自动投详情
+	 *$uid 用户uid
+	 */
+	public function automatic_info($uid = 0){
+		$data = $temp = array();
 		$data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
 		$temp['uid']   = $uid;
 		if( ! empty($temp['uid']))
 		{
 			$temp['where'] = array('where'  => array('uid' => $temp['uid']));
-	    	$temp['user'] = $this->c->get_row(self::automatic, $temp['where']);
+			$temp['user'] = $this->c->get_row(self::automatic, $temp['where']);
 			if(!empty($temp['user'])){
 				$data = array(
 						'status'=>'10001',
 						'msg'=>'ok',
 						'data'=> $temp['user']
-					);
+				);
 			}else{
 				$data['msg'] = '系统繁忙，请稍候再试！';
 			}
@@ -1463,203 +1780,203 @@ class User_model extends CI_Model{
 		}
 		unset($temp);
 		return $data;
-    }
-
-
-
-    /**
-     * 获取会员余额
-     *
-     * @access private
-     * @param  intege $uid 会员ID
-     * @return float
-     */
-
-    private function _get_user_balance($uid = 0)
-    {
-        $balance = 0;
-        $temp    = array();
-
-        if( ! empty($uid))
-        {
-            $temp['where'] = array(
-                                'select'   => 'balance',
-                                'where'    => array('uid' => (int)$uid),
-                                'order_by' => 'id desc'
-                            );
-
-            $balance = (float)$this->c->get_one(self::flow, $temp['where']);
-        }
-
-        unset($temp);
-        return $balance;
-    }
+	}
 
 
 
 	/**
-     * 获取总投资金额
-     *
-     */
+	 * 获取会员余额
+	 *
+	 * @access private
+	 * @param  intege $uid 会员ID
+	 * @return float
+	 */
 
-    private function _get_allinvest($uid='')
-    {
-		$allinvest=0;
-        if( ! empty($uid))
-        {
+	private function _get_user_balance($uid = 0)
+	{
+		$balance = 0;
+		$temp    = array();
 
-            $temp['where'] = array('select' => 'sum(amount)', 'where' => array('type' => '1','status' => '1','uid'=>$uid));
+		if( ! empty($uid))
+		{
+			$temp['where'] = array(
+					'select'   => 'balance',
+					'where'    => array('uid' => (int)$uid),
+					'order_by' => 'id desc'
+			);
 
-             $allinvest = $this->c->get_one(self::payment, $temp['where']);
-        }
-		if($allinvest==null){
-		$allinvest=0;
+			$balance = (float)$this->c->get_one(self::flow, $temp['where']);
 		}
-        unset($temp);
-        return $allinvest;
-    }
+
+		unset($temp);
+		return $balance;
+	}
 
 
-   /**
-     * 更新登录信息
-     *
-     * @access public
-     * @return boolean
-     */
 
-    private function _set_login_info($uid){
-        $query = FALSE;
-        $temp  = array();
+	/**
+	 * 获取总投资金额
+	 *
+	 */
 
-        $temp['data'] = array(
-            'error_num' => 0,
-            'lock_time' => 0,
-            'last_date' => time(),
-            'last_ip'   => $this->input->ip_address()
-        );
+	private function _get_allinvest($uid='')
+	{
+		$allinvest=0;
+		if( ! empty($uid))
+		{
 
-        $temp['where'] = array('where' => array('uid' => $uid));
+			$temp['where'] = array('select' => 'sum(amount)', 'where' => array('type' => '1','status' => '1','uid'=>$uid));
 
-        $query = $this->c->update(self::user, $temp['where'], $temp['data']);
-
-        unset($temp);
-        return $query;
-    }
+			$allinvest = $this->c->get_one(self::payment, $temp['where']);
+		}
+		if($allinvest==null){
+			$allinvest=0;
+		}
+		unset($temp);
+		return $allinvest;
+	}
 
 
-    /**
-     * 添加会员日志
-     *
-     * @access private
-     * @param  string   $module    模块名称
-     * @param  string   $content   日志内容
-     * @param  integer  $uid       会员ID
-     * @param  string   $user_name 会员姓名
-     * @return boolean
-     */
+	/**
+	 * 更新登录信息
+	 *
+	 * @access public
+	 * @return boolean
+	 */
 
-    public function _add_user_log($module = '', $content = '', $uid = 0, $user_name = '')
-    {
-        $query = FALSE;
-        $logs  = array();
+	private function _set_login_info($uid){
+		$query = FALSE;
+		$temp  = array();
+
+		$temp['data'] = array(
+				'error_num' => 0,
+				'lock_time' => 0,
+				'last_date' => time(),
+				'last_ip'   => $this->input->ip_address()
+		);
+
+		$temp['where'] = array('where' => array('uid' => $uid));
+
+		$query = $this->c->update(self::user, $temp['where'], $temp['data']);
+
+		unset($temp);
+		return $query;
+	}
+
+
+	/**
+	 * 添加会员日志
+	 *
+	 * @access private
+	 * @param  string   $module    模块名称
+	 * @param  string   $content   日志内容
+	 * @param  integer  $uid       会员ID
+	 * @param  string   $user_name 会员姓名
+	 * @return boolean
+	 */
+
+	public function _add_user_log($module = '', $content = '', $uid = 0, $user_name = '')
+	{
+		$query = FALSE;
+		$logs  = array();
 		$uid= ($uid!=0)? $uid : $this->session->userdata('uid');
 		$user_name=(!empty($user_name))?$user_name: $this->session->userdata('user_name');
-        if( ! empty($module) && ! empty($content)){
-            $logs = array(
-                'uid'       => $uid,
-                'user_name' => $user_name,
-                'module'    => $module,
-                'content'   => $content,
-                'dateline'  => time()
-            );
+		if( ! empty($module) && ! empty($content)){
+			$logs = array(
+					'uid'       => $uid,
+					'user_name' => $user_name,
+					'module'    => $module,
+					'content'   => $content,
+					'dateline'  => time()
+			);
 
-            if( ! empty($logs['uid']) && ! empty($logs['user_name'])){
-                $query = $this->c->insert(self::log, $logs);
-            }
-        }
+			if( ! empty($logs['uid']) && ! empty($logs['user_name'])){
+				$query = $this->c->insert(self::log, $logs);
+			}
+		}
 
-        unset($logs);
-        return $query;
-    }
-
-
-
-	/**
-     * 验证用户手机号码
-     *
-     * @access private
-     * @param  string  $mobile 手机号码
-     * @return boolean
-     */
-    private function _is_mobile($mobile = ''){
-        return ( ! empty($mobile) && preg_match('/^1[345789](\d){9}$/', $mobile)) ? TRUE : FALSE;
-    }
+		unset($logs);
+		return $query;
+	}
 
 
 
 	/**
-     * 获取银行名称
-     *
-     * @access public
-     * @param  integer $bank_id 银行ID
-     * @return array
-     */
-    private function _get_bank_name($bank_id = 0)
-    {
-        $bank_name = '';
-        $where     = array();
-
-        if( ! empty($bank_id))
-        {
-            $where = array(
-                'select' => 'bank_name',
-                'where'  => array('bank_id' => (int)$bank_id)
-            );
-
-            $bank_name = $this->c->get_one(self::bank, $where);
-        }
-
-        unset($where);
-        return $bank_name;
-    }
+	 * 验证用户手机号码
+	 *
+	 * @access private
+	 * @param  string  $mobile 手机号码
+	 * @return boolean
+	 */
+	private function _is_mobile($mobile = ''){
+		return ( ! empty($mobile) && preg_match('/^1[345789](\d){9}$/', $mobile)) ? TRUE : FALSE;
+	}
 
 
 
 	/**
-     * 获取投资人被邀请的信息
-     *
-     * @access private
-     * @param  integer $uid         投资人uid
-     * @param  integer $sub_rate    下级员工佣金，回调使用
-     * @param  integer $progression 员工向上层次级数，回调使用
-     * @return array
-    */
+	 * 获取银行名称
+	 *
+	 * @access public
+	 * @param  integer $bank_id 银行ID
+	 * @return array
+	 */
+	private function _get_bank_name($bank_id = 0)
+	{
+		$bank_name = '';
+		$where     = array();
 
-    private function _get_inviter($uid, $sub_rate=0, $progression=0)
-    {
-        $data = $temp = array();
+		if( ! empty($bank_id))
+		{
+			$where = array(
+					'select' => 'bank_name',
+					'where'  => array('bank_id' => (int)$bank_id)
+			);
 
-        if( ! empty($uid))
-        {
-            $temp['where'] = array(
-                                'select'	=> 'uid,rate,inviter',
-                                'where'		=> array('uid' => $uid),
-                            );
+			$bank_name = $this->c->get_one(self::bank, $where);
+		}
 
-            $temp['data'] = $this->c->get_row(self::user, $temp['where']);
-			
+		unset($where);
+		return $bank_name;
+	}
+
+
+
+	/**
+	 * 获取投资人被邀请的信息
+	 *
+	 * @access private
+	 * @param  integer $uid         投资人uid
+	 * @param  integer $sub_rate    下级员工佣金，回调使用
+	 * @param  integer $progression 员工向上层次级数，回调使用
+	 * @return array
+	 */
+
+	private function _get_inviter($uid, $sub_rate=0, $progression=0)
+	{
+		$data = $temp = array();
+
+		if( ! empty($uid))
+		{
+			$temp['where'] = array(
+					'select'	=> 'uid,rate,inviter',
+					'where'		=> array('uid' => $uid),
+			);
+
+			$temp['data'] = $this->c->get_row(self::user, $temp['where']);
+
 			// 0层级是投资人信息。
 			if( ! empty($temp['data']) && ! empty($progression))
 			{
 				$temp['data']['bonus_rate'] = $temp['data']['rate'] - $sub_rate;
-				
+
 				// 佣金提成小于0的不计算
 				if($temp['data']['bonus_rate'] > 0)
 				{
 					$data[] = $temp['data'];
 				}
 			}
-			
+
 			if( ! empty($temp['data']['inviter']))
 			{
 				// 第一个邀请人应该拿他自己的佣金比例
@@ -1667,16 +1984,16 @@ class User_model extends CI_Model{
 				{
 					$sub_rate = $temp['data']['rate'];
 				}
-				
+
 				$temp['up_inviter'] = $this->_get_inviter($temp['data']['inviter'], $sub_rate, ++$progression);
-				
+
 				$data = array_merge($data, $temp['up_inviter']);
 			}
-        }
+		}
 
-        unset($temp);
-        return $data;
-    }
+		unset($temp);
+		return $data;
+	}
 
 	/**
 	 * 检查inviter_no是否存在 返回uid

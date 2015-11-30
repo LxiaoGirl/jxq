@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ¸÷ÖÖÕıÔòÑéÖ¤
+ * å„ç§æ­£åˆ™éªŒè¯
  * Created by PhpStorm.
  * User: Administrator
  * Date: 2015/10/15
@@ -12,10 +12,10 @@ class CI_Regex{
 
     }
     /**
-     * ÑéÖ¤ÓÃ»§ÊÖ»úºÅÂë
+     * éªŒè¯ç”¨æˆ·æ‰‹æœºå·ç 
      *
      * @access private
-     * @param  string  $mobile ÊÖ»úºÅÂë
+     * @param  string  $mobile æ‰‹æœºå·ç 
      * @return boolean
      */
     public function is_mobile($mobile = ''){
@@ -23,7 +23,7 @@ class CI_Regex{
     }
 
     /**
-     * ÑéÖ¤ÓÊÏä¸ñÊ½
+     * éªŒè¯é‚®ç®±æ ¼å¼
      * @param string $email
      * @return bool
      */
@@ -32,10 +32,10 @@ class CI_Regex{
     }
 
     /**
-     * ÑéÖ¤ÊÇ·ñÎªÖ¸¶¨³¤¶ÈµÄ×ÖÄ¸/Êı×Ö×éºÏ
-     * @param string $str ×Ö·û´®
-     * @param int $num1 ×îĞ¡
-     * @param int $num2 ×î´ó
+     * éªŒè¯æ˜¯å¦ä¸ºæŒ‡å®šé•¿åº¦çš„å­—æ¯/æ•°å­—ç»„åˆ
+     * @param string $str å­—ç¬¦ä¸²
+     * @param int $num1 æœ€å°
+     * @param int $num2 æœ€å¤§
      * @return bool
      */
 
@@ -44,7 +44,7 @@ class CI_Regex{
     }
 
     /**
-     * ÑéÖ¤ÊÇ·ñÎªÖ¸¶¨³¤¶ÈÊı×Ö
+     * éªŒè¯æ˜¯å¦ä¸ºæŒ‡å®šé•¿åº¦æ•°å­—
      * @param string $number
      * @param int $num1
      * @param int $num2
@@ -56,7 +56,7 @@ class CI_Regex{
     }
 
     /**
-     * ÑéÖ¤ÊÇ·ñÎªÖ¸¶¨³¤¶Èºº×Ö
+     * éªŒè¯æ˜¯å¦ä¸ºæŒ‡å®šé•¿åº¦æ±‰å­—
      * @param string $str
      * @param int $num1
      * @param int $num2
@@ -68,7 +68,7 @@ class CI_Regex{
     }
 
     /**
-     * ÑéÖ¤ÊÇ·ñÕıÈ·¸ñÊ½Éí·İÖ¤ºÅÂë
+     * éªŒè¯æ˜¯å¦æ­£ç¡®æ ¼å¼èº«ä»½è¯å·ç 
      * @param string $nric
      * @return bool
      */
@@ -76,52 +76,52 @@ class CI_Regex{
     public function is_nric($nric=''){
 //        return (preg_match('/(^([\d]{15}|[\d]{18}|[\d]{17}x)$)/',$nric))?TRUE:FALSE;
         $city_array = array(
-            11=>"±±¾©",
-            12=>"Ìì½ò",
-            13=>"ºÓ±±",
-            14=>"É½Î÷",
-            15=>"ÄÚÃÉ¹Å",
-            21=>"ÁÉÄş",
-            22=>"¼ªÁÖ",
-            23=>"ºÚÁú½­",
-            31=>"ÉÏº£",
-            32=>"½­ËÕ",
-            33=>"Õã½­",
-            34=>"°²»Õ",
-            35=>"¸£½¨",
-            36=>"½­Î÷",
-            37=>"É½¶«",
-            41=>"ºÓÄÏ",
-            42=>"ºş±±",
-            43=>"ºşÄÏ",
-            44=>"¹ã¶«",
-            45=>"¹ãÎ÷",
-            46=>"º£ÄÏ",
-            50=>"ÖØÇì",
-            51=>"ËÄ´¨",
-            52=>"¹óÖİ",
-            53=>"ÔÆÄÏ",
-            54=>"Î÷²Ø",
-            61=>"ÉÂÎ÷",
-            62=>"¸ÊËà",
-            63=>"Çàº£",
-            64=>"ÄşÏÄ",
-            65=>"ĞÂ½®",
-            71=>"Ì¨Íå",
-            81=>"Ïã¸Û",
-            82=>"°ÄÃÅ",
-            91=>"¹úÍâ"
+            11=>"åŒ—äº¬",
+            12=>"å¤©æ´¥",
+            13=>"æ²³åŒ—",
+            14=>"å±±è¥¿",
+            15=>"å†…è’™å¤",
+            21=>"è¾½å®",
+            22=>"å‰æ—",
+            23=>"é»‘é¾™æ±Ÿ",
+            31=>"ä¸Šæµ·",
+            32=>"æ±Ÿè‹",
+            33=>"æµ™æ±Ÿ",
+            34=>"å®‰å¾½",
+            35=>"ç¦å»º",
+            36=>"æ±Ÿè¥¿",
+            37=>"å±±ä¸œ",
+            41=>"æ²³å—",
+            42=>"æ¹–åŒ—",
+            43=>"æ¹–å—",
+            44=>"å¹¿ä¸œ",
+            45=>"å¹¿è¥¿",
+            46=>"æµ·å—",
+            50=>"é‡åº†",
+            51=>"å››å·",
+            52=>"è´µå·",
+            53=>"äº‘å—",
+            54=>"è¥¿è—",
+            61=>"é™•è¥¿",
+            62=>"ç”˜è‚ƒ",
+            63=>"é’æµ·",
+            64=>"å®å¤",
+            65=>"æ–°ç–†",
+            71=>"å°æ¹¾",
+            81=>"é¦™æ¸¯",
+            82=>"æ¾³é—¨",
+            91=>"å›½å¤–"
         );
-        //³¤¶ÈÑéÖ¤
+        //é•¿åº¦éªŒè¯
         if( !preg_match('/^\d{17}(\d|x)$/i',$nric) && !preg_match('/^\d{15}$/i',$nric)){
             return false;
         }
-        //µØÇøÑéÖ¤
+        //åœ°åŒºéªŒè¯
         if(!array_key_exists(intval(substr($nric,0,2)),$city_array)){
             return false;
         }
 
-        // 15Î»Éí·İÖ¤ÑéÖ¤ÉúÈÕ£¬×ª»»Îª18Î»
+        // 15ä½èº«ä»½è¯éªŒè¯ç”Ÿæ—¥ï¼Œè½¬æ¢ä¸º18ä½
         if (strlen($nric) == 15){
             $birthday = '19'.substr($nric,6,2).'-'.substr($nric,8,2).'-'.substr($nric,10,2);
             $d = new DateTime($birthday);
@@ -130,23 +130,23 @@ class CI_Regex{
                 return false;
             }
             $nric = substr($nric,0,6)."19".substr($nric,6,9);//15to18
-            $bit18 = $this->_get_verify_bit($nric);//Ëã³öµÚ18Î»Ğ£ÑéÂë
+            $bit18 = $this->_get_verify_bit($nric);//ç®—å‡ºç¬¬18ä½æ ¡éªŒç 
             $nric = $nric.$bit18;
         }
-        // ÅĞ¶ÏÊÇ·ñ´óÓÚ2078Äê£¬Ğ¡ÓÚ1900Äê
+        // åˆ¤æ–­æ˜¯å¦å¤§äº2078å¹´ï¼Œå°äº1900å¹´
         $year = substr($nric,6,4);
         if ($year<1900 || $year>2078 ){
             return false;
         }
 
-        //18Î»Éí·İÖ¤´¦Àí
+        //18ä½èº«ä»½è¯å¤„ç†
         $birthday = substr($nric,6,4).'-'.substr($nric,10,2).'-'.substr($nric,12,2);
         $d = new DateTime($birthday);
         $dd = $d->format('Y-m-d');
         if($birthday != $dd){
             return false;
         }
-        //Éí·İÖ¤±àÂë¹æ·¶ÑéÖ¤
+        //èº«ä»½è¯ç¼–ç è§„èŒƒéªŒè¯
         $nric_base = substr($nric,0,17);
         if(strtoupper(substr($nric,17,1)) != $this->_get_verify_bit($nric_base)){
             return false;
@@ -154,14 +154,14 @@ class CI_Regex{
         return true;
     }
 
-    // ¼ÆËãÉí·İÖ¤Ğ£ÑéÂë£¬¸ù¾İ¹ú¼Ò±ê×¼GB 11643-1999
+    // è®¡ç®—èº«ä»½è¯æ ¡éªŒç ï¼Œæ ¹æ®å›½å®¶æ ‡å‡†GB 11643-1999
     protected function _get_verify_bit($nric_base){
         if(strlen($nric_base) != 17){
             return false;
         }
-        //¼ÓÈ¨Òò×Ó
+        //åŠ æƒå› å­
         $factor = array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2);
-        //Ğ£ÑéÂë¶ÔÓ¦Öµ
+        //æ ¡éªŒç å¯¹åº”å€¼
         $verify_number_list = array('1', '0', 'X', '9', '8', '7', '6', '5', '4','3', '2');
         $checksum = 0;
         for ($i = 0; $i < strlen($nric_base); $i++){
@@ -173,7 +173,7 @@ class CI_Regex{
     }
 
     /**
-     * ÑéÖ¤ÊÇ·ñÕıÈ·¸ñÊ½ÓÊ±à
+     * éªŒè¯æ˜¯å¦æ­£ç¡®æ ¼å¼é‚®ç¼–
      * @param string $zipcode
      * @return bool
      */
@@ -183,7 +183,7 @@ class CI_Regex{
     }
 
     /**
-     * ÑéÖ¤ÊÇ·ñÕıÈ·¸ñÊ½urlµØÖ·
+     * éªŒè¯æ˜¯å¦æ­£ç¡®æ ¼å¼urlåœ°å€
      * @param string $url
      * @return bool
      */

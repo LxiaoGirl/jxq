@@ -27,7 +27,7 @@
             </ul>
             <ul class="tab_con">
                 <li class="zhxx active">
-                    <p><font>实名认证</font><font class="zj">未认证</font><font class="yc"><i class="smrz">去认证</i></font></p>
+                    <p><font>实名认证</font><font class="zj real_name_flag"><?php echo profile('clientkind') == '1'?'已认证':'未认证'; ?></font><font class="yc"><?php echo profile('clientkind') == '1'?profile('real_name'):'<i class="smrz real_name_button">去认证</i>'; ?></font></p>
                         <!--实名认证_1-->
                         <div class="user_data_pop smrz_1">
                             <div class="title">
@@ -39,7 +39,7 @@
                                         真实姓名：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="text" value="" placeholder="请输入姓名">
+                                        <input type="text" id="real_name_input" value="" maxlength="5" placeholder="请输入姓名">
                                     </div>
                                 </div>
                                 <div class="p smrz_p">
@@ -47,15 +47,15 @@
                                         身份证号码：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="text" value="" placeholder="请输入身份证号码">
+                                        <input type="text" value="" id="nric_input" placeholder="请输入身份证号码" maxlength="18">
                                     </div>
                                 </div>
                                 <div class="p smrz_p">
-                                    <div class="fr tl tip_pop">
+                                    <div class="fr tl tip_pop" id="real_name_msg">
                                         
                                     </div>
                                 </div>
-                                <button type="" class="user_data_pop_but sub close">提交</button>
+                                <button type="submit" class="user_data_pop_but sub ajax-submit-button" id="real_name" data-loadingMsg="提交认证中...">提交</button>
                             </div>
                         </div>
                         <!--实名认证_1-->
@@ -71,7 +71,7 @@
                                     </div>
                                     <div class="fr tl">
                                         <div class="popbody_p shb">实名认证成功</div>
-                                        <div class="popbody_p xb">飞翔的雪球，<font>您的安全等级已提升！</font></div>
+                                        <div class="popbody_p xb"><?php echo profile('user_name'); ?>，<font>您的安全等级已提升！</font></div>
                                     </div>
                                 </div>
                                 <button type="" class="user_data_pop_but sub close">完成</button>
@@ -495,7 +495,33 @@
     seajs.use(['jquery','sys'],function(){
         //实名认证
         pop($('.smrz'),$('.smrz_1'),$('.smrz_1').find('.close'));
-        pop_sub($('.smrz_1').find('.sub'),$('.smrz_2'),$('.smrz_2').find('.close'));
+        $('#real_name').click(function(){
+            $('#real_name_msg').html('');
+            var real_name = $('#real_name_input').val();
+            var nric = $('#nric_input').val();
+
+            if(real_name.length < 2){
+                $("#real_name_msg").html('请输入两位及以上中文姓名!');
+                return false;
+            }
+            if( ! is_nric(nric)){
+                $("#real_name_msg").html('请输入正确格式的身份证号码!');
+                return false;
+            }
+            $('#real_name_msg').html('实名认证视网络情况需要一到几分钟 请耐心等待');
+            $.post('/index.php/user/user/real_name',{real_name:real_name,nric:nric},function(result){
+                if(result.status=='10000'){
+                    pop_sub($('.smrz_1').find('.sub'),$('.smrz_2'),$('.smrz_2').find('.close'));
+//                    $(".black_bg").fadeOut();
+                    $('.smrz_1').fadeOut();
+                    $('.smrz_2').fadeIn();
+                    $('.real_name_flag').html('已认证');
+                    $('.real_name_button').html(real_name);
+                }else{
+                    $('#real_name_msg').html(result.msg);
+                }
+            },'json');
+        });
         //实名认证
         //修改登录密码
 		$('#old_password').keyup(function(){
