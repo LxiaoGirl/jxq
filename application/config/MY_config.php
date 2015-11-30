@@ -25,12 +25,21 @@ $config['limit']             = 10; // 每页显示记录数量
 $config['is_gzip']           = FALSE; // 是否开启JS和CSS压缩功能
 $config['is_cache']          = TRUE; // 是否开启数据缓存
 $config['ttl']               = 86400; //缓存时间(秒)
-$config['oss_bucket_img']    = 'wjjf-public'; //bucket的名称
-$config['oss_access_id']     = 'ZDtkFsslMIU6eJ65'; // id
-$config['oss_access_key']    = '7yZK8GxonnDePd4dDqrTwb5TrilG6E'; //key
-$config['oss_upload']        = TRUE; //FALSE   是否启用oss上传
-$config['oss_public']        = TRUE; //FALSE
-$config['oss_bind_hostname'] = 'http://image.zgwjjf.com'; //FALSE
+
+//$config['oss_bucket_img']    = 'wjjf-public'; //bucket的名称
+//$config['oss_access_id']     = 'ZDtkFsslMIU6eJ65'; // id
+//$config['oss_access_key']    = '7yZK8GxonnDePd4dDqrTwb5TrilG6E'; //key
+//$config['oss_upload']        = TRUE; //FALSE   是否启用oss上传
+//$config['oss_public']        = TRUE; //FALSE
+//$config['oss_bind_hostname'] = 'http://image.zgwjjf.com'; //FALSE
+
+$config['oss_bucket_img']     = 'wjjf-oss1'; //bucket的名称
+$config['oss_access_id']      = '5nmbgHDAaoaH0OY0'; // id
+$config['oss_access_key']     = 'm7MSNSurHth7ryLdMFbcjvvBef5htF'; //key
+$config['oss_upload']         = TRUE; //FALSE   是否启用oss上传
+$config['oss_public']         = TRUE; //FALSE  public访问
+$config['oss_bind_hostname']  = 'http://image.juxueqiu.com'; //FALSE
+$config['oss_https_filter']   = false; //https报错处理
 
 
 

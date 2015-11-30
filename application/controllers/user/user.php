@@ -412,6 +412,9 @@ class User extends Login_Controller{
 			$data = $this->user->Change_name($name,$uid);
 		}else{
 			$data = $this->user->Change_name($name,0);
+			if($data['status'] == '10000'){
+				$this->session->set_userdata(array('user_name'=>$name));
+			}
 		}
 		$data['name'] = $name;
 		if($this->input->is_ajax_request() == TRUE){
@@ -467,6 +470,9 @@ class User extends Login_Controller{
 		$data = $this->email->validation_email($email,$code,2880);//2880  48小时
 		if($data['status']=='10000'){
 			$data['email'] = $this->user->mailbox_binding($uid,$email);
+			if($data['email']['status'] == '10000'){
+				$this->session->set_userdata(array('email'=>$email));
+			}
 		}
 		$this->load->view('user/profile/mailbox',$data);
 	}
@@ -540,8 +546,72 @@ class User extends Login_Controller{
 	 * 个人资料（上传头像）
 	 */
 	public function head_portrait(){
+		if($this->input->is_ajax_request() == true){
+			$data = array('status'=>'10001','msg'=>'图片保存失败了!');
+
+			$base64_image_content_type = $this->input->post('type',true);
+			$base64_image_content = $this->input->post('data',true);
+
+			if($base64_image_content && $base64_image_content_type){
+
+				$base64_image_content =$base64_image_content_type.','.$base64_image_content;
+
+				if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)){
+					$type = $result[2];
+					$dir = "uploads/profile/".$this->session->userdata('uid')."/";
+					$new_file = date('YmdHis').'.'.$type;
+
+					if(item('oss_upload')){
+						$new_file = $dir.$new_file;
+						$this->load->library('oss',array('access_id'=>$this->config->item('oss_access_id'),'access_key'=>$this->config->item('oss_access_key')));
+						$options = array(
+								'content' => base64_decode(str_replace($result[1], '', $base64_image_content)),
+								'length' => strlen(base64_decode(str_replace($result[1], '', $base64_image_content))),
+								'headers' => array(
+										'Expires' => date('Y-m-d H:i:s')
+								),
+						);
+						$result=$this->oss->upload_file_by_content($this->config->item('oss_bucket_img'),$new_file,$options);
+
+						if($result['status'] == 1){
+							if($result['data']->status != 200){
+								$dom=new DomDocument;
+								$dom->loadXML($result['data']->body);
+								$data['msg'] = $dom->getElementsByTagName('Error')->item(0)->getElementsByTagName('Message')->item(0)->nodeValue;
+							}else{
+								$this->c->update('user',array('where'=>array('uid'=>$this->session->userdata('uid'))),array('avatar'=>$new_file));
+								$data['status'] = '10000';
+								$data['msg']    = '图片保存成功!';
+								$data['data']    = $this->c->get_oss_image($new_file);
+								$this->session->set_userdata(array('avatar'=>$new_file));
+							}
+						}else{
+							$data['msg'] = $result['info'];
+						}
+					}else{
+						if( ! file_exists($dir)) @mkdir($dir, 0755, TRUE);
+						$new_file = $dir.$new_file;
+						if (file_put_contents('./'.$new_file, base64_decode(str_replace($result[1], '', $base64_image_content)))){
+							$this->c->update('user',array('where'=>array('uid'=>$this->session->userdata('uid'))),array('avatar'=>$new_file));
+							$data = array('status'=>'10000','msg'=>'图片保存成功!');
+							$data['data']    = '/'.$new_file;
+							$this->session->set_userdata(array('avatar'=>$new_file));
+						}else{
+							$data = array('status'=>'10001','msg'=>'图片保存失败了!');
+						}
+					}
+				}else{
+					$data = array('status'=>'10001','msg'=>'图片保存失败了!'.$base64_image_content);
+				}
+			}else{
+				$data = array('status'=>'10001','msg'=>'没有上传图片哦!');
+			}
+
+			exit(json_encode($data));
+		}
 		$this->load->view('user/profile/head_portrait');
 	}
+
 	/**
 	 * 银行卡管理
 	 */

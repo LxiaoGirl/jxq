@@ -51,7 +51,7 @@
                                 <img src="<?php echo base_url('assets/images/user/mrtx.png')?>" align="absmiddle" style="width:60px;height:60px;margin-top:4px;border-radius:60px;box-shadow:0px 0px 12px #7E7E7E;" ><p>60px*60px</p>
                             </div>
                             <div class="but buttxsc">
-                                <input type="submit" class="Btnsty_peyton Btnsty_peyton_1 Btnsty_peyton_disabled" value='保存' disabled="disabled">
+                                <input type="submit" class="Btnsty_peyton Btnsty_peyton_1 Btnsty_peyton_disabled ajax-submit-button" data-loadMsg="上传中..." value='保存' disabled="disabled">
                                 <div class="new-contentarea tc">
                                     <a href="javascript:void(0)" class="upload-img">
                                     <label for="upload-file">重新选择</label>
@@ -74,56 +74,67 @@
 <!--userjs start-->
 <script type="text/javascript">
     seajs.use(['jquery','sys','cropbox'],function(){
-        //修改头像
-        $(".Btnsty_peyton_1").click(function (){
-			alert($('#imageBox').css('backgroundImage'));
-            $(".pop").fadeIn(2000).fadeOut(2000);
-        })
-$(window).load(function() {
-        var options =
-        {
-            thumbBox: '.thumbBox',
-            spinner: '.spinner',
-            imgSrc: ''
-        }
-        var cropper = $('.imageBox').cropbox(options);
-        var img="";
-        $('#upload-file').on('change', function(){
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                options.imgSrc = e.target.result;
-                cropper = $('.imageBox').cropbox(options);
+        $(window).load(function() {
+            var options =
+            {
+                thumbBox: '.thumbBox',
+                spinner: '.spinner',
+                imgSrc: ''
+            }
+            var cropper = $('.imageBox').cropbox(options);
+            var img="";
+            $('#upload-file').on('change', function(){
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    options.imgSrc = e.target.result;
+                    cropper = $('.imageBox').cropbox(options);
+                    getImg();
+                }
+                reader.readAsDataURL(this.files[0]);
+                this.files = [];
+            })
+            $('#upload-file-1').on('change', function(){
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    options.imgSrc = e.target.result;
+                    cropper = $('.imageBox').cropbox(options);
+                    getImg();
+                }
+                reader.readAsDataURL(this.files[0]);
+                this.files = [];
+            })
+            function getImg(){
+                img = cropper.getDataURL();
+                $('.cropped_1').html('');
+                $('.cropped_1').append('<img src="'+img+'" align="absmiddle" style="width:100px;margin-top:4px;border-radius:100px;box-shadow:0px 0px 12px #7E7E7E;"><p>100px*100px</p>');
+                $('.cropped_1').append('<img src="'+img+'" align="absmiddle" style="width:60px;margin-top:4px;border-radius:60px;box-shadow:0px 0px 12px #7E7E7E;" ><p>60px*60px</p>');
+                }
+            $(".imageBox").on("mouseup",function(){
                 getImg();
-            }
-            reader.readAsDataURL(this.files[0]);
-            this.files = [];
-        })
-        $('#upload-file-1').on('change', function(){
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                options.imgSrc = e.target.result;
-                cropper = $('.imageBox').cropbox(options);
-                getImg();
-            }
-            reader.readAsDataURL(this.files[0]);
-            this.files = [];
-        })
-        function getImg(){
-            img = cropper.getDataURL();
-            $('.cropped_1').html('');
-            $('.cropped_1').append('<img src="'+img+'" align="absmiddle" style="width:100px;margin-top:4px;border-radius:100px;box-shadow:0px 0px 12px #7E7E7E;"><p>100px*100px</p>');
-            $('.cropped_1').append('<img src="'+img+'" align="absmiddle" style="width:60px;margin-top:4px;border-radius:60px;box-shadow:0px 0px 12px #7E7E7E;" ><p>60px*60px</p>');
-            }
-        $(".imageBox").on("mouseup",function(){
-            getImg();
+                });
+            $('#btnZoomIn').on('click', function(){
+                cropper.zoomIn();
+            })
+            $('#btnZoomOut').on('click', function(){
+                    cropper.zoomOut();
+                })
+
+            //修改头像
+            $(".Btnsty_peyton_1").click(function (){
+                var img_str = cropper.getDataURL();
+                var img_arr =img_str.split(',');
+                $.post('/index.php/user/user/head_portrait',{'type':img_arr[0],'data':img_arr[1]},function(rs){
+                    if(rs.status == '10000'){
+                        $(".pop").fadeIn(2000).fadeOut(2000);
+                        $(".user_icon").find('img').attr('src',rs.data);
+                        $(".my_icon").find('img').attr('src',rs.data);
+                    }else{
+                        wsb_alert(rs.msg);
+                    }
+                },'json');
+
             });
-        $('#btnZoomIn').on('click', function(){
-            cropper.zoomIn();
-        })
-        $('#btnZoomOut').on('click', function(){
-            cropper.zoomOut();
-        })
-});
+        });
     });
 </script>
 <!--userjs end-->

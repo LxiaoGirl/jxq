@@ -6,7 +6,7 @@
     </div>-->
         <div class="user_left">
             <div class="user_center_pro">
-                <div class="user_icon" onclick="window.location.href='<?php echo site_url('user/user/head_portrait'); ?>'" style="cursor: pointer;"><img src="<?php if( ! profile('uid') || !profile('avatar')): ?>/assets/images/common/my_icon.jpg<?php else:echo profile('avatar'); endif; ?>"" width="100"></div>
+                <div class="user_icon" onclick="window.location.href='<?php echo site_url('user/user/head_portrait'); ?>'" style="cursor: pointer;"><img src="<?php if( ! profile('uid') || !profile('avatar')): ?>/assets/images/common/my_icon.jpg<?php else:echo $this->c->get_oss_image(profile('avatar')); endif; ?>"" width="100"></div>
                 <p class="tc">
                     <?php
                         Date_default_timezone_set("PRC");

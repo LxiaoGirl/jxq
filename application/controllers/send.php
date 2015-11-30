@@ -94,4 +94,17 @@ class send extends MY_Controller {
 			exit(json_encode($data));
 		}
 	}
+
+	/**
+	 * oss https 图片处理 的调用地址方法
+	 */
+	public function get_oss_image(){
+		$filename=urldecode($this->input->get('f',true));
+		$size = getimagesize($filename); //获取mime信息
+		$fp=fopen($filename, "rb"); //二进制方式打开文件
+		header("Content-type: {$size['mime']}");
+		if ($size && $fp) {
+			fpassthru($fp); // 输出至浏览器
+		}
+	}
 }

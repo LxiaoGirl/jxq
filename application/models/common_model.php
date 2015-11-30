@@ -1242,17 +1242,33 @@ class Common_model extends CI_Model
     public function get_oss_image($path='',$bucket='',$timeout=3600){
         $query='';
         if( ! empty($path)){
-            if(item('oss_upload')){
+            //验证配置 是否卡其oss上传
+            if(item('oss_upload') == TRUE){
+                //如果bucket为空 这查询配置中的形象
                 if( empty($bucket)){
                     $bucket=item('oss_bucket_img');
                 }
-                $params=array('access_id'=>item('oss_access_id'),'access_key'=>item('oss_access_key'));
-                $this->load->library('oss',$params);
-                $response = $this->oss->get_sign_url($bucket,$path,$timeout);
-                if($response['status'] == 1){
-                    $query=$response['data'];
+                //查询配置 oss访问是公开访问还是密钥访问
+                if(item('oss_public') == TRUE){
+                    $host_name = item('oss_bind_hostname')?item('oss_bind_hostname'):'';
+                    $query = $host_name.'/'.$path;
+                }else{
+                    //密钥访问 获取加密钥的链接
+                    $params=array('access_id'=>item('oss_access_id'),'access_key'=>item('oss_access_key'));
+                    $this->load->library('oss',$params);
+                    $response = $this->oss->get_sign_url($bucket,$path,$timeout);
+                    if($response['status'] == 1){
+                        $query=$response['data'];
+                    }
                 }
+
+                //如果是读取oss上文件 验证是否要处理https的警告问题
+                if(item('oss_https_filter') == TRUE && strpos($query,item('oss_bind_hostname'))){
+                    $query = site_url('send/get_oss_image?f='.urlencode($query));
+                }
+
             }else{
+                //没有启用oss则直接返回当前项目文件地址
                 $query='/'.ltrim($path,'/');
             }
         }
