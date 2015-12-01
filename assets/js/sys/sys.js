@@ -657,11 +657,13 @@ function cs_js (e) {
  * 提交按钮 加class ajax-submit-button
  * 提示信息 data-loadMsg =''
  * event.fromElement event.toElement
- * @param flag
  * 不传则开启loading 和 触发按钮的文本显示和禁用
  * flag = 1 只开启 按钮禁用和文本提示
  * flag = 2 只开启loading层
- * 默认 提示文本  提交中...  可在标签内 data-loadMsg 属性设置文本
+ * 默认 提示文本  提交中...  可在标签内 data-load-msg 属性设置文本
+ * @param flag
+ * @param bg_flag
+ * @param end_delay
  */
 var ajax_loading = function(flag,bg_flag,end_delay){
     var ajax_class_flag = 'ajax-submit-button';     //ajax 提交按钮的 class标识
@@ -677,7 +679,7 @@ var ajax_loading = function(flag,bg_flag,end_delay){
      */
     var ajax_start_deal = function(){
         //取信息
-        if($(ajax_submit_button_obj).attr('data-loadMsg') != undefined)ajax_submit_button_load_msg = $(ajax_submit_button_obj).attr('data-loadMsg');
+        if($(ajax_submit_button_obj).data('loadingMsg') != undefined)ajax_submit_button_load_msg = $(ajax_submit_button_obj).data('loadingMsg');
 
         switch (ajax_submit_button_obj.tagName) {
             case 'INPUT':
@@ -717,73 +719,42 @@ var ajax_loading = function(flag,bg_flag,end_delay){
         if(ajax_submit_button_bg_flag)$(ajax_submit_button_obj).css('background-color',ajax_submit_button_bg_color);
     };
 
-    switch (flag){
-        case 1: //只开启 按钮禁用效果
-            $(document).ajaxStart(function(){
-                if(event && (event.srcElement || event.target))ajax_submit_button_obj = event.srcElement?event.srcElement:event.target;
-                if(ajax_submit_button_obj && ajax_submit_button_obj.tagName){
-                    var class_str = $(ajax_submit_button_obj).attr('class');  //event.fromElement event.toElement
-                    //标签的class包含标识
-                    if(class_str && class_str.indexOf(ajax_class_flag) != -1) ajax_start_deal();
+    $(document).ajaxStart(function(){
+        if(event && (event.srcElement || event.target))ajax_submit_button_obj = event.srcElement?event.srcElement:event.target;
+        var ajax_button = false;
+        if(ajax_submit_button_obj && ajax_submit_button_obj.tagName){
+            var class_str = $(ajax_submit_button_obj).attr('class');
+            //标签的class包含标识
+            if(class_str && class_str.indexOf(ajax_class_flag) != -1) {
+                ajax_button = true;
+                if($(ajax_submit_button_obj).data('loadingFlag') != undefined)flag = parseInt($(ajax_submit_button_obj).data('loadingFlag'));
+            }
+        }
+        if(flag != 2 && ajax_button){
+            ajax_start_deal();
+        }
+        if(flag != 1){
+            layer.load(2);
+        }
+    }).ajaxStop(function(){
+        if(flag != 2 && ajax_submit_button_obj && ajax_submit_button_obj.tagName) {
+            var class_str = $(ajax_submit_button_obj).attr('class');  //event.fromElement event.toElement
+            if(class_str && class_str.indexOf(ajax_class_flag) != -1) { //标签的class包含标识
+                if(ajax_submit_button_end_delay > 0){
+                    var endt = setTimeout(function(){
+                        clearTimeout(endt);
+                        ajax_end_deal();
+                    },ajax_submit_button_end_delay*1000);
+                }else{
+                    ajax_end_deal();
                 }
-            }).ajaxStop(function(){
-                if(ajax_submit_button_obj && ajax_submit_button_obj.tagName) {
-                    var class_str = $(ajax_submit_button_obj).attr('class');  //event.fromElement event.toElement
-                    if(class_str && class_str.indexOf(ajax_class_flag) != -1) { //标签的class包含标识
-                        if(ajax_submit_button_end_delay > 0){
-                            var endt = setTimeout(function(){
-                                clearTimeout(endt);
-                                ajax_end_deal();
-                            },ajax_submit_button_end_delay*1000);
-                        }else{
-                            ajax_end_deal();
-                        }
-                    }
-                }
-            });
-            break;
-        case 2://只开启loading层
-            $(document).ajaxStart(function(){
-                layer.load(2);
-            }).ajaxStop(function(){
-                var t= setTimeout(function(){
-                    layer.closeAll('loading');
-                    clearTimeout(t);
-                },1000);
-            });
-            break;
-        default : //默认全局开启
-            $(document).ajaxStart(function(){
-                if(event && (event.srcElement || event.target))ajax_submit_button_obj = event.srcElement?event.srcElement:event.target;
-                if(ajax_submit_button_obj && ajax_submit_button_obj.tagName){
-                    var class_str = $(ajax_submit_button_obj).attr('class');  //event.fromElement event.toElement
-                    //标签的class包含标识
-                    if(class_str && class_str.indexOf(ajax_class_flag) != -1) ajax_start_deal();
-                }
-                layer.load(2);
-            }).ajaxStop(function(){
-                if(ajax_submit_button_obj && ajax_submit_button_obj.tagName) {
-
-                    var class_str = $(ajax_submit_button_obj).attr('class');  //event.fromElement event.toElement
-                    if(class_str && class_str.indexOf(ajax_class_flag) != -1) { //标签的class包含标识
-
-                        if(ajax_submit_button_end_delay > 0){
-                            var et = setTimeout(function(){
-                                clearTimeout(et);
-                                ajax_end_deal();
-                            },ajax_submit_button_end_delay*1000);
-                        }else{
-                            ajax_end_deal();
-                        }
-                    }
-                }
-
-                var t= setTimeout(function(){
-                    layer.closeAll('loading');
-                    clearTimeout(t);
-                },1000);
-            });
-    }
+            }
+        }
+        if(flag != 1)var t= setTimeout(function(){
+            layer.closeAll('loading');
+            clearTimeout(t);
+        },1000);
+    });
 };
 
 /**

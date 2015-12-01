@@ -107,7 +107,7 @@
                                 <input type="password" value="" class="security" placeholder="请输入资金密码"/>
                                 <div class="fr tl tip_pop">
                                 </div>
-                                <button type="button" id="invest-submit" class="ajax-submit-button" data-loadMsg="投资中..." >提交</button>
+                                <button type="button" id="invest-submit" class="ajax-submit-button" data-loading-msg="投资中..." >提交</button>
                                 <a href="<?php echo site_url('user/user/account_security'); ?>">不记得资金密码？点此找回</a>
                             </div>
                             </div>
@@ -280,7 +280,7 @@
                         //全投处理
                         $('#invest-all').unbind('click').bind('click',function(){$(".invest-amount").val(my_balance>invest_max?invest_max:my_balance);});
                         $('.cal').css({'display':'','visibility':'hidden'});
-                        obj.siblings('button').removeClass('jjksbut').addClass('ajax-submit-button').html('马上投标').attr('data-status',2).attr('data-loadMsg','投资中...').bind('click',function(){invest();});
+                        obj.siblings('button').removeClass('jjksbut').addClass('ajax-submit-button').html('马上投标').attr('data-status',2).attr('data-loading-msg','投资中...').bind('click',function(){invest();});
                         obj.remove();
                         $('.time-down').show();
                         ajax_loading(1);

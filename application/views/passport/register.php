@@ -43,7 +43,7 @@
                         </div>
                     </div>
                     <div class="but">
-                        <button  type="submit" id="reg_xyb" class="ajax-submit-button" data-loadMsg="提交中...">下一步</button>
+                        <button  type="submit" id="reg_xyb" class="ajax-submit-button" data-loading-msg="提交中...">下一步</button>
                     </div>
                     <div class="yyzhdl">已有帐号，<a href="<?php echo site_url('login');?>">立即登录</a></div>
                 </form>

@@ -50,7 +50,7 @@
                         <div class="pit"></div>
                     </div>
                     <div class="but">
-                        <button  type="submit" id="reg_wczc" class="ajax-submit-button" data-loadMsg="注册中...">完成注册</button>
+                        <button  type="submit" id="reg_wczc" class="ajax-submit-button" data-loading-msg="注册中...">完成注册</button>
                     </div>
                     <div class="yyzhdl">已有帐号，<a href="<?php echo site_url('login');?>">立即登录</a></div>
                 </form>

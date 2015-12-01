@@ -29,7 +29,7 @@
             <div class="pit"></div>
         </div>
         <div class="but">
-            <button  type="submit" id="reg_xyb" class="ajax-submit-button" data-loadMsg="密码重置中...">下一步<i></i></button>
+            <button  type="submit" id="reg_xyb" class="ajax-submit-button" data-loading-msg="密码重置中...">下一步<i></i></button>
         </div>
         </form>
     </div>

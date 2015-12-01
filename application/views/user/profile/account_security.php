@@ -55,7 +55,7 @@
                                         
                                     </div>
                                 </div>
-                                <button type="submit" class="user_data_pop_but sub ajax-submit-button" id="real_name" data-loadingMsg="提交认证中...">提交</button>
+                                <button type="submit" class="user_data_pop_but sub ajax-submit-button" id="real_name" data-loading-msg="提交认证中...">提交</button>
                             </div>
                         </div>
                         <!--实名认证_1-->

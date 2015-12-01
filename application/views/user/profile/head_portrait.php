@@ -51,7 +51,7 @@
                                 <img src="<?php echo base_url('assets/images/user/mrtx.png')?>" align="absmiddle" style="width:60px;height:60px;margin-top:4px;border-radius:60px;box-shadow:0px 0px 12px #7E7E7E;" ><p>60px*60px</p>
                             </div>
                             <div class="but buttxsc">
-                                <input type="submit" class="Btnsty_peyton Btnsty_peyton_1 Btnsty_peyton_disabled ajax-submit-button" data-loadMsg="上传中..." value='保存' disabled="disabled">
+                                <input type="submit" class="Btnsty_peyton Btnsty_peyton_1 Btnsty_peyton_disabled ajax-submit-button" data-loading-msg="上传中..." value='保存' disabled="disabled">
                                 <div class="new-contentarea tc">
                                     <a href="javascript:void(0)" class="upload-img">
                                     <label for="upload-file">重新选择</label>
