@@ -187,11 +187,13 @@ class User extends Login_Controller{
 				$temp['end_time'] = time();
 				break;
 			case 'w';
-				$temp['start_time'] = strtotime(date('Y-m-d',strtotime('-'.(date('w')>0?date('w')-1:6).' day')),' 00:00:00');
+				$temp['start_time'] = strtotime(date('Y-m-d',strtotime('-7 day')),' 00:00:00');
+//				$temp['start_time'] = strtotime(date('Y-m-d',strtotime('-'.(date('w')>0?date('w')-1:6).' day')),' 00:00:00');
 				$temp['end_time'] = time();
 				break;
 			case 'm';
-				$temp['start_time'] = strtotime(date('Y-m-01').' 00:00:00');
+//				$temp['start_time'] = strtotime(date('Y-m-01').' 00:00:00');
+				$temp['start_time'] = strtotime(date('Y-m-d',strtotime('-1 month')).' 00:00:00');
 				$temp['end_time'] = time();
 				break;
 			case '3m';

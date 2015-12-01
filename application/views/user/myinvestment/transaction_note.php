@@ -38,10 +38,10 @@
                             <p class="lie">
                                 <span class="wid20"><font><?php echo $v['subject']; ?></font></br>编号：<?php echo $v['borrow_no']; ?></span>
                                 <span>12%</span>
-                                <span class="wid20"><font><?php echo $v['amount']; ?></font></br>预计收益：<?php echo $v['interest']; ?></span>
+                                <span class="wid20"><font><?php echo $v['amount']; ?></font></br><?php if($type == '7'): ?> 已<?php else: ?>预计<?php endif; ?>收益：<?php echo $v['interest']; ?></span>
                                 <span><?php echo date('Y-m-d',$v['invest_time']); ?></span>
                                 <span><?php echo date('Y-m-d',$v['interest_start_time']); ?></span>
-                                <span><?php echo date('Y-m-d',$v['interest_lately_time']); ?></span>
+                                <span><?php echo date('Y-m-d',strtotime($v['interest_lately_time'])); ?></span>
                                 <span><?php echo $v['status']; ?></span>
                             </p>
                         <?php endforeach;else: ?>
