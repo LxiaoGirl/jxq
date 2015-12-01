@@ -33,7 +33,7 @@
                         <div class="nav_pop">
                             <div class="nav_pop_body1">
                                 <div class="top">
-                                    <div class="my_icon" onclick="window.location.href='<?php echo site_url('user/user/head_portrait'); ?>'"><img style="width: 50px;height: 50px;" src="<?php if( ! profile('uid') || !profile('avatar')): ?>/assets/images/common/my_icon.jpg<?php else:echo $this->c->get_oss_image(profile('avatar')); endif; ?>"></div>
+                                    <div class="my_icon" onclick="window.location.href='<?php echo profile('avatar')?site_url('user/user/account_home'):site_url('user/user/head_portrait'); ?>'"><img style="width: 50px;height: 50px;" src="<?php if(!profile('avatar')): ?>/assets/images/common/my_icon.jpg<?php else:echo $this->c->get_oss_image(profile('avatar')); endif; ?>"></div>
                                     <div class="right">
                                         <p class="login" onclick="window.location.href='<?php echo site_url('user/user/account_information'); ?>'">您好，<span id="head_user_name_span"><?php if( ! profile('uid')): ?></span>请<a href="<?php echo site_url('login'); ?>">登录</a><?php else:echo profile('user_name'); endif; ?></p>
                                         <p><span><a href="<?php echo site_url('user/user/account_home'); ?>">个人中心</a></span>&nbsp;|&nbsp;<span><a href="<?php echo site_url('user/user/information'); ?>">消息<font class="msg-count">（0）</font></a></span></p>

@@ -1142,7 +1142,7 @@ class Cash_model extends CI_Model{
     protected function _get_cash_log_type($type=1){
         $type_name = '';
 
-        if(in_array($type,array(1,7,4))){
+        if(in_array($type,array(1,7,4,11))){
             $type_name = '收入';
         }else{
             $type_name = '支出';
@@ -1182,6 +1182,9 @@ class Cash_model extends CI_Model{
                     break;
                 case '10':
                     $remarks_name = '还款扣款';
+                    break;
+                case '11':
+                    $remarks_name = '红包';
                     break;
             }
         }

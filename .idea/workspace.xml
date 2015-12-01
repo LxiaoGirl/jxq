@@ -2,21 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="28e26382-40c0-4701-ad4f-9769f2de0664" name="默认的" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/images/common/user_left_1_ok.png" afterPath="$PROJECT_DIR$/assets/images/common/user_left_1_ok.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/images/common/user_left_2_ok.png" afterPath="$PROJECT_DIR$/assets/images/common/user_left_2_ok.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/images/common/user_left_3_ok.png" afterPath="$PROJECT_DIR$/assets/images/common/user_left_3_ok.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/controllers/user/user.php" afterPath="$PROJECT_DIR$/application/controllers/user/user.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/models/api/user_model.php" afterPath="$PROJECT_DIR$/application/models/api/user_model.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/about/contact.php" afterPath="$PROJECT_DIR$/application/views/about/contact.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/about/news.php" afterPath="$PROJECT_DIR$/application/views/about/news.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/common/footer.php" afterPath="$PROJECT_DIR$/application/views/common/footer.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/models/api/cash_model.php" afterPath="$PROJECT_DIR$/application/models/api/cash_model.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/common/head.php" afterPath="$PROJECT_DIR$/application/views/common/head.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/common/user_left.php" afterPath="$PROJECT_DIR$/application/views/common/user_left.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/home.php" afterPath="$PROJECT_DIR$/application/views/home.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/invest/home.php" afterPath="$PROJECT_DIR$/application/views/invest/home.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/user/profile/account_information.php" afterPath="$PROJECT_DIR$/application/views/user/profile/account_information.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/views/user/profile/account_security.php" afterPath="$PROJECT_DIR$/application/views/user/profile/account_security.php" />
     </list>
     <ignored path="www.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -37,147 +26,7 @@
     <favorites_list name="www" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="user.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/application/controllers/user/user.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6574395">
-              <caret line="20" column="5" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
-              <folding>
-                <element signature="e#718#735#0#PHP" expanded="false" />
-                <element signature="n#account_home#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#1160#1369#0#PHP" expanded="false" />
-                <element signature="e#1496#1513#0#PHP" expanded="false" />
-                <element signature="n#withdrawals_jl#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#1957#2125#0#PHP" expanded="false" />
-                <element signature="e#2092#2125#0#PHP" expanded="false" />
-                <element signature="e#2251#2266#0#PHP" expanded="false" />
-                <element signature="n#withdrawals#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#2413#2595#0#PHP" expanded="false" />
-                <element signature="e#2544#2595#0#PHP" expanded="false" />
-                <element signature="e#2716#2732#0#PHP" expanded="false" />
-                <element signature="n#user_transfer#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#3145#3160#0#PHP" expanded="false" />
-                <element signature="n#recharge#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#3202#3325#0#PHP" expanded="false" />
-                <element signature="n#ajax_recharge_auto_refresh#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#3939#3956#0#PHP" expanded="false" />
-                <element signature="n#recharge_jl#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#4193#4679#0#PHP" expanded="false" />
-                <element signature="e#4638#4675#0#PHP" expanded="false" />
-                <element signature="e#5018#5208#0#PHP" expanded="false" />
-                <element signature="e#5051#5204#0#PHP" expanded="false" />
-                <element signature="e#5169#5204#0#PHP" expanded="false" />
-                <element signature="e#5331#5348#0#PHP" expanded="false" />
-                <element signature="n#transaction_details#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#5418#5636#0#PHP" expanded="false" />
-                <element signature="e#5650#6794#0#PHP" expanded="false" />
-                <element signature="e#6686#6790#0#PHP" expanded="false" />
-                <element signature="e#7037#7409#0#PHP" expanded="false" />
-                <element signature="e#7154#7345#0#PHP" expanded="false" />
-                <element signature="e#7310#7345#0#PHP" expanded="false" />
-                <element signature="e#7349#7409#0#PHP" expanded="false" />
-                <element signature="e#7553#7730#0#PHP" expanded="false" />
-                <element signature="e#7655#7730#0#PHP" expanded="false" />
-                <element signature="e#7827#7844#0#PHP" expanded="false" />
-                <element signature="n#my_xq#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#8229#8381#0#PHP" expanded="false" />
-                <element signature="e#8440#8462#0#PHP" expanded="false" />
-                <element signature="n#my_redbag#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#8735#8893#0#PHP" expanded="false" />
-                <element signature="e#8953#8975#0#PHP" expanded="false" />
-                <element signature="n#my_redbag_lq#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#9249#9403#0#PHP" expanded="false" />
-                <element signature="e#9466#9488#0#PHP" expanded="false" />
-                <element signature="n#my_redbag_gq#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#9764#9918#0#PHP" expanded="false" />
-                <element signature="e#9983#10002#0#PHP" expanded="false" />
-                <element signature="n#redbag_id#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#10227#10244#0#PHP" expanded="false" />
-                <element signature="n#Receive_redbag#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#10472#10489#0#PHP" expanded="false" />
-                <element signature="n#information#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#10697#10883#0#PHP" expanded="false" />
-                <element signature="e#10850#10883#0#PHP" expanded="false" />
-                <element signature="e#10949#10966#0#PHP" expanded="false" />
-                <element signature="n#transaction_note#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#11033#11588#0#PHP" expanded="false" />
-                <element signature="e#11863#12170#0#PHP" expanded="false" />
-                <element signature="e#12261#12278#0#PHP" expanded="false" />
-                <element signature="n#auto#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#12358#12381#0#PHP" expanded="false" />
-                <element signature="n#account_information#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#12745#12762#0#PHP" expanded="false" />
-                <element signature="e#13274#13295#0#PHP" expanded="false" />
-                <element signature="n#Change_mobile_one#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#13510#13584#0#PHP" expanded="false" />
-                <element signature="e#13617#13638#0#PHP" expanded="false" />
-                <element signature="n#Change_mobile_two#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#14021#14038#0#PHP" expanded="false" />
-                <element signature="n#send_mail#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#14296#14313#0#PHP" expanded="false" />
-                <element signature="n#email_yes#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#14578#14781#0#PHP" expanded="false" />
-                <element signature="e#14674#14777#0#PHP" expanded="false" />
-                <element signature="e#14837#14860#0#PHP" expanded="false" />
-                <element signature="n#account_security#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#15250#15269#0#PHP" expanded="false" />
-                <element signature="n#Reset_login_password#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#15577#15596#0#PHP" expanded="false" />
-                <element signature="n#Change_login_password#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#15926#15958#0#PHP" expanded="false" />
-                <element signature="n#Fund_password#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#16381#16400#0#PHP" expanded="false" />
-                <element signature="n#update_fund_password#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#16920#16943#0#PHP" expanded="false" />
-                <element signature="n#head_portrait#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#16980#19662#0#PHP" expanded="false" />
-                <element signature="e#17210#19628#0#PHP" expanded="false" />
-                <element signature="e#17354#19557#0#PHP" expanded="false" />
-                <element signature="e#17582#19461#0#PHP" expanded="false" />
-                <element signature="e#17801#18080#0#PHP" expanded="false" />
-                <element signature="e#18012#18071#1#PHP" expanded="false" />
-                <element signature="e#18197#18872#0#PHP" expanded="false" />
-                <element signature="e#18232#18812#0#PHP" expanded="false" />
-                <element signature="e#18474#18812#0#PHP" expanded="false" />
-                <element signature="e#18820#18872#0#PHP" expanded="false" />
-                <element signature="e#18879#19461#0#PHP" expanded="false" />
-                <element signature="e#18982#19454#0#PHP" expanded="false" />
-                <element signature="e#19382#19454#0#PHP" expanded="false" />
-                <element signature="e#19467#19557#0#PHP" expanded="false" />
-                <element signature="e#19562#19628#0#PHP" expanded="false" />
-                <element signature="e#19719#19736#0#PHP" expanded="false" />
-                <element signature="n#real_name#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#19905#19988#0#PHP" expanded="false" />
-                <element signature="e#20022#20040#0#PHP" expanded="false" />
-                <element signature="n#card#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#20280#20298#0#PHP" expanded="false" />
-                <element signature="n#ajax_check_card_bin#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#20474#20491#0#PHP" expanded="false" />
-                <element signature="n#invite#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#20858#21006#0#PHP" expanded="false" />
-                <element signature="e#21061#21092#0#PHP" expanded="false" />
-                <element signature="n#get_settle_invest_list#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#21339#21360#0#PHP" expanded="false" />
-                <element signature="n#invite_customer#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#21742#21880#0#PHP" expanded="false" />
-                <element signature="e#21939#21962#0#PHP" expanded="false" />
-                <element signature="n#get_commission_list#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#22208#22225#0#PHP" expanded="false" />
-                <element signature="n#send_sms#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#22559#22576#0#PHP" expanded="false" />
-                <element signature="n#send_voice#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#22914#22977#0#PHP" expanded="false" />
-                <element signature="n#_is_login#0;n#User#0;n#!!top" expanded="false" />
-                <element signature="e#23057#23472#0#PHP" expanded="false" />
-                <element signature="e#23075#23471#0#PHP" expanded="false" />
-                <element signature="e#23054#23552#0#PHP" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -196,7 +45,6 @@
         <option value="$PROJECT_DIR$/application/views/user/myaccount/my_xq.php" />
         <option value="$PROJECT_DIR$/application/views/user/myaccount/my_redbag.php" />
         <option value="$PROJECT_DIR$/application/views/user/myaccount/my_redbag_gq.php" />
-        <option value="$PROJECT_DIR$/application/views/user/myaccount/my_redbag_lq.php" />
         <option value="$PROJECT_DIR$/application/views/user/myinvestment/transaction_note.php" />
         <option value="$USER_HOME$/Desktop/account_home.php" />
         <option value="$PROJECT_DIR$/application/views/user/myaccount/account_home.php" />
@@ -225,7 +73,6 @@
         <option value="$PROJECT_DIR$/application/controllers/send.php" />
         <option value="$PROJECT_DIR$/application/config/MY_config.php" />
         <option value="$PROJECT_DIR$/application/models/common_model.php" />
-        <option value="$PROJECT_DIR$/application/models/api/cash_model.php" />
         <option value="$PROJECT_DIR$/application/libraries/api/Regex.php" />
         <option value="$PROJECT_DIR$/assets/js/sys/sys.js" />
         <option value="$PROJECT_DIR$/index.php" />
@@ -239,10 +86,12 @@
         <option value="$PROJECT_DIR$/application/views/about/contact.php" />
         <option value="$PROJECT_DIR$/application/views/common/footer.php" />
         <option value="$PROJECT_DIR$/application/views/user/profile/account_security.php" />
-        <option value="$PROJECT_DIR$/application/views/common/head.php" />
         <option value="$PROJECT_DIR$/application/views/user/profile/account_information.php" />
-        <option value="$PROJECT_DIR$/application/views/common/user_left.php" />
         <option value="$PROJECT_DIR$/application/controllers/user/user.php" />
+        <option value="$PROJECT_DIR$/application/views/common/head.php" />
+        <option value="$PROJECT_DIR$/application/views/common/user_left.php" />
+        <option value="$PROJECT_DIR$/application/models/api/cash_model.php" />
+        <option value="$PROJECT_DIR$/application/views/user/myaccount/my_redbag_lq.php" />
       </list>
     </option>
   </component>
@@ -355,7 +204,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
+              <option name="myItemId" value="views" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -373,11 +222,37 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="controllers" />
+              <option name="myItemId" value="views" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="user" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="www" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="www" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="application" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="user" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="myaccount" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -471,10 +346,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17789166" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17789166" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32946146" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -555,19 +430,17 @@
           <line>64</line>
           <option name="timeStamp" value="55" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/application/models/api/cash_model.php</url>
+          <line>291</line>
+          <option name="timeStamp" value="59" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="59" />
+      <option name="time" value="60" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/assets/css/index.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-159.64532">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/views/passport/register_1.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-15.535714">
@@ -761,13 +634,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-10.178572">
           <caret line="36" column="52" selection-start-line="36" selection-start-column="38" selection-end-line="36" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/models/api/cash_model.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9310346">
-          <caret line="12" column="56" selection-start-line="12" selection-start-column="56" selection-end-line="12" selection-end-column="56" />
         </state>
       </provider>
     </entry>
@@ -1320,22 +1186,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/common/head.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5553633">
-          <caret line="37" column="179" selection-start-line="37" selection-start-column="160" selection-end-line="37" selection-end-column="179" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/views/common/user_left.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4083045">
-          <caret line="18" column="111" selection-start-line="18" selection-start-column="111" selection-end-line="18" selection-end-column="111" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/views/user/profile/account_information.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.75605536">
@@ -1464,7 +1314,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/controllers/user/user.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6574395">
+        <state vertical-scroll-proportion="0.62456745">
           <caret line="20" column="5" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
           <folding>
             <element signature="e#718#735#0#PHP" expanded="false" />
@@ -1596,6 +1446,285 @@
             <element signature="e#23075#23471#0#PHP" expanded="false" />
             <element signature="e#23054#23552#0#PHP" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/user/myaccount/my_redbag_lq.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.62456745">
+          <caret line="34" column="101" selection-start-line="34" selection-start-column="101" selection-end-line="34" selection-end-column="101" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/models/api/cash_model.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.43079585">
+          <caret line="1147" column="30" selection-start-line="1147" selection-start-column="30" selection-end-line="1147" selection-end-column="30" />
+          <folding>
+            <element signature="n#__construct#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#936#1012#0#PHP" expanded="false" />
+            <element signature="n#get_user_balance#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#1075#1259#0#PHP" expanded="false" />
+            <element signature="e#1298#1802#0#PHP" expanded="false" />
+            <element signature="e#1347#1500#0#PHP" expanded="false" />
+            <element signature="e#1859#2249#0#PHP" expanded="false" />
+            <element signature="n#get_cash_total#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#2340#2620#0#PHP" expanded="false" />
+            <element signature="e#2648#2791#0#PHP" expanded="false" />
+            <element signature="e#2829#2923#0#PHP" expanded="false" />
+            <element signature="e#3091#3227#0#PHP" expanded="false" />
+            <element signature="e#3627#4067#0#PHP" expanded="false" />
+            <element signature="n#get_user_cash_total#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#4133#4758#0#PHP" expanded="false" />
+            <element signature="e#4276#4748#1#PHP" expanded="false" />
+            <element signature="e#4797#6278#0#PHP" expanded="false" />
+            <element signature="e#6335#6857#0#PHP" expanded="false" />
+            <element signature="n#get_user_category_invest_total#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#6934#7114#0#PHP" expanded="false" />
+            <element signature="e#7153#7788#0#PHP" expanded="false" />
+            <element signature="e#7246#7778#0#PHP" expanded="false" />
+            <element signature="e#7285#7621#0#PHP" expanded="false" />
+            <element signature="e#7367#7602#0#PHP" expanded="false" />
+            <element signature="e#7719#7778#0#PHP" expanded="false" />
+            <element signature="e#7845#8340#0#PHP" expanded="false" />
+            <element signature="e#8480#8654#0#PHP" expanded="false" />
+            <element signature="e#8821#9041#0#PHP" expanded="false" />
+            <element signature="e#8932#8988#1#PHP" expanded="false" />
+            <element signature="e#9080#9594#0#PHP" expanded="false" />
+            <element signature="e#9111#9580#0#PHP" expanded="false" />
+            <element signature="e#9269#9383#0#PHP" expanded="false" />
+            <element signature="e#9402#9580#0#PHP" expanded="false" />
+            <element signature="e#9428#9562#0#PHP" expanded="false" />
+            <element signature="e#9626#9992#0#PHP" expanded="false" />
+            <element signature="e#10027#10125#0#PHP" expanded="false" />
+            <element signature="e#10138#10232#0#PHP" expanded="false" />
+            <element signature="e#11156#11470#0#PHP" expanded="false" />
+            <element signature="e#11335#11470#0#PHP" expanded="false" />
+            <element signature="e#11654#11805#0#PHP" expanded="false" />
+            <element signature="n#get_user_limit_time_cash_total#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#11972#12234#0#PHP" expanded="false" />
+            <element signature="e#12138#12224#1#PHP" expanded="false" />
+            <element signature="e#12270#13184#0#PHP" expanded="false" />
+            <element signature="e#12313#12551#0#PHP" expanded="false" />
+            <element signature="e#12434#12537#1#PHP" expanded="false" />
+            <element signature="e#12586#12684#0#PHP" expanded="false" />
+            <element signature="e#12697#12791#0#PHP" expanded="false" />
+            <element signature="e#13242#13771#0#PHP" expanded="false" />
+            <element signature="n#get_user_recharge_list#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#13891#14065#0#PHP" expanded="false" />
+            <element signature="e#14191#16132#0#PHP" expanded="false" />
+            <element signature="e#14234#14423#0#PHP" expanded="false" />
+            <element signature="e#14459#14538#0#PHP" expanded="false" />
+            <element signature="e#14543#15037#0#PHP" expanded="false" />
+            <element signature="e#14578#14668#0#PHP" expanded="false" />
+            <element signature="e#14672#14766#0#PHP" expanded="false" />
+            <element signature="e#14770#14864#0#PHP" expanded="false" />
+            <element signature="e#14868#14959#0#PHP" expanded="false" />
+            <element signature="e#14972#15031#0#PHP" expanded="false" />
+            <element signature="e#15042#15163#0#PHP" expanded="false" />
+            <element signature="e#15197#15295#0#PHP" expanded="false" />
+            <element signature="e#15308#15402#0#PHP" expanded="false" />
+            <element signature="e#15547#16122#0#PHP" expanded="false" />
+            <element signature="e#15590#15835#0#PHP" expanded="false" />
+            <element signature="e#15982#16122#0#PHP" expanded="false" />
+            <element signature="e#16189#16825#0#PHP" expanded="false" />
+            <element signature="n#get_user_recharge_info#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#16903#17080#0#PHP" expanded="false" />
+            <element signature="e#17119#17832#0#PHP" expanded="false" />
+            <element signature="e#17272#17822#0#PHP" expanded="false" />
+            <element signature="e#17761#17822#0#PHP" expanded="false" />
+            <element signature="e#17889#18141#0#PHP" expanded="false" />
+            <element signature="n#user_transfer#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#18249#18436#0#PHP" expanded="false" />
+            <element signature="e#18446#18571#0#PHP" expanded="false" />
+            <element signature="e#18581#18686#0#PHP" expanded="false" />
+            <element signature="e#18696#18824#0#PHP" expanded="false" />
+            <element signature="e#18833#18921#0#PHP" expanded="false" />
+            <element signature="e#18930#19019#0#PHP" expanded="false" />
+            <element signature="e#19020#19045#0#PHP" expanded="false" />
+            <element signature="e#19213#19312#0#PHP" expanded="false" />
+            <element signature="e#19321#19474#0#PHP" expanded="false" />
+            <element signature="e#19564#19665#0#PHP" expanded="false" />
+            <element signature="e#19818#19963#0#PHP" expanded="false" />
+            <element signature="e#20105#20264#0#PHP" expanded="false" />
+            <element signature="e#20378#20539#0#PHP" expanded="false" />
+            <element signature="e#20757#21300#0#PHP" expanded="false" />
+            <element signature="e#21400#21694#0#PHP" expanded="false" />
+            <element signature="e#21840#22043#0#PHP" expanded="false" />
+            <element signature="e#22100#22625#0#PHP" expanded="false" />
+            <element signature="n#get_user_transfer_list#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#22745#22919#0#PHP" expanded="false" />
+            <element signature="e#22954#23448#0#PHP" expanded="false" />
+            <element signature="e#22989#23079#0#PHP" expanded="false" />
+            <element signature="e#23083#23177#0#PHP" expanded="false" />
+            <element signature="e#23181#23275#0#PHP" expanded="false" />
+            <element signature="e#23279#23370#0#PHP" expanded="false" />
+            <element signature="e#23383#23442#0#PHP" expanded="false" />
+            <element signature="e#23550#25056#0#PHP" expanded="false" />
+            <element signature="e#23593#23795#0#PHP" expanded="false" />
+            <element signature="e#23810#23931#0#PHP" expanded="false" />
+            <element signature="e#23965#24044#0#PHP" expanded="false" />
+            <element signature="e#24078#24176#0#PHP" expanded="false" />
+            <element signature="e#24189#24283#0#PHP" expanded="false" />
+            <element signature="e#24428#25046#0#PHP" expanded="false" />
+            <element signature="e#24471#24759#0#PHP" expanded="false" />
+            <element signature="e#24906#25046#0#PHP" expanded="false" />
+            <element signature="e#25113#25843#0#PHP" expanded="false" />
+            <element signature="n#get_user_transfer_info#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#25924#26101#0#PHP" expanded="false" />
+            <element signature="e#26140#27277#0#PHP" expanded="false" />
+            <element signature="e#26198#26460#0#PHP" expanded="false" />
+            <element signature="e#26231#26459#0#PHP" expanded="false" />
+            <element signature="e#26474#27267#0#PHP" expanded="false" />
+            <element signature="e#27206#27267#0#PHP" expanded="false" />
+            <element signature="e#27334#27480#0#PHP" expanded="false" />
+            <element signature="n#get_user_invest_total_list#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#27580#27761#0#PHP" expanded="false" />
+            <element signature="e#27902#28869#0#PHP" expanded="false" />
+            <element signature="e#28059#28194#1#PHP" expanded="false" />
+            <element signature="e#28319#28724#1#PHP" expanded="false" />
+            <element signature="e#28342#28525#1#PHP" expanded="false" />
+            <element signature="e#28543#28710#1#PHP" expanded="false" />
+            <element signature="e#28880#29272#0#PHP" expanded="false" />
+            <element signature="e#29396#29852#0#PHP" expanded="false" />
+            <element signature="e#29435#29586#0#PHP" expanded="false" />
+            <element signature="e#29717#29852#0#PHP" expanded="false" />
+            <element signature="e#30020#30100#0#PHP" expanded="false" />
+            <element signature="n#get_project_interest_total#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#30600#31126#0#PHP" expanded="false" />
+            <element signature="e#30641#30809#0#PHP" expanded="false" />
+            <element signature="e#30972#31126#0#PHP" expanded="false" />
+            <element signature="e#31439#31540#0#PHP" expanded="false" />
+            <element signature="n#get_user_invest_total#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#31657#32583#0#PHP" expanded="false" />
+            <element signature="e#31700#32357#0#PHP" expanded="false" />
+            <element signature="e#31815#32027#1#PHP" expanded="false" />
+            <element signature="e#32160#32343#1#PHP" expanded="false" />
+            <element signature="e#32372#32496#0#PHP" expanded="false" />
+            <element signature="e#32640#32753#0#PHP" expanded="false" />
+            <element signature="n#get_user_receive_principal_interest#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#32894#33991#0#PHP" expanded="false" />
+            <element signature="e#32930#33148#0#PHP" expanded="false" />
+            <element signature="e#32962#33147#0#PHP" expanded="false" />
+            <element signature="e#33163#33834#0#PHP" expanded="false" />
+            <element signature="e#33202#33820#0#PHP" expanded="false" />
+            <element signature="e#33272#33480#0#PHP" expanded="false" />
+            <element signature="e#33304#33479#0#PHP" expanded="false" />
+            <element signature="e#33502#33802#0#PHP" expanded="false" />
+            <element signature="e#33712#33802#0#PHP" expanded="false" />
+            <element signature="e#34023#34097#0#PHP" expanded="false" />
+            <element signature="n#get_user_invest_freeze#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#34203#34867#0#PHP" expanded="false" />
+            <element signature="e#34246#34778#0#PHP" expanded="false" />
+            <element signature="e#34581#34764#1#PHP" expanded="false" />
+            <element signature="e#34924#34998#0#PHP" expanded="false" />
+            <element signature="n#get_user_transfer_freeze#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#35106#35370#0#PHP" expanded="false" />
+            <element signature="e#35149#35280#0#PHP" expanded="false" />
+            <element signature="e#35427#35504#0#PHP" expanded="false" />
+            <element signature="n#get_user_interest_all#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#35613#38659#0#PHP" expanded="false" />
+            <element signature="e#35656#36853#0#PHP" expanded="false" />
+            <element signature="e#36309#36772#1#PHP" expanded="false" />
+            <element signature="e#36336#36531#1#PHP" expanded="false" />
+            <element signature="e#36553#36754#1#PHP" expanded="false" />
+            <element signature="e#36954#38649#0#PHP" expanded="false" />
+            <element signature="e#37007#38635#0#PHP" expanded="false" />
+            <element signature="e#37169#37385#0#PHP" expanded="false" />
+            <element signature="e#37201#37384#0#PHP" expanded="false" />
+            <element signature="e#37407#38474#0#PHP" expanded="false" />
+            <element signature="e#37563#38474#0#PHP" expanded="false" />
+            <element signature="e#37593#38452#0#PHP" expanded="false" />
+            <element signature="e#37641#37814#0#PHP" expanded="false" />
+            <element signature="e#37843#38019#0#PHP" expanded="false" />
+            <element signature="e#38048#38221#0#PHP" expanded="false" />
+            <element signature="e#38250#38426#0#PHP" expanded="false" />
+            <element signature="e#38949#39101#0#PHP" expanded="false" />
+            <element signature="n#get_project_interest#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#39212#39852#0#PHP" expanded="false" />
+            <element signature="e#39241#39842#0#PHP" expanded="false" />
+            <element signature="e#39272#39390#0#PHP" expanded="false" />
+            <element signature="e#39407#39528#0#PHP" expanded="false" />
+            <element signature="e#39545#39663#0#PHP" expanded="false" />
+            <element signature="e#39680#39801#0#PHP" expanded="false" />
+            <element signature="e#39898#40045#0#PHP" expanded="false" />
+            <element signature="n#get_debx_all_interest#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#40388#40504#0#PHP" expanded="false" />
+            <element signature="n#get_debj_all_interest#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#40646#40673#0#PHP" expanded="false" />
+            <element signature="n#get_ycxbx_interest#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#40926#41005#0#PHP" expanded="false" />
+            <element signature="e#41255#41361#0#PHP" expanded="false" />
+            <element signature="e#41535#41613#0#PHP" expanded="false" />
+            <element signature="e#41630#41708#0#PHP" expanded="false" />
+            <element signature="e#41725#41805#0#PHP" expanded="false" />
+            <element signature="e#41822#41902#0#PHP" expanded="false" />
+            <element signature="e#41919#41997#0#PHP" expanded="false" />
+            <element signature="e#42352#42446#0#PHP" expanded="false" />
+            <element signature="n#_get_cash_log_borrow_subject#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#42548#43040#0#PHP" expanded="false" />
+            <element signature="e#42588#43029#0#PHP" expanded="false" />
+            <element signature="e#42620#43028#0#PHP" expanded="false" />
+            <element signature="e#42717#42813#1#PHP" expanded="false" />
+            <element signature="e#42839#43014#1#PHP" expanded="false" />
+            <element signature="e#43078#43179#0#PHP" expanded="false" />
+            <element signature="n#_get_recharge_status#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#43279#43494#0#PHP" expanded="false" />
+            <element signature="e#43309#43434#0#PHP" expanded="false" />
+            <element signature="e#43376#43434#0#PHP" expanded="false" />
+            <element signature="e#43444#43494#0#PHP" expanded="false" />
+            <element signature="e#43536#43607#0#PHP" expanded="false" />
+            <element signature="n#_get_recharge_type#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#43698#43970#0#PHP" expanded="false" />
+            <element signature="e#43725#43794#0#PHP" expanded="false" />
+            <element signature="e#43807#43876#0#PHP" expanded="false" />
+            <element signature="e#43889#43960#0#PHP" expanded="false" />
+            <element signature="e#44009#44084#0#PHP" expanded="false" />
+            <element signature="n#_get_transfer_status#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#44181#44435#0#PHP" expanded="false" />
+            <element signature="e#44210#44281#0#PHP" expanded="false" />
+            <element signature="e#44294#44365#0#PHP" expanded="false" />
+            <element signature="e#44378#44425#0#PHP" expanded="false" />
+            <element signature="e#44595#44755#0#PHP" expanded="false" />
+            <element signature="n#secret#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#45121#45222#0#PHP" expanded="false" />
+            <element signature="e#45317#45469#0#PHP" expanded="false" />
+            <element signature="n#_secret#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#45860#45961#0#PHP" expanded="false" />
+            <element signature="e#46059#46146#0#PHP" expanded="false" />
+            <element signature="n#_get_userinfo#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#46235#46345#0#PHP" expanded="false" />
+            <element signature="e#46304#46345#0#PHP" expanded="false" />
+            <element signature="e#46354#46528#0#PHP" expanded="false" />
+            <element signature="e#46567#46683#0#PHP" expanded="false" />
+            <element signature="n#is_mobile#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#46838#46972#0#PHP" expanded="false" />
+            <element signature="n#_get_card_info#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#47060#47358#0#PHP" expanded="false" />
+            <element signature="e#47109#47279#0#PHP" expanded="false" />
+            <element signature="e#47203#47265#1#PHP" expanded="false" />
+            <element signature="e#47416#47500#0#PHP" expanded="false" />
+            <element signature="n#_set_cutpage_params#0;n#Cash_model#0;n#!!top" expanded="false" />
+            <element signature="e#47578#47653#0#PHP" expanded="false" />
+            <element signature="e#47662#47759#0#PHP" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/common/user_left.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.10034602">
+          <caret line="8" column="131" selection-start-line="8" selection-start-column="131" selection-end-line="8" selection-end-column="131" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/views/common/head.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.517301">
+          <caret line="35" column="116" selection-start-line="35" selection-start-column="99" selection-end-line="35" selection-end-column="116" />
+          <folding />
         </state>
       </provider>
     </entry>
