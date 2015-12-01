@@ -38,7 +38,7 @@
    <dl class="contact_dl">
   <dt><img src="../../../../assets/images/about/contact/con_ico3.jpg" >商务合作</dt>
   <dd>如果贵公司希望与我们建立商务合作关系，形成优势互补，请将合作意向进行简要描述并发送邮件至：</dd>
-<dd><a href="javascript:void(0);">chenxue@zgwjjf.com</a></dd>
+<dd><a href="javascript:void(0);">service@zgwjjf.com</a></dd>
 <!--  <dd>合作电话 136-4407-7078 陈女士 我们会尽快与您联系。</dd>-->
   </dl>
   </div>

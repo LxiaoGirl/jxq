@@ -397,6 +397,13 @@
         //修改姓名
 		$('#name').keyup(function(){
 			var name=this.value;
+            if( ! /^[a-zA-Z_][a-zA-Z_0-9]{4,14}$/.test(name)){
+                $('#name_notes').html('请输入以字母或下划线开头由字母数字下划线组成的5到15位的用户名!');
+                $('#name_sub').attr("disabled", true);
+                return false;
+            }else{
+                $('#name_notes').html('');
+            }
 			var condition;
 			condition='?name='+name;
 			$.post('/index.php/user/user/Change_name'+condition,{},function(result){
@@ -417,11 +424,13 @@
 			var condition;
 			condition='?name='+name+'&f=1';
 			$.post('/index.php/user/user/Change_name'+condition,{},function(result){
-				result = eval(result);
+//				result = eval(result);
 				$('#new_name').html(result[0].name);
+				$('#head_user_name_span').html(result[0].name);
+				$('#left_user_name_span').html(result[0].name);
 				$('.user_name').html(result[0].name);
 
-			});
+			},'json');
 		});
 
         //根据类型自动触发

@@ -267,8 +267,8 @@ class User_model extends CI_Model{
 
 		$nric_exists = $this->c->count(self::user,array('where'=>array('nric'=>$nric)));
 		if($nric_exists){
-			$data['msg'] = '该身份证已有用户认证使用过!';
-			return $data;
+//			$data['msg'] = '该身份证已有用户认证使用过!';
+//			return $data;
 		}
 
 		//查询已经提交实名认证情况
@@ -925,9 +925,13 @@ class User_model extends CI_Model{
 		$temp = array();
 		$temp['name'] = $name;
 		$temp['uid']   =  $uid;
+
+		if(empty($temp['name'])){ $data['msg'] = '昵称不能为空哦~'; return $data;}
+		if( ! preg_match('/^[a-zA-Z_][a-zA-Z_[0-9]{4,14}$/',$name)){ $data['msg'] = '用户名建议为字母或下划线开头以字母数字下划线组成的5到15位!~'; return $data;}
+
 		$temp['where'] = array('where' => array('user_name' => $temp['name']));
 		$temp['count'] = $this->c->get_row(self::user, $temp['where']);
-		if(empty($temp['name'])){ $data['msg'] = '昵称不能为空哦~'; return $data;}
+
 		if(empty($temp['count'])){
 			$data=array(
 					'status'=>'10000',
@@ -1659,14 +1663,14 @@ class User_model extends CI_Model{
 			);
 			$temp['where'] = array('where' => array('uid' => $uid));
 			$query = $this->c->update(self::user, $temp['where'], $temp['data']);
-			if(!empty( $data['user'])){
+			if($query){
 				$data= array(
 						'status' => '10000',
 						'msg' => '邮箱绑定成功！',
-						'data' => $data['user']
+						'data' => $email
 				);
 			}else{
-				$data['msg'] = '非法操作！';
+				$data['msg'] = '服务器繁忙请稍后重试！';
 			}
 		}else{
 			$data['msg'] = '用户未登录！';

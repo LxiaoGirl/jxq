@@ -40,7 +40,6 @@
 <!--footer start-->
 <?php $this->load->view('common/footer'); ?>
 <!--footer end-->
-<script src="/listview-2.0.js"></script>
 <script type="text/javascript">
   seajs.config({
     base: '/assets/js/',

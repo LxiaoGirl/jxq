@@ -517,6 +517,7 @@
                     $('.smrz_2').fadeIn();
                     $('.real_name_flag').html('已认证');
                     $('.real_name_button').html(real_name);
+                    $('#real_name_image').attr('src','/assets/images/common/user_left_1_ok.png');
                 }else{
                     $('#real_name_msg').html(result.msg);
                 }
@@ -883,6 +884,9 @@
                 break;
             case 'find_password':
                 $('.wjmm').click();
+                break;
+            case 'real_name':
+                $('.smrz').click();
                 break;
             default:
         }

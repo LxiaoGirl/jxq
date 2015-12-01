@@ -178,8 +178,8 @@
                                             <div class="product_of_invest_num_bot tc"><?php echo $v['months']; ?></div>
                                         </li>
                                         <li>
-                                            <div class="product_of_invest_home_num_bot tc">借款总额</div>
-                                            <div class="product_of_invest_num_bot tc"><?php echo price_format($v['amount'],3,false); ?><i>万元</i></div>
+                                            <div class="product_of_invest_home_num_bot tc">借款总额(万元)</div>
+                                            <div class="product_of_invest_num_bot tc"><?php echo price_format($v['amount'],3,false); ?></div>
                                         </li>
                                         <li>
                                             <div class="product_of_invest_home_num_bot tc">起投金额(元)</div>

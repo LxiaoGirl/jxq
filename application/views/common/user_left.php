@@ -16,10 +16,11 @@
                         else if($h<17) echo "下午好！";
                         else echo "晚上好！";
                     ?>
-                    <?php echo profile('user_name')?profile('user_name'):'-' ?><span>vip<font>0</font></span></p>
+                    <i id="left_user_name_span"><?php echo profile('user_name')?profile('user_name'):'-' ?></i>
+                    <span>vip<font>0</font></span></p>
                 <p class="str_img">
                     <a href="<?php echo site_url('user/user/account_information') ;?>"><img src="../../../assets/images/common/user_left_2_ok.png" title="手机绑定"></a>
-                    <a href="<?php echo site_url('user/user/account_security') ;?>"><img src="<?php if(profile('clientkind') == '1'): ?>/assets/images/common/user_left_1_ok.png<?php else: ?>/assets/images/common/user_left_1.png<?php endif; ?>" title="实名认证"></a>
+                    <a href="<?php echo site_url('user/user/account_security') ;?>"><img id="real_name_image" src="<?php if(profile('clientkind') == '1'): ?>/assets/images/common/user_left_1_ok.png<?php else: ?>/assets/images/common/user_left_1.png<?php endif; ?>" title="实名认证"></a>
                     <a href="<?php echo site_url('user/user/account_information') ;?>"><img src="<?php if(profile('email')): ?>/assets/images/common/user_left_3_ok.png<?php else: ?>/assets/images/common/user_left_3.png<?php endif; ?>" title="邮箱绑定"></a>
                 </p>
                 <p>安全等级<a href="<?php echo site_url('user/user/account_information');?>">去提升</a><font class="fr"><?php echo safety();?></font></p>

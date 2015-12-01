@@ -106,7 +106,7 @@ class User extends Login_Controller{
 
 		//验证实名
 		if($this->session->userdata('clientkind') != "1"){
-			redirect('user/user/account_security', 'refresh');
+			redirect('user/user/account_security?type=real_name', 'refresh');
 		}
 		$data['balance'] = $this->cash->get_user_balance($this->session->userdata('uid'));
 		if($data['balance']['status'] == '10000')$data['balance'] = $data['balance']['data']['balance'];
@@ -187,7 +187,7 @@ class User extends Login_Controller{
 				$temp['end_time'] = time();
 				break;
 			case 'w';
-				$temp['start_time'] = strtotime((date('Y-m').'-'.(date('d')-(date('w')>0?date('w'):7))).' 00:00:00');
+				$temp['start_time'] = strtotime(date('Y-m-d',strtotime('-'.(date('w')>0?date('w')-1:6).' day')),' 00:00:00');
 				$temp['end_time'] = time();
 				break;
 			case 'm';
@@ -410,11 +410,11 @@ class User extends Login_Controller{
 		$f = $this->input->get('f',true);
 		if($f!=''){
 			$data = $this->user->Change_name($name,$uid);
-		}else{
-			$data = $this->user->Change_name($name,0);
 			if($data['status'] == '10000'){
 				$this->session->set_userdata(array('user_name'=>$name));
 			}
+		}else{
+			$data = $this->user->Change_name($name,0);
 		}
 		$data['name'] = $name;
 		if($this->input->is_ajax_request() == TRUE){
@@ -679,7 +679,7 @@ class User extends Login_Controller{
 		if($data['jujian']['status']=='10000'){
 			$data['links'] 	= $this->c->get_links($data['jujian']['data']['total'],$temp['page_id'],3);
 		}
-		$this->load->view('user/profile/invite_1',$data);
+		$this->load->view('user/profile/invite1',$data);
 	}
 
 
