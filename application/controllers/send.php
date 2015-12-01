@@ -28,8 +28,10 @@ class send extends MY_Controller {
 		$temp['uid'] 	= $this->session->userdata('uid')?$this->session->userdata('uid'):0;
 
 		//过滤 间隔时间
-		$temp['last_time_space'] = $this->session->userdata('sms_last_send_time')?time()-$this->session->userdata('sms_last_send_time'):'';
+		if($temp['type'] == 'sms')$temp['last_time_space'] = $this->session->userdata('sms_last_send_time')?time()-$this->session->userdata('sms_last_send_time'):'';
+		if($temp['type'] == 'voice')$temp['last_time_space'] = $this->session->userdata('voice_last_send_time')?time()-$this->session->userdata('voice_last_send_time'):'';
 		$temp['item_space'] 	 =item("sms_space_time")?item("sms_space_time"):60;
+
 		if($temp['last_time_space'] !== '' && $temp['last_time_space'] < $temp['item_space']){
 			$data['msg'] = '发送过于频繁,请在'.($temp['item_space']-$temp['last_time_space']).'秒后重试!';
 		}else{
@@ -46,7 +48,11 @@ class send extends MY_Controller {
 
 		//添加最后发送时间
 		if($data['status'] == '10000'){
-			$this->session->set_userdata(array('sms_last_send_time'=>time()));
+			if($temp['type'] == 'sms'){
+				$this->session->set_userdata(array('sms_last_send_time'=>time()));
+			}else{
+				$this->session->set_userdata(array('voice_last_send_time'=>time()));
+			}
 		}
 		unset($temp);
 		exit(json_encode($data));

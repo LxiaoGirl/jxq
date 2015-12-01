@@ -22,7 +22,9 @@
                     <div class="inp_pit">
                         <div class="inp">
                             <input class="js_sjyzm" type="text" name="tpyzm" value="" placeholder="输入验证码" maxlength="6" />
-                            <input class="fsyzm" type="button" value="发送验证码" />
+                            <input class="fsyzm" type="button" value="发送验证码"
+                                   data-wait-time="<?php echo item("sms_space_time")?item("sms_space_time"):60; ?>"
+                                   data-last-time="<?php echo profile("sms_last_send_time")?profile("sms_last_send_time"):0; ?>" />
                         </div>
                         <div class="pit"></div>
                     </div>
@@ -67,7 +69,7 @@
     seajs.use(['jquery','sys','jqform','validator'],function(){
 	    //发送短信 处理
         $(function(){
-	        $('.fsyzm').send_sms('sms','<?php echo profile("register_mobile");?>','register',<?php echo item("sms_space_time")?item("sms_space_time"):60; ?>,'<?php echo profile("sms_last_send_time")?time()-profile("sms_last_send_time"):''; ?>');
+	        $('.fsyzm').send_sms('sms','<?php echo profile("register_mobile");?>','register');
 	        //$('.fsyzm').click();//直接触发
         });
         var pit_3=0,pit_4=0,pit_5=0,pit_6=0;

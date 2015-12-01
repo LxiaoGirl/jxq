@@ -54,7 +54,12 @@
                         <div class="qx_inp">
                             <div class="left">输入语音验证码：</div>
                             <div class="right">
-                                <input class="tx_yzm" type="text" / placeholder="输入验证码"> <input class="hqyzm" type="button" value="获取验证码" />
+                                <input class="tx_yzm" type="text" placeholder="输入验证码" / >
+                                <input class="hqyzm sms" type="button" value="短信验证码" />
+                                <input class="hqyzm voice" type="button"
+                                       data-wait-time="<?php echo item("sms_space_time")?item("sms_space_time"):60; ?>"
+                                       data-last-time="<?php echo profile("voice_last_send_time")?profile("voice_last_send_time"):0; ?>"
+                                       value="语音验证码" />
                                 <div class="tip_qx_1"></div>
                             </div>
                         </div>
@@ -83,7 +88,7 @@
 <!--userjs start-->
 <script type="text/javascript">
     seajs.use(['jquery','sys','jqform','validator'],function(){
-        $('.hqyzm').click(function () {
+        $('.sms').click(function () {
             // body...
 			dxdjs($(this));
 			var mobile = $('#mobile').val();
@@ -100,6 +105,9 @@
 				
 			});
             
+        });
+        $(function(){
+            $('.voice').send_sms('voice','<?php echo profile("mobile");?>','transfer',<?php echo item("sms_space_time")?item("sms_space_time"):60; ?>,'<?php echo profile("sms_last_send_time")?time()-profile("sms_last_send_time"):0; ?>');
         });
         var pit_1=0,pit_2=0,pit_3=0;
         $(".but_qx_but").click(function (){		

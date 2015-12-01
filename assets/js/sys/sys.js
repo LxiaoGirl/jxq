@@ -1091,11 +1091,26 @@ define(function (require, exports, module) {
         return this;
     };
 
-    $.fn.send_sms = function(type,mobile,action,wait,last_send_time_go){
+    $.fn.send_sms = function(type,mobile,action){
+        var wait = 60,last_send_time_go = '',tag_default_msg = '';
+
         if( ! mobile){
             wsb_alert('电话号码不能为空!',2);
             return;
         }
+        if(this.data('waitTime') != 'undefined' && parseInt(this.data('waitTime')) > 0){
+            wait = parseInt(this.data('waitTime'));
+        }
+        if(this.data('lastTime') != 'undefined' && parseInt(this.data('lastTime')) > 0){
+            last_send_time_go = Date.parse(new Date())/1000 - parseInt(this.data('lastTime'));
+        }
+
+        if(this.get(0).tagName == 'INPUT'){
+            tag_default_msg = this.val();
+        }else{
+            tag_default_msg = this.text();
+        }
+
         //倒计时 效果处理
         var sms_count_down = function(e,space_time,all_time,callback){
             var wait=space_time;
@@ -1103,7 +1118,7 @@ define(function (require, exports, module) {
             var time = function(o){
                 if (wait == 0) {
                     o.removeAttr("disabled");
-                    o.val("获取验证码");
+                    o.val(tag_default_msg);
                     wait = all_time;
                     clearTimeout(t);
                     if(typeof callback == "function"){
