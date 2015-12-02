@@ -94,7 +94,17 @@ class User extends Login_Controller{
 		$amount=$this->input->get('amount',true);
 		$security=$this->input->get('security',true);
 		$authcode=$this->input->get('authcode',true);
-		$data = $this->cash->user_transfer($uid,$amount,$card_no,$security,$authcode);
+		//查询今天的提现情况
+		$today_transfer = $this->cash->get_user_transfer_list($uid,0,strtotime(date('Y-m-d').' 00:00:00'),time());
+		if($today_transfer['status'] == '10000' && $today_transfer['data'] && (isset($today_transfer['data']['data']) && count($today_transfer['data']['data'])>0)){
+			$charge = 2;
+		}else{
+			$charge = 0;
+		}
+		$data = $this->cash->user_transfer($uid,$amount,$card_no,$security,$authcode,$charge);
+		if($data['status'] == '10000'){
+			$this->session->set_userdata(array('balance'=>$data['data']['balance']));
+		}
 		exit(json_encode($data));
 	}
 

@@ -1,5 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * 资金相关model处理
+ * Class Cash_model
+ */
 class Cash_model extends CI_Model{
     //用到的数据库表
     const borrow        = 'borrow';             //借款项目表
@@ -13,7 +17,7 @@ class Cash_model extends CI_Model{
     const risk          = 'risk_money';          //风险保证金
 
     const RUN_DATE      = '2015-06-12';         //网站运行时间
-    const TRANSFE_MIN   = '10';                 //提现最低金额
+    const TRANSFE_MIN   = '50';                 //提现最低金额
     private $_page_size = '10';                 //分页每页记录数
 
     public function __construct(){
@@ -271,6 +275,7 @@ class Cash_model extends CI_Model{
             //验证起始时间
             if($start_time){
                 $temp['where']['where']['dateline >=']=$start_time;
+                if( ! $end_time) $end_time = time();
             }
             if($end_time){
                 $temp['where']['where']['dateline <=']=$end_time;
@@ -421,6 +426,7 @@ class Cash_model extends CI_Model{
             //验证起始时间
             if($start_time){
                 $temp['where']['where']['add_time >=']=$start_time;
+                if( ! $end_time) $end_time = time();
             }
             if($end_time){
                 $temp['where']['where']['add_time <=']=$end_time;
@@ -499,10 +505,11 @@ class Cash_model extends CI_Model{
      * @param string $card_no
      * @param string $security
      * @param string $authcode
+     * @param int $charge
      * @return array
      *  balance=>0
      */
-    public function user_transfer($uid=0,$amount=0,$card_no='',$security='',$authcode=''){
+    public function user_transfer($uid=0,$amount=0,$card_no='',$security='',$authcode='',$charge=2){
         $data = array(
             'name'   =>'提现',
             'status' =>'10001',
@@ -581,17 +588,14 @@ class Cash_model extends CI_Model{
         //开启事务
         $this->db->trans_start();
 
-        //提现手续费处理
-        $temp['charge'] = 2;
-
         $temp['transaction_no'] = $this->c->transaction_no(self::transfer, 'transaction_no');
 
         $temp['data'] = array(
             'transaction_no' => $temp['transaction_no'],
             'uid'            => $uid,
             'card_no'        => $card_no,
-            'amount'         => round($amount - $temp['charge'],2),
-            'charge'         => $temp['charge'],
+            'amount'         => $charge?round($amount - $charge,2):$amount,//提现手续费处理
+            'charge'         => $charge,//提现手续费处理
             'real_name'      => $temp['card_info']['real_name'],
             'bank_name'      => $temp['card_info']['bank_name'],
             'account'        => $temp['card_info']['account'],
@@ -684,12 +688,13 @@ class Cash_model extends CI_Model{
 				$temp['where']['where']['add_time <=']=time();
 			 }
             //验证type
-            if($type){
-                $temp['where']['where']['type']=$type;
+            if($type !== ''){
+                $temp['where']['where']['status']=$type;
             }
             //验证起始时间
             if($start_time){
                 $temp['where']['where']['add_time >=']=$start_time;
+                if( ! $end_time) $end_time = time();
             }
             if($end_time){
                 $temp['where']['where']['add_time <=']=$end_time;
@@ -707,7 +712,7 @@ class Cash_model extends CI_Model{
                 $data['status'] = '10000';
                 $data['msg']    = 'ok!';
             }else{
-	            $data['data'] = '';
+	            $data['data'] = $temp['data'];
                 $data['status'] = '10000';
                 $data['msg']    = '暂无相关数据!';
             }
