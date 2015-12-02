@@ -34,16 +34,40 @@ class User extends Login_Controller{
 		//获取雪球数据
 		$data['snowball_num'] = $this->activity->My_snowball_total($uid);
 		$data['snowball_num'] =($data['snowball_num']['status']=='10000')? $data['snowball_num']['data']['snowball_total']:0;
-
+/*
 		$temp['investment'] = $this->user->investment($uid);
 		if($temp['investment']['status']==10000){
 			$data['months'] = $temp['investment']['data']['months'];
 			$data['sy'] = $temp['investment']['data']['sy'];
 			$data['tz'] = $temp['investment']['data']['tz'];
 		}
+*/
+
 		$data['red_bag']=$this->activity->receive_red_num($uid,0);
 
 		$this->load->view('user/myaccount/account_home',$data);
+	}
+
+	public function ajax_get_6month_data(){
+		if( ! $this->input->cookie('account_home_6m_data_'.$this->session->userdata('uid'),true)){
+			$data = $this->cash->get_user_month_invest_interest($this->session->userdata('uid'));
+
+			$cookie = array(
+					'name'   => 'account_home_6m_data_'.$this->session->userdata('uid'),
+					'value'  => serialize($data['data']),
+					'expire' => 3600,
+					'domain' => '',
+					'path'   => '/',
+					'prefix' => '',
+			);
+			$this->input->set_cookie($cookie);
+		}else{
+			$data['status'] = '10000';
+			$data['msg']    = 'ok';
+			$data['data']   = unserialize($this->input->cookie('account_home_6m_data_'.$this->session->userdata('uid'),true));
+		}
+
+		exit(json_encode($data));
 	}
 
 

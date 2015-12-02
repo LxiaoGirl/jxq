@@ -877,14 +877,49 @@ class Cash_model extends CI_Model{
     /***************************************全网资金统计相关*********************************************************/
 
 
+    public function get_user_month_invest_interest($uid=0,$month=6){
+        $data = array('name'=>'最近n个月的投资收益记录列表','status'=>'10001','msg'=>'ok','data'=>array('month'=>'', 'invest' => '', 'interest' =>''));
+        $temp = array();
+
+        if($uid > 0){
+            if($month <= 0){
+                $data['msg'] = '月份为空!';
+                return $data;
+            }
+            $temp['6m_data'] = array(
+                'month'=>'',
+                'invest'=>'',
+                'interest'=>''
+            );
+            for($i=5;$i>=0;$i--){
+                $temp['start_time'] = strtotime(date('Y-m-01',strtotime('-'.$i.' month')).' 00:00:00');
+                $temp['end_time'] = strtotime(date('Y-m-t',strtotime('-'.$i.' month')).' 23:59:59');
+                $temp['6m_data']['month'][] = date('Y年m月',$temp['start_time']);
+                $temp['invest'] = $this->get_user_invest_total($uid,0,$temp['start_time'],$temp['end_time']);
+                $temp['6m_data']['invest'][] = $temp['invest'];
+                $temp['interest'] = $this->get_user_receive_principal_interest($uid,$temp['start_time'],$temp['end_time']);
+                $temp['6m_data']['interest'][] = $temp['interest']['receive_interest'];
+            }
+            $data['data'] = $temp['6m_data'];
+            $data['msg'] = 'ok!';
+            $data['status'] = '10000!';
+        }else{
+            $data['msg'] = '用户uid为空!';
+        }
+        unset($temp);
+        return $data;
+    }
+
     /***************************************用户资金统计相关方法 涉及的数据表 borrow payment transfer*********************************************************/
     /**
      * 用户投资总额
      * @param int $uid
      * @param int $category
+     * @param int $start_time
+     * @param int $end_time
      * @return float|int
      */
-    public function get_user_invest_total($uid=0,$category=0){
+    public function get_user_invest_total($uid=0,$category=0,$start_time=0,$end_time=0){
         $data = 0;
         $temp = array();
 
@@ -906,6 +941,15 @@ class Cash_model extends CI_Model{
             if($category){
                 $temp['where']['where'][join_field('productcategory', self::borrow)]=$category;
             }
+            //验证起始时间
+            if($start_time){
+                $temp['where']['where']['dateline >=']=$start_time;
+                if( ! $end_time) $end_time = time();
+            }
+            if($end_time){
+                $temp['where']['where']['dateline <=']=$end_time;
+            }
+
             $data = (float)$this->c->get_one(self::payment, $temp['where']);
         }
 
@@ -917,9 +961,11 @@ class Cash_model extends CI_Model{
      * 查询 borrow_payment 表  获得 已收本金 和利息
      * 累计收益  已还本金
      * @param int $uid
+     * @param int $start_time
+     * @param int $end_time
      * @return array
      */
-    public function get_user_receive_principal_interest($uid=0){
+    public function get_user_receive_principal_interest($uid=0,$start_time=0,$end_time=0){
         $rs = array('receive_principal'=>0,'receive_interest'=>0);
         if($uid > 0){
             $borrow = $this->c->get_all(self::payment,array(
@@ -929,11 +975,23 @@ class Cash_model extends CI_Model{
             ));
 
             if( ! empty($borrow)){
+
+
                 foreach ($borrow as $key => $value) {
-                    $interest = $this->c->get_one(self::payment,array(
+                    $temp['where'] = array(
                         'select' =>'SUM(amount)',
                         'where'  =>array('uid'=>$uid,'type'=>3,'borrow_no'=>$value['borrow_no'])
-                    ));
+                    );
+                    //验证起始时间
+                    if($start_time){
+                        $temp['where']['where']['dateline >=']=$start_time;
+                        if( ! $end_time) $end_time = time();
+                    }
+                    if($end_time){
+                        $temp['where']['where']['dateline <=']=$end_time;
+                    }
+
+                    $interest = $this->c->get_one(self::payment,$temp['where']);
                     if($interest > $value['amounts']){
                         $rs['receive_principal'] += $value['amounts'];
                         $rs['receive_interest']  += $interest - $value['amounts'];

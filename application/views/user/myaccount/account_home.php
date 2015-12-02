@@ -95,6 +95,7 @@
                 </div>
                 <p class="line_h86">投资收益<a href="<?php echo site_url('user/user/transaction_note');?>">查看投标记录</a></p>
                 <div class="tzfb_ec" id="tzfb_ec"></div>
+                <p id="char-load-msg" style="text-align: center;visibility: hidden;">图表数据加载中...</p>
             </div>
         </div>
 		
@@ -228,7 +229,7 @@ option2 = {
         }
     ]
 };
-var option3 = { 
+var option3 = {
     title : {
         text: '最近六个月投资收益一览',
         x:'center',
@@ -246,7 +247,7 @@ var option3 = {
     xAxis : [
         {
             type : 'category',
-            data : [<?php echo $months;?>]
+            data : ['']
         }
     ],
     yAxis: [
@@ -271,7 +272,7 @@ var option3 = {
                     color : "#4fc1e9"
                 }
             },
-            data:[<?php echo $tz;?>]
+            data:[0]
 
         },
         {
@@ -283,11 +284,11 @@ var option3 = {
                                 }
                             },
                             yAxisIndex: 1,
-                            data:[<?php echo $sy;?>]
+                            data:[0]
         }
     ]
 };
-// 为echarts对象加载数据 
+ //为echarts对象加载数据
 var myChart = ec.init(document.getElementById('acc_mian_1'));
 var myChart1 = ec.init(document.getElementById('acc_mian_2'));
 var myChart2 = ec.init(document.getElementById('acc_mian_3'));
@@ -295,7 +296,73 @@ var myChart3 = ec.init(document.getElementById('tzfb_ec'));
 myChart.setOption(option); 
 myChart1.setOption(option1);
 myChart2.setOption(option2); 
-myChart3.setOption(option3); 
+myChart3.setOption(option3);
+
+    //ajax加载数据
+    $("#char-load-msg").css('visibility','visible');
+    $.post('/index.php/user/user/ajax_get_6month_data',{},function(rs){
+        $("#char-load-msg").css('visibility','hidden');
+        option3 = {
+            title : {
+                text: '最近六个月投资收益一览',
+                x:'center',
+                textStyle:{
+                    fontSize: 16,
+                    color: '#454545'
+                }
+            },
+            tooltip: {
+                trigger: "axis",
+                axisPointer:{
+                    type: "none"
+                }
+            },
+            xAxis : [
+                {
+                    type : 'category',
+                    data : rs.data.month
+                }
+            ],
+            yAxis: [
+                {
+                    type: "value",
+                    name : '金额',
+                },
+                {
+                    type : 'value',
+                    name : '金额',
+                    axisLabel : {
+                        formatter: '{value}'
+                    }
+                }
+            ],
+            series : [
+                {
+                    name:'投资总额',
+                    type:'bar',
+                    itemStyle: {        // 系列级个性化样式，纵向渐变填充
+                        normal: {
+                            color : "#4fc1e9"
+                        }
+                    },
+                    data:rs.data.invest
+
+                },
+                {
+                    name:'投资收益',
+                    type:'line',
+                    itemStyle: {        // 系列级个性化样式，纵向渐变填充
+                        normal: {
+                            color : "#599b30"
+                        }
+                    },
+                    yAxisIndex: 1,
+                    data:rs.data.interest
+                }
+            ]
+        };
+        myChart3.setOption(option3);
+    },'json');
 }
 );
 </script>
