@@ -16,14 +16,16 @@
         <form id="reg_2" action="" method="" accept-charset="utf-8" onsubmit="return false;">
         <div class="inp_pit">
             <div class="inp">
-                <img src="../../../../assets/images/passport/zc_suo.png">
+                <img class="inpr" src="../../../../assets/images/passport/zc_suo.png">
+                <img class="inpr ls" src="../../../../assets/images/passport/zc_suo_ok.png">
                 <input class="reg_sj js_mm" type="password" name="sjh" value="" placeholder="请为您的账号设置一个密码" maxlength="20" />
             </div>
             <div class="pit"></div>
         </div>
         <div class="inp_pit">
             <div class="inp">
-                <img src="../../../../assets/images/passport/zc_suo.png">
+                <img class="inpr" src="../../../../assets/images/passport/zc_suo.png">
+                <img class="inpr ls" src="../../../../assets/images/passport/zc_suo_ok.png">
                 <input class="reg_sj js_cfmm" type="password" name="sjh" value="" placeholder="请重复输入上面的密码" maxlength="20" />
             </div>
             <div class="pit"></div>
@@ -39,6 +41,18 @@
 <!--footer-->
 <script type="text/javascript">
 	seajs.use(['jquery','sys','jqform','validator'],function(){
+        //INPUT框变色
+        $('.inp').find('input').focus(function(){
+            $(this).siblings('.ls').show();
+            $(this).addClass('hav');
+        });
+        $('.inp').find('input').blur(function(){
+            if($.trim($(this).val())==''){
+                $(this).siblings('.ls').hide();
+                $(this).removeClass('hav');
+            }
+        });
+        //INPUT框变色
     var pit_4=0,pit_5=0;
     $('.but').find('#reg_xyb').click(function () {
         if(pit_4 == 0){

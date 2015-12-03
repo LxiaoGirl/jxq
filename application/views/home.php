@@ -60,20 +60,22 @@
             <ul>
 	            <?php if($project):foreach($project as $k=>$v):?>
 		            <li>
-			            <h1><?php echo $v['category'];; ?><a href="<?php echo site_url('invest/index?c='.$v['cat_id']) ?>" class="fr">查看全部项目 > </a></h1>
+			            <h1><?php echo $v['category']; ?><a href="<?php echo site_url('invest/index?c='.$v['cat_id']) ?>" class="fr">查看全部项目 > </a></h1>
 			            <div class="home_product_body">
 				            <div class="top">
 					            <div class="title fl"><a href="<?php echo site_url('invest/detail?borrow_no='.$v['borrow_no']); ?>"><?php echo $v['subject']; ?></a></div>
 					            <div class="baozhi fl">
+                                <?php if(!empty($v['company_name'])): ?>
 						            <span class="bao">
 							            <em><?php echo type_name_2($v['type']); ?></em>
 							            <font><?php echo $v['company_name']; ?></font>
 						            </span>
+                                <?php endif;?>
 <!--						            <span class="zhi"><em>A</em><font>支持自动投资</font></span>-->
 <!--						            <span class="jia"><em>加</em><font>+0.9%</font></span>-->
 					            </div>
                                 <?php if($v['new_status'] == 1 || $v['new_status'] == 2): ?>
-                                    <div class="djs fl time-down" data-start-time="<?php echo $v['buy_time']; ?>" data-end-time="<?php echo $v['due_date']; ?>" style="visibility: hidden;<?php if($v['new_status'] == 1): ?>display:none;<?php endif; ?>">
+                                    <div class="djs fr time-down" data-start-time="<?php echo $v['buy_time']; ?>" data-end-time="<?php echo $v['due_date']; ?>" style="visibility: hidden;<?php if($v['new_status'] == 1): ?>display:none;<?php endif; ?>">
                                         还有<font class="d">00</font>天<font class="h">00</font>:<font class="m">00</font>:<font class="s">00</font><span class="js_flag">开始</span>
                                     </div>
                                 <?php endif; ?>
@@ -89,8 +91,8 @@
 						            <div class="product_four_num_bot tc"><?php echo $v['months']; ?></div>
 					            </li>
                                 <li>
-                                    <div class="product_of_invest_home_num_bot tc">借款总额(万元)</div>
-                                    <div class="product_of_invest_num_bot tc"><?php echo price_format($v['amount'],3,false); ?></div>
+                                    <div class="product_four_num_top tc">借款总额(万元)</div>
+                                    <div class="product_four_num_bot tc"><?php echo price_format($v['amount'],3,false); ?></div>
                                 </li>
 					            <li>
 						            <div class="product_four_num_top tc">起投金额(元)</div>
@@ -102,7 +104,7 @@
 					            </li>
 				            </ul>
 				            <div class="bot">
-                                <div class="fl sy_jdt" jdt="<?php echo $v['receive_rate']; ?>" pos="<?php echo $v['receive_rate']-6; ?>">
+                                <div class="fl sy_jdt" jdt="<?php echo $v['receive_rate']; ?>" pos="<?php echo $v['receive_rate']-3; ?>">
                                     <span><i></i><font class="font"><?php echo $v['receive_rate']; ?>%</font></span>
                                 </div>
 					            <div class="fr tc">

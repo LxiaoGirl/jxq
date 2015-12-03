@@ -35,13 +35,13 @@
         <div class="help_man1 fl">
             <p class="help_h1">成为会员</p>
             <ul class="help_list2 help_man">
-                <a href="<?php echo site_url('about/help'); ?>">
+                <a href="<?php echo site_url('about/help_list?cat_id=30'); ?>">
                     <li>
                         <img src="../../../../assets/images/about/help/help1_1.png"> 
                         <p>注册</p>
                     </li>
                 </a>
-                <a href="<?php echo site_url('about/help'); ?>">
+                <a href="<?php echo site_url('about/help_list?cat_id=46'); ?>">
                     <li>
                         <img src="../../../../assets/images/about/help/help1_2.png"> 
                         <p>认证</p>
@@ -52,19 +52,19 @@
         <div class="help_man2 fr">
             <p class="help_h1">投资流程</p>
             <ul class="help_list3 help_man">
-                <a href="<?php echo site_url('about/help'); ?>">
+                <a href="<?php echo site_url('about/help_list?cat_id=34'); ?>">
                     <li>
                         <img src="../../../../assets/images/about/help/help1_1.png"> 
                         <p>充值</p>
                     </li>
                 </a>
-                <a href="<?php echo site_url('about/help'); ?>">
+                <a href="<?php echo site_url('about/help_list?cat_id=36'); ?>">
                     <li>
                         <img src="../../../../assets/images/about/help/help2_2.png"> 
                         <p>投资</p>
                     </li>
                 </a>
-                <a href="<?php echo site_url('about/help'); ?>">
+                <a href="<?php echo site_url('about/help_list?cat_id=35'); ?>">
                     <li>
                         <img src="../../../../assets/images/about/help/help2_4.png"> 
                         <p>提现</p>

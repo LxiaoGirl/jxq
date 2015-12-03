@@ -20,14 +20,16 @@
                     <div class="title">登录聚雪球</div>
                     <div class="inp_pit">
                         <div class="inp">
-                            <img src="../../../../assets/images/passport/yh_icon.png">
+                            <img class="inpr hs" src="../../../../assets/images/passport/yh_icon.png">
+                            <img class="inpr ls" src="../../../../assets/images/passport/yh_icon_ok.png">
                             <input class="reg_sj js_mobile" type="text" name="sjh" value="<?php echo $mobile; ?>" placeholder="手机号/用户名/邮箱" maxlength="50" />
                         </div>
                         <div class="pit"></div>
                     </div>
                     <div class="inp_pit">
                         <div class="inp">
-                            <img src="../../../../assets/images/passport/zc_suo.png">
+                            <img class="inpr hs" src="../../../../assets/images/passport/zc_suo.png">
+                            <img class="inpr ls" src="../../../../assets/images/passport/zc_suo_ok.png">
                             <input class="reg_sj js_mm" type="password" name="sjh" value="<?php echo $password; ?>" placeholder="请输入密码" maxlength="20" />
                         </div>
                         <div class="pit"></div>
@@ -54,7 +56,19 @@
     <?php $this->load->view('common/footer'); ?>
 <!--footer-->
 <script type="text/javascript">
-seajs.use(['jquery','sys','jqform','validator'],function(){
+seajs.use(['jquery','sys'],function(){
+    //INPUT框变色
+    $('.inp').find('input').focus(function(){
+        $(this).siblings('.ls').show();
+        $(this).addClass('hav');
+    });
+    $('.inp').find('input').blur(function(){
+        if($.trim($(this).val())==''){
+            $(this).siblings('.ls').hide();
+            $(this).removeClass('hav');
+        }
+    });
+    //INPUT框变色
     var pit_1=0,pit_2=0;
     $('.but').find('#reg_xyb').click(function () {
 	    //提交 的时候 验证一下 记住密码时的处理
@@ -112,41 +126,7 @@ seajs.use(['jquery','sys','jqform','validator'],function(){
             });
         }
     });
-   /* $('#reg_1').validate({
-        '.js_mobile': {
-            filtrate: 'required mobile',
-            callback: function (index) {
-                var tip = this.parent().parent().find('.pit').eq(0),
-                    text = '';
-                if (index === 0) {
-                    text = '<i class="icon-tip-no"></i>请输入手机号';
-	                pit_1=0;
-                } else if (index === 1) {
-                    text = '<i class="icon-tip-no"></i>请输入正确的手机号码';
-	                pit_1=0;
-                } else {
-                    pit_1=1;
-                    text = '<i class="icon-tip-yes"></i>';
-                }
-                tip.html(text);
-            }
-        },
-        '.js_mm': {
-            filtrate: 'required',
-            callback: function (index) {
-                var tip = this.parent().parent().find('.pit').eq(0),
-                    text = '';
-                if (index === 0) {
-                    text = '<i class="icon-tip-no"></i>请输入密码';
-	                pit_2=0;
-                } else {
-                    pit_2=1;
-                    text = '<i class="icon-tip-yes"></i>';
-                }
-                tip.html(text);
-            }
-        },
-    });*/
+  
 });
 </script>
 </body>

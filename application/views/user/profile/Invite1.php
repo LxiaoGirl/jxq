@@ -100,7 +100,7 @@
 							var status = '还款完成';
 						}
 						text = text+'<p class="month_lie_popnr">';
-						text=text+'<span class="tl wid_159">'+result.data[i].dateline+'</span>';
+						text=text+'<span class="tl wid_159">'+unixtime_style(result.data[i].dateline,'Y-m-d')+'</span>';
 						text=text+'<span class="tl wid_159">'+result.data[i].subject_1+'</span>';
 						text=text+'<span class="tl wid_108">'+status+'</span>';
 						text=text+'<span class="tr wid_125">'+result.data[i].invest_amount+'</span>';

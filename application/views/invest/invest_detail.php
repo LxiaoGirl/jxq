@@ -160,7 +160,6 @@
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){
         tab($(".invest_detail_tab"));
-
 	    $(function(){
             //必要数据
             var can_invest_amount = parseFloat('<?php echo $project['amount']-$project['receive']; ?>'),

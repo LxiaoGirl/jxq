@@ -416,7 +416,8 @@ class User extends Login_Controller{
 	 * 自动投资
 	 */
 	public function auto(){
-		$this->load->view('user/myinvestment/auto');
+		$data = $this->cash->get_user_balance($this->session->userdata('uid'));
+		$this->load->view('user/myinvestment/auto',$data);
 	}
 
 

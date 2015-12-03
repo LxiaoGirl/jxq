@@ -59,14 +59,14 @@
 		<dl class="about_dl02 fl">
 			<dt>媒体报道与采访</dt>
 			<dd>如果你的需要与我们进行媒体合作，或有采访需要，请发送邮件至：</dd>
-			<dd><a href="javascript:void(0);">chenxue@zgwjjf.com</a></dd>
+			<dd><a href="javascript:void(0);">service@zgwjjf.com</a></dd>
 			<dd>我们会在一个工作日你与你联系</dd>
 		</dl>
 		<dl class="about_dl03 fr">
 			<dt>商务合作</dt>
 			<dd>如果你有广告投放，商务合作的需求，请发送邮件</dd>
 			<dd>邮件正文请简要介绍合作需求至：</dd>
-			<dd><a href="javascript:void(0);">chenxue@zgwjjf.com</a></dd>
+			<dd><a href="javascript:void(0);">service@zgwjjf.com</a></dd>
 		</dl>
 		<div class="clear"></div>
 	</div>
