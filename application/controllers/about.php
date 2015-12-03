@@ -198,7 +198,7 @@ class About extends MY_Controller{
             $data['category_list'] = $this->_get_category_list();
 
             //获取帮助列表具体数据
-            $data['help_list'] = $this->other->get_news($data['cat_id'],1,100,'','');
+            $data['help_list'] = $this->other->get_news($data['cat_id'],1,100,'sortrank DESC','');
             if($data['help_list']['status'] == '10000'){
                 $data['help_list'] = $data['help_list']['data']['data'];
             }
