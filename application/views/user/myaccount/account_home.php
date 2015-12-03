@@ -109,8 +109,6 @@
 </body>
 <script type="text/javascript">
 //头部
-        addnav($(".nav"));
-        addnav($(".main_nav"));
         main_nav_pop($(".main_nav").find($(".fr")).find($("li")));
         nav_pop($(".nav_have_son"));
 //交易详情
@@ -229,7 +227,7 @@ option2 = {
         }
     ]
 };
-var option3 = {
+var option3 = { 
     title : {
         text: '最近六个月投资收益一览',
         x:'center',
@@ -288,7 +286,7 @@ var option3 = {
         }
     ]
 };
- //为echarts对象加载数据
+// 为echarts对象加载数据 
 var myChart = ec.init(document.getElementById('acc_mian_1'));
 var myChart1 = ec.init(document.getElementById('acc_mian_2'));
 var myChart2 = ec.init(document.getElementById('acc_mian_3'));

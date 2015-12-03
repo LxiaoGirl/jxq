@@ -2,12 +2,12 @@
 <html>
 <head>
     <title>聚雪球_网加金服_P2P理财首选互联网金融P2P网贷平台_100元即可投资!</title>
-	<!--	加载头部样式文件-->
-	<?php $this->load->view('common/head_file'); ?>
+    <!--    加载头部样式文件-->
+    <?php $this->load->view('common/head_file'); ?>
 </head>
 <body>
 <!--header-->
-<!--	加载头部文件-->
+<!--    加载头部文件-->
 <?php $this->load->view('common/head'); ?>
 <!--header-->
 <div class="register">
@@ -30,21 +30,24 @@
                     </div>
                     <div class="inp_pit">
                         <div class="inp">
-                            <img src="../../../../assets/images/passport/zc_suo.png">
+                            <img class="inpr" src="../../../../assets/images/passport/zc_suo.png">
+                            <img class="inpr ls" src="../../../../assets/images/passport/zc_suo_ok.png">
                             <input class="reg_sj js_mm" type="password" name="sjh" value="" placeholder="请为您的账号设置一个密码" maxlength="20" />
                         </div>
                         <div class="pit"></div>
                     </div>
                     <div class="inp_pit">
                         <div class="inp">
-                            <img src="../../../../assets/images/passport/zc_suo.png">
+                            <img class="inpr" src="../../../../assets/images/passport/zc_suo.png">
+                            <img class="inpr ls" src="../../../../assets/images/passport/zc_suo_ok.png">
                             <input class="reg_sj js_cfmm" type="password" name="sjh" value="" placeholder="请重复输入上面的密码" maxlength="20" />
                         </div>
                         <div class="pit"></div>
                     </div>
                     <div class="inp_pit">
                         <div class="inp">
-                            <img src="../../../../assets/images/passport/zc_suo.png">
+                            <img class="inpr" src="../../../../assets/images/passport/yqm_icon.png">
+                            <img class="inpr ls" src="../../../../assets/images/passport/yqm_icon_ok.png">
                             <input class="reg_sj js_yqm" type="text" name="sjh" value="" placeholder="输入一个邀请码(选填)" maxlength="20" />
                         </div>
                         <div class="pit"></div>
@@ -67,10 +70,22 @@
 <!--footer-->
 <script type="text/javascript">
     seajs.use(['jquery','sys','jqform','validator'],function(){
-	    //发送短信 处理
+        //INPUT框变色
+        $('.inp').find('input').focus(function(){
+            $(this).siblings('.ls').show();
+            $(this).addClass('hav');
+        });
+        $('.inp').find('input').blur(function(){
+            if($.trim($(this).val())==''){
+                $(this).siblings('.ls').hide();
+                $(this).removeClass('hav');
+            }
+        });
+        //INPUT框变色
+        //发送短信 处理
         $(function(){
-	        $('.fsyzm').send_sms('sms','<?php echo profile("register_mobile");?>','register');
-	        //$('.fsyzm').click();//直接触发
+            $('.fsyzm').send_sms('sms','<?php echo profile("register_mobile");?>','register');
+            //$('.fsyzm').click();//直接触发
         });
         var pit_3=0,pit_4=0,pit_5=0,pit_6=0;
         $('.but').find('#reg_wczc').click(function () {
@@ -87,23 +102,23 @@
                 return false;
             }
             if((pit_3+pit_4+pit_5+pit_6)==4){
-	            $.ajax({
-		            type: 'POST',
+                $.ajax({
+                    type: 'POST',
                     async: false,
-		            url: '<?php echo site_url('login/register_s1'); ?>',
-		            data: {'password':$('.js_mm').val(),'authcode':$('.js_sjyzm').val()},
-		            dataType: 'json',
+                    url: '<?php echo site_url('login/register_s1'); ?>',
+                    data: {'password':$('.js_mm').val(),'authcode':$('.js_sjyzm').val(),'company_code':$('.js_yqm').val()},
+                    dataType: 'json',
                     error:function(){
                         wsb_alert('服务器繁忙请稍后重试!',2);
                     },
-		            success: function (result) {
-			            if(result.status == '10000') {
+                    success: function (result) {
+                        if(result.status == '10000') {
                             window.location.href="<?php echo site_url('login/register_s2'); ?>";
-			            }else{
+                        }else{
                             wsb_alert(result.msg);
-			            }
-		            }
-	            });
+                        }
+                    }
+                });
             }
         });
         $('#reg_2').validate({
@@ -114,7 +129,7 @@
                         text = '';
                     if (index === 0) {
                         text = '<i class="icon-tip-no"></i>请输入验证码';
-	                    pit_3=0;
+                        pit_3=0;
                     } else {
                         //验证验证码
                         $.ajax({
@@ -146,10 +161,10 @@
                         text = '<i class="icon-tip-yes"></i>';
                     if (index === 0) {
                         text = '<i class="icon-tip-no"></i>请输入密码';
-	                    pit_4=0;
+                        pit_4=0;
                     } else if (index === 1 || index === 2) {
                         text = '<i class="icon-tip-no"></i>建议密码由6位及以上20位内数字、字母和特殊字符组成。';
-	                    pit_4=0;
+                        pit_4=0;
                     } else {
                         text = '安全程度：<div class="item z-sel">弱</div><div class="item ' + (other !== 0 ? 'z-sel' : '') + '">中</div><div class="item ' + (other === 1 ? 'z-sel' : '') + '">强</div>';
                         pit_4=1;

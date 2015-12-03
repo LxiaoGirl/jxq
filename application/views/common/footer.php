@@ -64,29 +64,31 @@
 		</div>
 	</div>
 </div>
-
-<?php   if('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] != site_url('user/user/account_home')):?><script type="text/javascript" src="<?php echo base_url('assets/js/seajs/sea.js')?>"></script><?php endif;?>
 <script type="text/javascript" src="<?php echo base_url('assets/js/jquery/jquery-1.8.5.min.js')?>"></script>
 <script type="text/javascript">
     $(document).ready(function(){
-        if($('.news_nav_w').length){
-            var hei=$('.news_nav_w').offset().top;
+    		if($('.news_nav_w').length){
+            		var hei=$('.news_nav_w').offset().top;
+            }
             $(window).scroll(function(){
-                if($(document).scrollTop() > hei){
-                    $('.news_nav_w').addClass("news_nav_fix");
-                }else{
-                    $('.news_nav_w').removeClass("news_nav_fix");
+            	if($('.news_nav_w').length){
+                	if($(document).scrollTop() > hei){
+                    	$('.news_nav_w').addClass("news_nav_fix");
+                	}else{
+                    	$('.news_nav_w').removeClass("news_nav_fix");
+                	}
+                }
+                if($(document).scrollTop() > 50){
+                    	$('.nav').addClass('nav_xd').scrollTop(0);
+                	}else{
+                    	$('.nav').removeClass("nav_xd");
                 }
             });
-        }
     }); 
-        
 </script>
-<script type="text/javascript" src="/assets/js/about/tbhb.js"></script>
+<?php   if('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] != site_url('user/user/account_home')):?><script type="text/javascript" src="<?php echo base_url('assets/js/seajs/sea.js')?>"></script>
 <script type="text/javascript">
-	seajs.use(['jquery','sys'],function(){
-		addnav($('.head').find(".nav"));
-		addnav($(".main_nav"));
+	seajs.use(['jquery','sys','wsb_sys'],function(){
 		main_nav_pop($(".main_nav").find($(".fr")).find($("li")));
 		nav_pop($(".nav_have_son"));
 		
@@ -115,3 +117,4 @@
 		});
 	});
 </script>
+<?php endif;?>

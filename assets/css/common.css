@@ -39,19 +39,22 @@ body { text-align: left; background-color: #ffffff;font-size: 12px;}
 .row:after { clear: both; }
 /*head*/
 .head{
-  width:1200px;
+  width:100%;
   height:121px;
-  margin:0 auto;
   color:#666666;
-  position: relative;
 }
 .head .nav{
-  position: absolute;
-  width:1200px;
+  width:100%;
   height:30px;
   background:#f3f3f3;
   line-height: 30px;
   font-family: "宋体";
+}
+.head .nav.nav_xd{
+  position: fixed;
+  left:0;
+  top:0;
+  z-index: 999;
 }
 .nav li{
   float: left;
@@ -128,7 +131,7 @@ body { text-align: left; background-color: #ffffff;font-size: 12px;}
   color:#666;
 }
 .nav_pop_body1 .top{
-  width:180px;
+  width:182px;
   height:60px;
   margin-left: 10px;
   margin-top: 10px;
@@ -153,7 +156,7 @@ body { text-align: left; background-color: #ffffff;font-size: 12px;}
 }
 .nav_pop_body1 .top .right{
   float: left;
-  width:110px;
+  width:116px;
   margin-left: 5px;
 }
 .nav_pop_body1 .top .right .login{
@@ -246,9 +249,7 @@ body { text-align: left; background-color: #ffffff;font-size: 12px;}
   background:#333333;
 }
 .main_nav{
-  position: absolute;
-  top:30px;
-  width:1200px;
+  width:100%;
   height:90px;
   background:#fff;
   border-bottom: 1px solid #e1e0e0;
@@ -490,10 +491,10 @@ a:hover{ color:#3cb5ec;}
   border-left: 1px solid #eceff3;
   display:block;
 }
-.user_left ul a:hover{
+.user_left ul a:hover,.user_left ul a.selected{
   border-left: 3px solid #3cb5ec;
 }
-.user_left ul a:hover li{
+.user_left ul a:hover li,.user_left ul a.selected li{
   color:#333;
   border: none;
   border-bottom: 1px solid #eceff3;

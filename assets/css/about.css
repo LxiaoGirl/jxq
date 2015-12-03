@@ -284,8 +284,7 @@
 .news_nav ul li.news_nav_li7.select{background:#fff url(../images/about/news/news_nav7_on.png) no-repeat center 22px;}
 .news_nav ul li.news_nav_li8:hover{background:#fff url(../images/about/news/news_nav8_on.png) no-repeat center 22px;}
 .news_nav ul li.news_nav_li8.select{background:#fff url(../images/about/news/news_nav8_on.png) no-repeat center 22px;}
-/*.news_nav_w{ position:fixed; top:0; z-index:1000;}*/
-.news_nav_fix{ position:fixed; top:0; z-index:1000;}
+.news_nav_fix{ position:fixed; top:30px; z-index:1000;}
 .news_mbx{border:1px solid #ededed; margin-top:25px; padding:25px; margin-bottom:35px;}
 .news_mbx2{border:1px solid #ededed; margin-top:25px; padding:25px; }
 

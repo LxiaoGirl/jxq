@@ -20,7 +20,8 @@
                     <div class="title">用户注册</div>
                     <div class="inp_pit">
                         <div class="inp">
-                            <img src="../../../../assets/images/passport/zc_sj.png">
+                            <img class="inpr hs" src="../../../../assets/images/passport/zc_sj.png">
+                            <img class="inpr ls" src="../../../../assets/images/passport/zc_sj_ok.png">
                             <input class="reg_sj js_mobile" type="text" name="sjh" value="" placeholder="请输入您的手机号码" maxlength="11" />
                         </div>
                         <div class="pit"></div>
@@ -60,6 +61,18 @@
 <!--footer-->
 <script type="text/javascript">
 	seajs.use(['jquery','sys','jqform','validator'],function(){
+        //INPUT框变色
+        $('.inp').find('input').focus(function(){
+            $(this).siblings('.ls').show();
+            $(this).addClass('hav');
+        });
+        $('.inp').find('input').blur(function(){
+            if($.trim($(this).val())==''){
+                $(this).siblings('.ls').hide();
+                $(this).removeClass('hav');
+            }
+        });
+        //INPUT框变色
 		var pit_1=0,pit_2=0;
 		$('.but').find('#reg_xyb').click(function () {
 			if(pit_1 == 0){

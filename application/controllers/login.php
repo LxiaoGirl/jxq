@@ -142,7 +142,13 @@ class Login extends MY_Controller{
 		//ajax处理部分
 		if($this->input->is_ajax_request() == TRUE){
 			//执行注册操作
-			$data = $this->user->register($this->session->userdata('register_mobile'),$this->input->post('password',true),$this->input->post('authcode',true),$this->session->userdata('invite_code'));
+			$data = $this->user->register(
+					$this->session->userdata('register_mobile'),
+					$this->input->post('password',true),
+					$this->input->post('authcode',true),
+					$this->session->userdata('invite_code'),
+					$this->input->post('company_code',true)
+			);
 			if($data['status'] == '10000'){
 				//保存注册第二步session信息
 				$this->session->set_userdata(array('register_s2'=>1));

@@ -19,6 +19,7 @@
         alias: {
             'jquery': ieVersion === -1 || ieVersion > 9 ? 'jquery/jquery-2.1.1.min.js' : 'jquery/jquery-1.11.1.min.js',
             'sys': 'sys/sys.js',
+            'wsb_sys': 'plugins/wsb_sys.js',
             'slider' :'plugins/slider.js',
             'jqform':'plugins/jquery.form.js',
             'validator':'plugins/validator.js',

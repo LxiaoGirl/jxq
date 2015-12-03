@@ -2,7 +2,7 @@
 * @Author: anchen
 * @Date:   2015-10-14 10:37:00
 * @Last Modified by:   anchen
-* @Last Modified time: 2015-11-25 17:21:26
+* @Last Modified time: 2015-12-02 17:14:05
 */
 /*2015-11-10*/
 /*提示样式1*/
@@ -32,9 +32,9 @@
     position:fixed;
     left:50%;
     top:50%;
-    width:200px;
+    width:300px;
     height:40px;
-    margin-left: -100px;
+    margin-left: -150px;
     margin-top: -100px;
     overflow: hidden;
     border-radius: 5px;
@@ -281,7 +281,7 @@ body{
 
 .home_bannner{
     width:100%;
-    height:400px;
+    height:350px;
     position: relative;
     overflow: hidden;
 }
@@ -444,12 +444,12 @@ body{
 .home_left h1 a:hover{
     color:#03a9f4;
 }
-.home_left li .home_product_body{
-    width:719px;
-    height:234px;
+.home_left li .home_product_body {
+    width: 727px;
+    height: 234px;
     border-left: 10px solid #3cb5ec;
-    background:#f3f3f3;
-    padding: 33px;
+    background: #f3f3f3;
+    padding: 33px 29px;
     margin-bottom: 20px;
     position: relative;
 }
@@ -470,13 +470,15 @@ body{
 .home_left li .home_product_body .top .title{
     font-size: 24px;
 }
-.home_left li .home_product_body .top .baozhi{
+.home_left li .home_product_body .top .baozhi {
     font-size: 12px;
     font-family: "宋体";
     margin-left: 10px;
+    min-width: 330px;
 }
 .home_left li .home_product_body .top .baozhi span em{
-    padding-right: 4px;
+    padding-right: 0px;
+    padding-left: 2px;
 }
 .home_left li .home_product_body .top .baozhi span.bao{
     color:#fff;
@@ -528,7 +530,6 @@ body{
 }
 .home_left li .home_product_body .top .djs{
     font-size: 14px;
-    margin-left: 100px;
 }
 .home_left li .home_product_body .top .djs font.endtime{
     display:none;
@@ -4314,15 +4315,15 @@ p.border_bot b{
     -ms-transform: rotateZ(180deg);
     transform: rotateZ(180deg);}
 .hbtc .hbtc_con .hong_h1 {
-    font-size: 100px;
+    font-size: 70px;
     text-align: center;
     color: #fff;
-    padding-top: 85px;
+    padding-top: 105px;
 }
 .hbtc .hbtc_con .hong_txt {
     color: #fff;
     font-size: 24px;
-    width: 335px;
+    width: 360px;
     padding-bottom: 30px;
     line-height: 32px;
     text-align: center;
@@ -4415,30 +4416,42 @@ p.border_bot b{
 }
 .register .reg_body .kuangjia .inp_pit .inp{
     height: 36px;
-    overflow: hidden;
     width: 100%;
+    position: relative;
 }
-.register .reg_body .kuangjia .inp_pit .inp img{
+.register .reg_body .kuangjia .inp_pit .inp img.inpr{
     display: block;
-    float:left;
+    position: absolute;
+    left:0px;
+}
+.register .reg_body .kuangjia .inp_pit .inp img.inpr.ls{
+    display: none;
 }
 .register .reg_body .kuangjia .inp_pit .inp input{
     border:1px solid #dddddd;
     display: block;
     float:left;
-    text-indent: 10px;
+    text-indent: 50px;
     font-size: 12px;
     color:#666;
-    outline:1;
-    outline-color:#0287d4;
+    outline:0;
     height: 34px;
 }
+.register .reg_body .kuangjia .inp_pit .inp input.hav{
+    box-shadow:0px 0px 1px 1px #3cb5ec;
+    -ms-box-shadow:0px 0px 1px 1px #3cb5ec;
+    -o-box-shadow:0px 0px 1px 1px #3cb5ec;
+    -moz-box-shadow:0px 0px 1px 1px #3cb5ec;
+    -webkit-box-shadow:0px 0px 1px 1px #3cb5ec;
+    border:1px solid #3cb5ec;
+}
 .register .reg_body .kuangjia .inp_pit .inp input.reg_sj{
-    width: 223px;
+    width: 260px;
 }
 .register .reg_body .kuangjia .inp_pit .inp input.pic_yzm{
     width: 148px;
     margin-right: 5px;
+    text-indent: 10px;
 }
 .register .reg_body .kuangjia .inp_pit .inp span.pic_yzm{
     width: 78px;
@@ -4540,6 +4553,7 @@ p.border_bot b{
 .register .reg_body .kuangjia .inp_pit .inp input.js_sjyzm{
     width: 148px;
     margin-right: 7px;
+    text-indent: 10px;
 }
 .register .reg_body .kuangjia .inp_pit .inp input.fsyzm{
     width: 103px;
@@ -4641,17 +4655,23 @@ p.border_bot b{
 }
 .find_pw .inp_pit .inp {
   height: 36px;
-  overflow: hidden;
   width: 100%;
+  position: relative;
 }
 .find_pw .inp_pit .pit {
   font-size: 12px;
   color: #ccc;
   line-height: 24px;
 }
-.find_pw .inp_pit .inp img {
+.find_pw .inp_pit .inp img.inpr {
   display: block;
   float: left;
+  position: absolute;
+  left:1px;
+  top:0;
+}
+.find_pw .inp_pit .inp img.inpr.ls {
+  display: none;
 }
 .find_pw .inp_pit .inp input {
   border: 1px solid #dddddd;
@@ -4663,8 +4683,17 @@ p.border_bot b{
   outline: 0;
   height: 34px;
 }
+.find_pw .inp_pit .inp input.hav{
+    box-shadow:0px 0px 1px 1px #3cb5ec;
+    -ms-box-shadow:0px 0px 1px 1px #3cb5ec;
+    -o-box-shadow:0px 0px 1px 1px #3cb5ec;
+    -moz-box-shadow:0px 0px 1px 1px #3cb5ec;
+    -webkit-box-shadow:0px 0px 1px 1px #3cb5ec;
+    border:1px solid #3cb5ec;
+}
 .find_pw .inp_pit .inp input.reg_sj {
-  width: 283px;
+  width: 320px;
+  text-indent: 50px;
 }
 .find_pw .inp_pit .inp input.js_sjyzm {
   width: 207px;

@@ -11,7 +11,7 @@ class User_model extends CI_Model{
 	const BANK = 'bank'; // 验证授权
 	const card = 'user_card'; // 验证授权
 	const automatic = 'user_automatic'; // 自动投配置表
-	const company = 'user_automatic'; // 子公司邀请码表
+	const company = 'company'; // 子公司邀请码表
 	const recharge = 'user_recharge'; // 充值
 	const user_renzheng = 'user_renzheng'; // 用户实名认证是否认证表
 
@@ -145,7 +145,7 @@ class User_model extends CI_Model{
 	 *$authcode 短信验证
 	 *$invite_code 邀请码
 	 */
-	public function register($mobile='',$password='',$authcode='',$invite_code=''){
+	public function register($mobile='',$password='',$authcode='',$invite_code='',$company_code=''){
 		$data = $temp = array();
 
 		$data = array('name'=>'注册','status'=>'10001','msg'=>'服务器繁忙请稍后重试!!','data'=>array());
@@ -174,6 +174,14 @@ class User_model extends CI_Model{
 		$temp['is_check'] = $this->common->validation_authcode($mobile, $authcode, 1, 0);//验证是否过期
 
 		if( ! empty($temp['is_check'])){
+			if($company_code){
+				$temp['company'] = $this->check_company_invitation_code($company_code);
+				if($temp['company']['status'] != '10000'){
+					$data['msg'] = '公司邀请码错误!';
+					return $data;
+				}
+			}
+
 			$temp['hash']     = random(6, FALSE);
 			$temp['password'] = $this->c->password($password, $temp['hash']);
 
@@ -190,6 +198,9 @@ class User_model extends CI_Model{
 					'last_date'   => 0,
 					'last_ip'     => ''
 			);
+			if($company_code){
+				$temp['data']['company'] = $company_code;
+			}
 
 			$temp['where'] = array('where' => array('mobile' => $mobile));
 			$temp['info'] = $this->c->get_row(self::user, $temp['where']);
@@ -2026,7 +2037,21 @@ class User_model extends CI_Model{
 		$data = array('name'=>'公司邀请码验证','status'=>'10001','msg'=>'邀请码不能为空!','data'=>array());
 
 		if($code != ''){
-			$data['msg'] = '查无此验证码!';
+			$temp['where'] = array(
+				'select' => 'id,company_name',
+				'where'  => array(
+					'company_inviter_no'=>$code,
+					'status'			=>1
+				),
+			);
+			$temp['data'] = $this->c->get_row(self::company,$temp['where']);
+
+			if($temp['data']){
+				$data['msg'] = $temp['data']['company_name'];
+				$data['status'] = '10000';
+			}else{
+				$data['msg'] = '查无此验证码!';
+			}
 		}
 
 		unset($temp);

@@ -33,6 +33,18 @@
 <!--footer-->
 <script type="text/javascript">
 seajs.use(['jquery','sys','jqform','validator'],function(){
+    //INPUT框变色
+        $('.inp').find('input').focus(function(){
+            $(this).siblings('.ls').show();
+            $(this).addClass('hav');
+        });
+        $('.inp').find('input').blur(function(){
+            if($.trim($(this).val())==''){
+                $(this).siblings('.ls').hide();
+                $(this).removeClass('hav');
+            }
+        });
+        //INPUT框变色
     $(function(){
 	    //发送短信 处理
 	    $('.fsyzm').send_sms('sms','<?php echo profile("forget_mobile");?>','forget');

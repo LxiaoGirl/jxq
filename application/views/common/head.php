@@ -1,9 +1,11 @@
 
 <div class="head">
     <div class="nav">
+    <div class="row">
         <div class="fl">
             <ul>
-                <li>全国热线：4007-918-333</li>
+                <li>客服：4007-918-333</li>
+                <li>语音验证：4008-382-182</li>
                 <li>嗨，欢迎来聚雪球</li>
                 <li class="nav_have_son">
                     关注聚雪球<em>></em>
@@ -64,7 +66,9 @@
             </ul>
         </div>
     </div>
+    </div>
     <div class="main_nav">
+    <div class="row">
         <div class="fl">
             <ul>
                 <li><img src="../../../../assets/images/common/logo.jpg"/></li>
@@ -116,5 +120,6 @@
                 </li>
             </ul>
         </div>
+    </div>
     </div>
 </div>

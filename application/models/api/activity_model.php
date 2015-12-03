@@ -292,26 +292,30 @@ class Activity_model extends CI_Model{
 		$data = $temp = array();
 		$data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
         if($uid){
+			$temp['where'] = array(
+					'select'   => 'SUM('.join_field('amount', self::payment).') as amount,'.join_field("user_name,uid,last_date",self::user),
+					'where'    => array(join_field('inviter', self::user) => $uid),
+					'join'     => array(
+							array('table' => self::payment, 'where' => join_field('uid', self::payment).' = '.join_field('uid', self::user).' AND '.join_field('type', self::payment).'=1 '),
+							array('table' => self::borrow, 'where' => join_field('borrow_no', self::payment).' = '.join_field('borrow_no', self::borrow).' AND '.join_field('status',self::borrow).' in(4,7)')
+					),
+					'order_by'=>'SUM('.join_field('amount', self::payment).') DESC',
+					'group_by'=>join_field("uid",self::user)
+			);
             if(!$show_page){
-                $temp['data'] = $this->c->get_all(self::user,array('select'=>'user_name,uid,last_date','where'=>array('inviter'=>$uid)));
+                $temp['data'] = $this->c->get_all(self::user,$temp['where']);
             }else{
-                $temp['all_data'] = $this->c->show_page(self::user,array('select'=>'user_name,uid,last_date','where'=>array('inviter'=>$uid)),"",0,3);
+                $temp['all_data'] = $this->c->show_page(self::user,$temp['where'],"",0,3);
                 $temp['data'] = $temp['all_data']['data'];
             }
 
             if($temp['data']){
-                $sort_arr = array();//排序用数组
-
                 foreach($temp['data'] as $k=>$v){
-                    $v['amount']       = $this->get_user_invest_all($v['uid']);
-                    // $v['active_level'] = $this->_get_active_level($v['last_date']);
                     $v['active_level'] = date('Y-m-d',$v['last_date']).'<br/>'.date('H:i:s',$v['last_date']);
+					$v['amount'] = (float)$v['amount'];
                     $v['ralation']     = $this->_get_intermediary_ralation($v['amount']);
                     $temp['data'][$k]          = $v;
-                    $sort_arr[]        = $v['amount'];
                 }
-                //排序
-                array_multisort($sort_arr, SORT_DESC, $temp['data']);
 
                 if($show_page){
                     $temp['all_data']['data'] = $temp['data'];
