@@ -207,7 +207,7 @@
                                     text = '<i class="icon-tip-no"></i>'+result.msg;
                                     pit_6=0;
                                 } else {
-                                    text = '<i class="icon-tip-yes"></i>';
+                                    text = '<i class="icon-tip-yes"></i>'+result.msg;
                                     pit_6=1;
                                 }
                                 tip.html(text);
