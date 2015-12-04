@@ -54,6 +54,11 @@ $config['about_major_event_cat_id']         = 42; //关于我们之公司大事�
 $config['about_media_cat_id']               = 1; //关于我们之媒体报道新闻分类id
 $config['about_news_cat_id']                = 10; //关于我们之公司动态新闻分类id
 $config['help_news_cat_id']                 = 2; //关于我们之帮助中心新闻分类id
-$config['invest_home_tips_cat_id']          = 39; //小贴士新闻分类id
+
+$config['invest_home_tips_cat_id_1']          = 39; //车贷包小贴士新闻分类id
+$config['invest_home_tips_cat_id_2']          = 52; //聚农贷小贴士新闻分类id
+$config['invest_home_tips_cat_id_3']          = 53; //聚惠理财小贴士新闻分类id
+$config['invest_home_tips_cat_id_4']          = 54; //聚保宝小贴士新闻分类id
+
 $config['max_rate_cat_id']                  = 45; //logo后面的高收益利率
 $config['recharge_min']                     = 50; //最小充值金额
