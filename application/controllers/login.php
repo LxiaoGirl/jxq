@@ -152,6 +152,7 @@ class Login extends MY_Controller{
 			if($data['status'] == '10000'){
 				//保存注册第二步session信息
 				$this->session->set_userdata(array('register_s2'=>1));
+				$this->session->set_userdata($data['data']);
 			}
 			exit(json_encode($data));
 		}
@@ -178,11 +179,12 @@ class Login extends MY_Controller{
 			redirect('login/register','location');
 		}
 
+		$data['mobiles'] = $this->session->userdata('register_mobile');
 		//注销注册session信息
 		$this->session->set_userdata(array('register_mobile'=>false));
 		$this->session->set_userdata(array('register_s2'=>false));
 
-		$this->load->view('passport/register_cg');
+		$this->load->view('passport/register_cg',$data);
 	}
 
 	/**
@@ -311,7 +313,7 @@ class Login extends MY_Controller{
 	private function _is_login(){
 		$method = $this->router->fetch_method();
 		//已登录状态下 访问登录 注册 忘记密码 跳转到个人中心
-		if($this->session->userdata('uid') > 0 && in_array($method, array( 'index','register','register_s1','register_s2', 'forget','forget_s1','forget_s2','forget_s3'))){
+		if($this->session->userdata('uid') > 0 && in_array($method, array( 'index','register','register_s1', 'forget','forget_s1','forget_s2','forget_s3'))){
 			redirect('user/user/account_home', 'refresh');
 		}
 	}
