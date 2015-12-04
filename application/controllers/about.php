@@ -74,8 +74,19 @@ class About extends MY_Controller{
         //参数处理  分页 分类id
         $data['page_id'] = $this->c->get_page_id(self::page_size);
         $temp['media_cat_id'] = item('about_media_cat_id')?item('about_media_cat_id'):0;
+
+        $temp['condition'] = '';
+        //查询头条 ........
+        if($data['page_id'] == 1){
+            $temp['top'] = $this->other->get_news($temp['media_cat_id'],1,1,'','',array('content !='=>''));
+            if($temp['top']['status'] == '10000' && $temp['top']['data']){
+                $data['top'] = $temp['top']['data']['data'][0];
+                $temp['condition'] = array('id !='=>$data['top']['id']);
+            }
+        }
+
         //查询数据
-        $temp['media'] = $this->other->get_news($temp['media_cat_id'],$data['page_id'],self::page_size);
+        $temp['media'] = $this->other->get_news($temp['media_cat_id'],$data['page_id'],self::page_size,'','',$temp['condition']);
 
         //处理具体数据 和获取分页
         if($temp['media']['status'] == '10000'){
