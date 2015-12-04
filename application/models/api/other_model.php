@@ -97,14 +97,15 @@ class Other_model extends CI_Model{
 
 	/**
 	 * 获取新闻列表
-	 * @param int $cat_id 分类id
+	 * @param string $cat_id 分类id
 	 * @param int $page_id 页码
 	 * @param int $page_size 页记录
 	 * @param string $order_by 排序
 	 * @param string $keyword 关键字
+	 * @param array $condition
 	 * @return array
 	 */
-	public function get_news($cat_id='',$page_id=0,$page_size=0,$order_by='',$keyword=''){
+	public function get_news($cat_id='',$page_id=0,$page_size=0,$order_by='',$keyword='',$condition=array()){
 		$temp = array();
 		$data = array('status'=>'10001','msg'=>'服务器繁忙请稍后重试!','sign'=>'','data'=>array('data'=>array()));
 		$this->_set_cutpage_params($page_id,$page_size);
@@ -132,6 +133,7 @@ class Other_model extends CI_Model{
 		if($order_by != '')$temp['where']['order_by'] = $order_by;
 		if($keyword != '')$temp['where']['like'] = array('field'=>'title','match'=>$keyword,'flag'=>'both');
 
+		if($condition)$temp['where']['where'] = array_merge($temp['where']['where'],$condition);
 
 		$temp['data'] = $this->c->show_page(self::article,$temp['where']);
 

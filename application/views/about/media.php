@@ -23,18 +23,18 @@
     <div class="clear"></div>
     <div class="news_body">
 
-        <?php if($page_id == 1 && $media && $media[0] && $media[0]['content'] != ''): ?>
+        <?php if($page_id == 1 && $top): ?>
             <div class="frist_news">
                 <div class="lf fl">
-                  <h3><?php echo $media[0]['title']; ?></h3>
-                  <p><?php echo $media[0]['description']; ?></p>
-                  <a href="<?php echo $media[0]['link_url']; ?>" target="_blank">查看详情</a>
+                  <h3><?php echo $top['title']; ?></h3>
+                  <p><?php echo $top['description']; ?></p>
+                  <a href="<?php echo $top['link_url']; ?>" target="_blank">查看详情</a>
                 </div>
                 <div class="rig fl">
-                  <img src="<?php echo $media[0]['content']; ?>">
+                  <img src="<?php echo $top['content']; ?>">
                 </div>
             </div>
-        <?php unset($media[0]); endif;?>
+        <?php endif;?>
 
         <ul class="media_news">
             <?php if($media):foreach($media as $k=>$v): ?>
