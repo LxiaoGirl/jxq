@@ -74,6 +74,8 @@ class About extends MY_Controller{
         //参数处理  分页 分类id
         $data['page_id'] = $this->c->get_page_id(self::page_size);
         $temp['media_cat_id'] = item('about_media_cat_id')?item('about_media_cat_id'):0;
+
+        $temp['top'] = '';
         //查询数据
         $temp['media'] = $this->other->get_news($temp['media_cat_id'],$data['page_id'],self::page_size);
 
