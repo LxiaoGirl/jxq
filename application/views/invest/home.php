@@ -279,7 +279,12 @@
             }
 
             //小贴士
-            each_html('tips','/index.php/about/ajax_get_news',{'page_id':1,'page_size':100,'category':'<?php echo item('invest_home_tips_cat_id_'.$category)?item('invest_home_tips_cat_id_'.$category):0; ?>'},'',true,'','',true);
+            each_html('tips','/index.php/about/ajax_get_news',{
+                'page_id':1,
+                'page_size':100,
+                'order_by':'id DESC',
+                'category':'<?php echo item('invest_home_tips_cat_id_'.$category)?item('invest_home_tips_cat_id_'.$category):0; ?>'
+            },'',true,'','',true);
         });
     });
 </script>
