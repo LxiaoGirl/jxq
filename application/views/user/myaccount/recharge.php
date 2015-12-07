@@ -59,7 +59,6 @@
     <!--底部-->       
 
 <!--userjs start-->
-<script src="<?php echo base_url('assets/js/jquery/jquery-1.8.5.min.js')?>"></script>
 <script type="text/javascript" src="<?php echo base_url('assets/js/plugins/jquery.date_input.pack.js')?>"></script> 
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){

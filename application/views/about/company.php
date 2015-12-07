@@ -73,6 +73,7 @@
 </div>
 <!--footer start-->
 <?php $this->load->view('common/footer'); ?>
+<script type="text/javascript" src="<?php echo base_url('assets/js/about/tbhb.js')?>"></script>
 <SCRIPT type=text/javascript>
 	$(function(){
 		//处理 大事件 的时间排序与点的对应

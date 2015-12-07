@@ -242,6 +242,10 @@ var option3 = {
             type: "none"
         }
     },
+    legend: {
+            data:['投资总额','投资收益'],
+            x:'right',
+        },
     xAxis : [
         {
             type : 'category',
@@ -315,6 +319,10 @@ myChart3.setOption(option3);
                     type: "none"
                 }
             },
+	    legend: {
+	            data:['投资总额','投资收益'],
+	            x:'right',
+	        },
             xAxis : [
                 {
                     type : 'category',

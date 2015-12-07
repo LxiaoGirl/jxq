@@ -69,7 +69,6 @@
     </div>
 
 <?php $this->load->view('common/footer'); ?>
-<script type="text/javascript" src="/assets/js/jquery/jquery-1.11.1.min.js"></script>
 <script type="text/javascript">
 $(window).scroll(function(){
 	var msg = $(".history-img");
