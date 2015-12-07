@@ -25,7 +25,7 @@
 			            <?php echo $v['category']; ?><font class="fr">|</font>
 		            </li>
 	            <?php endforeach;endif; ?>
-                <li onclick="window.location.href='<?php echo site_url('invest/index?c=5') ?>'" class="jbb <?php if($category == 5): ?>active<?php endif; ?>" ><em>宝</em>聚保宝</li>
+                <li onclick="window.location.href='<?php echo site_url('invest/index?c=4') ?>'" class="jbb <?php if($category == 4): ?>active<?php endif; ?>" ><em>宝</em>聚保宝</li>
             </ul>
             <!--TAB头 标的名-->
             <!--公告-->
@@ -63,7 +63,7 @@
                     </div>
 
                     <div class="invest_home_product">
-                        <?php if($category == 5): ?>
+                        <?php if($category == 4): ?>
                         <div class="product_of_invest_home product_of_invest_home_1">
                             <div class="fl yi zi">
                                 <span>益</span>
@@ -279,7 +279,12 @@
             }
 
             //小贴士
-            each_html('tips','/index.php/about/ajax_get_news',{'page_id':1,'page_size':5,'category':'<?php echo item('invest_home_tips_cat_id')?item('invest_home_tips_cat_id'):0; ?>'},'',true,'','',true);
+            each_html('tips','/index.php/about/ajax_get_news',{
+                'page_id':1,
+                'page_size':100,
+                'order_by':'id DESC',
+                'category':'<?php echo item('invest_home_tips_cat_id_'.$category)?item('invest_home_tips_cat_id_'.$category):0; ?>'
+            },'',true,'','',true);
         });
     });
 </script>

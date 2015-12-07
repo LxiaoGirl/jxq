@@ -179,6 +179,12 @@ class User_model extends CI_Model{
 				if($temp['company']['status'] != '10000'){
 					$data['msg'] = '公司邀请码错误!';
 					return $data;
+				}else{
+					//有data说明company code  是居间人code 交换一下两个值
+					if($temp['company']['data']){
+						$invite_code = $company_code;
+						$company_code = $temp['company']['data']['company']?$temp['company']['data']['company']:'';
+					}
 				}
 			}
 
@@ -2050,7 +2056,14 @@ class User_model extends CI_Model{
 				$data['msg'] = $temp['data']['company_name'];
 				$data['status'] = '10000';
 			}else{
-				$data['msg'] = '查无此验证码!';
+				$temp['data'] = $this->c->get_row(self::user,array('select'=>'uid,real_name,company','where'=>array('inviter_no'=>$code)));
+				if($temp['data']){
+					$data['msg'] = '邀请人:'.$temp['data']['real_name'];
+					$data['status'] = '10000';
+					$data['data'] = $temp['data'];
+				}else{
+					$data['msg'] = '查无此验证码!';
+				}
 			}
 		}
 

@@ -21,7 +21,7 @@ class Invest extends MY_Controller{
 		$data = $temp = array();
 
 		//过滤条件
-		$data['category'] 	= $this->input->get('c',TRUE)?(int)$this->input->get('c',TRUE):'';
+		$data['category'] 	= $this->input->get('c',TRUE)?(int)$this->input->get('c',TRUE):1;
 		$data['rate'] 		= $this->input->get('r',TRUE)?$this->input->get('r',TRUE):'';
 		$data['months'] 	= $this->input->get('m',TRUE)?$this->input->get('m',TRUE):'';
 
