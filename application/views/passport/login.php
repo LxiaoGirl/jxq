@@ -34,6 +34,18 @@
                         </div>
                         <div class="pit"></div>
                     </div>
+                    <div class="inp_pit captcha" style="display: none;">
+                        <div class="inp">
+                            <input class="pic_yzm js_picyzm" type="text" name="tpyzm" value="" placeholder="输入验证码" maxlength="6"/>
+                            <span class="pic_yzm">
+	                            <img id="imgCode" src="<?php echo site_url('send/captcha'); ?>" width="78" height="34" alt="验证码"
+                                     onclick="javascript:this.src = '<?php echo site_url('send/captcha'); ?>?t='+ new Date().valueOf()"
+                                     title="点击更换验证码"/>
+                            </span>
+                            <span class="pic_reset"><img src="../../../../assets/images/passport/pic_reset.png" onclick="javascript:document.getElementById('imgCode').src = '<?php echo site_url('send/captcha'); ?>?t='+ new Date().valueOf()"></span>
+                        </div>
+                        <div class="pit"></div>
+                    </div>
                     <div class="chick_xy">
                         <div class="nr_xy">
                             <input class="check js_agr" type="checkbox" name="" value="1" <?php if($mobile): ?>checked<?php endif; ?>>记住我<span class="fr">密码忘了？<a href="<?php echo site_url('login/forget') ?>">点此找回</a></span>
@@ -56,6 +68,8 @@
     <?php $this->load->view('common/footer'); ?>
 <!--footer-->
 <script type="text/javascript">
+    var captcha_enable = false;
+    var captcha = '';
 seajs.use(['jquery','sys'],function(){
     //INPUT框变色
     $('.inp').find('input').focus(function(){
@@ -91,9 +105,9 @@ seajs.use(['jquery','sys'],function(){
             $('.js_mobile').focus();
             return false;
         }
-        var tip = $('js_mm').parent().parent().find('.pit').eq(0),
+        var tip = $('.js_mm').parent().parent().find('.pit').eq(0),
             text = '';
-        if ($('js_mm').val() == '') {
+        if ($('.js_mm').val() == '') {
             text = '<i class="icon-tip-no"></i>请输入密码';
             pit_2=0;
         } else {
@@ -106,12 +120,25 @@ seajs.use(['jquery','sys'],function(){
             $('.js_mm').focus();
             return false;
         }
+
+        if(captcha_enable){
+            var tip = $('.js_picyzm').parent().parent().find('.pit').eq(0),
+                text = '';
+            if($('.js_picyzm').val() == ''){
+                text = '<i class="icon-tip-no"></i>请输入验证码';
+                tip.html(text);
+                $('.js_picyzm').focus();
+                return false;
+            }else{
+                captcha = $('.js_picyzm').val();
+            }
+        }
         if((pit_1+pit_2)==2){
             $.ajax({
                 type: 'POST',
                 async: false,
                 url: '<?php echo site_url('login'); ?>',
-                data: {'mobile':$('.js_mobile').val(),'password':$('.js_mm').val(),'remember':$('.js_agr').prop('checked')?1:0},
+                data: {'mobile':$('.js_mobile').val(),'password':$('.js_mm').val(),'captcha':captcha,'remember':$('.js_agr').prop('checked')?1:0},
                 dataType: 'json',
                 error:function(){
                     wsb_alert('服务器繁忙请稍后重试!',2);
@@ -120,6 +147,10 @@ seajs.use(['jquery','sys'],function(){
 	                if(result.status == '10000') {
                         wsb_alert(result.msg,1,result.url);
 	                }else{
+                        if(result.status == '10002'){
+                            captcha_enable = true;
+                            $(".captcha").show();
+                        }
                         wsb_alert(result.msg,2);
 	                }
                 }

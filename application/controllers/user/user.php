@@ -441,24 +441,20 @@ class User extends Login_Controller{
 	 * 修改姓名
 	 */
 	public function Change_name(){
-		$data = array();
-		$uid=$this->session->userdata('uid');
-		$name = $this->input->get('name',true);
-		$f = $this->input->get('f',true);
-		if($f!=''){
-			$data = $this->user->Change_name($name,$uid);
-			if($data['status'] == '10000'){
-				$this->session->set_userdata(array('user_name'=>$name));
-			}
-		}else{
-			$data = $this->user->Change_name($name,0);
-		}
-		$data['name'] = $name;
 		if($this->input->is_ajax_request() == TRUE){
-			exit(json_encode(array($data)));
+			$data = $this->user->Change_name($this->input->get('name',true),$this->session->userdata('uid'));
+			if($data['status'] == '10000'){
+				$this->session->set_userdata(array('user_name'=>$this->input->get('name',true)));
+			}
+
+			exit(json_encode($data));
 		}
 	}
 
+	public function company_invite_code(){
+		$data = $this->user->company_invite_code($this->session->userdata('uid'),$this->input->post('code',true));
+		exit(json_encode($data));
+	}
 
 
 	/**

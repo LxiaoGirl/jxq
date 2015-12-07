@@ -34,6 +34,14 @@ class Login extends MY_Controller{
 	public function index(){
 		//ajax部分的处理
 		if($this->input->is_ajax_request() == TRUE){
+			$captcha = $this->input->post('captcha',true);
+			if($captcha != ''){
+				//验证
+				if($this->session->userdata('captcha') != $captcha){
+					$data = array('status'=>'10001','msg'=>'验证码不正确!');
+					return $data;
+				}
+			}
 			$data = $this->user->login($this->input->post('mobile',true),$this->input->post('password',true));
 			//登录成功的处理
 			if($data['status'] == '10000'){

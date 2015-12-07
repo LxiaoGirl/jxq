@@ -44,7 +44,7 @@ class User_model extends CI_Model{
 						$this->_set_login_info($temp['user']['uid']);
 						$this->_add_user_log('login', 'app-会员登录', $temp['user']['uid'], $temp['user']['user_name']);
 						$data = array(
-								'status' => 10000,
+								'status' => '10000',
 								'msg'  => '欢迎您的光临！',
 								'data'  => $temp['user']
 //	                            array(
@@ -66,7 +66,7 @@ class User_model extends CI_Model{
 							$this->c->set(self::user, $temp['where'], $temp['data']);
 						}
 
-						$data['status'] = '10001';
+						$data['status'] = '10002';
 						$data['msg']  = '你输入的用户名和密码不匹配！';
 					}
 				}else{
@@ -555,6 +555,61 @@ class User_model extends CI_Model{
 	}
 
 
+	public function company_invite_code($uid=0,$code=''){
+		$temp = array();
+		$data = array('name'=>'绑定公司邀请码','status' => '10001', 'msg' => '你提交的公司邀请码不存在,请重试！', 'data' => array());
+
+		if($code){
+			//验证用户信息
+			if($uid == 0){
+				$data['msg'] = '用户uid为空!';
+				return $data;
+			}
+			$temp['user_info'] = $this->c->get_row(self::user,array('where'=>array('uid'=>$uid)));
+			if(!$temp['user_info']){
+				$data['msg'] = '用户uid不存在!';
+				return $data;
+			}
+			//验证公司邀请码
+			$temp['data'] = $this->check_company_invitation_code($code);
+			if($temp['data']['status'] == '10000'){
+				$temp['inviter_uid'] = '';//邀请人uid
+				//如果存在data 说明code是居间人邀请码
+				if($temp['data']['data']){
+					$temp['inviter_uid'] = $temp['data']['data']['uid'];
+					//如果穿着company 说明居间人有公司邀请码 无则没有
+					if($temp['data']['data']['company']){
+						$code = $temp['data']['data']['company'];
+					}else{
+						$data['msg'] = '当前居间人也无公司邀请码!';
+						$code = '';
+					}
+				}
+				//根据上面的过滤再验证是否还有公司邀请码
+				if($code){
+					//有居间人uid inviter_uid 验证邀请人uid 是否和当前用户的邀请人是否相同
+					if($temp['inviter_uid'] && $temp['user_info']['inviter'] && $temp['inviter_uid']!=$temp['user_info']['inviter']){
+						$data['msg'] = '当前邀请码与本身居间人邀请码不同!';
+						return $data;
+					}
+
+					$query = $this->c->update(self::user,array('where'=>array('uid'=>$uid)),array('company'=>$code));
+					if($query){
+						$data['msg'] = '操作成功!';
+						$data['status'] = '10000';
+						$data['data']['company_code'] = $code;
+					}else{
+						$data['msg'] = '服务器繁忙请稍后重试!';
+					}
+				}
+			}
+		}
+
+		unset($temp);
+		return $data;
+	}
+
+
 
 	/**
 	 * 忘记登录密码（图形）
@@ -944,36 +999,44 @@ class User_model extends CI_Model{
 		$temp['uid']   =  $uid;
 
 		if(empty($temp['name'])){ $data['msg'] = '昵称不能为空哦~'; return $data;}
-		if( ! preg_match('/^[a-zA-Z_][a-zA-Z_[0-9]{4,14}$/',$name)){ $data['msg'] = '用户名建议为字母或下划线开头以字母数字下划线组成的5到15位!~'; return $data;}
-
+		if( ! preg_match('/^[a-zA-Z_\x80-\xff][a-zA-Z_0-9\x80-\xff]{4,21}$/',$name)){ $data['msg'] = '用户名建议为中文、字母或下划线开头以中文字母数字下划线组成的5到22位(一个中文为3位)!'; return $data;}
+		if($uid == 0){
+			$data['msg'] = '用户uid为空!';
+			return $data;
+		}
+		$temp['user_info'] = $this->c->get_row(self::user,array('where'=>array('uid'=>$uid)));
+		if( ! $temp['user_info']){
+			$data['msg'] = '用户uid不存在!';
+			return $data;
+		}
+		if($name == $temp['user_info']['real_name'] || $name == $temp['user_info']['mobile']){
+			$data['msg'] = '用户名只能修改一次，请修改为实名和手机以外的用户名!';
+			return $data;
+		}
+		if($temp['user_info']['user_name'] != $temp['user_info']['real_name'] && $temp['user_info']['user_name'] != $temp['user_info']['mobile']){
+			$data['msg'] = '你的用户名已修改过了 暂不能修改了!!';
+			return $data;
+		}
 		$temp['where'] = array('where' => array('user_name' => $temp['name']));
 		$temp['count'] = $this->c->get_row(self::user, $temp['where']);
 
-		if(empty($temp['count'])){
-			$data=array(
-					'status'=>'10000',
-					'msg'=>'可以使用!',
-					'url'=>''//跳转到修改成功页面
-			);
+		if( !empty($temp['count'])){
+			$data['msg']='用户名已存在！';
+			return $data;
+		}
+
+		$temp['data'] = array(
+				'user_name' => $temp['name']
+		);
+		$temp['where'] = array('where' => array('uid' => $temp['uid']));
+		$query = $this->c->update(self::user, $temp['where'], $temp['data']);
+		if( ! empty($query)){
+			$data['msg'] = '修改成功';
+			$data['status'] = '10000';
 		}else{
-			$data['msg']='昵称已存在！';
+			$data['msg'] = '服务器繁忙,请稍后再试！';
 		}
-		if($uid!=0){
-			$temp['data'] = array(
-					'user_name' => $temp['name']
-			);
-			$temp['where'] = array('where' => array('uid' => $temp['uid']));
-			$query = $this->c->update(self::user, $temp['where'], $temp['data']);
-			if( ! empty($query)){
-				$data=array(
-						'status'=>'10000',
-						'msg'=>'修改成功!',
-						'url'=>''//跳转到修改成功页面
-				);
-			}else{
-				$data['msg'] = '服务器繁忙,请稍后再试！';
-			}
-		}
+
 		unset($temp);
 		return $data;
 	}

@@ -12,7 +12,7 @@
 <!--home start-->
     <!--banner-->
     <div class="home_bannner" id="js_banner">
-        <a href="" class="link_url" target="_blank"><img src="../../../assets/images/banner/banner_1.jpg" alt="" class="source"/></a>
+        <a href="" class="link_url" target="_blank"><img src="" alt="" class="source"/></a>
     </div>
     <!--banner-->
     <!--gg-->

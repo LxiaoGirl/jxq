@@ -28,7 +28,7 @@
             <ul class="tab_con">
                 <li class="zhxx active">
                     <p>
-                        <font >用户名</font><font class="zj user_name"><?php echo $user['data']['user_name']?></font><font class="yc"><i class="xgnc">修改用户名</i></font>
+                        <font >用户名</font><font class="zj user_name"><?php echo $user['data']['user_name'];?></font><font class="yc"><?php if($user['data']['user_name'] == $user['data']['real_name'] || $user['data']['user_name'] == $user['data']['mobile']): ?><i class="xgnc">修改用户名</i><?php endif;?></font>
                     </p>
                         <!--修改昵称_1-->
                         <div class="user_data_pop xgnc_1">
@@ -41,12 +41,12 @@
                                         输入新昵称：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="text" value="" placeholder="请输入呢称" id="name"/>
+                                        <input type="text" value="" placeholder="请输入呢称" id="name" maxlength="15"/>
                                     </div>
                                 </div>
                                 <div class="p xgnc_p">
                                     <div class="fr tl tip_pop" id="name_notes">
-											
+											<span style="color:red;">仅能修改一次，修改后将无法修改</span>
                                     </div>
                                 </div>
                                 <button type="button" class="user_data_pop_but sub " id="name_sub">提交</button>
@@ -197,6 +197,32 @@
                             </div>
                         </div>
                         <!--修改邮箱_1-->
+                    <p>
+                        <font >公司邀请码</font><font class="zj company_name"><?php echo isset($user['data']['company'])&&$user['data']['company']?$user['data']['company']:'';?></font><font class="yc"><?php if(!$user['data']['company']):?><i class="xggsyzm company_e">添加</i><?php endif; ?></font>
+                    </p>
+                    <!--修改昵称_1-->
+                    <div class="user_data_pop xggsyzm_1">
+                        <div class="title">
+                            <span>公司验证码</span><font class="fr close">×</font>
+                        </div>
+                        <div class="popbody tc">
+                            <div class="p xgnc_p">
+                                <div class="fl tr">
+                                    输入公司验证码：
+                                </div>
+                                <div class="fr tl">
+                                    <input type="text" value="" placeholder="请输入公司验证码" id="company"/>
+                                </div>
+                            </div>
+                            <div class="p xgnc_p">
+                                <div class="fr tl tip_pop" id="company_notes">
+
+                                </div>
+                            </div>
+                            <button type="button" class="user_data_pop_but sub " id="company_sub">提交</button>
+                        </div>
+                    </div>
+                    <!--修改昵称_1-->
                 </li>
             </ul>
         </div>
@@ -393,7 +419,7 @@
 			}
 		});
 		//修改邮箱
-
+/*
         //修改姓名
 		$('#name').keyup(function(){
 			var name=this.value;
@@ -419,20 +445,47 @@
 					
 			});
 		});
+        */
 		$('#name_sub').click(function(){
 			var name = $('#name').val();
+            if(name == ''){
+                $('#name_notes').html('请输入用户名!');
+                return false;
+            }
 			var condition;
 			condition='?name='+name+'&f=1';
 			$.post('/index.php/user/user/Change_name'+condition,{},function(result){
-//				result = eval(result);
-				$('#new_name').html(result[0].name);
-				$('#head_user_name_span').html(result[0].name);
-				$('#left_user_name_span').html(result[0].name);
-				$('.user_name').html(result[0].name);
-
+                if(result.status == '10000'){
+                    $('#new_name').html(result[0].name);
+                    $('#head_user_name_span').html(result[0].name);
+                    $('#left_user_name_span').html(result[0].name);
+                    $('.user_name').html(result[0].name);
+                }else{
+                    $('#name_notes').html(result.msg);
+                }
 			},'json');
 		});
 
+        //公司邀请码
+        pop($('.xggsyzm'),$('.xggsyzm_1'),$('.xggsyzm_1').find('.close'));
+        $('#company_sub').click(function(){
+            var code = $('#company').val();
+            if(code == ''){
+                $('#company_notes').html('请输入公司邀请码!');
+                return false;
+            }
+            $.post('/index.php/user/user/company_invite_code',{code:code},function(result){
+                if(result.status == '10000'){
+                    $('.company_name').html(result.data.company_code);
+                    $('.company_e').remove();
+                    $(".black_bg").fadeOut();
+                    $('.xggsyzm_1').fadeOut();
+                }else{
+                    $('#company_notes').html(result.msg);
+                }
+
+            },'json');
+        });
         //根据类型自动触发
         switch ('<?php echo $type; ?>'){
             case 'name':

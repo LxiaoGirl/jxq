@@ -395,8 +395,15 @@
 .team_txt{ width:650px; }
 .partner{ font-size:20px; font-family:"新宋体"; font-style:italic; padding-bottom:75px;}
 .partner_list{ width:1014px; margin:0 auto; }
-.partner_list li{ float:left; padding-left:7px; padding-right:7px; padding-bottom:20px;}
-.partner_list li a:hover{filter:alpha(opacity=80); opacity: 0.8;}
+.partner_list li h2{ color:#003b91;font-size: 14px; height:30px; width: 100%; border-bottom: 1px solid #cccccc;}
+.partner_list li h3{ color:#003b91;font-size: 14px; height:30px; width: 100%; border-bottom: 1px solid #cccccc;}
+.partner_list li h2 font{ line-height: 38px; border-bottom: 3px solid #003b91;}
+.partner_list li .hznr{padding: 40px 0; overflow:hidden;}
+.partner_list li .hznr img{ border:1px solid #d7d7d7;}
+.partner_list li .hznr .ri{ width: 650px; height:52px; line-height: 26px; color:#5d5d5d; font-size: 14px;}
+.partner_list li .hznr .left{width: 460px; padding-right: 46px; border-right: 1px solid #ccc; overflow: hidden; float: left;}
+.partner_list li .hznr .right{width: 460px; padding-left: 20px; padding-right: 27px; overflow: hidden; float: left;}
+.partner_list li .hznr p{line-height: 26px; color:#5d5d5d; font-size: 14px;}
 .partner_w{ background:#f3f4f6 url(../images/about/partner/par_bg.jpg) no-repeat center 188px;padding-bottom:100px;}
 .partner_h1{ padding-top:70px; padding-bottom:20px;}
 
