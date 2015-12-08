@@ -389,7 +389,7 @@ class Activity_model extends CI_Model{
         $temp['this_month'] = date('Ym',time());
         if($temp['uid'] > 0){
             $temp = $this->c->show_page(self::settle,array(
-                'select'  => 'real_month,SUM(jujian_amount) as amount,pay_time,status',
+                'select'  => 'real_month,SUM(jujian_amount) as amount,pay_time,status,real_day',
                 'where'   =>array(
                     'inviter' =>$temp['uid'],
                     'real_month <='=>$temp['this_month']

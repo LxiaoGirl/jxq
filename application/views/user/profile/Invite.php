@@ -51,7 +51,7 @@
                                 <div class="fl">
                                     <h5><font>金额（元）:</font><?php echo $v['amount']?></h5>
                                     <p>结算日：<?php echo $v['pay_time']?></p>
-                                    <p>结算状态：<font class="ywc"><?php echo $v['status'];?></font></p>
+                                    <p>结算状态：<font class="ywc"><?php if($v['status'] == 1):echo '已结算';elseif($v['status'] == 2):echo '已失效';else:echo '未结算';endif;?></font></p>
                                 </div>
                                 <div class="fr">
                                     <button class="invite_ckxq" id="<?php echo  $v['real_month'];?>">查看详情<em><em></em></em></button>
@@ -64,7 +64,7 @@
 					<?php endforeach;?>
 					<?php endif;?>
                     </li>
-					<?php echo $links?>
+					<?php echo (isset($links))?$links:'';?>
                 </ul>
             </div>
         </div>
@@ -89,7 +89,7 @@
 					text=text+'<span class="tl wid_108">投资时间</span>';
 					text=text+'<span class="tr wid_125">投资金额（元）</span>';
 					text=text+'<span class="tr wid_180">获得收益（元）</span>';
-					text=text+'</p>';	
+					text=text+'</p>';
 					result = JSON.parse(result);
 					for(var i=0;i<result.data.length;i++){
 						var d=new Date(parseInt(result.data[i].pay_time) * 1000).toLocaleString().substr(0,10);

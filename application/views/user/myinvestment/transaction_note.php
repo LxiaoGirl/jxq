@@ -24,7 +24,7 @@
                     <li <?php if($type == '4'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=4&start_time='.$start_time.'&end_time='.$end_time); ?>'">回款中<font class="fr">|</font></li>
                     <li <?php if($type == '7'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=7&start_time='.$start_time.'&end_time='.$end_time); ?>'">回款完成<font class="fr">|</font></li>
                     <li <?php if($type == '2'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=2&start_time='.$start_time.'&end_time='.$end_time); ?>'">热售中<font class="fr">|</font></li>
-                    <li <?php if($type == '3'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=3&start_time='.$start_time.'&end_time='.$end_time); ?>'">已售馨</li>
+                    <li <?php if($type == '3'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=3&start_time='.$start_time.'&end_time='.$end_time); ?>'">复审中</li>
                         <div class="section">                            
                             <font style="margin-left:30px;">选择日期：</font><input type="text" id="start-time" class="date_picker_1" value="<?php echo $start_time?date('Y-m-d',$start_time):date('Y-m-d',strtotime('-60 day')); ?>">
                             <font>至&nbsp;&nbsp;</font><input type="text" id="end-time" class="date_picker_2" value="<?php echo $end_time?date('Y-m-d',$end_time):''; ?>">

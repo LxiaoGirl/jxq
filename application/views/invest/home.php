@@ -279,7 +279,7 @@
                         e.find('.h').text(h);
                         e.find('.d').text(d);
                     }
-                });
+                },<?php echo time(); ?>);
             }
 
             //小贴士

@@ -269,7 +269,7 @@
                     if($('#invest-button').attr('data-status') == '2')
                         $('#invest-button').html('投资结束').unbind('click').addClass('ymbbut');
                     obj.remove();
-                });
+                },'',<?php echo time(); ?>);
             }
             //开标倒计时处理
             if('<?php echo $project['new_status']; ?>' == '1'){
@@ -285,7 +285,7 @@
                         obj.remove();
                         $('.time-down').show();
                         ajax_loading(1);
-                    });
+                    },'','',<?php echo time(); ?>);
                 }
             }
 

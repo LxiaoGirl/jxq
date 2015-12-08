@@ -31,6 +31,20 @@ class Invest extends MY_Controller{
 		if($temp['project']['status'] == '10000'){
 			$data['project']= $temp['project']['data']['data'];
 			$data['links'] 	= $this->c->get_links($temp['project']['data']['total'],$temp['page_id'],self::page_size);
+
+			//处理排序
+			if($data['project']){
+				usort($data['project'],function($a,$b){
+					$x=$a['new_status'];
+					$y=$b['new_status'];
+					if($x == 1)$x=2;
+					if($x == 2)$x=1;
+					if($y == 1)$y=2;
+					if($y == 2)$y=1;
+					if($x == $y)return 0;
+					return $x<$y?-1:1;
+				});
+			}
 		}
 
 		//项目分类�

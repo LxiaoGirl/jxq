@@ -219,7 +219,7 @@
                     if(obj.parent().parent().find('.invest-button').attr('data-status') == '2')
                         obj.parent().parent().find('.invest-button').html('投资结束').attr('href','javascript:void(0);').addClass('ymbbut').siblings('H5').text('');
                     obj.remove();
-                });
+                },'',<?php echo time(); ?>);
             }
             //按钮上面的倒计时
             if($('.settime').length) {
@@ -233,7 +233,7 @@
                         e.find('.h').text(h);
                         e.find('.d').text(d);
                     }
-                });
+                },<?php echo time(); ?>);
             }
             //投资榜
             var invest_html = $('#invest-total-list').clone(),invest_month_html = $('#invest-total-list-month').clone();

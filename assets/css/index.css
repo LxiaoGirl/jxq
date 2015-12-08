@@ -823,6 +823,10 @@ body{
     font-family: "宋体";
     line-height: 60px;
     text-indent: 5px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display: block;
 }
 .home_right .gfgg p font{
     background:#3cb5ec;

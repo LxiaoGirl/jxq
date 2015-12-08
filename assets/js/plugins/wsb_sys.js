@@ -6,12 +6,14 @@ define(function (require, exports, module) {
      * @param callback2 标的结束的处理函数
      * @param func 处理函数
      */
-    $.fn.count_down = function(callback1,callback2,func){
+    $.fn.count_down = function(callback1,callback2,func,now_time){
         var curren_run_time = 1;
-        var count_down = function() {this.tt=0;};
+        if( ! now_time)now_time = Date.parse(new Date())/1000;
+        var count_down = function() {this.tt=0;this.now_time=null};
         count_down.prototype = {
             'go':function(e,end_time,callback,deal_func) {
-                var time = Date.parse(new Date())/1000;
+                if(this.now_time == null)this.now_time=now_time;
+                var time = this.now_time;//Date.parse(new Date())/1000;
                 var time_space =end_time-time;
                 var s = 0,m = 0,h = 0,d = 0;
                 if(time_space > 0){
@@ -46,6 +48,7 @@ define(function (require, exports, module) {
                     clearTimeout(this.tt);
                     if(typeof callback == 'function')callback();
                 }
+                this.now_time++;
             }
         };
         if(this.length > 1){

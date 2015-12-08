@@ -178,7 +178,7 @@ class Project_model extends CI_Model{
                 //循环处理 项目必要信息 模式 类型 融资率 等
                 foreach($data['data']['data'] as $key=>$val){
 	                //融资率
-	                $data['data']['data'][$key]['receive_rate'] = $this->_get_project_receive_rate($val['amount'],$val['receive']);
+	                $data['data']['data'][$key]['receive_rate'] = $this->_get_project_receive_rate($val['amount'],$val['receive'],$val['buy_time']);
 
 					$temp['status_array'] 						= $this->get_project_status($val['buy_time'],$val['due_date'],$data['data']['data'][$key]['receive_rate'],$val['status']);
                     $data['data']['data'][$key]['status'] 		= $temp['status_array']['name'];//项目状态
@@ -317,7 +317,7 @@ class Project_model extends CI_Model{
                 $data['msg'] = 'ok!';
                 //补充数据
 	            //融资率
-				$data['data']['receive_rate'] = $this->_get_project_receive_rate($data['data']['amount'],$data['data']['receive']);
+				$data['data']['receive_rate'] = $this->_get_project_receive_rate($data['data']['amount'],$data['data']['receive'],$data['data']['buy_time']);
 
 				$temp['status_array'] 		= $this->get_project_status($data['data']['buy_time'],$data['data']['due_date'],$data['data']['receive_rate'],$data['data']['status']);
                 $data['data']['status'] 	= $temp['status_array']['name'];//状态
@@ -750,7 +750,7 @@ class Project_model extends CI_Model{
 					//$this->session->set_userdata($temp['data']);
 					$this->_set_borrow_status(); // 更新记录状态
 					$temp['content'] = sprintf('您好，您投资的%s元资金已经冻结。请等待标地结束。', $amount);
-					$this->send_message($uid, '您好，您投资的金额已经冻结！', $temp['content']);//发送信息
+					$this->send_message($uid, '您好，您投资的金额已经冻结！', $temp['content'],3);//发送信息
 					$this->add_user_log('invest', '投资'.sprintf('¥ %s', round($amount,2)).'(项目编号：'.$borrow_no.')',$uid,$temp['usr']['user_name']);//添加用户日志
 				}
 			}
@@ -1277,9 +1277,10 @@ class Project_model extends CI_Model{
 	 * 计算融资率
 	 * @param int $amount 总金额
 	 * @param int $receive 已收金额
+	 * @param int $buy_time 开投时间
 	 * @return float|int
 	 */
-	protected function _get_project_receive_rate($amount=0,$receive=0){
+	protected function _get_project_receive_rate($amount=0,$receive=0,$buy_time=null){
 		$receive_rate = 0;
 
 		if($receive){
@@ -1293,6 +1294,9 @@ class Project_model extends CI_Model{
 		}else{
 			$receive_rate = 0;
 		}
+
+		//未开始投标时过滤自动投的部分投资金额
+		if(!is_null($buy_time) && $buy_time > time())$receive_rate = 0;
 
 		return $receive_rate;
 
@@ -1901,9 +1905,10 @@ class Project_model extends CI_Model{
      * @param  integer $uid     会员ID
      * @param  string  $subject 主题
      * @param  string  $content 消息内容
+     * @param  int  $type 消息类型
      * @return boolean
      */
-    public function send_message($uid = 0, $subject = '', $content = ''){
+    public function send_message($uid = 0, $subject = '', $content = '',$type=0){
         $query = FALSE;
         $data  = array();
 
@@ -1912,6 +1917,7 @@ class Project_model extends CI_Model{
                 'uid'       => $uid,
                 'subject'   => $subject,
                 'content'   => $content,
+                'type'  	=> $type,
                 'send_time' => time()
             );
 
