@@ -26,7 +26,7 @@
                     <li <?php if($type == '2'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=2&start_time='.$start_time.'&end_time='.$end_time); ?>'">热售中<font class="fr">|</font></li>
                     <li <?php if($type == '3'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=3&start_time='.$start_time.'&end_time='.$end_time); ?>'">已售馨</li>
                         <div class="section">                            
-                            <font style="margin-left:30px;">选择日期：</font><input type="text" id="start-time" class="date_picker_1" value="<?php echo $start_time?date('Y-m-d',$start_time):''; ?>">
+                            <font style="margin-left:30px;">选择日期：</font><input type="text" id="start-time" class="date_picker_1" value="<?php echo $start_time?date('Y-m-d',$start_time):date('Y-m-d',strtotime('-60 day')); ?>">
                             <font>至&nbsp;&nbsp;</font><input type="text" id="end-time" class="date_picker_2" value="<?php echo $end_time?date('Y-m-d',$end_time):''; ?>">
                             <button onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type='.$type); ?>'+'&start_time='+document.getElementById('start-time').value+'&end_time='+document.getElementById('end-time').value">查询</button>
                         </div>

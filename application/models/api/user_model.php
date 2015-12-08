@@ -557,7 +557,7 @@ class User_model extends CI_Model{
 
 	public function company_invite_code($uid=0,$code=''){
 		$temp = array();
-		$data = array('name'=>'绑定公司邀请码','status' => '10001', 'msg' => '你提交的公司邀请码不存在,请重试！', 'data' => array());
+		$data = array('name'=>'绑定公司邀请码','status' => '10001', 'msg' => '你提交的理财师/公司邀请码不存在,请重试！', 'data' => array());
 
 		if($code){
 			//验证用户信息
@@ -581,7 +581,7 @@ class User_model extends CI_Model{
 					if($temp['data']['data']['company']){
 						$code = $temp['data']['data']['company'];
 					}else{
-						$data['msg'] = '当前居间人也无公司邀请码!';
+						$data['msg'] = '当前理财师也无公司邀请码!';
 						$code = '';
 					}
 				}
@@ -589,11 +589,17 @@ class User_model extends CI_Model{
 				if($code){
 					//有居间人uid inviter_uid 验证邀请人uid 是否和当前用户的邀请人是否相同
 					if($temp['inviter_uid'] && $temp['user_info']['inviter'] && $temp['inviter_uid']!=$temp['user_info']['inviter']){
-						$data['msg'] = '当前邀请码与本身居间人邀请码不同!';
+						$data['msg'] = '当前邀请码与本身理财师邀请码不同!';
 						return $data;
 					}
-
-					$query = $this->c->update(self::user,array('where'=>array('uid'=>$uid)),array('company'=>$code));
+					$temp['update_data'] = array(
+							'company'=>$code
+					);
+					//如果有居间人uid 而本身无inviter 则保存
+					if($temp['inviter_uid'] && !$temp['user_info']['inviter']){
+						$temp['update_data']['inviter'] = $temp['inviter_uid'];
+					}
+					$query = $this->c->update(self::user,array('where'=>array('uid'=>$uid)),$temp['update_data']);
 					if($query){
 						$data['msg'] = '操作成功!';
 						$data['status'] = '10000';

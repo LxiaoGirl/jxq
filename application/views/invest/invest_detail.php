@@ -21,10 +21,12 @@
             <h1>
 	            <?php echo $project['subject'];?>
 	            <b>编号：<?php echo $project['borrow_no']; ?></b>
-	            <span class="bao">
-		            <em><?php echo type_name_2($project['type']); ?></em>
-		            <font><?php echo $project['company_name']; ?></font>
-	            </span>
+                <?php if(!empty($v['company_name'])): ?>
+                    <span class="bao">
+                        <em><?php echo type_name_2($project['type']); ?></em>
+                        <font><?php echo $project['company_name']; ?></font>
+                    </span>
+                <?php endif;?>
 <!--	            <span class="zhi"><em>A</em><font>支持自动投资</font></span>-->
 <!--	            <span class="jia"><em>加</em><font>+0.9%</font></span>-->
 	            <i class="fr"><a href="<?php echo site_url('about/invest_agreement');?>" target="_blank">《聚雪球投资协议（范本）》</a></i>
@@ -83,7 +85,7 @@
                                     echo '<button type="button"  id="invest-button" data-status="2">马上投标</button>';
                                     break;
                                 case '3':
-                                    echo '<button type="button" class="ymbbut">已售罄</button>';
+                                    echo '<button type="button" class="ymbbut">复审中</button>';
                                     break;
                                 case '4':
                                     echo '<button type="button" class="ymbbut">回款中</button>';
@@ -347,12 +349,14 @@
                     },function(){is_click1=true;});
                 }
             });
+            var new_status = '<?php echo $project['new_status'] ?>';
             $('.repay-list').bind('click',function(){
                 if( ! is_click2) {
                     each_html(repay_list, '/index.php/invest/ajax_get_repay_list', {'borrow_no': '<?php echo $project['borrow_no'] ?>'}, {
                         'rapay_time':function(v){ return unixtime_style(v,'Y-m-d H:i:s')}
                     }, true, function (obj, v) {
                         if(v.rapay_time == 0)obj.find('.rapay_time').html('-');
+                        if(new_status == '1' || new_status == '2')obj.find('.rapay_time').html('筹集中');
                         switch (v.status){
                             case '1':
                                 obj.find('.rapay_time').append('<img class="ywc" src="/assets/images/invest/ywc_c.png">');

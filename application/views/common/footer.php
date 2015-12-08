@@ -54,13 +54,16 @@
 			</div>
 		</div>
 		<div class="fo2">
-			<p class="fo-p1 tc"><a href="<?php echo site_url('about/company'); ?>"><img src="../../../../assets/images/common/f_logo.png" width="21" height="15">关于聚雪球</a>   <a href="<?php echo site_url('about/certificates'); ?>">公司资质</a>   <a href="<?php echo site_url('about/media'); ?>">媒体报道</a>   <a href="<?php echo site_url('about/news'); ?>">新闻中心 </a>  <a href="<?php echo site_url('about/join'); ?>">加入我们</a>  <a href="#"> 法律声明</a>   <a href="<?php echo site_url('about/contact'); ?>">联系我们</a>   <a href="<?php echo site_url('about/help'); ?>">帮助中心</a>   <a href="<?php echo site_url('about/guide'); ?>">新手指引</a>   辽ICP备15006535号</p>
+			<p class="fo-p1 tc"><a href="<?php echo site_url('about/company'); ?>"><img src="../../../../assets/images/common/f_logo.png" width="21" height="15">关于聚雪球</a>   <a href="<?php echo site_url('about/certificates'); ?>">公司资质</a>   <a href="<?php echo site_url('about/media'); ?>">媒体报道</a>   <a href="<?php echo site_url('about/news'); ?>">新闻中心 </a>  <a href="<?php echo site_url('about/join'); ?>">加入我们</a>  <a href="<?php echo site_url('about/legal_declaration'); ?>"> 法律声明</a>   <a href="<?php echo site_url('about/contact'); ?>">联系我们</a>   <a href="<?php echo site_url('about/help'); ?>">帮助中心</a>   <a href="<?php echo site_url('about/guide'); ?>">新手指引</a>   辽ICP备15006535号</p>
 			<p class="fo-p1 tc"><span>Copyright © 2009-2015 ZGWJJF 沈阳网加互联网金融服务有限公司</span>   <span>服务热线：4007 918 333（个人/企业）</span>服务时间：9:00-21:00</p>
 			<p class="fo-p2 tc">友情链接：<a href="http://ln.qq.com/" target="_new">腾讯·大辽网</a> ·<a href="http://www.ce.cn/" target="_new"> 中国经济网 </a>·<a href="http://www.163.com/" target="_new"> 网易</a> ·<a href="http://cn.chinadaily.com.cn/" target="_new"> 中国日报网</a> · <a href="http://www.wangdaizhijia.com/" target="_new">网贷之家</a> ·<a href="http://www.eastmoney.com/" target="_new"> 东方财富网</a> ·<a href="http://www.eeo.com.cn/" target="_new"> 经济观察网</a></p>
-			<p class="fo-p3 tc"><img src="../../../../assets/images/common/footer1.jpg">
-				<img src="../../../../assets/images/common/footer2.jpg">
-				<img src="../../../../assets/images/common/footer3.jpg">
-				<img src="../../../../assets/images/common/footer4.jpg" ></p>
+			<p class="fo-p3 tc">
+                <a href=""><img class="a_q" src="../../../../assets/images/common/footer1.jpg"><img class="a_f" src="../../../../assets/images/common/footer1_1.png"></a>
+				<a href=""><img class="a_q" src="../../../../assets/images/common/footer2.jpg"><img class="a_f" src="../../../../assets/images/common/footer2_1.png"></a>
+				<a href=""><img class="a_q" src="../../../../assets/images/common/footer3.jpg"><img class="a_f" src="../../../../assets/images/common/footer3_1.png"></a>
+				<a href=""><img class="a_q" src="../../../../assets/images/common/footer4.jpg" ><img class="a_f" src="../../../../assets/images/common/footer4_1.png"></a>
+                <a href=""><img class="a_q" src="../../../../assets/images/common/footer5.png" ><img class="a_f" src="../../../../assets/images/common/footer5_1.png"></a>
+            </p>
 		</div>
 	</div>
 </div>

@@ -25,7 +25,9 @@
 			            <?php echo $v['category']; ?><font class="fr">|</font>
 		            </li>
 	            <?php endforeach;endif; ?>
+            <!--
                 <li onclick="window.location.href='<?php echo site_url('invest/index?c=4') ?>'" class="jbb <?php if($category == 4): ?>active<?php endif; ?>" ><em>宝</em>聚保宝</li>
+            -->
             </ul>
             <!--TAB头 标的名-->
             <!--公告-->
@@ -153,10 +155,12 @@
                                 </font>
 	                            <a href="<?php echo site_url('invest/detail?borrow_no='.$v['borrow_no']); ?>"> <?php echo $v['subject']; ?></a>
 	                            <b>（编号：<?php echo $v['borrow_no']; ?>）</b>
+                                <?php if( $v['company_name']): ?>
 	                            <span class="bao">
 		                            <em><?php echo type_name_2($v['type']); ?></em>
-		                            <font><?php echo $v['company_name']; ?></font>
+                                    <font><?php echo $v['company_name']; ?></font>
 	                            </span>
+                                <?php endif; ?>
 <!--	                            <span class="zhi"><em>A</em><font>支持自动投资</font></span>-->
 <!--	                            <span class="jia"><em>加</em><font>+0.9%</font></span>-->
                             </h1>
@@ -209,7 +213,7 @@
                                             break;
                                         case '3':
                                             echo '<h5></h5>';
-                                            echo '<a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'" class="ymbbut">已售罄</a>';
+                                            echo '<a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'" class="ymbbut">复审中</a>';
                                             break;
                                         case '4':
                                             echo '<h5></h5>';

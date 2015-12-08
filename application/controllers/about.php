@@ -363,6 +363,10 @@ class About extends MY_Controller{
         $data = array();
         $this->load->view('about/invest_agreement', $data);
     }
+
+    public function legal_declaration(){
+        $this->load->view('about/legal_declaration');
+    }
 /***************************************协议************************************************************************/
 
 

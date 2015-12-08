@@ -33,15 +33,15 @@
                         <!--修改昵称_1-->
                         <div class="user_data_pop xgnc_1">
                             <div class="title">
-                                <span>修改昵称</span><font class="fr close">×</font>
+                                <span>修改用户名</span><font class="fr close">×</font>
                             </div>
                             <div class="popbody tc">
                                 <div class="p xgnc_p">
                                     <div class="fl tr">
-                                        输入新昵称：
+                                        输入新用户名：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="text" value="" placeholder="请输入呢称" id="name" maxlength="15"/>
+                                        <input type="text" value="" placeholder="请输入用户名" id="name" maxlength="15"/>
                                     </div>
                                 </div>
                                 <div class="p xgnc_p">
@@ -56,7 +56,7 @@
                         <!--修改昵称_2-->
                         <div class="user_data_pop xgnc_2">
                             <div class="title">
-                                <span>修改昵称</span><font class="fr close">×</font>
+                                <span>修改用户名</span><font class="fr close">×</font>
                             </div>
                             <div class="popbody tc">
                                 <div class="p xgnc_p">
@@ -64,7 +64,7 @@
                                         <img src="<?php echo base_url('assets/images/user/xrt.png')?>">
                                     </div>
                                     <div class="fr tl">
-                                        <div class="popbody_p shb">昵称修改成功</div>
+                                        <div class="popbody_p shb">用户名修改成功</div>
                                         <div class="popbody_p xb" ><span id="new_name"></span>，<font>这名字听上去真带劲～！</font></div>
                                     </div>
                                 </div>
@@ -203,15 +203,15 @@
                     <!--修改昵称_1-->
                     <div class="user_data_pop xggsyzm_1">
                         <div class="title">
-                            <span>公司验证码</span><font class="fr close">×</font>
+                            <span>公司邀请码</span><font class="fr close">×</font>
                         </div>
                         <div class="popbody tc">
                             <div class="p xgnc_p">
                                 <div class="fl tr">
-                                    输入公司验证码：
+                                    理财师/公司邀请码：
                                 </div>
                                 <div class="fr tl">
-                                    <input type="text" value="" placeholder="请输入公司验证码" id="company"/>
+                                    <input type="text" value="" placeholder="请输入理财师/公司邀请码" id="company"/>
                                 </div>
                             </div>
                             <div class="p xgnc_p">
@@ -471,7 +471,7 @@
         $('#company_sub').click(function(){
             var code = $('#company').val();
             if(code == ''){
-                $('#company_notes').html('请输入公司邀请码!');
+                $('#company_notes').html('请输入理财师/公司邀请码!');
                 return false;
             }
             $.post('/index.php/user/user/company_invite_code',{code:code},function(result){

@@ -125,7 +125,7 @@
                                             break;
                                         case '3':
                                             echo '<h5></h5>';
-                                            echo '<a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'" class="ymbbut">已售罄</a>';
+                                            echo '<a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'" class="ymbbut">复审中</a>';
                                             break;
                                         case '4':
                                             echo '<h5></h5>';
@@ -187,6 +187,7 @@
                     <p class="gg"><a href="" class="link_url"><font class="key">1</font><span class="title"></span></a></p>
                 </div>
             </div>
+<!--
             <div class="axgyj">
                 <h1>爱心公益基金</h1>
                 <a href="">
@@ -198,6 +199,7 @@
                     </p>
                 </a>
             </div>
+            -->
         </div>
         <!--右侧-->
     </div>

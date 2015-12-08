@@ -78,7 +78,7 @@
                             </div>
                         </div>
                         <!--实名认证_2-->
-                    <p><font>登录密码</font><font class="zj">已设置</font><font class="yc"><i class="xgmm">修改密码</i> | <i class="wjmm">重置密码</i></font></p>
+                    <p><font>登录密码</font><font class="zj">已设置</font><font class="yc"><i class="xgmm">修改</i> | <i class="wjmm">重置</i></font></p>
                         <!--修改密码 1-->
                         <div class="user_data_pop xgmm_1">
                             <div class="title">
@@ -215,7 +215,7 @@
                             </div>
                         </div>
                         <!--修改密码 2-->
-                    <p><font>资金密码</font><font class="zj"><?php echo (!empty($data['security']))?'已设置':'未设置'?></font><font class="yc"><?php if(empty($data['security'])):?><i class="szzjmm">设置密码</i>  <?php else:?> <i class="xgzjmm">修改密码</i> | <i class="wjzjmm">忘记密码</i><?php endif;?></font></p>
+                    <p><font>资金密码</font><font class="zj"><?php echo (!empty($data['security']))?'已设置':'未设置'?></font><font class="yc"><?php if(empty($data['security'])):?><i class="szzjmm">设置</i>  <?php else:?> <i class="xgzjmm">修改</i> | <i class="wjzjmm">重置</i><?php endif;?></font></p>
                         <!--设置资金密码 1-->
                         <div class="user_data_pop xgmm_5">
                             <div class="title">

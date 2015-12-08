@@ -360,6 +360,12 @@ a:hover{ color:#3cb5ec;}
 .fo-p2 a:hover{ color:#3cb5ec;}
 .fo-p3{ padding-top:20px; padding-bottom:46px;}
 .fo-p3 img{ padding-right:22px;}
+.fo-p3 a img{outline:0; height:36px;}
+.fo-p3 a,.fo-p3 a img{outline:0;}
+.fo-p3 a .a_q{display:inline-block;}
+.fo-p3 a .a_f{display:none;}
+.fo-p3 a:hover .a_q{display:none;}
+.fo-p3 a:hover .a_f{display:inline-block;}
 /*底部公共部分 end*/
 /*user start*/
 .user_nav{
