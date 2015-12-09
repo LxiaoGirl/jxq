@@ -18,6 +18,10 @@ class Project_model extends CI_Model{
 	const message       = 'message';			//信息表
 	const log           = 'user_log';			//用户日志表
 	const transfer      = 'user_transaction';	//提现表
+	const jbb		    = 'borrow_jbb';			//聚保宝产品表
+	const jbb_dtl       = 'borrow_jbb_dtl';		//聚保宝发标表
+	const payment_jbb   = 'borrow_payment_jbb';	//聚保宝购买表
+	const payment_jbb_dtl  = 'borrow_payment_jbb_dtl';	//聚保宝购买表明细
 	
 	const RUN_DATE      = '2015-06-12'; 		//网站运行时间
 	private $_page_size = '10';				//分页每页记录数
@@ -1139,7 +1143,668 @@ class Project_model extends CI_Model{
         unset($temp);
         return $data;
     }
+/********************************************************聚保宝***************************************************************************************/
 
+
+	/**
+	 * 聚保宝项目列表
+	 * @param string $type_code
+	 * @param string $periods_number
+	 * @return array
+	 */
+	public function jbb_dtl_list($type_code = '',$periods_number = 0){
+		$data = $temp = array();
+		$data = array(
+				'name'=>'聚保宝项目列表',
+				'status'=>'10001',
+				'msg'=>'暂无相关信息!'
+			);
+		if( ! empty($type_code)&&$periods_number!=0){
+			$temp['where'] = array(
+				'select'   => '*',
+				'where'    => array('type_code' => $type_code,'periods_number' => $periods_number)
+			);
+			$temp['data'] = $this->c->get_row(self::jbb_dtl, $temp['where']);
+		}else{
+			$sql = 'select temp.* from (select * from `cdb_borrow_jbb_dtl` order by `start_day` desc ,`start_time` desc ) `temp`  group by type_code order by `type_code`';
+			$query =$this->db->query($sql);
+			$temp['data'] = json_decode(json_encode($query->result()),true);
+		}
+		if(!empty($temp['data'])){
+			$data = array(
+				'name'=>'聚保宝项目列表',
+				'status'=>'10000',
+				'msg'=>'ok!',
+				'data'=>$temp['data']
+			);
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+
+	/**
+	 * 聚保宝项目
+	 * @param string $type_code
+	 * @param string $periods_number
+	 * @return array
+	 */
+	public function jbb($type_code = ''){
+		$data = $temp = array();
+		$data = array(
+				'name'=>'聚保宝项目',
+				'status'=>'10001',
+				'msg'=>'暂无相关信息!'
+			);
+		if( ! empty($type_code)){
+			$temp['where'] = array(
+				'select'   => '*',
+				'where'    => array('type_code' => $type_code)
+			);
+			$temp['data'] = $this->c->get_row(self::jbb, $temp['where']);
+		}
+		if(!empty($temp['data'])){
+			$data = array(
+				'name'=>'聚保宝项目列表',
+				'status'=>'10000',
+				'msg'=>'ok!',
+				'data'=>$temp['data']
+			);
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+
+	/**
+	 * 聚保宝项目标的
+	 * @param string $type_code
+	 * @param string $periods_number
+	 * @return array
+	 */
+	public function jbb_list($type_code = ''){
+		$data = $temp = array();
+		$data = array(
+				'name'=>'聚保宝项目',
+				'status'=>'10001',
+				'msg'=>'暂无相关信息!'
+			);
+		if( ! empty($type_code)){
+			$temp['where'] = array(
+				'select'   => '*',
+				'where' => array('type_code' => $type_code),
+				'order_by' => '`start_day` desc,`start_time` desc'
+			);
+			$temp['data'] = $this->c->get_row(self::jbb_dtl, $temp['where']);
+		}
+		if(!empty($temp['data'])){
+			$data = array(
+				'name'=>'聚保宝项目列表',
+				'status'=>'10000',
+				'msg'=>'ok!',
+				'data'=>$temp['data']
+			);
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+	/**
+	 * 聚保宝详情列表
+	 * @param string $type_code
+	 * @param int $page
+	 * @return array
+	 */
+	public function detail_jbb_list($type_code = '',$per_page = 0){
+		$data = $temp = array();
+		$data = array(
+				'name'=>'聚保宝项目',
+				'status'=>'10001',
+				'msg'=>'暂无相关信息!'
+			);
+		if( ! empty($type_code)){
+
+			$temp['where'] = array(
+				'select'   => join_field('*', self::payment_jbb).','.join_field('user_name', self::user),
+                'where'    => array(
+					join_field('product_type', self::payment_jbb) =>$type_code
+                ),
+                'join'     => array(
+                'table' => self::user,
+                'where' => join_field('uid', self::payment_jbb).' = '.join_field('uid', self::user)
+                )
+			);
+			$temp['data'] = $this->c->show_page(self::payment_jbb, $temp['where'],"",0,5,$per_page);
+		}
+		if(!empty($temp['data'])){
+			$data = array(
+				'status'=>'10000',
+				'msg'=>'ok!',
+				'data'=>$temp['data']
+			);
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+
+	/**
+	 * 聚保宝累计入团人数
+	 * @param string $type_code
+	 * @param string $periods_number
+	 * @return array
+	 */
+	public function jbb_nums($type_code = ''){
+		$data = $temp = array();
+		$data = array(
+				'name'=>'聚保宝累计入团人数',
+				'status'=>'10001',
+				'msg'=>'暂无相关信息!'
+			);
+		$temp['where'] = array(
+			'select'   => 'count(*)',
+			'where'    => array('product_type' => $type_code)
+		);
+		$temp['data'] = $this->c->get_one(self::payment_jbb, $temp['where']);	
+		if(!empty($temp['data'])){
+			$data = array(
+				'status'=>'10000',
+				'msg'=>'ok!',
+				'data'=>array(
+					'jbb_nums' => $temp['data']
+				)
+			);
+		}else{
+			$data = array(
+				'status'=>'10000',
+				'msg'=>'ok!',
+				'data'=>array(
+					'jbb_nums' => 0
+				)
+			);
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+
+
+	/**
+	 * 聚保宝分散投资数
+	 * @param string $type_code
+	 * @param string $periods_number
+	 * @return array
+	 */
+	public function jbb_invest_nums($type_code = ''){
+		$data = $temp = array();
+		$data = array(
+				'name'=>'聚保宝累计入团人数',
+				'status'=>'10001',
+				'msg'=>'暂无相关信息!'
+			);
+		$temp['where'] = array(
+			'select'   => 'count(*)',
+			'like'	   =>array('field'=>'type_code','match'=>$type_code,'flag'=>'both'),
+			'group_by' => 'borrow_no'
+		);
+		$temp['data'] = $this->c->get_one(self::payment, $temp['where']);	
+		if(!empty($temp['data'])){
+			$data = array(
+				'status'=>'10000',
+				'msg'=>'ok!',
+				'data'=>array(
+					'jbb_invest_nums' => $temp['data']
+				)
+			);
+		}else{
+			$data = array(
+				'status'=>'10000',
+				'msg'=>'ok!',
+				'data'=>array(
+					'jbb_invest_nums' => 0
+				)
+			);
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+
+	/**
+	 * 聚保宝个人中心投资列表(历史)
+	 * @param string $type_code
+	 * @param string $periods_number
+	 * @return array
+	 */
+	public function jbb_per_list($uid = '',$status = 1){
+		$data = $temp = array();
+		$data = array(
+				'name'=>'聚保宝累计入团人数',
+				'status'=>'10001',
+				'msg'=>'暂无相关信息!'
+			);
+		$temp['where'] = array(
+                'select'   => join_field('*', self::payment_jbb).','.join_field('ave_rate', self::jbb).','.join_field('time_limit', self::jbb).','.join_field('type_name', self::jbb).','.join_field('allawexit', self::jbb).','.join_field('rate', self::jbb_dtl).','.join_field('closeday', self::jbb),
+                'where'    => array(
+                    join_field('uid', self::payment_jbb) => $uid,
+                    join_field('status', self::payment_jbb) => $status
+                ),
+                'join'     => array(
+					array(
+                       'table' => self::jbb,
+					   'where' => join_field('type_code', self::jbb).' = '.join_field('product_type', self::payment_jbb)
+                    ),
+                    array(
+                       'table' => self::jbb_dtl,
+                       'where' => join_field('product_type', self::payment_jbb).' = '.join_field('type_code', self::jbb_dtl).' and '.join_field('number_periods', self::payment_jbb).' = '.join_field('periods_number', self::jbb_dtl)
+                    )
+                
+                )
+            );
+		if($status==2){
+			$temp['where']['order_by'] = join_field('exit_time', self::payment_jbb).' desc';
+		}elseif($status==3){
+			$temp['where']['order_by'] = join_field('exit_audit_time', self::payment_jbb).' desc';
+		}else{
+			$temp['where']['order_by'] = join_field('purchase_time', self::payment_jbb).' desc';
+		}
+		$temp['data'] = $this->c->show_page(self::payment_jbb, $temp['where'],'',0,4);	
+		if(!empty($temp['data']['data'])){
+			if($status==2){
+				foreach($temp['data']['data'] as $k => $v){
+					$temp['data']['data'][$k]['num'] = $this->jbb_present_ranking($v['product_type'],$v['id']);
+				}
+			}
+			$data = array(
+				'status'=>'10000',
+				'msg'=>'ok!',
+				'data'=>$temp['data']
+			);
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+
+
+
+
+
+	/**
+	 * 聚保宝投资
+	 * @param string $type_code 产品编号
+	 * @param string $id 购买id
+	 * @return array
+	 */
+	public function jbb_invest($type_code = '', $mobile = '',$security = '',$amount = 0){
+		$temp = array();
+        $data = array('name'=>'聚保宝投资','status'=>'10001','msg'=>'服务器繁忙请稍后重试!','sign'=>'','data'=>array());
+		$this->_set_jbb_status();
+		if( !$this->is_mobile($mobile)){
+			$data['msg'] 	= '对不起，您还没有登录呢!';
+			$data['status'] = '10002';
+			return $data;
+		}
+
+		$temp['userinfo'] = $this->_get_userinfo($mobile);
+		if( ! $temp['userinfo']){
+			$data['msg'] = '对不起，该手机用户不存在!';
+			return $data;
+		}
+
+		//验证实名
+		if($temp['userinfo']['clientkind'] != 1){
+			$data['msg'] 	= '对不起，请先进行实名认证!';
+			$data['status'] = '10005';
+			$data['url'] = site_url('user/user/account_security'); 
+			return $data;
+		}
+
+		if( ! $amount || !is_numeric($amount)){
+			$data['msg'] = '对不起，投资金额不能为空!';
+			return $data;
+		}
+
+		if( ! $type_code){
+			$data['msg'] = '对不起，项目单号不能为空!';
+			return $data;
+		}
+
+		if( ! $security){
+			$data['msg'] = '对不起，资金密码不能为空!';
+			return $data;
+		}
+
+		//生成资金密码
+		$temp['security'] = $this->c->password($security, $temp['userinfo']['hash']);
+
+		if( ! $temp['userinfo']['security']){
+			$data['msg'] 	= '对不起，您还没有设定资金密码';
+			$data['status'] = '10003';
+			$data['url'] = site_url('user/user/account_security'); 
+			return $data;
+		}
+
+		//验证资金密码
+		if($temp['security'] != $temp['userinfo']['security']){
+			$data['msg'] = '对不起，您输入的资金密码不正确';
+			return $data;
+		}
+
+		//验证项目信息是否存在
+		$temp['balance'] = $this->get_user_balance($temp['userinfo']['uid']); // 当前账户可用余额				
+		$temp['jbb']  = $this->jbb_project($type_code);
+		if( ! $temp['jbb']){
+			$data['msg'] = '对不起，该项目不存在或已售罄!';
+			return $data;
+		}
+		
+
+		//验证用户余额
+		if($temp['balance'] < $amount){
+			$data['msg'] 	= '对不起，您的账户余额不足！';
+			$data['status'] = '10004';
+			return $data;
+		}
+
+		
+
+		//剩余融资金额 大于最低投资金额 验证投资金额是否大于最低投资金额
+		if( $amount < $temp['jbb']['start_amount']){
+			$data['msg'] = '对不起，投标金额不能小于'.$temp['detail']['lowest'];
+			return $data;
+		}
+		
+		
+		//单人单期投资金额
+		$temp['max_user'] = $this->_get_jbb_amount($temp['jbb']['type_code'],$temp['jbb']['periods_number'],$temp['userinfo']['uid']);
+		//验证是否大于最大投资金额
+		if($temp['max_user']+$amount > $temp['jbb']['all_amount']){
+			$data['msg'] 	= '对不起，您的投资金额大于最大投资金额！';
+			$data['status'] = '10001';
+			return $data;
+		}
+
+
+		
+        //验证是否大于剩余融资金额
+        if($amount > $temp['jbb']['development_amount']-$temp['jbb']['balance']){
+            $data['msg'] 	= '对不起，您的投资金额大于剩余融资金额！';
+            $data['status'] = '10001';
+            return $data;
+        }
+
+
+		$temp['where'] = array(
+				'select' => 'type_name',
+				'where'  => array('type_code' => $type_code,'type' => 1)
+			);
+
+		$temp['jbb_name'] = $this->c->get_one(self::jbb_dtl, $temp['where']);//产品名称
+
+		//新手标一次投标
+		if($type_code=='JBB02'){
+			$temp['user_one'] = $this->jbb_user_one($temp['userinfo']['uid']);
+			if($temp['user_one'] > 0){
+				$data['msg'] 	= '对不起，新手团只能投资一次！';
+				$data['status'] = '10001';
+				return $data;
+			}
+		}
+		$temp['query']  = $this->_jbb_invest($temp['jbb']['type_code'],$temp['jbb']['periods_number'], $amount, $temp['userinfo']['uid'],$temp['balance']);
+		if( ! empty($temp['query'])){
+            $data['status'] 		 = '10000';
+            $data['msg'] 			 = sprintf('您(尾号为%s)已成功投资【%s】项目，投资金额为:%s元。公司会定期汇报您的收益情况，祝您生活愉快！', substr($mobile, -4), $temp['jbb_name'], $amount);
+            $data['data']['balance'] = round($temp['balance'] - $amount, 2);
+
+//			$this->load->model('send_model', 'send');
+//			$this->send->send_sms($mobile, $data['msg'], 0, $temp['userinfo']['uid']);
+
+
+			$data = array(
+						'name'=>'聚保宝投资',
+						'status'=>'10000',		
+						'msg'=>'投资成功,在个人中心查看投资记录！',
+						'url'=>site_url('user/user/jbb')
+					);
+		}else{
+			$data = array(
+						'name'=>'聚保宝投资',
+						'status'=>'10001',
+						'msg'=>'投资失败，请重新尝试！'
+					);
+		}
+		
+
+		
+        unset($temp);
+        return $data;
+	}
+
+
+
+/********************************************************聚保宝*******************************************************************************************/
+	
+	/**
+	 * 聚保宝提现排名
+	 * @param string $type_code 产品编号
+	 * @param string $id 购买id
+	 * @return array
+	 */
+	private function jbb_present_ranking($type_code = '', $id = 0){
+		$num = 0;
+		$sql = 'select count(*) as num from `cdb_borrow_payment_jbb` where exit_time < (select exit_time from `cdb_borrow_payment_jbb`  where id = '.$id.') and status = 2 and product_type ="'.$type_code.'"';
+		$query =$this->db->query($sql);
+		$num  = $query->row()->num;
+		return $num;
+	}
+
+
+
+	/**
+	 * 聚保宝项目
+	 * @param string $type_code 产品编号
+	 * @param string $id 购买id
+	 * @return array
+	 */
+	private function jbb_project($type_code = ''){
+		$temp = $data =array();
+		$temp['where'] = array(
+			'select'   => '*',
+			'where'    => array('type_code' => $type_code,'type' => 1),
+			'order_by'	=> 'id desc'
+		);
+		$data = $this->c->get_row(self::jbb_dtl, $temp['where']);
+		return $data;
+	}
+
+
+
+	/**
+	 * 聚保宝新手标是否投资一次
+	 * @param string $type_code 产品编号
+	 * @param string $id 购买id
+	 * @return array
+	 */
+	private function jbb_user_one($uid = 0){
+		$data = $temp = array();
+		$temp['where'] = array(
+			'select'   => 'count(*)',
+			'where'    => array('product_type' => 'JBB02','uid' => $uid)
+		);
+		$data = $this->c->get_one(self::payment_jbb, $temp['where']);
+		return $data;
+	}
+
+
+
+	/**
+	 * 聚保宝项目
+	 * @param string $type_code 产品编号
+	 * @param string $id 购买id
+	 * @return array
+	 */
+	private function _get_jbb_amount($type_code = '',$periods_number = '' ,$uid = 0){
+		$temp = $data =array();
+		$temp['where'] = array(
+			'select'   => 'sum(amount)',
+			'where'    => array('product_type' => $type_code,'status' => 1,'number_periods'=>$periods_number,'uid' =>$uid),
+		);
+		$all_amount = $this->c->get_one(self::payment_jbb, $temp['where']);
+		return $all_amount;
+	}
+
+
+
+	/**
+	 * 聚保宝投资私有方法 数据库处理
+	 * @param int $amount 投资金额
+	 * @param string $borrow_no 借款编号
+	 * @param int $balance 帐户可用余额
+	 * @param int $uid
+	 * @return bool
+	 */
+	private function _jbb_invest($type_code = '',$periods_number = 0,$amount = 0, $uid=0,  $balance = 0){
+		$query = FALSE;
+		$temp  = array();
+		if( ! empty($amount) && !empty($type_code) && !empty($periods_number) && !empty($balance)  && !empty($uid)){
+			$temp['where'] = array(
+				'select' => 'rate',
+				'where'  => array('type_code' => $type_code,'periods_number' => $periods_number ,'type' => 1)
+			);
+
+			$temp['rate'] = $this->c->get_one(self::jbb_dtl, $temp['where']);//利息
+			
+			$temp['where'] = array(
+				'select' => 'type_name',
+				'where'  => array('type_code' => $type_code,'periods_number' => $periods_number ,'type' => 1)
+			);
+
+			$temp['jbb_name'] = $this->c->get_one(self::jbb_dtl, $temp['where']);//产品名称
+				
+			$temp['where'] = array(
+				'select' => 'time_limit',
+				'where'  => array('type_code' => $type_code)
+			);
+
+			$temp['time_limit'] = $this->c->get_one(self::jbb, $temp['where']);//免费天数
+
+
+			$temp['where'] = array(
+				'select' => 'firmid,vaccid,real_name,user_name',
+				'where'  => array(
+					'uid' => $uid,
+				)
+			);
+			$temp['usr'] = $this->c->get_row(self::user, $temp['where']);//用户信息
+			if( ! empty($temp['rate'])){
+				$MarketSerial= $this->c->transaction_no(self::payment_jbb, 'order_code');
+				//$FirmId = $temp['usr']['firmid'];//$temp['usr']['firmid'];//$FirmId;// 对公账户
+				//$CustName = $temp['usr']['real_name']; //$temp['usr']['real_name'];//对公账户姓名
+				//$VaccId = $temp['usr']['vaccid'];//$temp['usr']['vaccid'];//对公账户姓名
+				//$configData = $this->pay->touzidongjie($FirmId, $CustName,$VaccId,$MarketSerial,$borrow_no,$amount);
+				//现在未做返回状态判断
+				// if( ($configData['ReturnInfo']['RtnInfo']=="成功!")&&($amount == $configData['Transfer']['FreezeMoney']))
+				// {
+				$this->db->trans_start();
+
+				// 添加投资记录
+				$temp['payment_jbb'] = array(
+					'order_code'	=> $MarketSerial,
+					'product_type'	=> $type_code,
+					'number_periods'=> $periods_number,
+					'product_code'	=> $type_code.$periods_number,
+					'uid'			=> $uid,
+					'amount'		=> $amount,
+					'allocated_amount' => 0,
+					'matching'		=> 0,
+					'purchase_time'	=> time(),
+					'closing_time'	=> time(),
+					'interest_day'	=> strtotime(date('Y-m-d')),
+					'expected_rate'	=> round(jbb_product_amount(360,$temp['rate'],$amount)/$amount*100,2),
+					'free_days'		=> $temp['time_limit'],
+					'status'		=> 1
+				);
+
+				$this->c->insert(self::payment_jbb, $temp['payment_jbb']);
+
+				// 添加资金记录
+				$temp['flow'] = array(
+					'uid'      => $uid,
+					'type'     => 20,
+					'amount'   => $amount,
+					'balance'  => round($balance - $amount,2),
+					'source'   => $MarketSerial,
+					'remarks'  => '',
+					'dateline' => time()
+				);
+
+				$this->c->insert(self::flow, $temp['flow']);
+
+				// 更新收款金额
+				$temp['where'] = array('where' => array('type_code' => $type_code,'periods_number' => $periods_number ,'type' => 1));
+				$temp['data']  = array('field' => 'balance', 'value' => '`balance` + '.$amount);
+
+				$this->c->set(self::jbb_dtl, $temp['where'], $temp['data']);
+
+				// 更新投资人信息
+				//$temp['data']  = array(
+				//	'last_investor' => $uid,
+				//	'last_amount'   => $amount,
+				//	'last_time'     => time()
+				//);
+
+				//$this->c->update(self::borrow, $temp['where'], $temp['data']);
+
+				$this->db->trans_complete();
+				$query = $this->db->trans_status();
+
+				if( ! empty($query)){
+					// 可用余额
+					//$temp['data'] = array('balance' => round($balance - $amount, 2));
+					//$this->session->set_userdata($temp['data']);
+					$this->_set_jbb_status(); // 更新记录状态
+					$temp['content'] = sprintf('您好，您投资%s元的%s产品已经生效。每天会产生复利利息。', $amount,$temp['jbb_name']);
+					$this->send_message($uid, '您好，您投资的金额已经成功！', $temp['content'],4);//发送信息
+					$this->add_user_log('invest', '投资'.sprintf('¥ %s', round($amount,2)).'(聚保宝产品：'.$temp['jbb_name'].'第'.$periods_number.'期)',$uid,$temp['usr']['user_name']);//添加用户日志
+				}
+			}
+		}
+
+		unset($temp);
+		return $query;
+	}
+
+
+
+    /**
+     * 更新记录状态
+     *
+     * @access private
+     * @return boolean
+     */
+    private function _set_jbb_status(){
+        $query = FALSE;
+        $temp = array();
+
+        $temp['data']  = array('type' => 2);
+        $temp['where'] = array(
+            'where' => array('type' => 1),
+            'query' =>'`development_amount` = `balance`'
+        );
+
+        $query = $this->c->update(self::jbb_dtl, $temp['where'], $temp['data']);
+
+        unset($temp);
+        return $query;
+    }
 /********************************************************项目属性相关*******************************************************************************************/
 
 	/**

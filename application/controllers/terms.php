@@ -32,6 +32,7 @@ class Terms extends MY_Controller {
 
 
 		if(!empty($temp['borrow_no'])){			
+		 $content3 ='';
 		
 			$temp['where'] = array('where' => array('borrow_no' => $temp['borrow_no']));
 			$temp['data']  = $this->c->get_row(self::borrow, $temp['where']);

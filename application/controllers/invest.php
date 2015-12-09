@@ -26,6 +26,7 @@ class Invest extends MY_Controller{
 		$data['months'] 	= $this->input->get('m',TRUE)?$this->input->get('m',TRUE):'';
 
 		//项目列表
+		if($data['category']!=4){
 		$temp['page_id'] 	= $this->c->get_page_id(self::page_size);
 		$temp['project'] 	= $this->project->get_project_list($data['category'],'',$data['months'],$data['rate'],'','',$temp['page_id'],self::page_size);
 		if($temp['project']['status'] == '10000'){
@@ -44,6 +45,16 @@ class Invest extends MY_Controller{
 					if($x == $y)return 0;
 					return $x<$y?-1:1;
 				});
+			}
+		}}else{
+			$data['project'] 	= $this->project->jbb_dtl_list();
+			if(!empty($data['project']['data'])){
+				foreach($data['project']['data'] as $k => $v){
+					$jbb_all_invest = $this->cash->jbb_all_invest($v['type_code']);//累计投资
+					$jbb_nums = $this->project->jbb_nums($v['type_code']);//累计入团
+					$data['project']['data'][$k]['jbb_all_invest'] = $jbb_all_invest['data']['jbb_all_invest'];
+					$data['project']['data'][$k]['jbb_nums'] = $jbb_nums['data']['jbb_nums'];
+				}
 			}
 		}
 
@@ -90,6 +101,83 @@ class Invest extends MY_Controller{
 			$this->load->view('invest/invest_detail',$data);
 		}
 	}
+
+
+	/**
+	 * 聚保宝-项目详情
+	 */
+	public function detail_jbb(){
+		$data = $temp =array();
+
+		$temp['type_code'] = $this->input->get('type_code',TRUE)?$this->input->get('type_code',TRUE):'';
+		if($temp['type_code'] == '')redirect('','location');
+		$data['jbb_all_invest'] = $this->cash->jbb_all_invest($temp['type_code']);//累计投资
+		$data['jbb_all_Earn'] = $this->cash->jbb_all_Earn($temp['type_code']);//累计赚取
+		$data['jbb_nums'] = $this->project->jbb_nums($temp['type_code']);//累计入团
+		$data['jbb_invest_nums'] = $this->project->jbb_invest_nums($temp['type_code']);//分散投资
+		$data['jbb'] = $this->project->jbb($temp['type_code']);//聚保宝产品
+		$data['jbb_list'] = $this->project->jbb_list($temp['type_code']);//聚保宝产品标的
+		$data['total'] = $this->project->detail_jbb_list($temp['type_code']);
+		if($data['total']['status']==10000){
+			$data['total'] = $data['total']['data']['total'];
+		}
+		//获取余额
+		if($this->session->userdata('uid')){
+			$temp['balance'] = $this->cash->get_user_balance($this->session->userdata('uid'));
+			if($temp['balance']['status'] == '10000'){
+				$data['balance'] = $temp['balance']['data']['balance'];
+			}
+		}else{
+			$data['balance'] = 0;
+		}
+
+		unset($temp);
+
+		
+		$this->load->view('invest/invest_detail_jbb',$data);
+		
+	}
+
+
+
+
+	/**
+	 * 聚保宝-项目详情
+	 */
+	public function detail_jbb_list(){
+		$type_code =  $this->input->get('type_code',TRUE);
+		$per_page =  $this->input->get('per_page',TRUE);
+		if($this->input->is_ajax_request() == TRUE){
+			$data =$this->project->detail_jbb_list($type_code,$per_page);
+			exit(json_encode($data));
+		}
+		
+	}
+
+
+
+	/**
+	 * 聚保宝-项目详情
+	 */
+	public function ajax_jbb_sub(){
+		if($this->input->is_ajax_request() == TRUE){
+			$amount =  $this->input->get('amount',TRUE);
+			$security =  $this->input->get('security',TRUE);
+			$type_code =  $this->input->get('type_code',TRUE);
+			$data =  $this->project->jbb_invest($type_code,$this->session->userdata('mobile'),$security,$amount);
+			exit(json_encode($data));
+		}
+	}
+
+
+	/**
+	 * 聚保宝历史
+	 */
+	public function jbb_invest_a(){
+		$data = $this->project->_jbb_invest(123,123,123,123,123);
+		print_r($data);
+	}
+
 
 	/**
 	 * 投资-投资的处理ajax

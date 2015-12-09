@@ -14,7 +14,12 @@ class Cash_model extends CI_Model{
     const cash          = 'cash_flow';          //资金记录表
     const recharge      = 'user_recharge';      //充值记录表
     const card          = 'user_card';          //用户银行卡记录表
-    const risk          = 'risk_money';          //风险保证金
+	const payment_jbb = 'borrow_payment_jbb';   //用户银行卡记录表
+	const jbb           = 'borrow_jbb';		    //用户银行卡记录表
+	const jbb_dtl       = 'borrow_jbb_dtl';     // 聚保宝发标表
+	const recharge_jbb  = 'user_recharge_jbb';  //聚保宝提取收益审核表
+	const risk          = 'risk_money';          //风险保证金
+
 
     const RUN_DATE      = '2015-06-12';         //网站运行时间
     const TRANSFE_MIN   = '50';                 //提现最低金额
@@ -22,6 +27,7 @@ class Cash_model extends CI_Model{
 
     public function __construct(){
         parent::__construct();
+		date_default_timezone_set('PRC');
 		$this->load->model('api/common/send_model','send');
     }
 
@@ -841,6 +847,664 @@ class Cash_model extends CI_Model{
         return $data;
     }
 
+/********************************************************聚保宝***************************************************************************************/
+
+
+    /**
+     * 聚保宝累计投资
+     * @param string $type_code
+     * @return array
+     */
+    public function jbb_all_invest($type_code=''){
+        $data = array(
+            'name'   =>'聚保宝累计投资总额',
+            'status' =>'10001',
+            'msg'    =>'暂无相关数据!',
+            'sign'   =>'',
+            'data'   =>array(
+				'jbb_all_invest'=>0
+			)
+        );
+        $temp = array();
+		$temp['where'] =  array(
+				'select'   =>'SUM(amount) as jbb_all_invest',
+                'where'    =>array('product_type'=>$type_code),
+                'group_by' =>'product_type'
+			);
+		$temp['data'] = $this->c->get_one(self::payment_jbb,$temp['where']);
+		if(!empty($temp['data'])){
+			$data = array(
+				'status' =>'10000',
+				'msg'    =>'ok!',
+				'data'   =>array(
+					'jbb_all_invest'=>$temp['data']
+				)
+			);
+		}else{
+			$data = array(
+				'status' =>'10000',
+				'msg'    =>'ok!',
+				'data'   =>array(
+					'jbb_all_invest'=>0
+				)
+			);
+		}
+        unset($temp);
+        return $data;
+    }
+
+
+    /**
+     * 聚保宝累计赚取
+     * @param string $type_code
+     * @return array
+     */
+    public function jbb_all_Earn($type_code=''){
+		$temp = array();
+        $data = array(
+            'name'   =>'聚保宝累计赚取',
+            'status' =>'10001',
+            'msg'    =>'暂无相关数据!',
+            'sign'   =>''
+        );
+		$temp['all_invest'] = $this->jbb_all_invest($type_code);
+		$temp['jbb'] = $this->jbb($type_code);	
+		$temp['data'] =$temp['all_invest']['data']['jbb_all_invest']*((1+$temp['jbb']['ave_rate']/100/360)*(pow((1+$temp['jbb']['ave_rate']/100/360),$temp['jbb']['time_limit'])-1));
+		if($temp['data']>=0	){
+			$data = array(
+            'status' =>'10000',
+            'msg'    =>'ok!',
+			'data'   =>array(
+				'jbb_all_Earn' => $temp['data']
+			)
+        );
+		}
+        unset($temp);
+        return $data;
+    }
+
+
+
+	/**
+	 * 聚保宝项目
+	 * @param string $type_code
+	 * @param string $periods_number
+	 * @return array
+	 */
+	private function jbb($type_code = ''){
+		$data = $temp = array();
+		if( ! empty($type_code)){
+			$temp['where'] = array(
+				'select'   => '*',
+				'where'    => array('type_code' => $type_code)
+			);
+			$data = $this->c->get_row(self::jbb, $temp['where']);
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+
+
+
+
+	/**
+	 * 聚保宝加入总金额（元）
+	 *
+	 * @access public
+	 * @param  integer $uid    会员ID
+	 * @return $data  
+	 */
+	public function jbb_add_amount($uid=0){
+		$data = array('status'=>'10001','msg'=>'数据有误，请稍候尝试!');
+        $temp = array();
+		$temp['where'] = array(
+			'select' => 'SUM(`amount`)',
+			'where' => array('uid' => $uid,'status'=>1)
+			);
+		$temp['data'] = $this->c->get_one(self::payment_jbb,$temp['where']);
+		if(!empty($temp['data'])){
+			$data = array(
+				'status' => '10000',
+				'msg' => 'ok!',
+				'data' => array(
+					'add_amount' => $temp['data']
+				)
+			);
+		}else{
+			$data = array(
+				'status' => '10000',
+				'msg' => 'ok!',
+				'data' => array(
+					'add_amount' => 0
+				)
+			);
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+
+	/**
+	 * 聚保宝购买笔数
+	 *
+	 * @access public
+	 * @param  integer $uid    会员ID
+	 * @return $data  
+	 */
+	public function jbb_buy_nums($uid=0){
+		$data = array('status'=>'10001','msg'=>'数据有误，请稍候尝试!');
+        $temp = array();
+		$temp['where'] = array(
+			'select' => 'count(*)',
+			'where' => array('uid' => $uid,'status'=>1)
+			);
+		$temp['data'] = $this->c->get_one(self::payment_jbb,$temp['where']);
+		if(!empty($temp['data'])){
+			$data = array(
+				'status' => '10000',
+				'msg' => 'ok!',
+				'data' => array(
+					'buy_nums' => $temp['data']
+				)
+			);
+		}else{
+			$data = array(
+				'status' => '10000',
+				'msg' => 'ok!',
+				'data' => array(
+					'buy_nums' => 0
+				)
+			);
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+
+	/**
+	 * 聚保宝累计提取收益
+	 *
+	 * @access public
+	 * @param  integer $uid    会员ID
+	 * @return $data  
+	 */
+	public function jbb_cumulative_yield($uid=0){
+		$data = array('status'=>'10001','msg'=>'数据有误，请稍候尝试!');
+        $temp = array();
+		$temp['where'] = array(
+			'select' => 'sum(gain)',
+			'where' => array('uid' => $uid)
+			);
+		$temp['data'] = $this->c->get_one(self::payment_jbb,$temp['where']);
+		if(!empty($temp['data'])){
+			$data = array(
+				'status' => '10000',
+				'msg' => 'ok!',
+				'data' => array(
+					'cumulative_yield' => $temp['data']
+				)
+			);
+		}else{
+			$data = array(
+				'status' => '10000',
+				'msg' => 'ok!',
+				'data' => array(
+					'cumulative_yield' => 0
+				)
+			);
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+
+	/**
+	 * 聚保宝可领取收益
+	 *
+	 * @access public
+	 * @param  integer $uid    会员ID
+	 * @return $data  
+	 */
+	public function jbb_receive($uid=0 , $id=0){
+		$data = array('status'=>'10001','msg'=>'数据有误，请稍候尝试!');
+        $temp = array();
+		$temp['where'] = array(
+                'select' =>join_field('*',self::payment_jbb).','.join_field('rate',self::jbb_dtl).','.join_field('closeday',self::jbb).','.join_field('allawexit',self::jbb).','.join_field('service_charge',self::jbb),
+                'where'  =>array(
+                    join_field('uid',self::payment_jbb)=>$uid,
+					join_field('status',self::payment_jbb)=>1
+                ),
+                'join'=>array(
+                    array(
+						'table'=>self::jbb_dtl,
+						'where'=>join_field('type_code',self::jbb_dtl).' = '.join_field('product_type',self::payment_jbb).' and '.join_field('periods_number',self::jbb_dtl).' = '.join_field('number_periods',self::payment_jbb)
+					),
+					array(
+						'table'=>self::jbb,
+						'where'=>join_field('type_code',self::jbb).' = '.join_field('product_type',self::payment_jbb)
+					),
+                )
+            );
+		if($uid != 0 && $id != 0){
+			$temp['where']['where']  = 
+				array(
+                    join_field('uid',self::payment_jbb)=>$uid,
+					join_field('id',self::payment_jbb)=>$id,
+					join_field('status',self::payment_jbb)=>1
+                );
+		}
+		$temp['data'] = $this->c->get_all(self::payment_jbb,$temp['where']);
+		$receive=0;
+		$service = 0;
+		foreach($temp['data'] as $k => $v){		
+			$days=($v['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)>$v['closeday'])?($v['closeday']-$v['receive_days']):ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'];
+			$rate=$v['rate'];
+			$amount=$v['amount'];			
+			$receive=$receive+round(jbb_product_amount($days,$rate,$amount),2);
+			$service_charge = $v['service_charge'];
+			$service=$service+round($receive*$service_charge,2);
+		}
+		
+		if($uid!=0){
+			$data = array(
+				'status' => '10000',
+				'msg' => 'ok!',
+				'data' => array(
+					'receive' => $receive,
+					'service' => $service
+				)
+			);
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+
+
+	/**
+	 * 聚保宝匹配标数
+	 *
+	 * @access public
+	 * @param  integer $uid    会员ID
+	 * @return $data  
+	 */
+	public function jbb_mate_nums($uid=0){
+		$data = array('status'=>'10001','msg'=>'数据有误，请稍候尝试!');
+        $temp = array();
+		$temp['where'] = array(
+                'select' =>join_field('borrow_no',self::payment),
+                'where'  =>array(
+					join_field('status',self::payment_jbb)=>1,
+					join_field('uid',self::payment_jbb)=>$uid,
+					join_field('type',self::payment)=>1
+                ),
+				'group_by' =>join_field('borrow_no',self::payment),
+                'join'=>array(
+                    'table'=>self::payment_jbb,
+                    'where'=>join_field('type_code',self::payment).' = concat('.join_field('product_type',self::payment_jbb).','.join_field('number_periods',self::payment_jbb).')'
+                )
+            );
+		$temp['data'] = $this->c->get_all(self::payment,$temp['where']);
+		$num = count($temp['data']);
+		if(!empty($temp['data'])){
+			$data = array(
+				'status' => '10000',
+				'msg' => 'ok!',
+				'data' => array(
+					'mate_nums' => $num
+				)
+			);
+		}else{
+			$data = array(
+				'status' => '10000',
+				'msg' => 'ok!',
+				'data' => array(
+					'mate_nums' => 0
+				)
+			);
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+
+
+	/**
+	 * 聚保宝提取收益
+	 *
+	 * @access public
+	 * @param  integer $uid    会员ID
+	 * @param  integer $id    购买id
+	 * @return $data  
+	 */
+	public function jbb_sub_receive($uid = 0 , $id = 0){
+		$data = array('status'=>'10001','msg'=>'数据有误，请稍候尝试!');
+        $temp = array();
+		$temp['where'] = array(
+                'select' =>join_field('*',self::payment_jbb).','.join_field('rate',self::jbb_dtl).','.join_field('closeday',self::jbb).','.join_field('allawexit',self::jbb).','.join_field('service_charge',self::jbb),
+                'where'  =>array(
+                    join_field('uid',self::payment_jbb)=>$uid,
+					join_field('status',self::payment_jbb)=>1
+                ),
+                'join'=>array(
+                    array(
+						'table'=>self::jbb_dtl,
+						'where'=>join_field('type_code',self::jbb_dtl).' = '.join_field('product_type',self::payment_jbb).' and '.join_field('periods_number',self::jbb_dtl).' = '.join_field('number_periods',self::payment_jbb)
+					),
+					array(
+						'table'=>self::jbb,
+						'where'=>join_field('type_code',self::jbb).' = '.join_field('product_type',self::payment_jbb)
+					),
+                )
+            );
+		if($uid != 0 && $id != 0){
+			$temp['where']['where']  = 
+				array(
+                    join_field('uid',self::payment_jbb)=>$uid,
+					join_field('id',self::payment_jbb)=>$id,
+					join_field('status',self::payment_jbb)=>1
+                );
+		}
+		$temp['data'] = $this->c->get_all(self::payment_jbb,$temp['where']);
+		$receive=0;
+		$receives=0;
+		$service=0;
+		$services = 0;
+		foreach($temp['data'] as $k => $v){		
+			$days=($v['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)>$v['closeday'])?($v['closeday']-$v['receive_days']):ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'];
+			$rate=$v['rate'];
+			$amount=$v['amount'];			
+			$receive=round(jbb_product_amount($days,$rate,$amount),2);//得到利息
+			$receives=$receives+round(jbb_product_amount($days,$rate,$amount),2);//得到利息
+			$balance = $this->get_user_balance($uid);
+			$balance = $balance['data']['balance'];
+			$service = $v['service_charge'];
+			$services = $services+round($service*$receive,2);
+			
+				$this->db->trans_start();	
+				//转账过程
+				//生成聚保宝记录
+				$temp['jbb']  = array(
+					'receive_days' => $v['receive_days']+$days,
+					'service_amount' => $v['service_amount']+round($service*$receive,2),
+					'gain'         => $v['gain']+$receive
+					);
+				$temp['jbb_where'] = array(
+					'where' => array('order_code' => $v['order_code'])
+					);
+				$this->c->update(self::payment_jbb, $temp['jbb_where'], $temp['jbb']);	
+				//生成资金记录
+				$temp['cash']  = array(
+					'uid'		=> $v['uid'],
+					'type'		=> 20,
+					'amount'	=>$receive,
+					'balance'	=>$balance+$receive-round($service*$receive,2),
+					'source'	=>$v['order_code'],
+					'remarks'	=>'利息提取',
+					'dateline'	=>time()
+					);
+				$this->c->insert(self::cash, $temp['cash']);
+				//生成结算记录
+				if($id!=0){
+					$temp['query_recharge_jbb']  = array(
+						'recharge_no'=> $this->c->transaction_no(self::recharge_jbb, 'recharge_no'),
+						'uid'		 => $v['uid'],
+						'type'		 => 0,
+						'amount'	 => $receive,
+						'source'	 => $v['order_code'],
+						'remarks'	 => '聚保宝利息提取',
+						'add_time'	 => time(),
+						'status'     => 0
+						);
+					$this->c->insert(self::recharge_jbb, $temp['query_recharge_jbb']);
+				}
+				$this->db->trans_complete();	
+		}
+		if($id==0){
+					$temp['query_recharge_jbb']  = array(
+						'recharge_no'=> $this->c->transaction_no(self::recharge_jbb, 'recharge_no'),
+						'uid'		 => $uid,
+						'type'		 => 0,
+						'amount'	 => $receives-$services,
+						'source'	 => '',
+						'remarks'	 => '聚保宝一次性利息提取',
+						'add_time'	 => time(),
+						'status'     => 0
+						);
+					$this->c->insert(self::recharge_jbb, $temp['query_recharge_jbb']);
+				}
+		$query = $this->db->trans_status();
+		if(!empty($query)){
+			$data = array(
+				'status' => '10000',
+				'msg'	 => '提取收益成功!',
+				'url'  	 => site_url('user/user/jbb'),
+				'data'   => array(
+					'$receive'	=>$receive,
+					'service'   =>$service
+				)
+			);
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+
+
+	/**
+	 * 聚保宝提取收益
+	 *
+	 * @access public
+	 * @param  integer $uid    会员ID
+	 * @param  integer $id    购买id
+	 * @return $data  
+	 */
+	public function jbb_out($uid = 0 , $id = 0){
+		$data = array('status'=>'10001','msg'=>'数据有误，请稍候尝试!');
+        $temp = array();
+		if($uid == 0 || $id == 0){
+			return $data;
+		}
+		$temp['where'] = array(
+                'select' =>join_field('*',self::payment_jbb).','.join_field('rate',self::jbb_dtl).','.join_field('closeday',self::jbb).','.join_field('allawexit',self::jbb).','.join_field('counter_Fee',self::jbb).','.join_field('service_charge',self::jbb).','.join_field('time_limit',self::jbb),
+                'where'  =>array(
+                    join_field('uid',self::payment_jbb)=>$uid,
+					join_field('id',self::payment_jbb)=>$id,
+					join_field('status',self::payment_jbb)=>1
+                ),
+                'join'=>array(
+                    array(
+						'table'=>self::jbb_dtl,
+						'where'=>join_field('type_code',self::jbb_dtl).' = '.join_field('product_type',self::payment_jbb).' and '.join_field('periods_number',self::jbb_dtl).' = '.join_field('number_periods',self::payment_jbb)
+					),
+					array(
+						'table'=>self::jbb,
+						'where'=>join_field('type_code',self::jbb).' = '.join_field('product_type',self::payment_jbb)
+					),
+                )
+            );
+		$temp['data'] = $this->c->get_all(self::payment_jbb,$temp['where']);
+		$query='';
+		$receive=0;//利息
+		$counter_Fee = 0;//手续费
+		foreach($temp['data'] as $k => $v){		
+			$days=($v['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)>$v['closeday'])?($v['closeday']-$v['receive_days']):ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'];
+			$rate=$v['rate'];
+			$amount=$v['amount'];			
+			$receive=round(jbb_product_amount($days,$rate,$amount),2);//得到利息
+			$day = ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24);
+			if($day<$v['time_limit']){
+				$counter_Fee = $v['counter_Fee']*$v['amount'];
+			}
+				//生成聚保宝退出记录
+				$temp['jbb']  = array(
+					'exit_time' => time(),//退出时间
+					'exit_days' => ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24),//退出持有天数
+					'transfer_fee' =>  $counter_Fee,//手续费
+					'service_amount' => $v['service_amount']+$v['service_charge']*$receive,//服务费
+					'expected_amount' => round(jbb_product_amount($day,$rate,$amount),2),//预计收益
+					'real_amount' => round(jbb_product_amount($days,$rate,$amount),2)+$v['gain'],//真实收益
+					'interest_amount' =>  $receive+$v['amount']+$v['gain']- $counter_Fee-$v['service_charge']*$v['amount'],//本息收益
+					'status' => 2
+					);
+				$temp['jbb_where'] = array(
+					'where' => array('order_code' => $v['order_code'])
+					);
+				$query = $this->c->update(self::payment_jbb, $temp['jbb_where'], $temp['jbb']);			
+		}
+		if(!empty($query)){
+			$data = array(
+				'status' => '10000',
+				'msg'	 => '申请退出成功!',
+				'url'  	 => site_url('user/user/jbb_line')
+			);
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+
+
+	/**
+	 * 聚保宝手续费
+	 *
+	 * @access public
+	 * @param  integer $uid    会员ID
+	 * @param  integer $id    购买id
+	 * @return $data  
+	 */
+	public function jbb_poundage($uid = 0 , $id = 0){
+		$data = array('status'=>'10001','msg'=>'数据有误，请稍候尝试!');
+        $temp = array();
+		if($uid == 0 || $id == 0){
+			return $data;
+		}
+		$temp['where'] = array(
+                'select' =>join_field('*',self::payment_jbb).','.join_field('rate',self::jbb_dtl).','.join_field('closeday',self::jbb).','.join_field('allawexit',self::jbb).','.join_field('counter_Fee',self::jbb).','.join_field('service_charge',self::jbb).','.join_field('time_limit',self::jbb).','.join_field('service_charge',self::jbb),
+                'where'  =>array(
+                    join_field('uid',self::payment_jbb)=>$uid,
+					join_field('id',self::payment_jbb)=>$id,
+					join_field('status',self::payment_jbb)=>1
+                ),
+                'join'=>array(
+                    array(
+						'table'=>self::jbb_dtl,
+						'where'=>join_field('type_code',self::jbb_dtl).' = '.join_field('product_type',self::payment_jbb).' and '.join_field('periods_number',self::jbb_dtl).' = '.join_field('number_periods',self::payment_jbb)
+					),
+					array(
+						'table'=>self::jbb,
+						'where'=>join_field('type_code',self::jbb).' = '.join_field('product_type',self::payment_jbb)
+					),
+                )
+            );
+		$temp['data'] = $this->c->get_row(self::payment_jbb,$temp['where']);
+		$Fee = 0;
+		$day=0;
+		$service_charge=0;
+		if(!empty($temp['data'])){
+			$day = ceil((strtotime(date('Y-m-d'))-$temp['data']['interest_day'])/3600/24);
+			if($day<$temp['data']['time_limit']){
+				$Fee = round($temp['data']['counter_Fee']*$temp['data']['amount'],2);
+			}
+			$days=($temp['data']['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$temp['data']['interest_day'])/3600/24)>$temp['data']['closeday'])?($temp['data']['closeday']-$temp['data']['receive_days']):ceil((strtotime(date('Y-m-d'))-$temp['data']['interest_day'])/3600/24)-$temp['data']['receive_days'];
+			$rate=$temp['data']['rate'];
+			$amount=$temp['data']['amount'];	
+			$receive=round(jbb_product_amount($days,$rate,$amount),2);//得到利息
+			$service_charge = round($receive*$temp['data']['service_charge'],2);
+		}
+		$data = array(
+			'status'=>'10000',
+			'msg'=>'ok!',
+			'data' => array(
+				'fee' => $Fee,
+				'service' => $service_charge,
+				'day' => $day
+			)
+		);
+		unset($temp);
+		return $data;
+	}
+
+
+
+	/**
+	 * 聚保宝取消退出
+	 *
+	 * @access public
+	 * @param  integer $uid    会员ID
+	 * @param  integer $id    购买id
+	 * @return $data  
+	 */
+	public function jbb_off($uid = 0 , $id = 0){
+		$data = array('status'=>'10001','msg'=>'数据有误，请稍候尝试!');
+        $temp = array();
+		if($uid == 0 || $id == 0){
+			return $data;
+		}
+		$temp['where'] = array(
+                'select' =>join_field('*',self::payment_jbb).','.join_field('rate',self::jbb_dtl).','.join_field('closeday',self::jbb).','.join_field('allawexit',self::jbb).','.join_field('counter_Fee',self::jbb).','.join_field('service_charge',self::jbb).','.join_field('time_limit',self::jbb).','.join_field('service_charge',self::jbb),
+                'where'  =>array(
+                    join_field('uid',self::payment_jbb)=>$uid,
+					join_field('id',self::payment_jbb)=>$id,
+					join_field('status',self::payment_jbb)=>2
+                ),
+                'join'=>array(
+                    array(
+						'table'=>self::jbb_dtl,
+						'where'=>join_field('type_code',self::jbb_dtl).' = '.join_field('product_type',self::payment_jbb).' and '.join_field('periods_number',self::jbb_dtl).' = '.join_field('number_periods',self::payment_jbb)
+					),
+					array(
+						'table'=>self::jbb,
+						'where'=>join_field('type_code',self::jbb).' = '.join_field('product_type',self::payment_jbb)
+					),
+                )
+            );
+		$temp['data'] = $this->c->get_row(self::payment_jbb,$temp['where']);
+		$Fee = 0;
+		$day=0;
+		$service_charge=0;
+		if(!empty($temp['data'])){
+			$days=($temp['data']['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$temp['data']['interest_day'])/3600/24)>$temp['data']['closeday'])?($temp['data']['closeday']-$temp['data']['receive_days']):ceil((strtotime(date('Y-m-d'))-$temp['data']['interest_day'])/3600/24)-$temp['data']['receive_days'];
+			$rate=$temp['data']['rate'];
+			$amount=$temp['data']['amount'];	
+			$receive=round(jbb_product_amount($days,$rate,$amount),2);//得到利息
+			$service_charge = round($receive*$temp['data']['service_charge'],2);
+			$temp['jbb']  = array(
+					'exit_time' => '',//退出时间
+					'exit_days' => '',//退出持有天数
+					'transfer_fee' =>  '',//手续费
+					'service_amount' => $temp['data']['service_amount']-$service_charge,//服务费
+					'expected_amount' => '',//预计收益
+					'real_amount' => '',//真实收益
+					'interest_amount' =>  '',//本息收益
+					'status' => 1
+					);
+			$temp['jbb_where'] = array(
+				'where' => array('order_code' => $temp['data']['order_code'])
+				);
+			$query = $this->c->update(self::payment_jbb, $temp['jbb_where'], $temp['jbb']);
+			if(!empty($query)){
+				$data = array(
+				'status' => '10000',
+				'msg'	 => '取消成功!',
+				'url'  	 => site_url('user/user/jbb')
+				);
+			}
+		}
+		unset($temp);
+		return $data;
+	}
+/********************************************************聚保宝***************************************************************************************/
+
     /***************************************全网资金统计相关*********************************************************/
     /**
      * 获取全网利息总额
@@ -1248,6 +1912,8 @@ class Cash_model extends CI_Model{
                     break;
                 case '11':
                     $remarks_name = '红包';
+		case '20':
+                    $remarks_name = '活期产品';
                     break;
             }
         }

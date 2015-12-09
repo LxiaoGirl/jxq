@@ -521,7 +521,7 @@ class Common_model extends CI_Model
      * @return array
      */
 
-    public function show_page($table = '', $where = array(), $key = '', $ttl = 0 ,$limit='')
+    public function show_page($table = '', $where = array(), $key = '', $ttl = 0 ,$limit='',$per_page='')
     {
         $data = $temp = array();
 
@@ -531,7 +531,11 @@ class Common_model extends CI_Model
 		$temp['limit'] = ( ! empty($limit)) ? $limit: $temp['limit'];
 
         $temp['where']          = ( ! empty($where)) ? $where : array();
-        $temp['where']['limit'] = array('limit' => $temp['limit'], 'offset' => (int)$this->input->get('per_page'));
+		if(!empty($per_page)){
+			$temp['where']['limit'] = array('limit' => $temp['limit'], 'offset' => $per_page);
+		}else{
+			$temp['where']['limit'] = array('limit' => $temp['limit'], 'offset' => (int)$this->input->get('per_page'));
+		}
         $temp['sort']           = $this->input->get('sort', TRUE);
         $temp['order']          = $this->input->get('order', TRUE);
 
