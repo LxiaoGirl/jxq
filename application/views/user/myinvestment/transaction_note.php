@@ -3,6 +3,11 @@
 <head>
     <title>聚雪球_网加金服_P2P理财首选互联网金融P2P网贷平台_100元即可投资!</title>
     <?php $this->load->view('common/head_file'); ?>
+    <style>
+        .tra_note .tab_con p span.wid20 {
+            width: 16%;
+        }
+    </style>
 </head>
 <body>
 <!--head start-->
@@ -33,16 +38,17 @@
                 </ul>
                 <ul class="tab_con">
                     <li class="active">
-                        <p class="title"><span class="wid20">投资项目</span><span>年收益率</span><span class="wid20">投资金额（元）</span><span>投资时间</span><span>计息日</span><span>还款日</span><span>状态</span></p>
+                        <p class="title"><span class="wid20">投资项目</span><span>年收益率</span><span class="wid20">投资金额（元）</span><span>投资时间</span><span>计息日</span><span>还款日</span><span>状态</span><span style="width: 60px;">投资协议</span></p>
                         <?php if($project):foreach($project as $k=>$v): ?>
                             <p class="lie">
-                                <span class="wid20"><font><?php echo $v['subject']; ?></font></br>编号：<?php echo $v['borrow_no']; ?></span>
+                                <span class="wid20"><font><?php echo $v['subject']; ?></font></br>编号:<?php echo $v['borrow_no']; ?></span>
                                 <span>12%</span>
                                 <span class="wid20"><font><?php echo $v['amount']; ?></font></br><?php if($v['status'] == '还款完成'): ?> 已<?php else: ?>预计<?php endif; ?>收益：<?php echo $v['interest']; ?></span>
                                 <span><?php echo date('Y-m-d',$v['invest_time']); ?></span>
                                 <span><?php echo date('Y-m-d',$v['interest_start_time']); ?></span>
                                 <span><?php echo date('Y-m-d',strtotime($v['interest_lately_time'])); ?></span>
                                 <span><?php echo $v['status']; ?></span>
+                                <span style="width: 60px;text-decoration: underline;"><a href="<?php echo site_url('terms/index?borrow_no='.$v['borrow_no']); ?>" target="_blank">查看</a> </span>
                             </p>
                         <?php endforeach;else: ?>
                             <p class="lie">暂无相关信息</p>

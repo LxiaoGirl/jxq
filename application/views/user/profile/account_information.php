@@ -197,10 +197,38 @@
                             </div>
                         </div>
                         <!--修改邮箱_1-->
+
+                    <!--添加理财师邀请码-->
                     <p>
-                        <font >公司邀请码</font><font class="zj company_name"><?php echo isset($user['data']['company'])&&$user['data']['company']?$user['data']['company']:'';?></font><font class="yc"><?php if(!$user['data']['company']):?><i class="xggsyzm company_e">添加</i><?php endif; ?></font>
+                        <font >理财师邀请码</font><font class="zj lcs-set-flag"><?php echo isset($user['data']['inviter'])&&$user['data']['inviter']?'已填写':'未填写';?></font><font class="yc lcs-set-name"><?php if(!$user['data']['inviter']):?><i class="xglcs lcs_e">添加</i><?php else:echo $user['data']['lcs_no']; endif; ?></font>
                     </p>
-                    <!--修改昵称_1-->
+                    <div class="user_data_pop xglcs_1">
+                        <div class="title">
+                            <span>理财师邀请码</span><font class="fr close">×</font>
+                        </div>
+                        <div class="popbody tc">
+                            <div class="p xgnc_p">
+                                <div class="fl tr">
+                                    理财师邀请码：
+                                </div>
+                                <div class="fr tl">
+                                    <input type="text" value="" placeholder="请输入理财师邀请码" id="lcs"/>
+                                </div>
+                            </div>
+                            <div class="p xgnc_p">
+                                <div class="fr tl tip_pop" id="lcs_notes">
+
+                                </div>
+                            </div>
+                            <button type="button" class="user_data_pop_but sub " id="lcs_sub">提交</button>
+                        </div>
+                    </div>
+                    <!--添加公司邀请码-->
+
+                    <!--添加公司邀请码-->
+                    <p>
+                        <font >公司邀请码</font><font class="zj company-set-flag"><?php echo isset($user['data']['company'])&&$user['data']['company']?'已填写':'未填写';?></font><font class="yc company-set-name"><?php if(!$user['data']['company']):?><i class="xggsyzm company_e">添加</i><?php else:echo $user['data']['company']; endif; ?></font>
+                    </p>
                     <div class="user_data_pop xggsyzm_1">
                         <div class="title">
                             <span>公司邀请码</span><font class="fr close">×</font>
@@ -208,10 +236,10 @@
                         <div class="popbody tc">
                             <div class="p xgnc_p">
                                 <div class="fl tr">
-                                    理财师/公司邀请码：
+                                    公司邀请码：
                                 </div>
                                 <div class="fr tl">
-                                    <input type="text" value="" placeholder="请输入理财师/公司邀请码" id="company"/>
+                                    <input type="text" value="" placeholder="请输入公司邀请码" id="company"/>
                                 </div>
                             </div>
                             <div class="p xgnc_p">
@@ -222,7 +250,7 @@
                             <button type="button" class="user_data_pop_but sub " id="company_sub">提交</button>
                         </div>
                     </div>
-                    <!--修改昵称_1-->
+                    <!--添加公司邀请码-->
                 </li>
             </ul>
         </div>
@@ -471,17 +499,37 @@
         $('#company_sub').click(function(){
             var code = $('#company').val();
             if(code == ''){
-                $('#company_notes').html('请输入理财师/公司邀请码!');
+                $('#company_notes').html('请输入公司邀请码!');
                 return false;
             }
             $.post('/index.php/user/user/company_invite_code',{code:code},function(result){
                 if(result.status == '10000'){
-                    $('.company_name').html(result.data.company_code);
-                    $('.company_e').remove();
+                    $('.company-set-name').html(result.data.company_code);
+                    $('.company-set-flag').html('已设置');
                     $(".black_bg").fadeOut();
                     $('.xggsyzm_1').fadeOut();
                 }else{
                     $('#company_notes').html(result.msg);
+                }
+
+            },'json');
+        });
+        //理财师邀请码
+        pop($('.xglcs'),$('.xglcs_1'),$('.xglcs_1').find('.close'));
+        $('#lcs_sub').click(function(){
+            var code = $('#lcs').val();
+            if(code == ''){
+                $('#lcs_notes').html('请输入理财师邀请码!');
+                return false;
+            }
+            $.post('/index.php/user/user/lcs_invite_code',{code:code},function(result){
+                if(result.status == '10000'){
+                    $('.lcs-set-name').html(code);
+                    $('.lcs-set-flag').html('已设置');
+                    $(".black_bg").fadeOut();
+                    $('.xglcs_1').fadeOut();
+                }else{
+                    $('#lcs_notes').html(result.msg);
                 }
 
             },'json');

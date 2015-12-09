@@ -7,7 +7,7 @@
 	<script>
     window.onload = function () {
         var qrcode = new QRCode(document.getElementById("qrcode"), {
-            width: 170,//设置宽高
+            width: 150,//设置宽高
             height: 150
         });
         qrcode.makeCode("https://www.zgwjjf.com/index.php/jujianren/jieshao?inviter_no=<?php echo $invite_code?>");
@@ -33,7 +33,7 @@
                     <p class="bot"><font>已结算总额（元）：</font><?php echo $jujian_amount['data']['jujian_amount']?></p>
                     <div class="ewm">
                         <div class="ewm_but">查看我的二维码</div>
-                        <div class="ewm_pop"  id="qrcode"></div>
+                        <div class="ewm_pop"  id="qrcode" style="padding:10px;"></div>
                     </div>
                 </div>
                 <p class="hbmx">居间收益明细</p>
@@ -86,10 +86,10 @@
 			var e = $(this);
 			$.post('/index.php/user/user/get_commission_list?uid='+$(this).attr('id'),{},function(result){
 				    var text = '<p class="month_lie_poptitle">';
-					text=text+'<span class="tl wid_159">投资时间</span>';
-					text=text+'<span class="tl wid_159">项目名称</span>';
-					text=text+'<span class="tl wid_108">项目状态</span>';
-					text=text+'<span class="tr wid_125">投资金额（元）</span>';
+					text=text+'<span class="tc wid_159">投资时间</span>';
+					text=text+'<span class="tc wid_159">项目名称</span>';
+					text=text+'<span class="tc wid_159">项目状态</span>';
+					text=text+'<span class="tc wid_159">投资金额（元）</span>';
 					text=text+'</p>';
 					result = JSON.parse(result);
 					for(var i=0;i<result.data.length;i++){
@@ -100,10 +100,10 @@
 							var status = '还款完成';
 						}
 						text = text+'<p class="month_lie_popnr">';
-						text=text+'<span class="tl wid_159">'+unixtime_style(result.data[i].dateline,'Y-m-d')+'</span>';
-						text=text+'<span class="tl wid_159">'+result.data[i].subject_1+'</span>';
-						text=text+'<span class="tl wid_108">'+status+'</span>';
-						text=text+'<span class="tr wid_125">'+result.data[i].invest_amount+'</span>';
+						text=text+'<span class="tc wid_159">'+unixtime_style(result.data[i].dateline,'Y-m-d')+'</span>';
+						text=text+'<span class="tc wid_159">'+result.data[i].subject_1+'</span>';
+						text=text+'<span class="tc wid_159">'+status+'</span>';
+						text=text+'<span class="tc wid_159">'+result.data[i].invest_amount+'</span>';
 						text=text+'</p>';
 					}
 					e.parent().parent().parent().find('.month_lie_pop').html(text);

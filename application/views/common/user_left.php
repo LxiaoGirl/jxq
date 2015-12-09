@@ -31,20 +31,22 @@
                 <a href="<?php echo site_url('user/user/account_home');?>" <?php if($this->router->fetch_method() == 'account_home'): ?>class="selected"<?php endif; ?>><li>资金总览<font class="fr">></font></li></a>
             <!--<a href="<?php echo site_url('user/user/recharge');?>"><li>我的等级<font class="fr">></font></li></a>-->
                 <a href="<?php echo site_url('user/user/my_xq');?>" <?php if($this->router->fetch_method() == 'my_xq'): ?>class="selected"<?php endif; ?>><li>我的雪球<font class="fr">></font></li></a>
-                <a href="<?php echo site_url('user/user/my_redbag');?>" <?php if($this->router->fetch_method() == 'my_redbag'): ?>class="selected"<?php endif; ?>><li>我的红包<font class="fr">></font></li></a>
-                <a href="<?php echo site_url('user/user/recharge');?>" <?php if($this->router->fetch_method() == 'recharge'): ?>class="selected"<?php endif; ?>><li>充值提现<font class="fr">></font></li></a>
+                <a href="<?php echo site_url('user/user/my_redbag');?>" <?php if(in_array($this->router->fetch_method(),array('my_redbag','my_redbag_lq','my_redbag_gq'))): ?>class="selected"<?php endif; ?>><li>我的红包<font class="fr">></font></li></a>
+                <a href="<?php echo site_url('user/user/recharge');?>" <?php if(in_array($this->router->fetch_method(),array('recharge','recharge_jl','withdrawals','withdrawals_jl'))): ?>class="selected"<?php endif; ?>><li>充值提现<font class="fr">></font></li></a>
                 <a href="<?php echo site_url('user/user/information');?>" <?php if($this->router->fetch_method() == 'information'): ?>class="selected"<?php endif; ?>><li>消息中心<font class="fr">></font></li></a>
                 <a href="" class="leaders" href=""><li class="leaders"><img src="../../../assets/images/common/user_left_icon_2.png">我的投资</li></a>
+				<a href="<?php echo site_url('user/user/jbb');?>" <?php if($this->router->fetch_method() == 'jbb'): ?>class="selected"<?php endif; ?>><li>聚保宝<font class="fr">></font></li></a>
                 <a href="<?php echo site_url('user/user/transaction_details');?>" <?php if($this->router->fetch_method() == 'transaction_details'): ?>class="selected"<?php endif; ?>><li>交易明细<font class="fr">></font></li></a>
                 <a href="<?php echo site_url('user/user/transaction_note');?>" <?php if($this->router->fetch_method() == 'transaction_note'): ?>class="selected"<?php endif; ?>><li>投资记录<font class="fr">></font></li></a>
-                <!--<a href="<?php echo site_url('user/user/auto');?>" <?php if($this->router->fetch_method() == 'auto'): ?>class="selected"<?php endif; ?>><li>自动投标<font class="fr">></font></li></a>-->
+                <a href="<?php echo site_url('user/user/invest_agreement');?>" <?php if($this->router->fetch_method() == 'invest_agreement'): ?>class="selected"<?php endif; ?>><li>投资协议<font class="fr">></font></li></a>
+                <a href="<?php echo site_url('user/user/auto');?>" <?php if($this->router->fetch_method() == 'auto'): ?>class="selected"<?php endif; ?>><li>自动投标<font class="fr">></font></li></a>
                 <!--<a href="" class="leaders" href=""><li class="leaders"><img src="../../../assets/images/common/user_left_icon_3.png">我的借贷</li></a>
                 <a href="<?php echo site_url('user/user/recharge');?>"><li>我的借款<font class="fr">></font></li></a>
                 <a href="<?php echo site_url('user/user/recharge');?>"><li>申请借款<font class="fr">></font></li></a>-->
                 <a href="" class="leaders" href=""><li class="leaders"><img src="../../../assets/images/common/user_left_icon_4.png">账户设置</li></a>
-                <a href="<?php echo site_url('user/user/account_information');?>" <?php if($this->router->fetch_method() == 'account_information'): ?>class="selected"<?php endif; ?>><li>基本信息<font class="fr">></font></li></a>
+                <a href="<?php echo site_url('user/user/account_information');?>" <?php if(in_array($this->router->fetch_method(),array('account_information','head_portrait','account_security'))): ?>class="selected"<?php endif; ?>><li>基本信息<font class="fr">></font></li></a>
                 <a href="<?php echo site_url('user/user/card');?>" <?php if($this->router->fetch_method() == 'card'): ?>class="selected"<?php endif; ?>><li>银行卡管理<font class="fr">></font></li></a>
-                <a href="<?php echo site_url('user/user/invite');?>" <?php if($this->router->fetch_method() == 'invite'): ?>class="selected"<?php endif; ?>><li>邀请好友<font class="fr">></font></li></a>
+                <a href="<?php echo site_url('user/user/invite');?>" <?php if(in_array($this->router->fetch_method(),array('invite','invite_customer'))): ?>class="selected"<?php endif; ?>><li>邀请好友<font class="fr">></font></li></a>
             </ul>
         </div>
 

@@ -7,7 +7,7 @@
 	<script>
     window.onload = function () {
         var qrcode = new QRCode(document.getElementById("qrcode"), {
-            width: 170,//设置宽高
+            width: 150,//设置宽高
             height: 150
         });
         qrcode.makeCode("https://www.zgwjjf.com/index.php/jujianren/jieshao?inviter_no=<?php echo $invite_code;?>");
@@ -33,7 +33,7 @@
                     <p class="bot"><font>已结算总额（元）：</font><?php echo $jujian_amount['data']['jujian_amount']?></p>
                     <div class="ewm">
                         <div class="ewm_but">查看我的二维码</div>
-                        <div class="ewm_pop" id="qrcode"></div>
+                        <div class="ewm_pop" id="qrcode" style="padding:10px;"></div>
                     </div>
                 </div>
                 <p class="hbmx">居间收益明细</p>
@@ -77,28 +77,30 @@
 <!--userjs start-->
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){
-        $('.ewm_but').hover(function() {
+        $('.ewm').hover(function() {
             $('.ewm_pop').slideToggle();
         });
         $('.invite_ckxq').click(function(){
 			var e = $(this);
 			$.post('/index.php/user/user/get_settle_invest_list?real_month='+$(this).attr('id'),{},function(result){
 				    var text = '<p class="month_lie_poptitle">';
-					text=text+'<span class="tl wid_159">项目名称</span>';
-					text=text+'<span class="tl wid_159">客户名</span>';
-					text=text+'<span class="tl wid_108">投资时间</span>';
-					text=text+'<span class="tr wid_125">投资金额（元）</span>';
-					text=text+'<span class="tr wid_180">获得收益（元）</span>';
-					text=text+'</p>';
+					text=text+'<span class="tl wid_108">项目名称</span>';
+					text=text+'<span class="tc wid_108">客户名</span>';
+					text=text+'<span class="tc wid_108">投资时间</span>';
+                    text=text+'<span class="tc wid_108">有效天数</span>';
+					text=text+'<span class="tc wid_125">投资金额（元）</span>';
+					text=text+'<span class="tc wid_180">获得收益（元）</span>';
+					text=text+'</p>';	
 					result = JSON.parse(result);
 					for(var i=0;i<result.data.length;i++){
 						var d=new Date(parseInt(result.data[i].pay_time) * 1000).toLocaleString().substr(0,10);
 						text = text+'<p class="month_lie_popnr">';
-						text=text+'<span class="tl wid_159">'+result.data[i].subject+'</span>';
-						text=text+'<span class="tl wid_159">'+result.data[i].user_name+'</span>';
-						text=text+'<span class="tl wid_108">'+d+'</span>';
-						text=text+'<span class="tr wid_125">'+result.data[i].invest_amount+'</span>';
-						text=text+'<span class="tr wid_180">'+result.data[i].settle_amount+'</span>';
+						text=text+'<span class="tl wid_108">'+result.data[i].subject+'</span>';
+						text=text+'<span class="tc wid_108">'+result.data[i].user_name+'</span>';
+						text=text+'<span class="tc wid_108">'+d+'</span>';
+                        text=text+'<span class="tc wid_108">'+result.data[i].real_day+'</span>';
+						text=text+'<span class="tc wid_125">'+result.data[i].invest_amount+'</span>';
+						text=text+'<span class="tc wid_180">'+result.data[i].settle_amount+'</span>';
 						text=text+'</p>';						
 					}
 					e.parent().parent().parent().find('.month_lie_pop').html(text);

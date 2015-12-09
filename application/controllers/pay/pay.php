@@ -40,6 +40,11 @@ class Pay extends Login_Controller
         if($this->session->userdata('clientkind') != '1'){
             $this->_redirect('user/user/account_security',3,'请先进行实名认证!');
         }
+
+         if((int)date('Hi') >= 2330 || (int)date('Hi') <= 30){
+             $this->_redirect('user/user/account_security',3,'23：30-00：30不能充值请稍后再来吧!');
+         }
+
         //接受参数
         $temp['bank']        = $this->input->post('bank');
         $temp['recharge_no'] = authcode($this->input->get('recharge_no',TRUE),'',TRUE);

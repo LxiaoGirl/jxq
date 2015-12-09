@@ -63,8 +63,12 @@
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){
         var recharge_min = <?php echo $recharge_min; ?>;
+        var now = parseInt('<?php echo date('Hi'); ?>');//当前服务器时间的时和分
         //为输入框绑定事件
         $('#recharge_amount').bind('keyup',function(){
+            if(now >= 2330 || now <= 30){
+                return false;
+            }
             if( ! $('#recharge_agree').prop('checked')){
                 return false;
             }
@@ -81,6 +85,9 @@
         });
         //为协议绑定事件
         $('#recharge_agree').bind('click',function(){
+            if(now >= 2330 || now <= 30){
+                return false;
+            }
             if( $('#recharge_agree').prop('checked')){
                 if($('#qrcz').attr('href') == 'javascript:void(0);' && !isNaN( $('#recharge_amount').val()) && $('#recharge_amount').val() >= recharge_min)
                 $('#qrcz').attr('href','<?php echo site_url('pay/pay/index'); ?>' + '?amount=' + $('#recharge_amount').val()+'&recharge_no=<?php echo $recharge_no; ?>');
@@ -107,6 +114,10 @@
             recharge_fresh_time = setTimeout(function(){refresh_recharge();},7000);
         };
         $('#qrcz').click(function(){
+            if(now >= 2330 || now <= 30){
+                wsb_alert('23:30-0:30不能充值 请稍后再来吧!');
+                return false;
+            }
             if( ! $('#recharge_agree').prop('checked')){
                 wsb_alert('你必须同意聚雪球账户资金管理协议才能充值!');
                 return false;

@@ -155,7 +155,9 @@ class User extends Login_Controller{
 		exit(json_encode($data));
 	}
 
-
+	public function invest_agreement(){
+		echo '123';
+	}
 
 	/**
 	 * 充值列表
@@ -191,13 +193,11 @@ class User extends Login_Controller{
 
 		$data = $this->cash->get_user_recharge_list($uid,'',$start,$end);
 		$temp['page_id'] 	= $this->c->get_page_id(7);
-		if($data['status']=='10000'){
-			if($data['data']['total']){
+		if($data['status']=='10000'&& $data['data']){
 				$data['links'] 	= $this->c->get_links($data['data']['total'],$temp['page_id'],7);
-			}else{
+		}else{
 				$data['links'] = '';
 			}
-		}
 		$data['balance'] = $this->cash->get_user_balance($uid);
 		$this->load->view('user/myaccount/recharge_jl',$data);
 	}
@@ -451,8 +451,19 @@ class User extends Login_Controller{
 		}
 	}
 
+	/**
+	 * 公司邀请码
+	 */
 	public function company_invite_code(){
 		$data = $this->user->company_invite_code($this->session->userdata('uid'),$this->input->post('code',true));
+		exit(json_encode($data));
+	}
+
+	/**
+	 * 理财师邀请码
+	 */
+	public function lcs_invite_code(){
+		$data = $this->user->lcs_invite_code($this->session->userdata('uid'),$this->input->post('code',true));
 		exit(json_encode($data));
 	}
 
@@ -684,7 +695,7 @@ class User extends Login_Controller{
 		$data['invite_code'] = $this->session->userdata('inviter_no');
 		$data['jujian_amount'] = $this->activity->get_settle_amount($uid);
 		$data['jujian_list'] = $this->activity->get_settle_list($uid);
-		$temp['page_id'] 	= $this->c->get_page_id(5);
+		$temp['page_id'] 	= $this->c->get_page_id(3);
 		if($data['jujian_list']['status']=='10000'){
 			$data['links'] 	= $this->c->get_links($data['jujian_list']['data']['total'],$temp['page_id'],3);
 		}
@@ -708,7 +719,7 @@ class User extends Login_Controller{
 		$data['invite_code'] = $this->session->userdata('inviter_no');
 		$data['jujian'] = $this->activity->get_intermediary_user(true,$uid);
 		$data['jujian_amount'] = $this->activity->get_settle_amount($uid);
-		$temp['page_id'] 	= $this->c->get_page_id(5);
+		$temp['page_id'] 	= $this->c->get_page_id(3);
 		if($data['jujian']['status']=='10000'){
 			$data['links'] 	= $this->c->get_links($data['jujian']['data']['total'],$temp['page_id'],3);
 		}
@@ -723,6 +734,137 @@ class User extends Login_Controller{
 	public function get_commission_list(){
 		$uid = $this->input->get('uid',true);//客户uid
 		$data = $this->activity->get_commission_list($uid);
+		exit(json_encode($data));
+	}
+
+
+
+
+	/**
+	 * 聚保宝
+	 */
+	public function jbb(){
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$data['links']='';
+		$data['add_amount'] = $this->cash->jbb_add_amount($uid);//累计加入
+		$data['buy_nums'] = $this->cash->jbb_buy_nums($uid);//购买笔数
+		$data['cumulative_yield'] = $this->cash->jbb_cumulative_yield($uid);//累计提取收益
+		$data['jbb_receive'] = $this->cash->jbb_receive($uid);//可领取收益
+		$data['mate_nums'] = $this->cash->jbb_mate_nums($uid);//配标数目
+		$data['jbb_list'] = $this->project->jbb_per_list($uid);//列表
+		$temp['page_id'] 	= $this->c->get_page_id(4);
+		if($data['jbb_list']['status']=='10000'){
+			$data['links'] 	= $this->c->get_links($data['jbb_list']['data']['total'],$temp['page_id'],4);
+		}
+		$this->load->view('user/myinvestment/jbb',$data);
+	}
+
+
+
+	/**
+	 * 聚保宝排队
+	 */
+	public function jbb_line(){
+		$uid = $this->session->userdata('uid');
+		$data['links']='';
+		$data['add_amount'] = $this->cash->jbb_add_amount($uid);//累计加入
+		$data['buy_nums'] = $this->cash->jbb_buy_nums($uid);//购买笔数
+		$data['cumulative_yield'] = $this->cash->jbb_cumulative_yield($uid);//累计提取收益
+		$data['jbb_receive'] = $this->cash->jbb_receive($uid);//可领取收益
+		$data['mate_nums'] = $this->cash->jbb_mate_nums($uid);//配标数目
+		$data['jbb_list'] = $this->project->jbb_per_list($uid,2);//列表
+		$temp['page_id'] 	= $this->c->get_page_id(4);
+		if($data['jbb_list']['status']=='10000'){
+			$data['links'] 	= $this->c->get_links($data['jbb_list']['data']['total'],$temp['page_id'],4);
+		}
+		$this->load->view('user/myinvestment/jbb_line',$data);
+	}
+
+
+
+	/**
+	 * 聚保宝历史
+	 */
+	public function jbb_history(){
+		$uid = $this->session->userdata('uid');
+		$data['links']='';
+		$data['add_amount'] = $this->cash->jbb_add_amount($uid);//累计加入
+		$data['buy_nums'] = $this->cash->jbb_buy_nums($uid);//购买笔数
+		$data['cumulative_yield'] = $this->cash->jbb_cumulative_yield($uid);//累计提取收益
+		$data['jbb_receive'] = $this->cash->jbb_receive($uid);//可领取收益
+		$data['mate_nums'] = $this->cash->jbb_mate_nums($uid);//配标数目
+		$data['jbb_list'] = $this->project->jbb_per_list($uid,3);//列表
+		$temp['page_id'] 	= $this->c->get_page_id(4);
+		if($data['jbb_list']['status']=='10000'){
+			$data['links'] 	= $this->c->get_links($data['jbb_list']['data']['total'],$temp['page_id'],4);
+		}
+		$this->load->view('user/myinvestment/jbb_history',$data);
+	}
+
+
+
+	/**
+	 * 聚保宝产生利息
+	 */
+	public function jbb_interest(){
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$id = $this->input->get('id',true);//投标id
+		$data = $this->cash->jbb_receive($uid,$id);
+		exit(json_encode($data));
+	}
+
+
+
+	/**
+	 * 聚保宝提取利息
+	 */
+	public function jbb_sub_receive(){
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$id = $this->input->get('id',true);//投标id
+		$data = $this->cash->jbb_sub_receive($uid,$id);
+		exit(json_encode($data));
+	}
+
+
+
+	/**
+	 * 聚保宝申请退出
+	 */
+	public function jbb_out(){
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$id = $this->input->get('id',true);//投标id
+		$data = $this->cash->jbb_out($uid,$id);
+		exit(json_encode($data));
+	}
+
+
+
+	/**
+	 * 聚保宝取消退出
+	 */
+	public function jbb_off(){
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$id = $this->input->get('id',true);//投标id
+		$data = $this->cash->jbb_off($uid,$id);
+		exit(json_encode($data));
+	}
+
+
+
+
+	/**
+	 * 聚保宝申请退出手续费
+	 */
+	public function jbb_poundage(){
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$id = $this->input->get('id',true);//投标id
+		$data = $this->cash->jbb_poundage($uid,$id);
 		exit(json_encode($data));
 	}
 	/******************************************通用************************/

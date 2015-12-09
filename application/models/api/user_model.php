@@ -557,7 +557,7 @@ class User_model extends CI_Model{
 
 	public function company_invite_code($uid=0,$code=''){
 		$temp = array();
-		$data = array('name'=>'绑定公司邀请码','status' => '10001', 'msg' => '你提交的理财师/公司邀请码不存在,请重试！', 'data' => array());
+		$data = array('name'=>'绑定公司邀请码','status' => '10001', 'msg' => '你提交的公司邀请码不存在,请重试！', 'data' => array());
 
 		if($code){
 			//验证用户信息
@@ -570,12 +570,17 @@ class User_model extends CI_Model{
 				$data['msg'] = '用户uid不存在!';
 				return $data;
 			}
+			if($temp['user_info']['company']){
+				$data['msg'] = '你已经绑定过公司邀请码了无需重复提交!';
+				return $data;
+			}
+
 			//验证公司邀请码
-			$temp['data'] = $this->check_company_invitation_code($code);
+			$temp['data'] = $this->check_company_invitation_code($code,false);
 			if($temp['data']['status'] == '10000'){
 				$temp['inviter_uid'] = '';//邀请人uid
 				//如果存在data 说明code是居间人邀请码
-				if($temp['data']['data']){
+				/*if($temp['data']['data']){
 					$temp['inviter_uid'] = $temp['data']['data']['uid'];
 					//如果穿着company 说明居间人有公司邀请码 无则没有
 					if($temp['data']['data']['company']){
@@ -584,7 +589,7 @@ class User_model extends CI_Model{
 						$data['msg'] = '当前理财师也无公司邀请码!';
 						$code = '';
 					}
-				}
+				}*/
 				//根据上面的过滤再验证是否还有公司邀请码
 				if($code){
 					//有居间人uid inviter_uid 验证邀请人uid 是否和当前用户的邀请人是否相同
@@ -608,6 +613,45 @@ class User_model extends CI_Model{
 						$data['msg'] = '服务器繁忙请稍后重试!';
 					}
 				}
+			}
+		}
+
+		unset($temp);
+		return $data;
+	}
+	public function lcs_invite_code($uid=0,$code=''){
+		$temp = array();
+		$data = array('name'=>'绑定理财师邀请码','status' => '10001', 'msg' => '你提交的理财师邀请码不存在,请重试！', 'data' => array());
+
+		if($code){
+			//验证用户信息
+			if($uid == 0){
+				$data['msg'] = '用户uid为空!';
+				return $data;
+			}
+			$temp['user_info'] = $this->c->get_row(self::user,array('where'=>array('uid'=>$uid)));
+			if(!$temp['user_info']){
+				$data['msg'] = '用户uid不存在!';
+				return $data;
+			}
+			if($temp['user_info']['inviter']){
+				$data['msg'] = '你已经绑定过理财师邀请码了无需重复提交!';
+				return $data;
+			}
+			//验证理财师邀请码
+			$temp['inviter_uid'] = $this->_check_inviter($code);
+			if($temp['inviter_uid']){
+					$temp['update_data'] = array(
+							'inviter'=>$temp['inviter_uid']
+					);
+					$query = $this->c->update(self::user,array('where'=>array('uid'=>$uid)),$temp['update_data']);
+					if($query){
+						$data['msg'] = '操作成功!';
+						$data['status'] = '10000';
+						$data['data']['lcs_code'] = $code;
+					}else{
+						$data['msg'] = '服务器繁忙请稍后重试!';
+					}
 			}
 		}
 
@@ -1713,6 +1757,9 @@ class User_model extends CI_Model{
 			$temp['where'] = array('where' => array('uid' => $uid));
 			$data['user'] = $this->c->get_row(self::user, $temp['where']);
 			if(!empty( $data['user'])){
+				if($data['user']['inviter']){
+					$data['user']['lcs_no'] = $this->c->get_one(self::user,array('where'=>array('uid'=>$data['user']['inviter']),'select'=>'inviter_no'));
+				}
 				$data= array(
 						'status' => '10000',
 						'msg' => 'ok',
@@ -2105,9 +2152,10 @@ class User_model extends CI_Model{
 
 	/**
 	 * @param string $code
+	 * @param boolean $flag true时 查询验证居间人码
 	 * @return array
 	 */
-	public function check_company_invitation_code($code=''){
+	public function check_company_invitation_code($code='',$flag=TRUE){
 		$temp = array();
 		$data = array('name'=>'公司邀请码验证','status'=>'10001','msg'=>'邀请码不能为空!','data'=>array());
 
@@ -2125,11 +2173,20 @@ class User_model extends CI_Model{
 				$data['msg'] = $temp['data']['company_name'];
 				$data['status'] = '10000';
 			}else{
-				$temp['data'] = $this->c->get_row(self::user,array('select'=>'uid,real_name,company','where'=>array('inviter_no'=>$code)));
-				if($temp['data']){
-					$data['msg'] = '邀请人:'.$temp['data']['real_name'];
-					$data['status'] = '10000';
-					$data['data'] = $temp['data'];
+				if($flag){
+					if($this->_is_mobile($code)){
+						$temp['s_filed'] = 'mobile';
+					}else{
+						$temp['s_filed'] = 'inviter_no';
+					}
+					$temp['data'] = $this->c->get_row(self::user,array('select'=>'uid,real_name,company','where'=>array($temp['s_filed']=>$code)));
+					if($temp['data']){
+						$data['msg'] = '邀请人:'.$temp['data']['real_name'];
+						$data['status'] = '10000';
+						$data['data'] = $temp['data'];
+					}else{
+						$data['msg'] = '查无此验证码!';
+					}
 				}else{
 					$data['msg'] = '查无此验证码!';
 				}
