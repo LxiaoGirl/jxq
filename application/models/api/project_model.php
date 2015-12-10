@@ -40,6 +40,7 @@ class Project_model extends CI_Model{
 	 * @param string $rate_str 字符串 x-x 0-0.9
 	 * @param string $mode_str 字符串 1  1,2 1,2,3
 	 * @param string $type_str 字符串 1 1,2 1,2,3
+	 * @param int    $active 活动标识
 	 *
 	 * @return array 二维数组
 	 * borrow_no-借款单号
@@ -62,7 +63,7 @@ class Project_model extends CI_Model{
 	 * can_invest-是否允许投资
 	 * lowest-最低起投金额
 	 */
-    public function get_project_list($category='',$status_str='',$month_str='',$rate_str='',$mode_str='',$type_str='',$page_id=0,$page_size=0){
+    public function get_project_list($category='',$status_str='',$month_str='',$rate_str='',$mode_str='',$type_str='',$page_id=0,$page_size=0,$active=null){
         $temp = array();
         $data = array('name'=>'查询项目列表','status'=>'10001','msg'=>'服务器繁忙请稍后重试!','sign'=>'','data'=>array());
 
@@ -91,6 +92,11 @@ class Project_model extends CI_Model{
                 join_field('show_time',self::borrow).' <'=>time()//已经在显示的
             )
         );
+
+		if( ! is_null($active)){
+			$temp['where']['where'][join_field('active',self::borrow)] = $active;
+		}
+
         //如果有限定类别
         if($category){
             $temp['where']['where'][join_field('productcategory',self::borrow)] = $category;

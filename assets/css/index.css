@@ -5,6 +5,41 @@
 * @Last Modified time: 2015-12-09 16:12:34
 */
 /*2015-11-10*/
+/*首页项目改版*/
+.home_left h1 ul.sy_xm_tit{
+    border-bottom:1px solid #3cb5ec;
+    padding-left:10px;
+    height:44px;
+}
+.home_left h1 ul.sy_xm_tit a{
+    line-height:43px;
+}
+.home_left h1 ul.sy_xm_tit li{
+    width:120px;
+    height:43px;
+    line-height:43px;
+    text-align:center;
+    float:left;
+    color:#666666;
+    font-size:16px;
+    border:1px solid #e5e5e5;
+    border-bottom:none;
+    background:#f3f3f3;
+    cursor:pointer;
+}
+.home_left h1 ul.sy_xm_tit li.active{
+    color:#3cb5ec;
+    border:1px solid #3cb5ec;
+    border-bottom:1px solid #ffffff;
+    background:#fff;
+}
+.home_left li.bidi{
+    display:none;
+}
+.home_left li.bidi.active{
+    display:block;
+}
+/*首页项目改版*/
 /*提示样式1*/
 .but_pop_tip{
     position: absolute;
@@ -475,7 +510,7 @@ body{
     font-size: 12px;
     font-family: "宋体";
     margin-left: 10px;
-    min-width: 330px;
+    min-width: 320px;
 }
 .home_left li .home_product_body .top .baozhi span em{
     padding-right: 0px;

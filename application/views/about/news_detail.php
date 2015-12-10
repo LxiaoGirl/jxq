@@ -11,7 +11,7 @@
 
 <div class="mnx2">
 <div class="row">
-  <img src="../../../../assets/images/common/mb_ico.png">您当前所在的位置：<a href="<?php echo site_url('abour'); ?>">关于我们</a> ><a href="<?php echo site_url('abour/news'); ?>">公司动态</a> ><span class="mb_blue"> <?php echo $data['title']; ?></span>
+  <img src="../../../../assets/images/common/mb_ico.png">您当前所在的位置：<a href="<?php echo site_url('about'); ?>">关于我们</a> ><a href="<?php echo site_url('about/news'); ?>">公司动态</a> ><span class="mb_blue"> <?php echo $data['title']; ?></span>
 </div>
 </div>
 <div class="news_detail_w">
