@@ -1,0 +1,47 @@
+body{
+    background: #fa521d;
+    font-family: "微软雅黑";
+}
+.con-box{
+    position: relative;
+    margin-top: 50px;
+}
+.ewm{
+    position: absolute;
+    top:31%;
+    left: 18%;
+    width:64%;
+}
+.ewm img{
+    width:100%;
+}
+.yqr{
+    position: absolute;
+    top:71%;
+    width:100%;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    color: #fff;
+    font-size: 1.5rem;
+}
+.yqsm{
+    position: absolute;
+    top:76%;
+    width:100%;
+    height: 3rem;
+    line-height: 3rem;
+    text-align: center;
+    color: #fff;
+    font-size: 2.2rem;
+}
+.yqfx{
+    position: absolute;
+    top:82%;
+    width:100%;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    color: #fff;
+    font-size: 1.1rem;
+}

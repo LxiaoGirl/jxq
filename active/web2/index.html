@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>聚雪球-Web2.0预告</title>
+<link rel="stylesheet" href="css/jquery.fullPage.css">
+<style>
+a{outline:none;}
+a:focus{outline:none;}
+a img{outline:none;}
+.section {background-size: cover; position: relative; overflow: hidden;}
+.section1{background: url(images/1.jpg);}
+.section2{background: url(images/2.jpg);}
+.section3{background: url(images/3.jpg);}
+.section4{background: url(images/4.jpg);}
+.section5{background: url(images/5.jpg);}
+.section6{background: url(images/6.jpg);}
+.section7{background: #fff;}
+.section1 .top{width: 566px; height: 78px; position: absolute; top:30%; left:50%; margin-left: -283px;}
+.section1 .top img{display: none;}
+.section1 .center{position: absolute; width:100%; height:39px; text-align: center; left:-120%; top:44%;}
+.section1 .bot{position: absolute; width:100%; height:39px; text-align: center; left:0; top:120%;}
+.section2 .left{width:880px; height:618px;position: absolute; top: 50%; margin-top: -309px; left:40%; margin-left: -600px;}
+.section2 .right{width:283px; height:92px;position: absolute; top: 80%; margin-top: -109px; left:50%; margin-left: 350px;}
+.section3 .left{width:660px; height:460px;position: absolute; top: 50%; margin-top: -290px; left:-50%; margin-left: -180px;}
+.section3 .right{width:346px; height:104px;position: absolute; top: -50%; margin-top: -138px; left:50%; margin-left: -550px;}
+.section3 .center {width: 660px;height: 460px;position: absolute;top: 150%;margin-top: -100px;left: 50%;margin-left: 0px;}
+.section4 .left{width:880px; height:630px;position: absolute; top: 150%; margin-top: -315px; left:50%; margin-left: -650px;}
+.section4 .right{width:346px; height:104px;position: absolute; top: 50%; left:-150%; margin-left: 280px; margin-top: -150px;}
+.section4 .center {width: 1px;height: 1px; border-radius: 50%;overflow:hidden; background:url(images/3_4.png) center center no-repeat;position: absolute;top: 50%;margin-top: 195px;left: 50%;margin-left: 215px;}
+.section4 .center.anmi{animation: myfirst 2s;-moz-animation: myfirst 2s;-ms-animation: myfirst 2s;-webkit-animation: myfirst 2s;-o-animation: myfirst 2s;}
+.section5 .left{width:880px; height:630px;position: absolute; top: 150%; margin-top: -315px; left:50%; margin-left: -200px;}
+.section5 .right{width:346px; height:104px;position: absolute; top: 50%; left:-150%; margin-left: -580px; margin-top: -120px;}
+.section5 .center {width: 1px;height: 1px; border-radius: 50%;overflow:hidden; background:url(images/3_1.png) center center no-repeat;position: absolute;top: 50%;margin-top: 195px;left: 50%;margin-left: -215px;}
+.section5 .center.anmi{animation: myfirst 2s;-moz-animation: myfirst 2s;-ms-animation: myfirst 2s;-webkit-animation: myfirst 2s;-o-animation: myfirst 2s;}
+.section6 .left{width:880px; height:630px;position: absolute; top: 150%; margin-top: -315px; left:50%; margin-left: -650px;}
+.section6 .right{width:346px; height:104px;position: absolute; top: 50%; left:-150%; margin-left: 280px; margin-top: -150px;}
+.section6 .center {width: 1px;height: 1px; border-radius: 50%;overflow:hidden; background:url(images/3_2.png) center center no-repeat;position: absolute;top: 50%;margin-top: 195px;left: 50%;margin-left: 215px;}
+.section6 .center.anmi{animation: myfirst 2s;-moz-animation: myfirst 2s;-ms-animation: myfirst 2s;-webkit-animation: myfirst 2s;-o-animation: myfirst 2s;}
+.section7 .top{position: absolute; width:100%; height:39px; text-align: center; left:0; top:25%; display:none;}
+.section7 .center{position: absolute; width:100%; height:82px; text-align: center; left:0; top:36%; display:none;}
+.section7 .center span{width:100%; height:100%;position: relative;display: block;}
+.section7 .center em{display:block; position: absolute;left:50%;background: #fff;z-index: 99;}
+.section7 .center em.em1{width:410px; height: 10px; top: -5px;margin-left: -205px;}
+.section7 .center em.em2{width:10px; height: 82px; top: 0px;margin-left: 205px;}
+.section7 .center em.em3{width:410px; height: 10px; bottom: -5px;margin-left: -205px;}
+.section7 .center em.em4{width:10px; height: 82px; top: 0px;margin-left:-210px;}
+.section7 .center font{font-size: 24px;line-height: 80px; color:#3cb5ec; border:1px solid #3cb5ec; border-radius: 8px; display:block;width:420px;height:80px; position: absolute; left:50%; margin-left: -210px;top:0; font-family: '微软雅黑';}
+.section7 .bot{position: absolute; width:100%; height:39px; text-align: center; left:0; top:55%; display:none;}
+.section7 .bot a img.a1{display: inline-block; border:none;}
+.section7 .bot a img.a2{display: none; border:none;}
+.section7 .bot a:hover img.a1{display: none; border:none;}
+.section7 .bot a:hover img.a2{display: inline-block; border:none;}
+@keyframes myfirst{0%{transform: rotate(0deg);}100%{transform: rotate(720deg);}}
+@-ms-keyframes myfirst{0%{transform: rotate(0deg);}100%{transform: rotate(720deg);}}
+@-webkit-keyframes myfirst{0%{transform: rotate(0deg);}100%{transform: rotate(720deg);}}
+@-moz-keyframes myfirst{0%{transform: rotate(0deg);}100%{transform: rotate(720deg);}}
+@-o-keyframes myfirst{0%{transform: rotate(0deg);}100%{transform: rotate(720deg);}}
+</style>
+<script src="js/jquery-1.8.3.min.js"></script>
+<script src="js/jquery.fullPage.min.js"></script>
+<script src="js/jquery.easing.min.js"></script>
+<script>
+$(function(){
+	//
+				$('.section1').find('.top').find('.img_1').fadeIn(300);
+				$('.section1').find('.top').find('.img_2').delay(300).fadeIn(300);
+				$('.section1').find('.top').find('.img_3').delay(600).fadeIn(300);
+				$('.section1').find('.top').find('.img_4').delay(900).fadeIn(300);
+				$('.section1').find('.top').find('.img_5').delay(1200).fadeIn(300);
+				$('.section1').find('.top').find('.img_6').delay(1500).fadeIn(300);
+				$('.section1').find('.center').delay(500).animate({
+					left: '0',
+				}, 1500, 'easeOutExpo');
+				$('.section1').find('.bot').delay(500).animate({
+					top: '80%',
+				}, 1500, 'easeOutExpo');
+	//
+	$('#dowebok').fullpage({
+		continuousVertical: true,
+		'navigation': true,
+		afterLoad: function(anchorLink, index){
+			if(index == 1){
+				$('.section1').find('.top').find('.img_1').fadeIn(300);
+				$('.section1').find('.top').find('.img_2').delay(300).fadeIn(300);
+				$('.section1').find('.top').find('.img_3').delay(600).fadeIn(300);
+				$('.section1').find('.top').find('.img_4').delay(900).fadeIn(300);
+				$('.section1').find('.top').find('.img_5').delay(1200).fadeIn(300);
+				$('.section1').find('.top').find('.img_6').delay(1500).fadeIn(300);
+				$('.section1').find('.center').delay(500).animate({
+					left: '0'
+				}, 1500, 'easeOutExpo');
+				$('.section1').find('.bot').delay(500).animate({
+					top: '72%',
+				}, 1500, 'easeOutExpo');
+			}
+			if(index == 2){
+				$('.section2').find('.left').delay(500).animate({
+					left: '50%',
+				}, 1500, 'easeOutExpo');
+				$('.section2').find('.right').delay(500).animate({
+					top: '50%',
+				}, 1500, 'easeOutExpo');
+			}
+			if(index == 3){
+				$('.section3').find('.left').delay(500).animate({
+					left: '50%',
+				}, 1500, 'easeOutExpo');
+				$('.section3').find('.right').delay(500).animate({
+					top: '50%',
+				}, 1500, 'easeOutExpo');
+				$('.section3').find('.center').delay(1500).animate({
+					top: '50%',
+				}, 1500, 'easeOutExpo');
+			}
+			if(index == 4){
+				$('.section4').find('.left').delay(500).animate({
+					top: '50%',
+				}, 1500, 'easeOutExpo');
+				$('.section4').find('.right').delay(500).animate({
+					left: '50%',
+				}, 1500, 'easeOutExpo');
+				$('.section4').find('.center').delay(500).animate({
+					width: '430px',
+					height:'430px',
+					marginLeft:'0px',
+					marginTop:'-20px',
+				}, 1500, 'easeOutExpo');
+				$('.section4').find('.center').delay(500).addClass('anmi');
+			}
+			if(index == 5){
+				$('.section5').find('.left').delay(500).animate({
+					top: '50%',
+				}, 1500, 'easeOutExpo');
+				$('.section5').find('.right').delay(500).animate({
+					left: '50%',
+				}, 1500, 'easeOutExpo');
+				$('.section5').find('.center').delay(500).animate({
+					width: '430px',
+					height:'430px',
+					marginLeft:'-330px',
+					marginTop:'-20px',
+				}, 1500, 'easeOutExpo');
+				$('.section5').find('.center').delay(500).addClass('anmi');
+			}
+			if(index == 6){
+				$('.section6').find('.left').delay(500).animate({
+					top: '50%',
+				}, 1500, 'easeOutExpo');
+				$('.section6').find('.right').delay(500).animate({
+					left: '50%',
+				}, 1500, 'easeOutExpo');
+				$('.section6').find('.center').delay(500).animate({
+					width: '430px',
+					height:'430px',
+					marginLeft:'0px',
+					marginTop:'-20px',
+				}, 1500, 'easeOutExpo');
+				$('.section6').find('.center').delay(500).addClass('anmi');
+			}
+			if(index == 7){
+				$('.section7').find('.top').delay(500).fadeIn(1500);
+				$('.section7').find('.center').delay(2000).fadeIn(1500);
+				$('.section7').find('.center').find('.em1').delay(3500).animate({
+					width: '0px',
+					marginLeft:'205px',
+				}, 1500, 'easeOutExpo');
+				$('.section7').find('.center').find('.em2').delay(5000).animate({
+					height:'0px',
+					marginTop:'82px',
+				}, 500, 'easeOutExpo');
+				$('.section7').find('.center').find('.em3').delay(5500).animate({
+					width: '0px',
+				}, 1500, 'easeOutExpo');
+				$('.section7').find('.center').find('.em4').delay(7000).animate({
+					height:'0px',
+				}, 500, 'easeOutExpo');
+				$('.section7').find('.bot').delay(3500).fadeIn(1500);
+			}
+		},
+		onLeave: function(index, direction){
+			if(index == '1'){
+				$('.section1').find('.top').find('img').fadeOut(300);
+				$('.section1').find('.center').delay(500).animate({
+					left: '-120%'
+				}, 100, 'easeOutExpo');
+				$('.section1').find('.bot').delay(500).animate({
+					top: '120%',
+				}, 100, 'easeOutExpo');
+			}
+			if(index == '2'){
+				$('.section2').find('.left').delay(500).animate({
+					left: '40%',
+				}, 100, 'easeOutExpo');
+				$('.section2').find('.right').delay(500).animate({
+					top: '80%',
+				}, 100, 'easeOutExpo');
+			}
+			if(index == '3'){
+				$('.section3').find('.left').delay(500).animate({
+					left: '-50%',
+				}, 100, 'easeOutExpo');
+				$('.section3').find('.right').delay(500).animate({
+					top: '-50%',
+				}, 100, 'easeOutExpo');
+				$('.section3').find('.center').delay(500).animate({
+					top: '150%',
+				}, 100, 'easeOutExpo');
+			}
+			if(index == '4'){
+				$('.section4').find('.left').delay(500).animate({
+					top: '150%',
+				}, 100, 'easeOutExpo');
+				$('.section4').find('.right').delay(500).animate({
+					left: '-150%',
+				}, 100, 'easeOutExpo');
+				$('.section4').find('.center').delay(500).animate({
+					width: '1px',
+					height:'1px',
+					marginLeft:'-215px',
+					marginTop:'195px',
+				}, 100, 'easeOutExpo');
+				$('.section4').find('.center').delay(500).removeClass('anmi');
+			}
+			if(index == '5'){
+				$('.section5').find('.left').delay(500).animate({
+					top: '150%',
+				}, 100, 'easeOutExpo');
+				$('.section5').find('.right').delay(500).animate({
+					left: '-150%',
+				}, 100, 'easeOutExpo');
+				$('.section5').find('.center').delay(500).animate({
+					width: '1px',
+					height:'1px',
+					marginLeft:'-215px',
+					marginTop:'195px',
+				}, 100, 'easeOutExpo');
+				$('.section5').find('.center').delay(500).removeClass('anmi');
+			}
+			if(index == '6'){
+				$('.section6').find('.left').delay(500).animate({
+					top: '150%',
+				}, 100, 'easeOutExpo');
+				$('.section6').find('.right').delay(500).animate({
+					left: '-150%',
+				}, 100, 'easeOutExpo');
+				$('.section6').find('.center').delay(500).animate({
+					width: '1px',
+					height:'1px',
+					marginLeft:'-215px',
+					marginTop:'195px',
+				}, 100, 'easeOutExpo');
+				$('.section6').find('.center').delay(500).removeClass('anmi');
+			}
+			if(index == 7){
+				$('.section7').find('.top').delay(500).fadeOut(100);
+				$('.section7').find('.center').delay(500).fadeOut(100);
+				$('.section7').find('.center').find('.em1').delay(500).animate({
+					width: '410px',
+					marginLeft:'-205px',
+				}, 100, 'easeOutExpo');
+				$('.section7').find('.center').find('.em2').delay(500).animate({
+					height:'82px',
+					marginTop:'0px',
+				}, 100, 'easeOutExpo');
+				$('.section7').find('.center').find('.em3').delay(500).animate({
+					width: '410px',
+				}, 100, 'easeOutExpo');
+				$('.section7').find('.center').find('.em4').delay(500).animate({
+					height:'82px',
+				}, 100, 'easeOutExpo');
+				$('.section7').find('.bot').delay(500).fadeOut(100);
+			}
+		}
+	});
+});
+</script>
+</head>
+<body>
+<div id="dowebok">
+	<div class="section section1">
+		<div class="top">
+			<img class="img_1" src="images/2_1_1.png">
+			<img class="img_2" src="images/2_1_2.png">
+			<img class="img_3" src="images/2_1_3.png">
+			<img class="img_4" src="images/2_1_4.png">
+			<img class="img_5" src="images/2_1_5.png">
+			<img class="img_6" src="images/2_1_6.png">
+		</div>
+		<div class="center"><img src="images/2_2.png"></div>
+		<div class="bot"><img src="images/2_3.png"></div>
+	</div>
+	<div class="section section2">
+		<div class="left"><img src="images/2_4.png"></div>
+		<div class="right"><img src="images/2_5.png"></div>
+	</div>
+	<div class="section section3">
+		<div style="position:relative; overflow:hidden; width:100%; height:100%;">
+		<div class="right"><img src="images/2_7.png"></div>
+		<div class="left"><img src="images/2_6.png"></div>
+		<div class="center"><img src="images/3_3.png"></div>
+		</div>
+	</div>
+	<div class="section section4">
+		<div class="left"><img src="images/2_8.png"></div>
+		<div class="right"><img src="images/2_9.png"></div>
+		<div class="center"></div>
+	</div>
+	<div class="section section5">
+		<div class="left"><img src="images/2_10.png"></div>
+		<div class="right"><img src="images/2_11.png"></div>
+		<div class="center"></div>
+	</div>
+	<div class="section section6">
+		<div class="left"><img src="images/2_12.png"></div>
+		<div class="right"><img src="images/2_13.png"></div>
+		<div class="center"></div>
+	</div>
+	<div class="section section7">
+		<div class="top"><img src="images/2_14.png"></div>
+		<div class="center">
+			<span>
+				<em class="em1"></em><em class="em2"></em><em class="em3"></em><em class="em4"></em>
+				<font>全新聚雪球  12月12日  即将开启</font>
+			</span>
+		</div>
+		<div class="bot">
+			<img src="images/fx.jpg">
+			<a href="javascript:;" onclick="jiathis_sendto('cqq');return false;" class="jiatitle"><img class="a1" src="images/fx_1.jpg"><img class="a2" src="images/fx_1_1.jpg"></a>
+			<a class="jiathis_button_tsina" href=""><img class="a1" src="images/fx_2.jpg"><img class="a2" src="images/fx_2_2.jpg"></a>
+			<a href="javascript:;" onclick="jiathis_sendto('qzone');return false;" class="jiatitle">
+			<span class="jiathis_txt jtico jtico_qzone"><img class="a1" src="images/fx_3.jpg"><img class="a2" src="images/fx_3_3.jpg"></span>
+			</a>
+			<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+		</div>
+	</div>
+</div>
+</body>
+</html>

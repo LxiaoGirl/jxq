@@ -1,0 +1,186 @@
+.container-fluid{
+    margin-top: 50px;
+}
+.header{
+    width:100%;
+    height: 50px;
+    background:red;
+    position: fixed;
+    top:0;
+    left:0;
+    z-index:9999;
+}
+.heder{
+    position: relative;
+    text-align: center;
+}
+.left_head{
+    left: 5%;
+    position: absolute;
+    top:10px;
+    height:30px;
+}
+.logo_head{
+    margin-top: 10px;
+    height:30px;
+}
+.right_head{
+    right: 5%;
+    position: absolute;
+    top:10px;
+    height:30px;
+}
+.header .right_nav{
+    width:0%;
+    position: fixed;
+    display:none;
+    top:0;
+    right:0;
+    z-index: 99;
+}
+.header .right_nav .le_harf{
+    width:30%;
+    height: 100%;
+    float:left;
+}
+.header .right_nav .ri_harf{
+    width:70%;
+    height: 100%;
+    float:left;
+    position:relative;
+}
+.nav_box{
+    width:100%;
+    height: 100%;
+    position:absolute;
+    left:0;
+    top:0;
+    background:url(/assets/images/app/top_nav/top_nav_10.png) repeat-y #555555;
+}
+.nav_box .p{
+    float:left;
+    width:100%;
+    height:50px;
+    padding:0 10%;
+    background:url(/assets/images/app/top_nav/top_nav_10.png) repeat-y #555555;
+    text-align: left;
+    line-height: 50px;
+    overflow: hidden;
+    border-bottom:1px solid #444;
+}
+.nav_box .p img{
+    height:25px;
+}
+.nav_box .p.select{
+    background:url(/assets/images/app/top_nav/top_nav_10.png) repeat-y #666666;
+}
+.nav_box .nav1{
+    background:url(/assets/images/app/top_nav/top_nav_10.png) repeat-y #444444;
+}
+.nav_box .p a.self_cen{
+    float:right;
+}
+.nav_box .p a.self_cen font{
+    padding:6px;
+    background:#e65710;
+    border-radius: 12px;
+}
+.nav_box .p a{
+    font-size: 14px;
+    color:#fff;
+}
+.nav_box .p a:hover{
+    color:#fff;
+}
+
+.nav_box .p {
+    font-size: 14px;
+    color:#fff;
+}
+.self_top{
+    width:100%;
+    height:100px;
+    background:#da251c;
+}
+.self_top img{
+    margin-left:10%;
+    margin-top:-50px;
+    display:inline-block;
+}
+.self_top p{
+    display:inline-block;
+    color:#fff;
+    font-size:20px;
+    margin-top:30px;
+    margin-left:30px;
+}
+.self_center{
+    height:80px;
+    width:100%;
+}
+.self_center a{
+    font-size:20px;
+    color:#fff;
+    display:block;
+    float:left;
+    width:35%;
+    margin-left:10%;
+    margin-top:20px;
+    height:40px;
+    text-align:center;
+    line-height:40px;
+    border-radius:6px;
+}
+.self_center a.chozhi{
+    background:#da251c;
+}
+.self_center a.tixian{
+    background:#f39c13;
+}
+.self_con{
+    width:100%;
+}
+.self_con p{
+    width:100%;
+    height:40px;
+    padding:0 5%;
+    line-height:40px;
+    color:#666666;
+    font-size:18px;
+    border-bottom:1px solid #dddddd;
+}
+.self_con p font{
+    float:right;
+    margin-right:10px;
+}
+
+/*-----用户登录--------------------------------------------------------------------------------*/
+.container-hy{max-width:640px; min-width:300px; margin:0px auto;}
+.hlogo{ text-align:center; padding:60px 0px;}
+.wrapper{padding:0px 15px;}
+#login_form{ width:100%; }
+#shuru_box{background:#FFF; border-radius:5px;}
+#login_form p.bottom_line{height:50px; border-bottom:solid 1px #CCC;}
+#login_form p{padding:0px 20px;}
+#login_form p.btn_box{padding:0px; margin-top:20px;}
+#login_form input{ height:49px; border:none; box-sizing:border-box; width:100%; font-size:16px; font-family:"微软雅黑";}
+#login_form input#hy_pwd{margin-top:-8px;}
+#login_form input#login_btn{height:49px; background:#da251c; color:#FFF; font-size:18px;}
+#link_box span{ float:right;}
+#link_box a{color:#1898d2;}
+
+/*找回密码1*/
+.wrapper_find{padding:30px 15px 0px;}
+#find_form{ width:100%; }
+#find_form p{ height:29px; line-height: 29px; width:100%; font-size:16px; font-family:"微软雅黑";}
+#find_form input{ text-indent: 5%; height:49px; border:none; box-sizing:border-box; width:100%; font-size:16px; font-family:"微软雅黑";}
+#find_form input#login_btn{margin-top:18px;height:49px; background:#da251c; color:#FFF; font-size:18px;}
+#find_form input.harf{margin-top:18px;height:49px; width:48%; background:#00acee; color:#FFF; font-size:18px;text-align: center; text-indent: 0;}
+#find_form input#yy{margin-left:4%;}
+/*-----找回密码2--------------------------------------------------------------------------------*/
+
+#new_form{padding:10px 15px;}
+#new_form p{margin-top:10px;}
+#new_form label{display:block;font-family:"微软雅黑"; font-size:16px; color:#666666; font-weight:normal;}
+#new_form input{height:49px; border:none; width:100%;font-size:16px; font-family:"微软雅黑"; padding:0px 10px; border-radius:4px;}
+#new_form input#new_btn{background:#da251c; color:#FFF; font-size:18px; margin-top:10px;}

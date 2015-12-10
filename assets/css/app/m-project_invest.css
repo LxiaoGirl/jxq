@@ -1,0 +1,195 @@
+/* 
+* @Author: anchen
+* @Date:   2015-08-24 09:31:03
+* @Last Modified by:   anchen
+* @Last Modified time: 2015-08-25 10:34:33
+*/
+.placehold{
+    width:100%;
+    height:50px;
+}
+.con_wap{
+    margin: 0;
+}
+.row_top{
+    width:100%;
+    height:50%;
+    margin-bottom: 2%;
+    background: linear-gradient(top , rgb(218, 37, 28) , rgb(141, 19, 13) 100%);
+    background: -o-linear-gradient(top , rgb(218, 37, 28) , rgb(141, 19, 13) 100%);
+    background: -ms-linear-gradient(top , rgb(218, 37, 28) , rgb(141, 19, 13) 100%);
+    background: -moz-linear-gradient(top , rgb(218, 37, 28) , rgb(141, 19, 13) 100%);
+    background: -webkit-linear-gradient(top , rgb(218, 37, 28) , rgb(141, 19, 13) 100%);
+}
+    .use_name{
+        height:12%;
+        width: 90%;
+        margin-left: 5%;   
+    }
+        .use_name .fl{
+            height:100%;
+            color:#fff;
+            font-size: 1.6rem;
+            line-height: 1.6rem;
+            position:relative;
+        }
+        .use_name .wzjz{
+                position:absolute;
+                top:50%;
+                left:0;
+                margin-top:-0.7rem;
+                width:100%;
+            }
+    .rate{
+        width:100%;
+        height:32%;
+    }
+        .rate_big{
+            color:#fff;
+            font-size: 3rem;
+            height:62%;
+            line-height: 3rem;
+            position:relative;
+        }
+            .rate_big .wzjz{
+                position:absolute;
+                top:50%;
+                margin-top:-1.5rem;
+                width:100%;
+            }
+            .rate_big font{
+                color:#fff;
+                font-size: 1.4rem;
+            }
+        .rate_com{
+            color:#fff;
+            font-size: 1.6rem;
+            height:38%;
+            line-height: 1.6rem;
+            position:relative;
+        }
+            .rate_com .wzjz{
+                position:absolute;
+                top:50%;
+                margin-top:-0.8rem;
+                width:100%;
+            }
+    .xgxx{
+        width:90%;
+        margin-left:6%;
+        height:44%;
+        margin-top:5%;
+        margin-bottom:5%;
+    }   
+        .wid49{
+            width:48%;
+            height:48%;
+            float:left;
+            overflow:hidden;
+        }
+        .bor-bot{
+            border-bottom:1px solid #fff;
+        }
+        .bor-ri{
+            border-right:1px solid #fff;
+        }
+            .hei50{
+                height:50%;
+                width:100%;
+                color:#fff;
+                font-size:1.2rem;
+                position:relative;
+                line-height:1.8rem;
+            }
+            .hei50 strong{
+                font-size:1.8rem;
+            }
+            .hei50 span{
+                position:absolute;
+                top:50%;
+                margin-top:-0.9rem;
+                width:100%;
+                display:block;
+            }
+
+.row_ptr{
+    width:100%;
+    height: 4%;
+    margin-bottom: 2%;
+    text-align: right;
+    color:#666666;
+    font-size: 1.4rem;
+    padding-right:5%;
+}
+.row_cen{
+    width: 100%;
+    height: 34%;
+    overflow: hidden;
+}
+    .row_cen .rel{
+        height:31%;
+        margin-bottom:1%;
+    }
+        .row_cen .rel .rel_left{
+            width:72%;
+            height:100%;
+            float:left;
+            position:relative;
+        }
+        .row_cen .rel .wzjz{
+            font-size:1.4rem;
+            text-indent:2rem;
+            line-height:2rem;
+            color:#333;
+            position:absolute;
+            top:50%;
+            margin-top:-1rem;
+            z-index:99;
+        }
+        .row_cen .rel .rel_rig{
+            width:27%;
+            height:100%;
+            float:right;
+            position:relative;
+        }
+        .row_cen .rel .shouyi_bg{
+            position:absolute;
+            left:0;
+            top:0;
+            height:100%;
+            min-width:1.6rem;
+        }
+.row_rel{
+    width:100%;
+    height:8%;
+}
+    .row_left{
+        width:80%;
+        height:100%;
+        float:left;
+    }
+    .row_rig{
+        width:20%;
+        height:100%;
+        float:right;
+    }
+    #jine{
+        padding:0;
+        height:100%;
+        width:100%;
+        font-size:1.8rem;
+        color:#333333;
+        text-indent:2rem;
+    }
+    #submit{
+        padding:0;
+        height:100%;
+        width:100%;
+        font-size:1.8rem;
+        color:#fff;
+    }
+/**/
+.info_black{
+    font-size: 1.4rem;
+    line-height: 2rem;
+}

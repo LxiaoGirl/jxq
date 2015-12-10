@@ -1,0 +1,12 @@
+/* CSS Document */
+	#my_snowball{background:red;}
+	#my_snowball h1{font-size:1.6rem; color:#FFF;  padding-left:30px; padding-top:10px;}
+	#my_snowball p{text-align:right; padding-right:30px; color:#FFF;}	
+	#my_snowball p span{font-size:4.2rem; font-weight:bold;}
+	.c_333_1{ color:#666666;font-size:1.6rem; }
+	.c_333_2{color:#333333;font-size:2rem;}
+	.c_888_1{color:#aaaaa;font-size:1.2rem;}
+	.c_blue_1{color:#67c243;font-size:3rem;}
+	.c_blue_2{color:#004ea2;font-size:3rem;}
+	.mb10_1{padding:10px}
+	#title span{font-size:1.8rem; font-weight:bold;}
