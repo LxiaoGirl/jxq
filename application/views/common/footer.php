@@ -98,7 +98,7 @@
 		$(function(){
 			ajax_loading(1,true,2);//ajax提交 禁用处理
 			//覆盖登录 处理未读消息
-			if('<?php echo profile('uid'); ?>'){
+			/*if('<?php echo profile('uid'); ?>'){
 				$.ajax({
 					type: 'POST',
 					url: '<?php echo site_url('user/message/ajax_get_not_read_message_count'); ?>',
@@ -116,7 +116,7 @@
 						}
 					}
 				});
-			}
+			}*/
 		});
 	});
 </script>

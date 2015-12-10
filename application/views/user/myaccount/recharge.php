@@ -115,7 +115,7 @@
         };
         $('#qrcz').click(function(){
             if(now >= 2330 || now <= 30){
-                wsb_alert('23:30-0:30不能充值 请稍后再来吧!');
+                wsb_alert('聚雪球平台每日凌晨23:30-00:30间不可充值，为银行日切时间，请大家避开此时间段充值。带来不便，敬请谅解。望周知！');
                 return false;
             }
             if( ! $('#recharge_agree').prop('checked')){

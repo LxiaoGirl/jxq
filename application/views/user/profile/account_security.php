@@ -729,11 +729,16 @@
        // pop_sub($('.xgmm_7').find('.sub'),$('.xgmm_8'),$('.xgmm_8').find('.close'));
         $("#but_sent_xgzjmm").click(function(){
             var mobile = <?php echo $data['mobile']?>;
+            var _this = $(this);
 			$.post('/index.php/user/user/send_sms?action=security&mobile='+mobile,{},function(result){
 				result = JSON.parse(result);
 				if(result.status=='10000'){
 					$('#fund_password_update_explain_one').html('验证码已发送至您的手机<?php echo secret($data['mobile'],5)?>，请注意查收');
-					dxdjs($(this));
+					dxdjs(_this);
+                    $('#fund_password_update_explain_one').append('<br/>短信接不到？<a href="javascript:void(0);" style="text-decoration: underline;" id="xgzjmm-voice" ' +
+                        'data-wait-time="<?php echo item("sms_space_time")?item("sms_space_time"):60; ?>" '+
+                    'data-last-time="<?php echo profile("voice_last_send_time")?profile("voice_last_send_time"):0; ?>">试试语音验证码</a>');
+                    $("#xgzjmm-voice").send_sms('voice',mobile,'security');
 				}else{
 					$('#fund_password_update_explain_one').html(result.msg);
 				}		

@@ -42,7 +42,7 @@ class Pay extends Login_Controller
         }
 
          if((int)date('Hi') >= 2330 || (int)date('Hi') <= 30){
-             $this->_redirect('user/user/account_security',3,'23：30-00：30不能充值请稍后再来吧!');
+             $this->_redirect('user/user/account_security',3,'聚雪球平台每日凌晨23:30-00:30间不可充值，为银行日切时间，请大家避开此时间段充值。带来不便，敬请谅解。望周知！');
          }
 
         //接受参数

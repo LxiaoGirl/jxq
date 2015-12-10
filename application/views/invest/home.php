@@ -199,7 +199,8 @@
                                 </div>
                             </div>
                         </div>
-	                    <?php endforeach;else: ?>
+                             <!-- <?php if($v['active'] == 1):  ?><div class="corner"></div><?php endif;  ?>-->
+                            <?php endforeach;else: ?>
 	                    <div class="product_of_invest_home"><p style="text-align: center;">暂无相关信息</p></div>
 	                    <?php endif; ?>
 							<?php echo $links; ?>

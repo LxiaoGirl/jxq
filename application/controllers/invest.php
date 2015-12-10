@@ -12,6 +12,7 @@ class Invest extends MY_Controller{
 		parent::__construct();
 		$this->load->model('api/project_model','project');
 		$this->load->model('api/cash_model','cash');
+		$this->load->model('api/other_model','other');
 	}
 
 	/**
@@ -40,14 +41,16 @@ class Invest extends MY_Controller{
 					$y=$b['new_status'];
 					if($x == 1)$x=2;
 					if($x == 2)$x=1;
+					if($a['active'] == 1)$x=0;
 					if($y == 1)$y=2;
 					if($y == 2)$y=1;
+					if($b['active'] == 1)$y=0;
 					if($x == $y)return 0;
 					return $x<$y?-1:1;
 				});
 			}
 		}}else{
-			$data['project'] 	= $this->project->jbb_dtl_list();
+			$data['project'] = $this->project->jbb_dtl_list();
 			if(!empty($data['project']['data'])){
 				foreach($data['project']['data'] as $k => $v){
 					$jbb_all_invest = $this->cash->jbb_all_invest($v['type_code']);//累计投资
@@ -56,6 +59,7 @@ class Invest extends MY_Controller{
 					$data['project']['data'][$k]['jbb_nums'] = $jbb_nums['data']['jbb_nums'];
 				}
 			}
+			
 		}
 
 		//项目分类�
@@ -117,6 +121,7 @@ class Invest extends MY_Controller{
 		$data['jbb_invest_nums'] = $this->project->jbb_invest_nums($temp['type_code']);//分散投资
 		$data['jbb'] = $this->project->jbb($temp['type_code']);//聚保宝产品
 		$data['jbb_list'] = $this->project->jbb_list($temp['type_code']);//聚保宝产品标的
+		$data['details'] = $this->other->jbb_details($temp['type_code']);
 		$data['total'] = $this->project->detail_jbb_list($temp['type_code']);
 		if($data['total']['status']==10000){
 			$data['total'] = $data['total']['data']['total'];

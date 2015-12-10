@@ -144,6 +144,7 @@
 					            </div>
 				            </div>
 				            <?php if($v['months'] <= 0.2):  ?><div class="corner"></div><?php endif;  ?>
+				            <?php if($v['active'] == 1):  ?><div class="corner"></div><?php endif;  ?>
 			            </div>
 		            </li>
 	            <?php endforeach;else: ?>

@@ -71,7 +71,7 @@ class Project_model extends CI_Model{
 
         //组合查询条件
         $temp['where'] = array(
-            'select'=>join_field('borrow_no,subject,mode,rate,months,type,amount,receive,add_time,buy_time,due_date,status,summary,repayment,content,lowest',self::borrow)
+            'select'=>join_field('borrow_no,subject,mode,rate,months,type,amount,receive,add_time,buy_time,due_date,status,summary,repayment,content,lowest,active',self::borrow)
 					.','.join_field('category,cat_id',self::category)
 					.','.join_field('company_name',self::guarantee),
 //                .',user_a.user_name,user_a.mobile,user_a.nric,user_a.real_name,user_b.user_name as last_invester_name,',
@@ -81,10 +81,11 @@ class Project_model extends CI_Model{
                 array('table'=>self::category,'where'=>join_field('productcategory',self::borrow).'= '.join_field('cat_id',self::category)),
                 array('table'=>self::guarantee,'where'=>join_field('guarantee_id',self::borrow).'= '.join_field('id',self::guarantee))
             ),
-            'order_by' => join_field('sort_order',self::borrow).' DESC,'
-                .join_field('productcategory',self::borrow).' ASC,'
-                .join_field('status',self::borrow).' ASC,'
-                .join_field('id',self::borrow).' DESC',
+            'order_by' => join_field('active',self::borrow).' DESC,'
+						.join_field('sort_order',self::borrow).' DESC,'
+						.join_field('productcategory',self::borrow).' ASC,'
+						.join_field('status',self::borrow).' ASC,'
+						.join_field('id',self::borrow).' DESC',
             'where'=>array(
                 join_field('status',self::borrow).' >'=>1,//项目状态审核通过 未取消
                 join_field('show_time',self::borrow).' <'=>time()//已经在显示的
@@ -1272,6 +1273,7 @@ class Project_model extends CI_Model{
                 'where'    => array(
 					join_field('product_type', self::payment_jbb) =>$type_code
                 ),
+				'order_by'    =>join_field('id', self::payment_jbb).' desc',
                 'join'     => array(
                 'table' => self::user,
                 'where' => join_field('uid', self::payment_jbb).' = '.join_field('uid', self::user)
