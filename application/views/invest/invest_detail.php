@@ -29,7 +29,7 @@
                 <?php endif;?>
 <!--	            <span class="zhi"><em>A</em><font>支持自动投资</font></span>-->
 <!--	            <span class="jia"><em>加</em><font>+0.9%</font></span>-->
-	            <i class="fr"><a href="<?php echo site_url('about/invest_agreement');?>" target="_blank">《聚雪球投资协议（范本）》</a></i>
+	            <i class="fr"><a href="<?php echo site_url('terms/index?borrow_no='.$project['borrow_no']);?>" target="_blank">《聚雪球投资协议（范本）》</a></i>
             </h1>
             <!---->
             <div class="invest_body_bdxx">
