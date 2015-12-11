@@ -720,8 +720,11 @@ var ajax_loading = function(flag,bg_flag,end_delay){
     };
 
     $(document).ajaxStart(function(){
-        if(event && (event.srcElement || event.target))ajax_submit_button_obj = event.srcElement?event.srcElement:event.target;
+        var theEvent = window.event || arguments.callee.caller.arguments[0];
+        if(theEvent && (theEvent.srcElement || theEvent.target))ajax_submit_button_obj = theEvent.srcElement?theEvent.srcElement:theEvent.target;
         var ajax_button = false;
+        alert(ajax_submit_button_obj)
+        alert(ajax_submit_button_obj.tagName)
         if(ajax_submit_button_obj && ajax_submit_button_obj.tagName){
             var class_str = $(ajax_submit_button_obj).attr('class');
             //标签的class包含标识
