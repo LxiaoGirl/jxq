@@ -30,16 +30,17 @@
     <div class="row">
         <ul class="home_three_c">
             <li>
-                <p>高额收益</p>
-                <p>预期年化收益率最高13.2%</p>
+                <p>优势股东</p>
+                <p>国资参与 银行监管</p>
+
             </li>
             <li>
                 <p>安全保障</p>
                 <p>100%本息保障</p>
             </li>
             <li>
-                <p>优势股东</p>
-                <p>国资参与 银行监管</p>
+                <p>高额收益</p>
+                <p>预期年化收益率最高13.2%</p>
             </li>
         </ul>
     </div>
@@ -97,8 +98,8 @@
                                         <div class="product_four_num_bot tc col_blu"><?php echo $v['rate']; ?><i>%</i></div>
                                     </li>
                                     <li>
-                                        <div class="product_four_num_top tc">借款期限(月)</div>
-                                        <div class="product_four_num_bot tc"><?php echo $v['months']; ?></div>
+                                        <div class="product_four_num_top tc">借款期限(<?php echo $v['months']==0.9?'天':'月'; ?>)</div>
+                                        <div class="product_four_num_bot tc"><?php echo $v['months']==0.9?$v['months']*30:$v['months']; ?></div>
                                     </li>
                                     <li>
                                         <div class="product_four_num_top tc">借款总额(万元)</div>

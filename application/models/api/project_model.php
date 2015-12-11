@@ -760,7 +760,7 @@ class Project_model extends CI_Model{
 					//$temp['data'] = array('balance' => round($balance - $amount, 2));
 					//$this->session->set_userdata($temp['data']);
 					$this->_set_borrow_status(); // 更新记录状态
-					$temp['content'] = sprintf('您好，您投资的%s元资金已经冻结。请等待标地结束。', $amount);
+					$temp['content'] = sprintf('您好，您投资的%s元资金已经冻结。请等待标的结束。', $amount);
 					$this->send_message($uid, '您好，您投资的金额已经冻结！', $temp['content'],3);//发送信息
 					$this->add_user_log('invest', '投资'.sprintf('¥ %s', round($amount,2)).'(项目编号：'.$borrow_no.')',$uid,$temp['usr']['user_name']);//添加用户日志
 				}
@@ -1398,7 +1398,7 @@ class Project_model extends CI_Model{
 				'msg'=>'暂无相关信息!'
 			);
 		$temp['where'] = array(
-                'select'   => join_field('*', self::payment_jbb).','.join_field('ave_rate', self::jbb).','.join_field('time_limit', self::jbb).','.join_field('type_name', self::jbb).','.join_field('allawexit', self::jbb).','.join_field('rate', self::jbb_dtl).','.join_field('closeday', self::jbb),
+                'select'   => join_field('*', self::payment_jbb).','.join_field('ave_rate', self::jbb).','.join_field('time_limit', self::jbb).','.join_field('type_name', self::jbb).','.join_field('allawexit', self::jbb).','.join_field('rate', self::jbb_dtl).','.join_field('closeday', self::jbb).','.join_field('isrepeat', self::jbb).','.join_field('intervaldays', self::jbb),
                 'where'    => array(
                     join_field('uid', self::payment_jbb) => $uid,
                     join_field('status', self::payment_jbb) => $status

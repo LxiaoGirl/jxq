@@ -11,7 +11,7 @@
     <!--head end-->
     <!--user start-->
 	<div class="user_nav row">
-        <a href="">首页</a>&nbsp;>&nbsp;<a href="">我的账户</a>&nbsp;>&nbsp;<a href="">提现</a>
+        <a href="/index.php">首页</a>&nbsp;>&nbsp;<a href="/index.php/user/user/account_home">我的账户</a>&nbsp;>&nbsp;<a href="javascript:void(0);">提现</a>
     </div>
     <div class="row user">
         <!--左侧通用-->
@@ -47,7 +47,7 @@
                         <div class="qx_inp">
                             <div class="left">请输入提现金额：</div>
                             <div class="right">
-                                <input class="txje" type="text" / placeholder="最大可提现100元">
+                                <input class="txje" type="text" placeholder="输入提现金额" />
                                 <div class="tip_qx"></div>
                             </div>
                         </div>

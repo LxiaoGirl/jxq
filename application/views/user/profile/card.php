@@ -11,7 +11,7 @@
     <!--银行卡管理-->
     <!--user start-->
     <div class="user_nav row">
-        <a href="">首页</a>&nbsp;>&nbsp;<a href="">账户设置</a>&nbsp;>&nbsp;<a href="">银行卡管理</a>
+        <a href="/index.php">首页</a>&nbsp;>&nbsp;<a href="/index.php/user/user/account_information">账户设置</a>&nbsp;>&nbsp;<a href="javascript:void(0);">银行卡管理</a>
     </div>
     <div class="row user">
         <!--左侧通用-->
@@ -20,7 +20,7 @@
         <!--右侧-->
         <div class="user_right">
             <div class="black_bg"></div>
-            <h1>银行卡管理<a href="">常见问题</a></h1>
+            <h1>银行卡管理<a href="/index.php/about/help?cat_id=47&id=486" target="_blank">常见问题</a></h1>
             <ul class="yhk">
 			<?php if($bank['status']==10001):?>
                 <li class="no_binding">
@@ -40,7 +40,7 @@
                         <p>银行卡号：<?php echo secret($bank['data']['account'],11)?></p>
                     </div>            
                     <div class="bottom">
-                        <font class="fr">解除绑定</font>
+                        <font class="fr card-unbind">解除绑定</font>
                     </div>
                 </li>
 				<?php endif;?>
@@ -162,6 +162,9 @@
 //            }
 //        }, 'json');
     });
+        $(".card-unbind").bind('click',function(){
+            wsb_alert('请致电客服中心申请银行卡解绑!',3);
+        });
 			
     });
 </script>

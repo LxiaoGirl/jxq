@@ -104,34 +104,16 @@
                 </ul>
                 <ul class="tab_con">
                     <li class="active jbb_tzxq">
-                        季季翻投资团1,000元起投，预计综合年化净收益率为8%+(利息复投功能开启时约为8.36%)。可随时退出，灵活性好（持有期退出费用最低）。3个月后退出（扣除退出费用）实得收益率约6%，6个月后退出实得收益约7%，1年后实得收益率约8.36%并免退出费用，可长期持有，投资时间越长，收益越高。
-                        <p>
+						<?php foreach($details['data'] as $k => $v):?>
+                        <p>						
                             <span class="shen">
-                                协议
+                                <?php echo $v['title']?>
                             </span>
                             <span class="qian">
-                                <a href="">聚雪球聚保宝投资协议（范本）</a>
+                                <?php echo $v['content']?>
                             </span>
                         </p>
-                        <p>
-                            <span class="shen">
-                                利息分配
-                            </span>
-                            <span class="qian">
-                                入团当日开始生息, 天天付息。投资人在投资次日会收到前1日利息。投资人在年化净收益率6%基础上，每投资满90天后收到一笔分
-红。预期分红金额为分红时点投资金额的0.5%（例如1月1日成功投资，则在1月2日收到首次利息，在4月2日收到首次分红，7月1日
-收到第二次分红，以此类推，直至退出）, 相当于每第三个月年化收益率总计为12%, 使预期年化净收益率达到8% (利息复投功能开
-启时约为8.36%)。 
-                            </span>
-                        </p>
-                        <p>
-                            <span class="shen">
-                                费用说明
-                            </span>
-                            <span class="qian">
-                                360天内退团：0.5%；360天后退团：0%。2014年12月11日前购买的团团赚债权，退团费率参照<a href="">聚雪球聚保宝投资协议（范本）</a>
-                            </span>
-                        </p>
+						<?php endforeach;?>
                     </li>
                     <li class="tzjl">
                         <h2><span>流水号</span><span>投资人</span><span>金额（元）</span><span>时间</span></h2>
@@ -178,12 +160,12 @@
                 $('.time-down').count_down(function(obj){
                   
                 },function(obj){
-					if($('.time-down').attr(' data-type') == 2){
-					$('.time-down').html('已售罄！');
+					if($('.time-down').attr('data-type') == 2){
+                    $('.time-down').html('已售罄');
 					return;
 					}
-                    if($('.time-down').attr('data-start-time') <= <?php echo time();?> && $('.time-down').attr(' data-type') == 1){
-                    $('.time-down').html('标的已经开始！');
+                    if(($('.time-down').attr('data-start-time') <= <?php echo time();?>) && ($('.time-down').attr('data-type') == 1)){
+                    $('.time-down').html('标的已经开始!');
 					return;
 					}
                 });
@@ -276,7 +258,7 @@ var text ='<p>暂无相关数据</p>';
 							text=text+'<span class="payment_no">'+result.data.data[i].order_code+'</span>';
 							text=text+'<span><font class="name">'+result.data.data[i].user_name.substring(0,1)+"**"+'</font></span>';
 							text=text+'<span class="amount">'+result.data.data[i].amount+'</span>';
-							text=text+'<span class="pay_time">'+new Date(parseInt(result.data.data[i].purchase_time) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ")+'</span>';
+							text=text+'<span class="pay_time">'+unixtime_style(result.data.data[i].purchase_time,'Y-m-d h:i:s')+'</span>';
 							text=text+'</p>';	
 						}
 						$('#invest-lists').html(text);
@@ -297,7 +279,7 @@ $(".invest_home_paging").createPage({
 							text=text+'<span class="payment_no">'+result.data.data[i].order_code+'</span>';
 							text=text+'<span><font class="name">'+result.data.data[i].user_name.substring(0,1)+"**"+'</font></span>';
 							text=text+'<span class="amount">'+result.data.data[i].amount+'</span>';
-							text=text+'<span class="pay_time">'+new Date(parseInt(result.data.data[i].purchase_time) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ")+'</span>';
+							text=text+'<span class="pay_time">'+unixtime_style(result.data.data[i].purchase_time,'Y-m-d h:i:s')+'</span>';
 							text=text+'</p>';	
 						}
 						$('#invest-lists').html(text);

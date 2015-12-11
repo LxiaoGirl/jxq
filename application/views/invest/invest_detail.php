@@ -41,7 +41,7 @@
                         </li>
                         <li>
                             <p><i><img src="../../../../assets/images/invest/tzxx_2.png" alt=""></i>借款期限</p>
-                            <p class="qdcn"><?php echo $project['months']; ?><font>个月</font></p>
+                            <p class="qdcn"><?php echo $project['months']==0.9?$project['months']*30:$project['months']; ?><font><?php echo $project['months']==0.9?'天':'个月'; ?></font></p>
                         </li>
                         <li>
                             <p><i><img src="../../../../assets/images/invest/tzxx_3.png" alt=""></i>项目金额(元)</p>
@@ -103,7 +103,7 @@
                         <div class="invest_zjmm_pop">
                             <div class="invest_zjmm_pop_body">
                             <div class="title">
-                                <span>输入资金密码</span><font class="fr">×</font>
+                                <span>输入资金密码</span><font class="fr close">×</font>
                             </div>
                             <div class="popbody tc">
                                 <input type="password" value="" class="security" placeholder="请输入资金密码"/>
@@ -233,6 +233,10 @@
                                 }else{
                                     invest_submit();
                                 }
+                            });
+                            $('.invest_zjmm_pop .close').bind('click',function(){
+                                $('.black_bg').fadeOut();
+                                $('.invest_zjmm_pop').fadeOut();
                             });
                         });
                     }

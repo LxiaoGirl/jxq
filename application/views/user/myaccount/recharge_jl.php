@@ -11,7 +11,7 @@
     <!--head end-->
     <!--user start-->
 	<div class="user_nav row">
-        <a href="">首页</a>&nbsp;>&nbsp;<a href="">我的账户</a>&nbsp;>&nbsp;<a href="">充值</a>
+        <a href="/index.php">首页</a>&nbsp;>&nbsp;<a href="/index.php/user/user/account_home">我的账户</a>&nbsp;>&nbsp;<a href="javascript:void(0);">充值记录</a>
     </div>
     <div class="row user">
         <!--左侧通用-->

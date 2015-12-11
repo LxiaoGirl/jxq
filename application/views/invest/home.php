@@ -73,19 +73,33 @@
                         <div class="product_of_invest_home product_of_invest_home_1">
                             <div class="fl <?php echo jbb_icon($v['type_code'])?> zi">
                                 <span> <?php echo jbb_word($v['type_code'])?> </span>
-                                <p>聚益盈</p>
+                                <p><?php echo $v['type_name']?></p>
                             </div>
-                            <div class="lv fl">
-                                <p class="yqb">预计年化收益率</p>
-                                <?php echo $v['rate'];?><font>%</font>
-                            </div>
-                            <div class="qtje fl">
-                                <p class="yqb">起投金额</p>
-                                <?php echo $v['start_amount']?>元
-                            </div>
-                            <div class="bzfs fl">
-                                <p class="yqb">保障方式</p>
-                                本息保障
+							
+                            <div class="fl">
+							<?php if( $v['type']==1 && ($v['start_day']+3600*$v['start_time'])>time()):?>
+							<div class="time-down " data-start-time="<?php echo ($v['start_day']+3600*$v['start_time']); ?>" data-type="<?php echo $v['type'];?>"  style="visibility: hidden;">
+                                <div class="hjdjs">还有<font class="d">00</font>天<font class="h">00</font>:<font class="m">00</font>:<font class="s">00</font><span class="js_flag">开始</span></div>
+								</div>
+								<?php elseif($v['type']==1 && ($v['start_day']+3600*$v['start_time'])<=time()):?>
+									<div class="hjdjs">已开始</div>
+								<?php else:?>
+									<div class="hjdjs">已售罄</div>
+								<?php endif;?>
+                                <div>
+                                    <div class="lv fl">
+                                        <p class="yqb">预计年化收益率</p>
+                                        <?php echo $v['view_rate'];?><font>%</font>
+                                    </div>
+                                    <div class="qtje fl">
+                                        <p class="yqb">起投金额</p>
+                                        <?php echo $v['start_amount']?>元
+                                    </div>
+                                    <div class="bzfs fl">
+                                        <p class="yqb">保障方式</p>
+                                        本息保障
+                                    </div>
+                                </div>
                             </div>
                             <div class="fr jbb_an">
                                 <p>累计投资：<?php echo round($v['jbb_all_invest']/1000,2)?>万元</p>
@@ -146,8 +160,8 @@
                                             <div class="product_of_invest_num_bot tc col_blu"><?php echo $v['rate']; ?><i>%</i></div>
                                         </li>
                                         <li>
-                                            <div class="product_of_invest_home_num_bot tc">借款期限(月)</div>
-                                            <div class="product_of_invest_num_bot tc"><?php echo $v['months']; ?></div>
+                                            <div class="product_of_invest_home_num_bot tc">借款期限(<?php echo $v['months']==0.9?'天':'月'; ?>)</div>
+                                            <div class="product_of_invest_num_bot tc"><?php echo $v['months']==0.9?$v['months']*30:$v['months']; ?></div>
                                         </li>
                                         <li>
                                             <div class="product_of_invest_home_num_bot tc">借款总额(万元)</div>
@@ -199,8 +213,7 @@
                                 </div>
                             </div>
                         </div>
-                             <!-- <?php if($v['active'] == 1):  ?><div class="corner"></div><?php endif;  ?>-->
-                            <?php endforeach;else: ?>
+	                    <?php endforeach;else: ?>
 	                    <div class="product_of_invest_home"><p style="text-align: center;">暂无相关信息</p></div>
 	                    <?php endif; ?>
 							<?php echo $links; ?>
@@ -231,7 +244,17 @@
 <?php $this->load->view('common/footer'); ?>
 
 <script type="text/javascript">
-    seajs.use(['jquery','sys'],function(){
+    seajs.use(['jquery','sys','wsb_sys'],function(){
+		if($('.time-down').length){
+                $('.time-down').count_down(function(obj){
+                  
+                },function(obj){
+					
+                });
+            }
+			$('#invest-button').bind('click',function(){
+				invest();
+				});
         $(function(){
             each_html('announcement-top','/index.php/about/ajax_get_news',{'page_id':1,'page_size':5,'category':'<?php echo item('announcement_home_top_cat_id')?item('announcement_home_top_cat_id'):0; ?>'},'',true,function(obj,v){
                 obj.find('a').attr('href','<?php echo site_url('about/news_detail?id='); ?>'+ v.id);

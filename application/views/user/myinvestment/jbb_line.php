@@ -10,7 +10,7 @@
     <!--head end-->
     <!--user start-->
     <div class="user_nav row">
-        <a href="">首页</a>&nbsp;>&nbsp;<a href="">我的投资</a>&nbsp;>&nbsp;<a href="">聚保宝</a>
+        <a href="/index.php">首页</a>&nbsp;>&nbsp;<a href="/index.php/user/user/jbb">我的投资</a>&nbsp;>&nbsp;<a href="javascript:void(0);">聚保宝-排队信息</a>
     </div>
     <div class="row user">
         <!--左侧通用-->
@@ -33,7 +33,7 @@
                     <p class="but"><button class="qd" value="">确定</button><button class="qx close">取消</button></p>
                 </div>
             <!--弹出部分-->
-            <p class="jbb_tit">可领取的收益（元）<button class="tq">提取</button><a href="<?php echo site_url('invest/index?c=5');?>"><button class="qgm">去购买</button></a><font>我可以中途撤资吗？</font></p>
+            <p class="jbb_tit">可领取的收益（元）<button class="tq">提取</button><a href="<?php echo site_url('invest/index?c=4');?>"><button class="qgm">去购买</button></a><font>我可以中途撤资吗？</font></p>
            <p class="zsy"><?php echo round($jbb_receive['data']['receive'],2)?></p>
             <ul class="ul1">
                 <li>

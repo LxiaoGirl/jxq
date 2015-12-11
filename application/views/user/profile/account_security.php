@@ -10,7 +10,7 @@
     <!--head end-->
     <!--user start-->
     <div class="user_nav row">
-        <a href="">首页</a>&nbsp;>&nbsp;<a href="">账户设置</a>&nbsp;>&nbsp;<a href="">个人资料</a>
+        <a href="/index.php">首页</a>&nbsp;>&nbsp;<a href="/index.php/user/user/account_information">账户设置</a>&nbsp;>&nbsp;<a href="javascript:void(0);">基本信息-账号安全</a>
     </div>
     <div class="row user">
         <!--左侧通用-->

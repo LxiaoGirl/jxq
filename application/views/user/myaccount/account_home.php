@@ -14,7 +14,7 @@
     <!--head end-->
     <!--user start-->
     <div class="user_nav row">
-        <a href="">首页</a>&nbsp;>&nbsp;<a href="">我的账户</a>&nbsp;>&nbsp;<a href="">资金总览</a>
+        <a href="/index.php">首页</a>&nbsp;>&nbsp;<a href="javascript:void(0);">我的账户</a>&nbsp;>&nbsp;<a href="javascript:void(0);">资金总览</a>
     </div>
     <div class="row user">
         <!--左侧通用-->
@@ -29,7 +29,7 @@
                             账户总资产（元）
                         </div>
                         <div class="height_half col_333 font_size_40 font_w_bold line_hei80 text_in">
-                            <?php echo $data['property_total'];?>
+                            <?php echo rate_format(price_format($data['property_total'],2,false));?>
                         </div>
                     </div>
                     <div class="center">
@@ -61,36 +61,36 @@
                     <div class="precent_q">
                         <div class="precent_ec" id="acc_mian_1"></div>
                         <div class="top">可用余额（元）</div>
-                        <div class="botton color_3cb5ec"><?php echo $data['balance']?></div>
+                        <div class="botton color_3cb5ec"><?php echo rate_format(price_format($data['balance'],2,false));?></div>
                         <div class="pre_sz"><?php echo percent($data['property_total'],$data['balance']);?>%</div>
                     </div>
                     <div class="jiah">+</div>
                     <div class="precent_q">
                         <div class="precent_ec" id="acc_mian_2"></div>
                         <div class="top">待收本金（元）</div>
-                        <div class="botton"><?php echo $data['wait_principal_total']?></div>
+                        <div class="botton"><?php echo rate_format(price_format($data['wait_principal_total'],2,false));?></div>
                         <div class="pre_sz"><?php echo percent($data['property_total'],$data['wait_principal_total']);?>%</div>
                     </div>
                     <div class="jiah">+</div>
                     <div class="precent_q">
                         <div class="precent_ec" id="acc_mian_3"></div>
                         <div class="top">冻结金额（元）</div>
-                        <div class="botton"><?php echo $data['invest_freeze_total']+$data['transfer_freeze_total']?></div>
+                        <div class="botton"><?php echo rate_format(price_format($data['invest_freeze_total']+$data['transfer_freeze_total'],2,false));?></div>
                         <div class="pre_sz"><?php echo percent($data['property_total'],$data['invest_freeze_total']+$data['transfer_freeze_total']); ?>%</div>
                     </div>
                 </div>
                 <div class="dssy">
                     <div class="wid33">
                         <div class="top">累计投资（元）</div>
-                        <div class="botton"><?php echo $data['invest_total']?></div>
+                        <div class="botton"><?php echo rate_format(price_format($data['invest_total'],2,false));?></div>
                     </div>
                     <div class="wid33">
                         <div class="top">累计收益（元）</div>
-                        <div class="botton"><?php echo $data['receive_interest_total']?></div>
+                        <div class="botton"><?php echo rate_format(price_format($data['receive_interest_total'],2,false));?></div>
                     </div>
                     <div class="wid33">
                         <div class="top">预计收益（元）</div>
-                        <div class="botton"><?php echo $data['wait_interest_total']?></div>
+                        <div class="botton"><?php echo rate_format(price_format($data['wait_interest_total'],2,false));?></div>
                     </div>
                 </div>
                 <p class="line_h86">投资收益<a href="<?php echo site_url('user/user/transaction_note');?>">查看投标记录</a></p>

@@ -15,7 +15,7 @@
     <!--head end-->
     <!--user start-->
     <div class="user_nav row">
-        <a href="">首页</a>&nbsp;>&nbsp;<a href="">我的投资</a>&nbsp;>&nbsp;<a href="">投资记录</a>
+        <a href="/index.php">首页</a>&nbsp;>&nbsp;<a href="/index.php/user/user/jbb">我的投资</a>&nbsp;>&nbsp;<a href="javascript:void(0);">投资记录</a>
     </div>
     <div class="row user">
         <!--左侧通用-->
@@ -26,7 +26,7 @@
             <div class="tra_note">
                 <ul class="tab_title tab_title_small">
                     <li <?php if($type == ''): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?start_time='.$start_time.'&end_time='.$end_time); ?>'">全部<font class="fr">|</font></li>
-                    <li <?php if($type == '4'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=4&start_time='.$start_time.'&end_time='.$end_time); ?>'">回款中<font class="fr">|</font></li>
+                    <li <?php if($type == '4'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=4&start_time='.$start_time.'&end_time='.$end_time); ?>'">还款中<font class="fr">|</font></li>
                     <li <?php if($type == '7'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=7&start_time='.$start_time.'&end_time='.$end_time); ?>'">回款完成<font class="fr">|</font></li>
                     <li <?php if($type == '2'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=2&start_time='.$start_time.'&end_time='.$end_time); ?>'">热售中<font class="fr">|</font></li>
                     <li <?php if($type == '3'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=3&start_time='.$start_time.'&end_time='.$end_time); ?>'">复审中</li>

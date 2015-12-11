@@ -10,7 +10,7 @@
     <!--head end-->
     <!--user start-->
     <div class="user_nav row">
-        <a href="">首页</a>&nbsp;>&nbsp;<a href="">我的投资</a>&nbsp;>&nbsp;<a href="">聚保宝</a>
+		<a href="/index.php">首页</a>&nbsp;>&nbsp;<a href="javascript:void(0);">我的投资</a>&nbsp;>&nbsp;<a href="javascript:void(0);">聚保宝</a>
     </div>
     <div class="row user">
         <!--左侧通用-->
@@ -31,8 +31,8 @@
                     <p class="but"><button class="qd" value=''>确定</button><button class="qx close">取消</button></p>
                 </div>
                 <div class="pop pop_2">
-                    <p class="tit">提取收益<font class="fr close">×</font></p>
-                    <p>您将提取<span id="amount">0</span>元的收益</p>
+                    <p class="tit">提取<span id="zong"></span>收益<font class="fr close">×</font></p>
+                    <p>您将提取<span id="amount">0</span>元的<span id="zong_1"></span>收益</p>
 					<p>服务费：<span id="service_out">0元</span></p>
                     <p class="blu">提取收益后复利天数重新开始计算</p>
                     <p class="but"><button class="qd" value="">确定</button><button class="qx close">取消</button></p>
@@ -42,7 +42,7 @@
                 </div>
 				
             <!--弹出部分-->
-            <p class="jbb_tit">可领取的收益（元）<button class="tq">提取</button><a href="<?php echo site_url('invest/index?c=5');?>"><button class="qgm">去购买</button></a><font>我可以中途撤资吗？</font></p>
+            <p class="jbb_tit">可领取的总收益（元）<button class="tq" value="总">提取</button><a href="<?php echo site_url('invest/index?c=4');?>"><button class="qgm">去购买</button></a><font>我可以中途撤资吗？</font></p>
             <p class="zsy"><?php echo round($jbb_receive['data']['receive'],2)?></p>
             <ul class="ul1">
                 <li>
@@ -73,26 +73,26 @@
                 <li class="li">
                     <div class="fl yfw"><span><?php echo  jbb_word($v['product_type'])?></span><p><?php echo $v['type_name']?></p></div>
                     <div class="fr">
-                        <p class="dd"><span>订单编号：<?php echo $v['order_code']?></span><span>有效期限：<?php echo ($v['allawexit']==1)?'可长期持有':my_date(($v['interest_day']+$v['time_limit']*3600*24),2)?><em>?</em></span><button ><?php echo (ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)<$v['closeday'])?($v['closeday']-ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)).'天后可申请退出':'<button class="sqtc" id=" '.$v['id'].'" amount="'.round($v['amount'],2).'">申请退出</button>'?></button><span class="fr">计息日：<?php echo my_date($v['interest_day'],2);?></span></p>
+                        <p class="dd"><span>订单编号：<?php echo $v['order_code']?></span><span>有效期限：<?php echo ($v['allawexit']==1)?'可长期持有':my_date(($v['interest_day']+$v['time_limit']*3600*24),2)?><em>?</em></span><button ><?php echo (ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)<$v['closeday'])?($v['closeday']-ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)).'天后可申请退出'.'(已持有'.ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24).'天)':'<button class="sqtc" id=" '.$v['id'].'" amount="'.round($v['amount'],2).'">申请退出</button>'?></button><span class="fr">计息日：<?php echo my_date($v['interest_day'],2);?></span></p>
                         <ul class="ul4">
                             <li>
                                 <p>加入金额<em>?</em></p>
                                 <p class="sz"><?php echo round($v['amount'],2)?><font>元</font></p>
                             </li>
                             <li>
-                                <p>预计年化<em>?</em></p>
-                                <p class="sz"><?php echo round($v['expected_rate'],2)?><font>%</font></p>
+                                <p><?php if($v['isrepeat']==0):?>年化<?php else:?>预计年化<?php endif;?><em>?</em></p>
+                                <p class="sz"><?php if($v['isrepeat']==0): echo $v['rate']?><?php else:?><?php echo round($v['expected_rate'],2)?><?php endif;?><font>%</font></p>
                             </li>
                             <li>
-                                <p>复利天数<em>?</em></p>
-                                <p class="sz"><?php  echo ($v['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)>$v['closeday'])?($v['closeday']-$v['receive_days']):ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days']?><font>天</font></p>
+                                <p><?php if($v['isrepeat']==0):?>产生收益<?php else:?>复利天数<?php endif;?><em>?</em></p>
+                                <p class="sz"><?php   $day =(ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)>$v['closeday'])?$v['closeday']:ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24) ; if($v['isrepeat']==0): echo round(jbb_no_product_amount($day,$v['rate'],$v['amount']),2).'<font>元</font>';else: echo ($v['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)>$v['closeday'])?($v['closeday']-$v['receive_days']):ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'].'<font>天</font>';endif;?></p>
                             </li>
                             <li>
-                                <p>产品收益<em>?</em></p>
-                                <p class="sz"><?php	$days = ($v['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)>$v['closeday'])?($v['closeday']-$v['receive_days']):ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days']; echo round(jbb_product_amount($days,$v['rate'],$v['amount']),2);?><font>元</font></p>
+                                <p><?php if($v['isrepeat']==0):?>已领取收益<?php else:?>产品收益<?php endif;?><em>?</em></p>
+                                <p class="sz"><?php	$days = ($v['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)>$v['closeday'])?($v['closeday']-$v['receive_days']):ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days']; if($v['isrepeat']==0): echo $v['gain']; else:echo round(jbb_product_amount($days,$v['rate'],$v['amount']),2);endif;?><font>元</font></p>
                             </li>
                             <li class="tr">
-                                <button class="tq" id="<?php echo $v['id']?>">提取收益</button>
+                                <?php if($v['isrepeat']==0 && (ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'])<$v['intervaldays']):?><?php echo ($v['intervaldays']-(ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days']))?>天后可提取收益<?php else:?><button class="tq" font="<?php echo $v['isrepeat']?>" id="<?php echo $v['id']?>">提取收益</button><?php endif;?>
                             </li>
                         </ul>
                     </div>
@@ -120,7 +120,9 @@
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){
         $('.user_right').find('.tq').click(function () {
-			var id = this.id;			
+			var id = this.id;		
+			var value = $(this).val();
+			var font = $(this).attr('font');
 			$.post('/index.php/user/user/jbb_interest?id='+id,{},function(result){
 						result = JSON.parse(result);
 						var service = '';
@@ -131,6 +133,15 @@
 							}else{
 								service = '免费';
 							}	
+							if(font==1){
+								$('.blu').html('提取收益后复利天数重新开始计算');
+							}else if(font==0){
+								$('.blu').html('<a href="<?php echo site_url('invest/detail_jbb?type_code=JBB03')?>" target="_blank">查看收益计算规则</a>');	
+							}else{
+								$('.blu').html('提取收益后复利天数重新开始计算');
+							}
+							$('#zong').html(value);	
+							$('#zong_1').html(value);
 							$('#service_out').html(service);				
 							$('.pop_2').find('.qd').val(id);
 							$('.pop_bj').fadeIn();
