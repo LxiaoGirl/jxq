@@ -513,7 +513,7 @@ $html .= <<<EOD
 </p>
 <p>
 EOD;
-
+			$content3 = '';
 			// Print text using writeHTMLCell()
 			$this->tcpdf2->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);	
 			$this->tcpdf2->MultiCell(0, 0, $content3, 0, 'l', false, 1, '', '',  true, 0, true, true, 0, 'T', false) ;		

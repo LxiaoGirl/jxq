@@ -253,6 +253,7 @@ class Cash_model extends CI_Model{
                 'where'  =>array(
                     'uid'=>$uid
                 ),
+                'where_not_in'=>array('field'=>'type','value'=>array(3,4)),
                 'order_by'=>'id desc'
             );
 
@@ -1074,7 +1075,7 @@ class Cash_model extends CI_Model{
 		$data = array('status'=>'10001','msg'=>'数据有误，请稍候尝试!');
         $temp = array();
 		$temp['where'] = array(
-                'select' =>join_field('*',self::payment_jbb).','.join_field('rate',self::jbb_dtl).','.join_field('closeday',self::jbb).','.join_field('allawexit',self::jbb).','.join_field('service_charge',self::jbb),
+                'select' =>join_field('*',self::payment_jbb).','.join_field('rate',self::jbb_dtl).','.join_field('closeday',self::jbb).','.join_field('allawexit',self::jbb).','.join_field('intervaldays',self::jbb).','.join_field('isrepeat',self::jbb).','.join_field('service_charge',self::jbb),
                 'where'  =>array(
                     join_field('uid',self::payment_jbb)=>$uid,
 					join_field('status',self::payment_jbb)=>1
@@ -1102,10 +1103,22 @@ class Cash_model extends CI_Model{
 		$receive=0;
 		$service = 0;
 		foreach($temp['data'] as $k => $v){		
-			$days=($v['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)>$v['closeday'])?($v['closeday']-$v['receive_days']):ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'];
+			
 			$rate=$v['rate'];
 			$amount=$v['amount'];			
+			if($v['isrepeat']==0){
+			if((ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'])>=$v['intervaldays']&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)<=$v['closeday']){
+				$days=floor((ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'])/$v['intervaldays'])*$v['intervaldays'];
+			}elseif((ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'])>$v['intervaldays']&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)>$v['closeday']){
+				$days=$v['closeday']-$v['receive_days'];
+			}else{
+				$days=0;	
+			}
+			$receive=$receive+round(jbb_no_product_amount($days,$rate,$amount),2);
+			}else{
+			$days=($v['isrepeat']==1&&$v['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)>$v['closeday'])?($v['closeday']-$v['receive_days']):ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'];
 			$receive=$receive+round(jbb_product_amount($days,$rate,$amount),2);
+			}
 			$service_charge = $v['service_charge'];
 			$service=$service+round($receive*$service_charge,2);
 		}
@@ -1188,7 +1201,7 @@ class Cash_model extends CI_Model{
 		$data = array('status'=>'10001','msg'=>'数据有误，请稍候尝试!');
         $temp = array();
 		$temp['where'] = array(
-                'select' =>join_field('*',self::payment_jbb).','.join_field('rate',self::jbb_dtl).','.join_field('closeday',self::jbb).','.join_field('allawexit',self::jbb).','.join_field('service_charge',self::jbb),
+                'select' =>join_field('*',self::payment_jbb).','.join_field('rate',self::jbb_dtl).','.join_field('closeday',self::jbb).','.join_field('allawexit',self::jbb).','.join_field('intervaldays',self::jbb).','.join_field('isrepeat',self::jbb).','.join_field('service_charge',self::jbb),
                 'where'  =>array(
                     join_field('uid',self::payment_jbb)=>$uid,
 					join_field('status',self::payment_jbb)=>1
@@ -1218,11 +1231,24 @@ class Cash_model extends CI_Model{
 		$service=0;
 		$services = 0;
 		foreach($temp['data'] as $k => $v){		
-			$days=($v['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)>$v['closeday'])?($v['closeday']-$v['receive_days']):ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'];
+			
 			$rate=$v['rate'];
-			$amount=$v['amount'];			
+			$amount=$v['amount'];	
+			if($v['isrepeat']==0){
+			if((ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'])>=$v['intervaldays']&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)<=$v['closeday']){
+				$days=floor((ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'])/$v['intervaldays'])*$v['intervaldays'];
+			}elseif((ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'])>$v['intervaldays']&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)>$v['closeday']){
+				$days=$v['closeday']-$v['receive_days'];
+			}else{
+				$days=0;	
+			}
+			$receive=round(jbb_no_product_amount($days,$rate,$amount),2);
+			$receives=$receives+round(jbb_product_amount($days,$rate,$amount),2);//得到总利息
+			}else{
+			$days=($v['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)>$v['closeday'])?($v['closeday']-$v['receive_days']):ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'];
 			$receive=round(jbb_product_amount($days,$rate,$amount),2);//得到利息
-			$receives=$receives+round(jbb_product_amount($days,$rate,$amount),2);//得到利息
+			$receives=$receives+round(jbb_product_amount($days,$rate,$amount),2);//得到总利息
+			}		
 			$balance = $this->get_user_balance($uid);
 			$balance = $balance['data']['balance'];
 			$service = $v['service_charge'];

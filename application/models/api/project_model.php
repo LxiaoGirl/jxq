@@ -727,11 +727,11 @@ class Project_model extends CI_Model{
 				// 添加资金记录
 				$temp['flow'] = array(
 					'uid'      => $uid,
-					'type'     => 3,
+					'type'     => 4,
 					'amount'   => $amount,
 					'balance'  => round($balance - $amount,2),
 					'source'   => $temp['payment']['payment_no'],
-					'remarks'  => '',
+					'remarks'  => '投资冻结',
 					'dateline' => time()
 				);
 
