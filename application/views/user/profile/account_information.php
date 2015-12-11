@@ -220,7 +220,7 @@
 
                                 </div>
                             </div>
-                            <button type="button" class="user_data_pop_but sub " id="lcs_sub">提交</button>
+                            <button type="button" class="user_data_pop_but sub ajax-submit-button" data-loading-msg="正在处理..." id="lcs_sub">提交</button>
                         </div>
                     </div>
                     <!--添加公司邀请码-->
@@ -524,7 +524,7 @@
             }
             $.post('/index.php/user/user/lcs_invite_code',{code:code},function(result){
                 if(result.status == '10000'){
-                    $('.lcs-set-name').html(code);
+                    $('.lcs-set-name').html(result.data.lcs_code);
                     $('.lcs-set-flag').html('已设置');
                     $(".black_bg").fadeOut();
                     $('.xglcs_1').fadeOut();

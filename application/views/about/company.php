@@ -25,7 +25,7 @@
 					<?php if($data):$count_data = count($data);foreach($data as $k=>$v): ?>
 						<?php if($k+1 == 1 || (($k+1)>1 && ($k+1)%5 == 1)): ?><LI> <?php endif; ?>
 						<div class="about_bigt<?php echo (($k+1)%5 == 0)?5:($k+1)%5; ?>  <?php echo (in_array(($k+1)%5,array(1,2)))?'big_top':'big_bot'; ?> fl"
-							 onclick="window.location.href='<?php echo site_url('about/news_detail?id='.$v['id']) ?>'">
+							 onclick="window.location.href='<?php echo $v['link_url']?$v['link_url']:'javascript:void(0);'; ?>'" style="cursor: pointer;">
 <!--							<p class="about_p1">--><?php //echo date('Y.m.d',$v['update_time']); ?><!--</p>-->
 							<p class="about_p1"><?php echo $v['title']; ?></p>
 							<p class="about_p2"><?php echo $v['description']; ?></p>

@@ -47,7 +47,7 @@ $config['sms_space_time']                   = 90; //短信发送间隔时间
 
 
 $config['announcement_home_top_cat_id']     = 43; //主页头部公告新闻分类id
-$config['announcement_home_bottom_cat_id']  = 43; //主页底部公告新闻分类id
+$config['announcement_home_bottom_cat_id']  = 10; //主页底部公告新闻分类id
 $config['announcement_news_cat_id']         = 43; //公司动态详情页公告新闻分类id
 $config['banner_home_cat_id']               = 44; //主页banner新闻分类id
 $config['about_major_event_cat_id']         = 42; //关于我们之公司大事件新闻分类id

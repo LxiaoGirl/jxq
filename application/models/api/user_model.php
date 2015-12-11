@@ -555,6 +555,12 @@ class User_model extends CI_Model{
 	}
 
 
+	/**
+	 * 公司邀请码绑定
+	 * @param int $uid
+	 * @param string $code
+	 * @return array
+	 */
 	public function company_invite_code($uid=0,$code=''){
 		$temp = array();
 		$data = array('name'=>'绑定公司邀请码','status' => '10001', 'msg' => '你提交的公司邀请码不存在,请重试！', 'data' => array());
@@ -619,6 +625,13 @@ class User_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
+
+	/**
+	 * 理财师邀请码绑定
+	 * @param int $uid
+	 * @param string $code
+	 * @return array
+	 */
 	public function lcs_invite_code($uid=0,$code=''){
 		$temp = array();
 		$data = array('name'=>'绑定理财师邀请码','status' => '10001', 'msg' => '你提交的理财师邀请码不存在,请重试！', 'data' => array());
@@ -639,7 +652,28 @@ class User_model extends CI_Model{
 				return $data;
 			}
 			//验证理财师邀请码
-			$temp['inviter_uid'] = $this->_check_inviter($code);
+			if($this->_is_mobile($code)){
+				$temp['inviter_select_field'] = 'mobile';
+			}else{
+				$temp['inviter_select_field'] = 'inviter_no';
+			}
+			$temp['inviter_info'] = $this->c->get_row(self::user,array('select'=>'uid,inviter_no','where'=>array($temp['inviter_select_field']=>$code)));
+			if($temp['inviter_info']){
+				//如果是电话查询 而inviter_no 不存在 这返回
+				if($temp['inviter_select_field'] == 'mobile' && !$temp['inviter_info']['inviter_no']){
+					$data['msg'] = '该用户不是理财师!';
+					return $data;
+				}
+				if($temp['inviter_info']['uid'] == $uid){
+					$data['msg'] = '不能添加自己为自己的理财师!';
+					return $data;
+				}
+				$temp['inviter_uid'] = $temp['inviter_info']['uid'];
+				$code = $temp['inviter_info']['inviter_no'];
+			}else{
+				$temp['inviter_uid'] = 0;
+			}
+
 			if($temp['inviter_uid']){
 					$temp['update_data'] = array(
 							'inviter'=>$temp['inviter_uid']
