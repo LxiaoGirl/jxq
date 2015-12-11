@@ -14,7 +14,7 @@
 			<div class="fo1_l fl clearfix">
 				<dl class="fo_dl">
 					<dt>我的钱包</dt>
-					<a href="<?php echo site_url('about/help_tail?cat_id=30') ?>"><dd>如何注册</dd></a>
+					<a href="#"><dd>如何注册</dd></a>
 					<a href="#"><dd>修改或找回密码</dd></a>
 					<a href="#"><dd>个人资料修改</dd></a>
 					<a href="#"><dd>充值与提现</dd></a>
@@ -58,11 +58,11 @@
 			<p class="fo-p1 tc"><span>Copyright © 2009-2015 ZGWJJF 沈阳网加互联网金融服务有限公司</span>   <span>服务热线：4007 918 333（个人/企业）</span>服务时间：9:00-21:00</p>
 			<p class="fo-p2 tc">友情链接：<a href="http://ln.qq.com/" target="_new">腾讯·大辽网</a> ·<a href="http://www.ce.cn/" target="_new"> 中国经济网 </a>·<a href="http://www.163.com/" target="_new"> 网易</a> ·<a href="http://cn.chinadaily.com.cn/" target="_new"> 中国日报网</a> · <a href="http://www.wangdaizhijia.com/" target="_new">网贷之家</a> ·<a href="http://www.eastmoney.com/" target="_new"> 东方财富网</a> ·<a href="http://www.eeo.com.cn/" target="_new"> 经济观察网</a></p>
 			<p class="fo-p3 tc">
-                <a href=""><img class="a_q" src="../../../../assets/images/common/footer1.jpg"><img class="a_f" src="../../../../assets/images/common/footer1_1.png"></a>
-				<a href=""><img class="a_q" src="../../../../assets/images/common/footer2.jpg"><img class="a_f" src="../../../../assets/images/common/footer2_1.png"></a>
-				<a href=""><img class="a_q" src="../../../../assets/images/common/footer3.jpg"><img class="a_f" src="../../../../assets/images/common/footer3_1.png"></a>
-				<a href=""><img class="a_q" src="../../../../assets/images/common/footer4.jpg" ><img class="a_f" src="../../../../assets/images/common/footer4_1.png"></a>
-                <a href=""><img class="a_q" src="../../../../assets/images/common/footer5.png" ><img class="a_f" src="../../../../assets/images/common/footer5_1.png"></a>
+                <a href="javascript:void(0);" target = "_blank"><img class="a_q" src="../../../../assets/images/common/footer1.jpg"><img class="a_f" src="../../../../assets/images/common/footer1_1.png"></a>
+				<a href="http://www.sygsj.gov.cn/index.asp" target = "_blank"><img class="a_q" src="../../../../assets/images/common/footer2.jpg"><img class="a_f" src="../../../../assets/images/common/footer2_1.png"></a>
+				<a href="http://www.miitbeian.gov.cn" target = "_blank"><img class="a_q" src="../../../../assets/images/common/footer3.jpg"><img class="a_f" src="../../../../assets/images/common/footer3_1.png"></a>
+				<a href="https://trustsealinfo.websecurity.norton.com/splash?form_file=fdf/splash.fdf&dn=www.zgwjjf.com&lang=zh_cn" target = "_blank"><img class="a_q" src="../../../../assets/images/common/footer4.jpg" ><img class="a_f" src="../../../../assets/images/common/footer4_1.png"></a>
+                <a href="http://www.itrust.org.cn/home/index/itrust_certifi/wm/1313278548.html" target = "_blank"><img class="a_q" src="../../../../assets/images/common/footer5.png" ><img class="a_f" src="../../../../assets/images/common/footer5_1.png"></a>
             </p>
 		</div>
 	</div>
@@ -97,7 +97,10 @@ $(document).ready(function(){
 		nav_pop($(".nav_have_son"));
 		
 		$(function(){
-			ajax_loading(1,true,1);//ajax提交 禁用处理
+			var ajax_loading_obj = new  ajax_loading();
+			ajax_loading_obj.init(1,true,1);//ajax提交 禁用处理
+			$("."+ajax_loading_obj.get_class_flag()).bind('mouseover',function(){ajax_loading_obj.set_src($(this));});
+
 			//覆盖登录 处理未读消息
 			/*if('<?php echo profile('uid'); ?>'){
 				$.ajax({

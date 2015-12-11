@@ -345,7 +345,7 @@ class Cash_model extends CI_Model{
                 'select'=>'SUM(amount)',
                 'where_in'=>array(
                     'field'=>'type',
-                    'value'=>array(1,4,7)
+                    'value'=>array(1,7)//array(1,4,7)
                 )
             );
             //验证起始时间
@@ -356,7 +356,8 @@ class Cash_model extends CI_Model{
                 $temp['where']['where']['dateline <=']=$end_time;
             }
             $data['data']['income_total'] = (float)$this->c->get_one(self::cash,$temp['where']);
-            $temp['where']['where_not_in'] = $temp['where']['where_in'];
+//            $temp['where']['where_not_in'] = $temp['where']['where_in'];
+            $temp['where']['where_not_in'] = array(1,3,4,7);
             unset($temp['where']['where_in']);
             $data['data']['pay_total'] = (float)$this->c->get_one(self::cash,$temp['where']);
             $data['status'] = '10000';
