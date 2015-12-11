@@ -52,14 +52,10 @@
                             </div>
                         </div>
                         <div class="qx_inp">
-                            <div class="left">输入语音验证码：</div>
+                            <div class="left">输入验证码：</div>
                             <div class="right">
                                 <input class="tx_yzm" type="text" placeholder="输入验证码" / >
                                 <input class="hqyzm sms" type="button" value="短信验证码" />
-                                <input class="hqyzm voice" type="button"
-                                       data-wait-time="<?php echo item("sms_space_time")?item("sms_space_time"):60; ?>"
-                                       data-last-time="<?php echo profile("voice_last_send_time")?profile("voice_last_send_time"):0; ?>"
-                                       value="语音验证码" />
                                 <div class="tip_qx_1"></div>
                             </div>
                         </div>
@@ -95,19 +91,21 @@
 			$.post('/index.php/user/user/send_sms?action=transfer&mobile='+mobile,{},function(result){
 				result = JSON.parse(result);
 				if(result.status=='10000'){
-				dxdjs($(this));
-				var text = '注意查收来自手机'+mobile.substring(0, 3) + "*****" + mobile.substring(8, 11)+'的短信';
-				$('.tip_qx_1').html(text);
-				}else{	
+                    dxdjs($(this));
+                    var text = '注意查收来自手机'+mobile.substring(0, 3) + "*****" + mobile.substring(8, 11)+'的短信。';
+                    $('.tip_qx_1').html(text);
+                    //附加语音
+                    $('.tip_qx_1').append('短信接不到？<a href="javascript:void(0);" style="text-decoration: underline;" id="transfer-voice" ' +
+                        'data-wait-time="<?php echo item("sms_space_time")?item("sms_space_time"):60; ?>" '+
+                        'data-last-time="<?php echo profile("voice_last_send_time")?profile("voice_last_send_time"):0; ?>">试试语音验证码</a>');
+                    $("#transfer-voice").send_sms('voice',mobile,'transfer');
+				}else{
 					var text = result.msg;
-					$('.tip_qx_1').html(text);		
+					$('.tip_qx_1').html(text);
 				}
-				
+
 			});
             
-        });
-        $(function(){
-            $('.voice').send_sms('voice','<?php echo profile("mobile");?>','transfer',<?php echo item("sms_space_time")?item("sms_space_time"):60; ?>,'<?php echo profile("sms_last_send_time")?time()-profile("sms_last_send_time"):0; ?>');
         });
         var pit_1=0,pit_2=0,pit_3=0;
         $(".but_qx_but").click(function (){		
