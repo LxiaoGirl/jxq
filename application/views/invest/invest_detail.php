@@ -146,7 +146,7 @@
                     <li class="hkjh">
                         <h2><span>期数</span><span>应还利息（元）</span><span>应还本金（元）</span><span>剩余本金（元）</span><span>还款时间</span></h2>
                         <div id="repay-list">
-                            <p><span><span class="repay_index">0</span>期</span><span class="repay_interest">0</span><span class="repay_principal">0</span><span class="repay_surplus_principal">0</span><span class="rapay_time">0000-00-00 00:00:00</span></p>
+                            <p><span><span class="repay_index">0</span>期</span><span class="repay_interest">0</span><span class="repay_principal">0</span><span class="repay_surplus_principal">0</span><span class="repay_date">0000-00-00 00:00:00</span></p>
                         </div>
                     </li>
                 </ul>
@@ -357,29 +357,32 @@
             $('.repay-list').bind('click',function(){
                 if( ! is_click2) {
                     each_html(repay_list, '/index.php/invest/ajax_get_repay_list', {'borrow_no': '<?php echo $project['borrow_no'] ?>'}, {
-                        'rapay_time':function(v){ return unixtime_style(v,'Y-m-d H:i:s')}
+                        'repay_date':function(v){ return unixtime_style(v,'Y-m-d H:i:s')}
                     }, true, function (obj, v) {
-                        if(v.rapay_time == 0)obj.find('.rapay_time').html('-');
-                        if(new_status == '1' || new_status == '2')obj.find('.rapay_time').html('筹集中');
-                        switch (v.status){
-                            case '1':
-                                obj.find('.rapay_time').append('<img class="ywc" src="/assets/images/invest/ywc_c.png">');
-                                break;
-                            case '2'://提前
-                                obj.find('.rapay_time').append('<img class="ywc" src="/assets/images/invest/tq_c.png">');
-                                break;
-                            case '3'://预期
-                                obj.find('.rapay_time').append('<img class="ywc" src="/assets/images/invest/yq_c.png">');
-                                break;
-                            case '4'://预付
-                                obj.find('.rapay_time').append('<img class="ywc" src="/assets/images/invest/yf_c.png">');
-                                break;
-                            default:
-                                if(v.repay_date < unixtime_style(Date.parse(new Date())/1000,'Ymd')){
+                        if(v.repay_date == 0)obj.find('.repay_date').html('-');
+                        if(new_status == '1' || new_status == '2'){
+                            obj.find('.repay_date').html('筹集中');
+                        }else{
+                            switch (v.status){
+                                case '1':
+                                    obj.find('.repay_date').append('<img class="ywc" src="/assets/images/invest/ywc_c.png">');
+                                    break;
+                                case '2'://提前
+                                    obj.find('.repay_date').append('<img class="ywc" src="/assets/images/invest/tq_c.png">');
+                                    break;
+                                case '3'://预期
+                                    obj.find('.repay_date').append('<img class="ywc" src="/assets/images/invest/yq_c.png">');
+                                    break;
+                                case '4'://预付
+                                    obj.find('.repay_date').append('<img class="ywc" src="/assets/images/invest/yf_c.png">');
+                                    break;
+                                default:
+                                if(v.repay_date < Date.parse(new Date())/1000){
                                     //逾期
-                                    obj.find('.rapay_time').append('<img class="ywc" src="/assets/images/invest/yq_c.png">');
+                                    //obj.find('.repay_date').append('<img class="ywc" src="/assets/images/invest/yq_c.png">');
                                 }
-                                break;
+                                    break;
+                            }
                         }
                     },function(){is_click2=true;});
                 }

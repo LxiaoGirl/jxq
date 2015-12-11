@@ -59,6 +59,43 @@
         <!--左侧-->
         <div class="home_left fl">
             <ul>
+                <li>
+                    <h1>12.12活动专享<a href="" class="fr">查看全部项目 > </a></h1>
+                    <div class="home_product_body">
+                        <div class="top">
+                            <div class="icon fl">富</div>
+                            <div class="title fl" style="color:#3cb5ec; margin-left:80px;">聚富盈</div>
+                            <div class="baozhi fl" style="min-width:300px">&nbsp;</div>
+                            <div class="djs djs_2 fl"><font class="endtime">1544887998</font>还有<font class="d">14</font>天<font class="h">14</font>:<font class="m">14</font>:<font class="s">14</font>结束</div>
+                        </div>
+                        <p>本项目为个人贷款产品。购车人与聚雪球核准的合作方签订分期付款购车服务协议，委托分期付款购车。由于银行按揭贷款审批需要一定的时间，聚雪球核准的合作方受购车人委托在按揭贷款额度内向聚雪球申请融资，用于银行按揭贷款放款前的垫资代购。</p>
+                        <ul>
+                            <li>
+                                <div class="product_four_num_top tc">年化收益率</div>
+                                <div class="product_four_num_bot tc col_blu">13.2<i>%</i></div>
+                            </li>
+                            <li>
+                                <div class="product_four_num_top tc">起投金额(元)</div>
+                                <div class="product_four_num_bot tc">100</div>
+                            </li>
+                            <li>
+                                <div class="product_four_num_top tc">还款方式</div>
+                                <div class="product_four_num_bot tc hanzi">一次性本息</div>
+                            </li>
+                        </ul>
+                        <div class="bot">
+                            <div class="fla" style="display:none;">
+                                <p><span class="tl">累计投资：</span><span class="tl">累计赚取：</span><span class="tl">累计入团：</span><span class="tl">分散投资于：</span></p>
+                                <p class="sse"><span class="tl">1000000.00元</span><span class="tl">10000.00元</span><span class="tl">1023人次</span><span class="tl">1023标</span></p>
+                            </div>
+                            <div class="fr tc">
+                                <h5>开放额度：<font>42,470</font>元</h5>
+                                <a href="">马上投资</a>
+                            </div>
+                        </div>
+                        <div class="corner"></div>
+                    </div>
+                </li>
                 <?php if($category): ?>
                 <h1>
                     <ul class="sy_xm_tit">

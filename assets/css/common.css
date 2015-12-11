@@ -316,9 +316,8 @@ body { text-align: left; background-color: #ffffff;font-size: 12px;}
   z-index: 99;
 }
 .mian_nav_li_pop .mnavtop{
-  display:none;
   height:3px;
-  width:100%;
+  width:0%;
   background:#0097db;
 }
 .mnav_pop_nav{

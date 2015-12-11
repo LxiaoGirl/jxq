@@ -410,11 +410,11 @@ class Project_model extends CI_Model{
 						//data和date的k都是从1开始的
 						foreach($temp['plan_data'] as $k=>$v){
 							if($temp['borrow_info']['mode'] == 3 && $k == $temp['plan_data_count']){ //一次性还款付息 最后一期还本金的时间
-								$temp['data']['plan_date']	 = $temp['plan_date'][1];
+								$temp['data']['repay_date']	 = $temp['plan_date'][1];
 								$temp['data']['repay_index'] = $k-1;
 								$temp['data']['repay_type']	 = 2;
 							}elseif($temp['borrow_info']['mode'] == 1 && $k == $temp['plan_data_count']){ //先息后本 最后一起还本金的时间
-								$temp['data']['plan_date']	 = $temp['plan_date'][$k-1];
+								$temp['data']['repay_date']	 = $temp['plan_date'][$k-1];
 								$temp['data']['repay_index'] = $k-1;
 								$temp['data']['repay_type']	 = 2;
 							}else{
@@ -427,7 +427,7 @@ class Project_model extends CI_Model{
 							$temp['data']['repay_principal']		 = $v['principal'];
 							$temp['data']['repay_interest']			 = $v['interest'];
 							$temp['data']['repay_surplus_principal'] = $v['surplus_principal'];
-							$temp['data']['rapay_time']				 = ($temp['borrow_info']['deduct'] >= $k?($temp['borrow_info']['confirm_time']?$temp['borrow_info']['confirm_time']:$temp['borrow_info']['due_date']):strtotime($temp['data']['repay_date']));
+							$temp['data']['repay_date']				 = ($temp['borrow_info']['deduct'] >= $k?($temp['borrow_info']['confirm_time']?$temp['borrow_info']['confirm_time']:$temp['borrow_info']['due_date']):strtotime($temp['data']['repay_date']));
 							if($temp['borrow_info']['deduct'] > $k)
 								$temp['data']['status']				 = 4;
 
@@ -2099,6 +2099,7 @@ class Project_model extends CI_Model{
 			if(! empty($temp['data'])){
 				foreach($temp['data'] as $k=>$v){
 					$temp['data'][$k]['repay_type'] = $this->_get_repayment_type($v['repay_type']);
+					$temp['data'][$k]['repay_date'] = strtotime($v['repay_date']);
 				}
 				$query=$temp['data'];
 			}

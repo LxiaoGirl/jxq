@@ -91,6 +91,7 @@
 </script>
 <?php   if('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] != site_url('user/user/account_home')):?><script type="text/javascript" src="<?php echo base_url('assets/js/seajs/sea.js')?>"></script>
 <script type="text/javascript">
+$(document).ready(function(){
 	seajs.use(['jquery','sys','wsb_sys'],function(){
 		main_nav_pop($(".main_nav").find($(".fr")).find($("li")));
 		nav_pop($(".nav_have_son"));
@@ -119,5 +120,6 @@
 			}*/
 		});
 	});
+})
 </script>
 <?php endif;?>

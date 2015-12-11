@@ -7,6 +7,7 @@
 class Other_model extends CI_Model{
 	const article = 'article'; // 新闻
 	const article_category = 'article_category'; // 新闻分类
+	const product = 'product_content';//聚保宝投资详情
 
 	private $_page_size = '10';//分页每页记录数
 
@@ -77,12 +78,34 @@ class Other_model extends CI_Model{
 		return $data;
 	}
 
+
+
+
 	/**
-     * 风险保证金(未定)
+     * 聚保宝投资详情列表
      *
     */
-	public function Risk_margin(){
-
+	public function jbb_details($type_code = ''){
+		$data = $temp = array();
+		$data = array('status'=>'10001','msg'=>'没有相关信息!','data'=>array());
+		$temp['where'] = array(
+			'select' => '*',
+			'where'  => array(
+				'type_code' => $type_code	
+			)
+		);
+		if($type_code != ''){
+		$temp['details']  = $this->c->get_all(self::product, $temp['where']);
+		if(!empty($temp['details'])){
+			$data= array(
+				'status' => '10000',
+				'msg'	 => 'ok',
+				'data'	 => $temp['details'] 
+				);
+		}
+		}
+		unset($temp);
+		return $data;
 	}
 
 	/**

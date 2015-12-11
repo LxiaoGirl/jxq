@@ -19,7 +19,7 @@
         <div class="user_right">
             <div class="my_level">
                 <div class="h1">
-                    <p class="top">获得的红包（个）<a href="<?php echo site_url('about/help'); ?>">如何获得红包</a><a href="<?php echo site_url('about/help'); ?>">红包能做什么</a></p>
+                    <p class="top">获得的红包（个）<a href="javascript:void(0);" title="参加平台投资理财活动可以获得红包">如何获得红包</a></p>
                     <p class="bot"><?php echo (!empty($redbag_num['data']['num']))?$redbag_num['data']['num']:'0'?></p>
                 </div>
                 <p class="hbmx">红包明细</p>

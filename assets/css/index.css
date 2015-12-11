@@ -595,6 +595,38 @@ body{
 }
 .home_left li .home_product_body ul{
     margin-top: 20px;
+    overflow:hidden;
+}
+.home_left li .home_product_body .fla{
+    float:left;
+    padding-top:20px;
+    width:500px;
+}
+.home_left li .home_product_body .fla p{
+    font-size:14px;
+    color:#888;
+    line-height:20px;
+}
+.home_left li .home_product_body .fla p.sse{
+    color:#333;
+    font-size:18px;
+}
+.home_left li .home_product_body .fla p span{
+    width:25%;
+    display:inline-block;
+}
+.home_left li .home_product_body .icon{
+    width:64px;
+    height:64px;
+    background:#3cb5ec;
+    color:#fff;
+    border-radius:50%;
+    position:absolute;
+    line-height:60px;
+    text-align:center;
+    font-size:40px;
+    left:30px;
+    top:20px;
 }
 .home_left li .home_product_body li{
     border:1px solid #3cb5ec;

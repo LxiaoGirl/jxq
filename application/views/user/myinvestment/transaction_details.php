@@ -19,7 +19,7 @@
         <!--右侧-->
         <div class="user_right">
             
-            <h1>交易明细<a href="<?php echo site_url('about/help'); ?>">为什么只能查最近半年的记录？</a></h1>
+            <h1>交易明细</h1>
             <div style="border-top:none" class="pre_mon_tra_det tra_note">
                 <ul class="tab_title tab_title_bule">
                     <font>查询范围：</font>

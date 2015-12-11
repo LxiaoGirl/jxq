@@ -947,6 +947,39 @@ class Cash_model extends CI_Model{
 
 
 
+	/**
+	 * 聚保宝投资详情
+	 *
+	 * @access public
+	 * @param  string $type_code  投资编号
+	 * @return $data  
+	 */
+	public function jbb_jbb_details($type_code = ''){
+		$data = array('status'=>'10001','msg'=>'数据有误，请稍候尝试!');
+        $temp = array();
+		$temp['where'] = array(
+                'select' =>join_field('*',self::borrow),
+                'where'  =>array(
+					join_field('type_code',self::payment) => $type_code
+                ),
+				'group_by' =>join_field('borrow_no',self::payment),
+                'join'=>array(
+                    'table'=>self::payment,
+                    'where'=>join_field('borrow_no',self::payment).' = '.join_field('borrow_no',self::borrow)
+                )
+            );
+		$temp['data'] = $this->c->get_all(self::borrow,$temp['where']);
+		if(!empty($temp['data'])){
+			$data = array(
+				'status' => '10000',
+				'msg' => 'ok!',
+				'data' => $temp['data']
+			);
+		}
+		unset($temp);
+		return $data;
+	}
+
 
 
 

@@ -12,15 +12,19 @@ function addnav (e) {
 };
 function main_nav_pop (e) {
     //main_nav_pop
-    e.hover(function (){
-        $(".mnavtop").stop(true,true);
-        $(this).find($(".mian_nav_li_pop")).toggle();
-        $(this).find($(".mnavtop")).toggle(function() {
-            $(this).find($(".mnavtop")).animate({width:'100%'});
-        }, function() {
-            $(this).find($(".mnavtop")).animate({width:'1%'});
-        });    
-    })
+    
+    e.hover(
+        function () {
+            $(".mnavtop").stop(true,true);
+            $(this).find($(".mian_nav_li_pop")).slideDown();
+            $(this).find($(".mnavtop")).animate({width:'100%'}); 
+        },
+        function () {
+            $(".mnavtop").stop(true,true);
+            $(this).find($(".mian_nav_li_pop")).slideUp();
+            $(this).find($(".mnavtop")).animate({width:'0%'});
+        }
+    ); 
 };
 function nav_pop (e) {
     // nav_pop
@@ -520,137 +524,7 @@ function cs_js (e) {
     });
 };
 
-/************************倒计时函数 发送短信 ajax提交禁用-wsb-add-2015.11.04****************************************************/
 
-//(function($){
-//    /**
-//     * jquery 倒计时 两个时间 放在对象内标签（calss=start-time/end-time text() 取值） 开标时间 和截至时间 对应两个时间截至到处理函数
-//     * @param callback1 开标时间截至到处理函数
-//     * @param callback2 标的结束的处理函数
-//     */
-//    $.fn.count_down = function(callback1,callback2){
-//        var count_down = function() {this.tt=0;};
-//        count_down.prototype = {
-//            'go':function(e,end_time,callback) {
-//                var time = Date.parse(new Date())/1000;
-//                var time_space =end_time-time;
-//                var s = 0,m = 0,h = 0,d = 0;
-//                if(time_space > 0){
-//                    s = time_space%60;
-//                    m = Math.floor(time_space/60)%60;
-//                    h = Math.floor(Math.floor(time_space/60)/60)%24;
-//                    d = Math.floor(Math.floor(Math.floor(time_space/60)/60)/24);
-//                    if(s<10)s="0"+s;
-//                    if(m<10)m="0"+m;
-//                    if(h<10)h="0"+h;
-//                    if(d<10)d="0"+d;
-//                    e.find('.s').text(s);
-//                    e.find('.m').text(m);
-//                    e.find('.h').text(h);
-//                    e.find('.d').text(d);
-//                    var _this = this;
-//                    this.tt=setTimeout(function(){_this.go(e,end_time,callback);},1000);
-//                }else{
-//                    e.find('.s').text('00');
-//                    e.find('.m').text('00');
-//                    e.find('.h').text('00');
-//                    e.find('.d').text('00');
-//                    clearTimeout(this.tt);
-//                    if(typeof callback == 'function')callback();
-//                }
-//            }
-//        };
-//        if(this.length > 1){
-//            $(this).each(function(i,v){
-//                var _this =$(v);
-//                var time1 = _this.find('.start-time')?_this.find('.start-time').text():0;
-//                var time2 = _this.find('.end-time')?_this.find('.end-time').text():0;
-//                var cd = new count_down();
-//                cd.go(_this,time1,function(){
-//                    if(typeof callback1 == 'function')callback1(_this);
-//                    cd.go(_this,time2,function(){
-//                        if(typeof callback2 == 'function')callback2(_this);
-//                    });
-//                });
-//            });
-//        }else{
-//            var _this =this;
-//            var time1 = _this.find('.start-time')?_this.find('.start-time').text():0;
-//            var time2 = _this.find('.end-time')?_this.find('.end-time').text():0;
-//            var cd = new count_down();
-//            cd.go(_this,time1,function(){
-//                if(typeof callback1 == 'function')callback1(_this);
-//                cd.go(_this,time2,function(){
-//                    if(typeof callback2 == 'function')callback2(_this);
-//                });
-//            });
-//        }
-//        return this;
-//    };
-//
-//    $.fn.send_sms = function(type,mobile,action,wait,last_send_time_go){
-//        if( ! mobile){
-//            alert('电话号码不能为空!');
-//            return;
-//        }
-//        //倒计时 效果处理
-//        var sms_count_down = function(e,space_time,all_time,callback){
-//            var wait=space_time;
-//            var t = 0;
-//            var time = function(o){
-//                if (wait == 0) {
-//                    o.removeAttr("disabled");
-//                    o.val("获取验证码");
-//                    wait = all_time;
-//                    clearTimeout(t);
-//                    if(typeof callback == "function"){
-//                        callback();
-//                    }
-//                } else {
-//                    o.attr("disabled","true");
-//                    o.val("" + wait + "秒后再次发送");
-//                    wait--;
-//                    t = setTimeout(function() {
-//                        time(o)
-//                    },1000)
-//                }
-//            };
-//            time(e);
-//        };
-//        var _this = this;
-//        //发送到ajax事件
-//        var send_event = function(){
-//            _this.unbind('click');
-//            $.ajax({
-//                type: 'POST',
-//                url: '/index.php/send/index',
-//                data: {'type':type,'mobile':mobile,'action':action},
-//                dataType: 'json',
-//                success: function (result) {
-//                    if(result.status == '10000'){
-//                        if(type == 'voice'){
-//                            alert('稍后聚雪球将通过电话4007-918-333拨打' +
-//                                '您的手机'+mobile+'告知验证码!');
-//                        }else{
-//                            alert('短信已发送,请注意查收!');
-//                        }
-//                        //发送成功 执行显示效果
-//                        sms_count_down(_this,wait,wait,function(){ _this.bind('click',function(){send_event();});});
-//                    }else{
-//                        alert(result.msg);
-//                    }
-//                }
-//            });
-//        };
-//        //验证上一次发送到时间间隔
-//        if(last_send_time_go !== '' && last_send_time_go < wait){
-//            sms_count_down(this,wait-last_send_time_go,wait,function(){_this.bind('click',function(){send_event();});});
-//        }else{
-//            _this.bind('click',function(){send_event();});
-//        }
-//        return this;
-//    }
-//})(jQuery);
 
 /**
  * jquery ajax 提交的按钮设置

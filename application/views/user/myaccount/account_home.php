@@ -43,7 +43,7 @@
                                 <span>我的雪球：<?php echo $snowball_num?>个</span>
                             </div>
                             <div class="height_half">
-                                <a href="<?php echo site_url('about/help'); ?>">如何获得雪球</a><a href="<?php echo site_url('about/help'); ?>">雪球能做什么</a>
+                                <a href="javascript:void(0);" title="通过参与平台活动来获取">如何获得雪球</a><a href="javascript:void(0);" title="雪球可以用于参与平台的活动">雪球能做什么</a>
                             </div>
                         </div>
                         <div class="height_half">

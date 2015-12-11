@@ -34,13 +34,13 @@
          <div class="right fr"><img src="../../../../assets/images/about/partner/hzhb (5).jpg"><p>平安银行股份有限公司是一家总部设在深圳的全国性股份制商业银行（深圳证券交易所简称“平安银行”，证券代码000001）。为平台提供在线资金监管服务。</p></div>
       </div>
    </li>
-   <li>
+  <!-- <li>
       <h2><font>律师事务所</font></h2>
       <div class="hznr">
          <div class="le fl"><img src="../../../../assets/images/about/partner/hzhb (6).jpg"></div>
          <div class="ri fr">全国优秀律师事务所——辽宁同方律师事务所（以下简称同方所）成立于1999年，总部位于沈阳市，在北京、上海、大连设有分所，为平台提供法务服务。</div>
       </div>
-   </li>
+   </li>-->
    <li>
       <h2><font>合作银行</font></h2>
       <div class="hznr">

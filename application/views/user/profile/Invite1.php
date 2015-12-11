@@ -29,7 +29,7 @@
         <div class="user_right">
             <div class="my_level">
                 <div class="h1">
-                    <p class="top">邀请好友<font>当前居间人等级：<span>VIP<font><?php echo ($lv)?$lv:0?></font></span></font><a href="">如何升级？</a><a href="">我能拿的提成是多少？</a></p>
+                    <p class="top">邀请好友<font>当前居间人等级：<span>VIP<font><?php echo ($lv)?$lv:0?></font></span></font><a href="javascript:void(0);" title="收益=您邀请的好友投资的项目总金额 * 0.01*有效投资天数">收益如何计算？</a><a href="javascript:void(0);" title="收益会每月25号已红包的形式发送给您，您可以在我的红包去领取收益。">收益如何提取？</a></p>
                     <p class="bot"><font>已结算总额（元）：</font><?php echo $jujian_amount['data']['jujian_amount']?></p>
                     <div class="ewm">
                         <div class="ewm_but">查看我的二维码</div>
