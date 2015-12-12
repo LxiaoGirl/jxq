@@ -37,7 +37,7 @@
                         <div class="fl rechar">请输入充值金额：</div>
                         <div class="fr rechar">
                             <p><input id="recharge_amount" type="text" name=""/> <a href="javascript:void(0);" id="qrcz" target="_blank">确认充值</a></p>
-                            <p><input type="checkbox" name="" checked id="recharge_agree"/>我同意<a href="<?php echo site_url(''); ?>">《聚雪球账户资金管理协议》</a></p>
+                            <p style="display:none;"><input type="checkbox" name="" checked id="recharge_agree"/>我同意<a href="<?php echo site_url(''); ?>">《聚雪球账户资金管理协议》</a></p>
                         </div>
                         <div class="cz_pop">
                             <div class="title">

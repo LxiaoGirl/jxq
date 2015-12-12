@@ -18,6 +18,7 @@ class App_model extends CI_Model{
     const tranfer   = 'user_transaction'; //提现表
     const recharge   = 'user_recharge'; //提现表
 	const redbag = 'cdb_redbag';   //活动表
+	const payment_jbb = 'borrow_payment_jbb';   //聚保宝  
 
     public function __construct(){
         parent::__construct();
@@ -1068,6 +1069,35 @@ class App_model extends CI_Model{
         return $query;
     }
 
+	
+	
+	    /**
+     * 聚保宝投资
+     * @param int $uid
+     * @return float|int
+     */
+    public function jbb_all_amount($status = 0){
+        $data = 0;
+        $temp = array();
+		$temp['uid'] = (int)$this->session->userdata('uid');
+        if($temp['uid'] > 0){
+            $temp['where'] = array(
+                'select'   => 'sum(amount)',
+				'where'    => array(
+					'uid' => $temp['uid'],
+					'status' => $status
+				)
+            );
+
+            $data = (float)$this->c->get_one(self::payment_jbb, $temp['where']);
+        }
+
+        unset($temp);
+        return $data;
+    }	
+	
+	
+	
     public function get_pay_total(){
         $query = 0;
         $temp  = array();

@@ -16,11 +16,13 @@ function main_nav_pop (e) {
     e.hover(
         function () {
             $(".mnavtop").stop(true,true);
+            $(".mian_nav_li_pop").stop(true,true);
             $(this).find($(".mian_nav_li_pop")).slideDown();
             $(this).find($(".mnavtop")).animate({width:'100%'}); 
         },
         function () {
             $(".mnavtop").stop(true,true);
+            $(".mian_nav_li_pop").stop(true,true);
             $(this).find($(".mian_nav_li_pop")).slideUp();
             $(this).find($(".mnavtop")).animate({width:'0%'});
         }
@@ -597,13 +599,12 @@ ajax_loading.prototype = {
         };
         var that = this;
         $(document).ajaxStart(function(){
-            if(this.src_tag_obj != false){
+            if(that.src_tag_obj != false){
                 ajax_submit_button_obj = that.src_tag_obj;
             }else{
-                var theEvent = window.event || arguments.callee.caller.arguments[0];
+                var theEvent = window.event || arguments.callee.caller.arguments[0];//这个依然是获取不到具体源的
                 if(theEvent && (theEvent.srcElement || theEvent.target))ajax_submit_button_obj = theEvent.srcElement?theEvent.srcElement:theEvent.target;
             }
-
             var ajax_button = false;
             if(ajax_submit_button_obj && ajax_submit_button_obj.tagName){
                 var class_str = $(ajax_submit_button_obj).attr('class');
@@ -646,6 +647,8 @@ ajax_loading.prototype = {
             }else{
                 this.src_tag_obj = obj.get(0);
             }
+        }else{
+            this.src_tag_obj = false;
         }
     },
     'get_class_flag':function(){

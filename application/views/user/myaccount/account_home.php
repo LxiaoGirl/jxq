@@ -93,7 +93,7 @@
                         <div class="botton"><?php echo rate_format(price_format($data['wait_interest_total'],2,false));?></div>
                     </div>
                 </div>
-                <p class="line_h86">投资收益<a href="<?php echo site_url('user/user/transaction_note');?>">查看投标记录</a></p>
+                <p class="line_h86">投资一览<a href="<?php echo site_url('user/user/transaction_note');?>">查看投标记录</a></p>
                 <div class="tzfb_ec" id="tzfb_ec"></div>
                 <p id="char-load-msg" style="text-align: center;visibility: hidden;">图表数据加载中...</p>
             </div>
@@ -229,7 +229,7 @@ option2 = {
 };
 var option3 = { 
     title : {
-        text: '最近六个月投资收益一览',
+        text: '最近六个月投资一览',
         x:'center',
         textStyle:{
             fontSize: 16,
@@ -243,7 +243,7 @@ var option3 = {
         }
     },
     legend: {
-            data:['投资总额','投资收益'],
+            data:['投资总额'],
             x:'right',
         },
     xAxis : [
@@ -256,13 +256,6 @@ var option3 = {
         {
             type: "value",
             name : '金额',
-        },
-        {
-                            type : 'value',
-                            name : '金额',
-                            axisLabel : {
-                                formatter: '{value}'
-                            }
         }
     ],
     series : [
@@ -276,17 +269,6 @@ var option3 = {
             },
             data:[0]
 
-        },
-        {
-                            name:'投资收益',
-                            type:'line',
-                            itemStyle: {        // 系列级个性化样式，纵向渐变填充
-                                normal: {
-                                    color : "#599b30"
-                                }
-                            },
-                            yAxisIndex: 1,
-                            data:[0]
         }
     ]
 };
@@ -306,7 +288,7 @@ myChart3.setOption(option3);
         $("#char-load-msg").css('visibility','hidden');
         option3 = {
             title : {
-                text: '最近六个月投资收益一览',
+                text: '最近六个月投资一览',
                 x:'center',
                 textStyle:{
                     fontSize: 16,
@@ -320,7 +302,7 @@ myChart3.setOption(option3);
                 }
             },
 	    legend: {
-	            data:['投资总额','投资收益'],
+	            data:['投资总额'],
 	            x:'right',
 	        },
             xAxis : [
@@ -333,13 +315,6 @@ myChart3.setOption(option3);
                 {
                     type: "value",
                     name : '金额',
-                },
-                {
-                    type : 'value',
-                    name : '金额',
-                    axisLabel : {
-                        formatter: '{value}'
-                    }
                 }
             ],
             series : [
@@ -353,17 +328,6 @@ myChart3.setOption(option3);
                     },
                     data:rs.data.invest
 
-                },
-                {
-                    name:'投资收益',
-                    type:'line',
-                    itemStyle: {        // 系列级个性化样式，纵向渐变填充
-                        normal: {
-                            color : "#599b30"
-                        }
-                    },
-                    yAxisIndex: 1,
-                    data:rs.data.interest
                 }
             ]
         };

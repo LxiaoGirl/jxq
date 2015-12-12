@@ -2241,7 +2241,7 @@ class User_model extends CI_Model{
 	public function recharge_refresh($recharge_no='',$uid=0){
 		$data = array('name'=>'订单号刷新','status'=>'10001','msg'=>'订单未成功!','data'=>'');
 		$temp =array();
-		$recharge_no = authcode($recharge_no,'',TRUE);
+		$recharge_no = authcode(urldecode($recharge_no),'',TRUE);
 
 		if($uid == 0){
 			$data['msg'] = '用户uid为空!';
@@ -2284,9 +2284,11 @@ class User_model extends CI_Model{
 				$temp['balance'] = $this->_get_user_balance($uid);
 				$data['data'] = $temp['balance'];
 				$data['status'] = '10000';
+				$data['msg'] = '无订单信息!';
 			}
 		}else{
 			$data['status'] = '10003';
+			$data['msg'] = '订单号为空!';
 		}
 
 		unset($temp);

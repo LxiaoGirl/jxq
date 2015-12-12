@@ -46,8 +46,12 @@
                                 <span class="wid20"><font><?php echo $v['amount']; ?></font></br><?php if($v['status'] == '还款完成'): ?> 已<?php else: ?>预计<?php endif; ?>收益：<?php echo $v['interest']; ?></span>
                                 <span><?php echo date('Y-m-d',$v['invest_time']); ?></span>
                                 <span><?php echo date('Y-m-d',$v['interest_start_time']); ?></span>
-                                <span><?php echo date('Y-m-d',strtotime($v['interest_lately_time'])); ?></span>
-                                <span><?php echo $v['status']; ?></span>
+		                        <?php if( $v['status']=="还款中"): ?>
+								<span><?php echo date('Y-m-d',$v['interest_lately_time']); ?></span>
+		                        <?php else: ?>
+								<span><?php echo date('Y-m-d',strtotime($v['interest_lately_time'])); ?></span>
+		                        <?php endif; ?>
+								<span><?php echo $v['status']; ?></span>
                                 <span style="width: 60px;text-decoration: underline;"><a href="<?php echo site_url('terms/index?borrow_no='.$v['borrow_no']); ?>" target="_blank">查看</a> </span>
                             </p>
                         <?php endforeach;else: ?>

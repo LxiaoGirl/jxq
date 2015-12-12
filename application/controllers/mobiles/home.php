@@ -580,7 +580,7 @@ class Home extends MY_Controller{
             $temp['card_id'] =  $this->input->post('card_id',true);
             $temp['no_agree'] =  ''; //签约号
             if(empty($temp['card_id'])){ //账户no。为空 则新曾银行账户
-                $temp['is_bind'] = $this->c->count(self::card,array('where'=>array('account'=>$temp['account'])));
+                $temp['is_bind'] = $this->c->count(self::card,array('where'=>array('account'=>$temp['account'],'uid'=>$this->session->userdata('uid'))));
                 if($temp['is_bind'] == 0){ //不存在 则新增
                     $temp['new_card_data'] = array(
                         'card_no'   => $this->c->transaction_no(self::card, 'card_no'),
@@ -812,8 +812,10 @@ class Home extends MY_Controller{
         if($this->input->is_ajax_request() == TRUE){
             $data['my_balance']            = $this->user->get_user_balance();        //可用余额
             $temp['my_principal_interest'] = $this->app->get_receive_principal_interest(); //我的已收本金和利息
+			$temp['jbb_all_amount'] 	   = $this->app->jbb_all_amount(1);
             $temp['my_invest']             = $this->app->get_user_invest_all();//我的总投资
             $data['my_wait_principal']     = $temp['my_invest']>0?$temp['my_invest']-$temp['my_principal_interest']['receive_principal']:0;
+			$data['my_wait_principal']     = $data['my_wait_principal']+$temp['jbb_all_amount'];
             $data['my_invest_freeze']      = $this->app->get_user_invest_freeze();          //投资冻结金额
             $data['my_transfer_freeze']    = $this->app->get_user_transfer_freeze();         //提现冻结金额
             $data['my_amount']             = $data['my_balance'] + $data['my_wait_principal'] + $data['my_invest_freeze']+$data['my_transfer_freeze'];

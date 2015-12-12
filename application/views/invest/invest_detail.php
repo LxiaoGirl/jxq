@@ -227,7 +227,7 @@
                         $('.black_bg').fadeIn();
                         $('.invest_zjmm_pop').fadeIn("fast",function(){
                             $(".security").focus();
-                            $('#invest-submit').bind('click',function(){
+                            $('#invest-submit').unbind('click').bind('click',function(){
                                 if($('.security').val().length < 6){
                                     wsb_alert('请输入正确格式的资金密码!',2);
                                 }else{

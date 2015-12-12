@@ -72,14 +72,16 @@
 						<?php if($project['status']==10000):foreach($project['data'] as $k=>$v): ?>
                         <div class="product_of_invest_home product_of_invest_home_1">
                             <div class="fl <?php echo jbb_icon($v['type_code'])?> zi">
-                                <span> <?php echo jbb_word($v['type_code'])?> </span>
+                                <span style="
+    background: #c795df;
+"><?php echo jbb_word($v['type_code'])?> </span>
                                 <p><?php echo $v['type_name']?></p>
                             </div>
 							
                             <div class="fl">
 							<?php if( $v['type']==1 && ($v['start_day']+3600*$v['start_time'])>time()):?>
 							<div class="time-down " data-start-time="<?php echo ($v['start_day']+3600*$v['start_time']); ?>" data-type="<?php echo $v['type'];?>"  style="visibility: hidden;">
-                                <div class="hjdjs">还有<font class="d">00</font>天<font class="h">00</font>:<font class="m">00</font>:<font class="s">00</font><span class="js_flag">开始</span></div>
+                                <div class="hjdjs">还有<font class="d">00</font>天<font class="h">00</font>小时<font class="m">00</font>分<font class="s">00</font>秒<span class="js_flag">开始</span></div>
 								</div>
 								<?php elseif($v['type']==1 && ($v['start_day']+3600*$v['start_time'])<=time()):?>
 									<div class="hjdjs">已开始</div>
@@ -102,11 +104,11 @@
                                 </div>
                             </div>
                             <div class="fr jbb_an">
-                                <p>累计投资：<?php echo round($v['jbb_all_invest']/1000,2)?>万元</p>
-                                <p class='mar0'>累计入团：<?php echo $v['jbb_nums']?>人次</p>
+                                <p>累计投资：<?php echo round($v['jbb_all_invest']/10000,2)?>万元</p>
+                                <p class='mar0'>累计加入：<?php echo $v['jbb_nums']?>人次</p>
 								<?php  if(($v['start_day']+3600*$v['start_time'])>=time()&&$v['type']==1):?>
 								<a class="yy" href="<?php echo site_url('invest/detail_jbb?type_code='.$v['type_code']); ?>">即将开始</a>
-								<?php elseif(($v['start_day']+3600*12)<time()&&$v['type']==1):?>
+								<?php elseif(($v['start_day'])<time()&&$v['type']==1):?>
                                 <a class="jb" href="<?php echo site_url('invest/detail_jbb?type_code='.$v['type_code']); ?>">立即投资</a>
 								<?php else:?>
 								<a class="jb sq" href="<?php echo site_url('invest/detail_jbb?type_code='.$v['type_code']); ?>">已售罄</a>

@@ -12,7 +12,7 @@
 <!--home start-->
     <!--banner-->
     <div class="home_bannner" id="js_banner">
-        <a href="" class="link_url" target="_blank"><img src="" alt="" class="source"/></a>
+        <a href="" class="link_url" target="_blank"><div class="bannerbgdiv" style="width:100%; height:350px;"></div></a>
     </div>
     <!--banner-->
     <!--gg-->
@@ -31,16 +31,16 @@
         <ul class="home_three_c">
             <li>
                 <p>优势股东</p>
-                <p>国资参与 银行监管</p>
+                <p>国资平台 银行监管</p>
 
             </li>
             <li>
                 <p>安全保障</p>
-                <p>100%本息保障</p>
+                <p>国资担保 本息保障</p>
             </li>
             <li>
                 <p>高额收益</p>
-                <p>预期年化收益率最高13.2%</p>
+                <p>预期收益率6%-13.2%</p>
             </li>
         </ul>
     </div>
@@ -51,7 +51,6 @@
             <li>累计注册人数：<font><?php echo rate_format(price_format($total['user_total'],2,false)); ?></font>人</li>
             <li class="sec">累计投资总额：<font><?php echo rate_format(price_format($total['invest_total'],2,false)); ?></font>元</li>
             <li class="thr">累计运行天数：<font><?php echo rate_format(price_format($total['days_total'],2,false)); ?></font>天</li>
-            <li class="four">风险保证金：<font><?php echo rate_format(price_format($total['risk_total'],2,false)); ?></font>元</li>
         </ul>
     </div>
     <!--平台数据-->
@@ -60,37 +59,31 @@
         <div class="home_left fl">
             <ul>
                 <li>
-                    <h1>12.12活动专享<a href="" class="fr">查看全部项目 > </a></h1>
+                    <h1>12.12聚雪球狂欢盛典活动专享<a href="https://www.zgwjjf.com/active/1212/index.html" class="fr">查看活动详情 > </a></h1>
                     <div class="home_product_body">
                         <div class="top">
-                            <div class="icon fl">富</div>
+                            <div class="icon fl" style = 'background: #c795df;'>富</div>
                             <div class="title fl" style="color:#3cb5ec; margin-left:80px;">聚富盈</div>
                             <div class="baozhi fl" style="min-width:300px">&nbsp;</div>
-                            <div class="djs djs_2 fl"><font class="endtime">1544887998</font>还有<font class="d">14</font>天<font class="h">14</font>:<font class="m">14</font>:<font class="s">14</font>结束</div>
                         </div>
-                        <p>本项目为个人贷款产品。购车人与聚雪球核准的合作方签订分期付款购车服务协议，委托分期付款购车。由于银行按揭贷款审批需要一定的时间，聚雪球核准的合作方受购车人委托在按揭贷款额度内向聚雪球申请融资，用于银行按揭贷款放款前的垫资代购。</p>
+                        <p>“聚富盈”是聚雪球网络平台推出的期限固定型投资产品，以聚雪球网络平台提取的部分融资项目作为投资标的，投资人购买本产品后，聚雪球后台系统将收到投资人指令，依照分散投资原则由系统自动进行投标，并在收到用户指令的情况下由系统自动发起债权转让，通过出让持有的债权实现流动性的需求，进而实现分散投资并获取收益的目的。</p>
                         <ul>
                             <li>
                                 <div class="product_four_num_top tc">年化收益率</div>
-                                <div class="product_four_num_bot tc col_blu">13.2<i>%</i></div>
+                                <div class="product_four_num_bot tc col_blu">12.6<i>%</i></div>
                             </li>
                             <li>
                                 <div class="product_four_num_top tc">起投金额(元)</div>
-                                <div class="product_four_num_bot tc">100</div>
+                                <div class="product_four_num_bot tc">100.00</div>
                             </li>
                             <li>
-                                <div class="product_four_num_top tc">还款方式</div>
-                                <div class="product_four_num_bot tc hanzi">一次性本息</div>
+                                <div class="product_four_num_top tc">保障方式</div>
+                                <div class="product_four_num_bot tc hanzi">本息保障</div>
                             </li>
                         </ul>
                         <div class="bot">
-                            <div class="fla" style="display:none;">
-                                <p><span class="tl">累计投资：</span><span class="tl">累计赚取：</span><span class="tl">累计入团：</span><span class="tl">分散投资于：</span></p>
-                                <p class="sse"><span class="tl">1000000.00元</span><span class="tl">10000.00元</span><span class="tl">1023人次</span><span class="tl">1023标</span></p>
-                            </div>
-                            <div class="fr tc">
-                                <h5>开放额度：<font>42,470</font>元</h5>
-                                <a href="">马上投资</a>
+                           <div class="fr tc">
+                                <a href="https://www.zgwjjf.com/index.php/invest/detail_jbb?type_code=JBB03">马上投资</a>
                             </div>
                         </div>
                         <div class="corner"></div>
@@ -327,7 +320,9 @@
                 obj.find('a').attr('href','<?php echo site_url('about/news_detail?id='); ?>'+ v.id);
             });
             //banner
-            each_html('js_banner','/index.php/about/ajax_get_news',{'page_id':1,'page_size':5,'category':'<?php echo item('banner_home_cat_id')?item('banner_home_cat_id'):0; ?>'},'',true,'',function(){
+            each_html('js_banner','/index.php/about/ajax_get_news',{'page_id':1,'page_size':5,'category':'<?php echo item('banner_home_cat_id')?item('banner_home_cat_id'):0; ?>'},'',true,function(obj,v){
+                    obj.find('.bannerbgdiv').css({'background':'url('+v.source+') center no-repeat'});
+                },function(){
                 $('#js_banner').slider({
                     height: 400,
                     start: 1,

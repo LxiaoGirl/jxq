@@ -5310,13 +5310,14 @@ p.border_bot b{
 }
 .user_right.jbb .ul3 .li{
     margin-top: 20px;
-    border:1px solid #dce6f2;
+    border-top:1px solid #dce6f2;
     overflow: hidden;
-    height: 98px;
 }
 .user_right.jbb .ul3 .li .yfw{
     width:88px;
-    border-right: 1px solid #dce6f2;
+	padding-bottom:10px;
+    border: 1px solid #dce6f2;
+	border-top: none;
     text-align: center;
 }
 .user_right.jbb .ul3 .li .yfw span{
@@ -5336,6 +5337,9 @@ p.border_bot b{
 }
 .user_right.jbb .ul3 .li div.fr{
     width:847px;
+	border: 1px solid #dce6f2;
+	border-top: none;
+	border-left:none;
 }
 .user_right.jbb .ul3 .li p.dd{
     height: 32px;
@@ -5511,4 +5515,68 @@ p.border_bot b{
     border:1px solid #3cb5ec;
     background:#3cb5ec;
 } 
+.user_right.jbb .ul3 .li{ display:block; width:939px; }
+		.user_right.jbb .ul3 .jbb_lie_pop{
+		width:830px;
+    float: right;
+    margin-right: 4px;
+    border: 1px solid #dce6f2;
+    border-top: none;
+    padding-bottom: 10px;
+	max-height: 200px;
+    overflow-y: scroll;
+	display:none;
+	}
+	.user_right.jbb .ul3 .jbb_lie_pop  p{
+    padding:5px 50px;
+    border-bottom: 1px dotted #e8e8e8;
+    line-height: 30px;
+    color:#666;
+    font-size: 12px;
+}
+	.user_right.jbb .ul3 .jbb_lie_pop  p span{ width:25%; display:inline-block;}
+	.user_right.jbb .ul3 .jbb_lie_pop .jbb_lie_poptitle{
+	font-family: "宋体";
+    color:#aaa;
+	}
+.user_right.jbb .ul3 .li p.dd button.details{
+	margin-right:10px;
+	margin-top:-2px;
+}
+.cztx li .fr.rechar p a#qrcz{
+    width: 100px;
+    height: 40px;
+    border: none;
+    line-height: 40px;
+    font-size: 14px;
+    color: #fff;
+    outline: 0;
+    cursor: pointer;
+    background: #3cb5ec;
+    border-radius: 6px;
+    margin-left: 10px;
+    -webkit-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    -ms-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: background-color;
+    -o-transition-property: background-color;
+    -ms-transition-property: background-color;
+    -moz-transition-property: background-color;
+    transition-property: background-color;
+    border: none;
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -o-box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -ms-box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    display:inline-block;
+    text-align: center;
+}
+.cztx li .fr.rechar p a#qrcz:hover{
+    background:#3189e3;
+}
+
+
+
 /*聚保宝个人中心*/

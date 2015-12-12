@@ -89,7 +89,7 @@
             });
     }); 
 </script>
-<?php   if('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] != site_url('user/user/account_home')):?><script type="text/javascript" src="<?php echo base_url('assets/js/seajs/sea.js')?>"></script>
+<?php   if(('https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] != site_url('user/user/account_home'))&&('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] != site_url('user/user/account_home'))):?><script type="text/javascript" src="<?php echo base_url('assets/js/seajs/sea.js')?>"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	seajs.use(['jquery','sys','wsb_sys'],function(){
@@ -99,7 +99,9 @@ $(document).ready(function(){
 		$(function(){
 			var ajax_loading_obj = new  ajax_loading();
 			ajax_loading_obj.init(1,true,1);//ajax提交 禁用处理
-			$("."+ajax_loading_obj.get_class_flag()).bind('mouseover',function(){ajax_loading_obj.set_src($(this));});
+			if(navigator.userAgent.indexOf("Firefox") > -1){
+				$("."+ajax_loading_obj.get_class_flag()).hover(function(){ajax_loading_obj.set_src($(this));},function(){ajax_loading_obj.set_src(false);});
+			}
 
 			//覆盖登录 处理未读消息
 			/*if('<?php echo profile('uid'); ?>'){

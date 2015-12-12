@@ -1267,8 +1267,8 @@ class Common_model extends CI_Model
                 }
 
                 //如果是读取oss上文件 验证是否要处理https的警告问题
-                if(item('oss_https_filter') == TRUE && strpos($query,item('oss_bind_hostname'))){
-                    $query = site_url('send/get_oss_image?f='.urlencode($query));
+                if(item('oss_https_filter') == TRUE && strpos($query,item('oss_bind_hostname')) !== false){
+                    $query = site_url('avatar/image?f='.urlencode($query));
                 }
 
             }else{

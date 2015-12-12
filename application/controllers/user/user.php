@@ -818,6 +818,18 @@ class User extends Login_Controller{
 
 
 	/**
+	 * 聚保宝查看投资详情
+	 */
+	public function jbb_jbb_details(){
+		$data = array();
+		$type_code = $this->input->get('type_code',true);//编号
+		$data = $this->cash->jbb_jbb_details($type_code);
+		exit(json_encode($data));
+	}
+
+
+
+	/**
 	 * 聚保宝提取利息
 	 */
 	public function jbb_sub_receive(){

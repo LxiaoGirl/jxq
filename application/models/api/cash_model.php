@@ -145,16 +145,18 @@ class Cash_model extends CI_Model{
         $temp    = array();
 
         if( ! empty($uid)){
+			$data['data']['jbb_all_amount_1']		 = $this->jbb_all_amount($uid,1);//代收本金 聚保宝
+			$data['data']['jbb_all_amount_2']		 = $this->jbb_all_amount($uid,2);//冻结资金 聚保宝
             $data['data']['invest_total']            = $this->get_user_invest_total($uid);
             $temp['principal_interest']              = $this->get_user_receive_principal_interest($uid);
             $data['data']['receive_principal_total'] = $temp['principal_interest']['receive_principal'];
             $data['data']['receive_interest_total']  = $temp['principal_interest']['receive_interest'];
-            $data['data']['wait_principal_total']    = $data['data']['invest_total']?round($data['data']['invest_total']-$data['data']['receive_principal_total'],2):0;
+            $data['data']['wait_principal_total']    = $data['data']['invest_total']?round($data['data']['invest_total']-$data['data']['receive_principal_total']+$data['data']['jbb_all_amount_1'],2):0;
             $temp['interest_all']                    = $this->get_user_interest_all($uid);
             $data['data']['wait_interest_total']     = $temp['interest_all']?round($temp['interest_all']-$data['data']['receive_interest_total'],2):0;
             $data['data']['invest_freeze_total']     = $this->get_user_invest_freeze($uid);
             $data['data']['transfer_freeze_total']   = $this->get_user_transfer_freeze($uid);
-            $temp['balance']                         = $this->get_user_balance($uid);
+            $temp['balance']                         = $this->get_user_balance($uid);			
 			$data['data']['balance']				 = $temp['balance']['data']['balance'];
             $data['data']['property_total']          = round($temp['balance']['data']['balance'] + $data['data']['wait_principal_total']+$data['data']['invest_freeze_total']+$data['data']['transfer_freeze_total'],2);
 
@@ -1778,6 +1780,36 @@ class Cash_model extends CI_Model{
         unset($temp);
         return $data;
     }
+
+
+
+    /**
+     * 聚保宝投资
+     * @param int $uid
+     * @return float|int
+     */
+    protected function jbb_all_amount($uid=0,$status = 0){
+        $data = 0;
+        $temp = array();
+
+        if($uid > 0){
+            $temp['where'] = array(
+                'select'   => 'sum(amount)',
+				'where'    => array(
+					'uid' =>$uid,
+					'status' => $status
+				)
+            );
+
+            $data = (float)$this->c->get_one(self::payment_jbb, $temp['where']);
+        }
+
+        unset($temp);
+        return $data;
+    }
+
+
+
 
     /**
      * 用户全部项目总收益（预计和已收）

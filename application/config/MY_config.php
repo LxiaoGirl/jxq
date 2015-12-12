@@ -31,24 +31,24 @@ $config['ttl']               = 86400; //缓存时间(秒)
 //$config['oss_access_key']    = '7yZK8GxonnDePd4dDqrTwb5TrilG6E'; //key
 //$config['oss_upload']        = TRUE; //FALSE   是否启用oss上传
 //$config['oss_public']        = TRUE; //FALSE
-//$config['oss_bind_hostname'] = 'http://image.zgwjjf.com'; //FALSE
+$config['oss_bind_hostname'] = 'http://image.zgwjjf.com'; //FALSE
 
 $config['oss_bucket_img']     = 'wjjf-oss1'; //bucket的名称
 $config['oss_access_id']      = '5nmbgHDAaoaH0OY0'; // id
 $config['oss_access_key']     = 'm7MSNSurHth7ryLdMFbcjvvBef5htF'; //key
 $config['oss_upload']         = TRUE; //FALSE   是否启用oss上传
 $config['oss_public']         = TRUE; //FALSE  public访问
-$config['oss_bind_hostname']  = 'http://image.juxueqiu.com'; //FALSE
-$config['oss_https_filter']   = false; //https报错处理
+//$config['oss_bind_hostname']  = 'http://image.juxueqiu.com'; //FALSE
+$config['oss_https_filter']   = TRUE; //https报错处理
 
 
 
 $config['sms_space_time']                   = 90; //短信发送间隔时间
 
 
-$config['announcement_home_top_cat_id']     = 43; //主页头部公告新闻分类id
+$config['announcement_home_top_cat_id']     = 10; //主页头部公告新闻分类id
 $config['announcement_home_bottom_cat_id']  = 10; //主页底部公告新闻分类id
-$config['announcement_news_cat_id']         = 43; //公司动态详情页公告新闻分类id
+$config['announcement_news_cat_id']         = 10; //公司动态详情页公告新闻分类id
 $config['banner_home_cat_id']               = 44; //主页banner新闻分类id
 $config['about_major_event_cat_id']         = 42; //关于我们之公司大事件新闻分类id
 $config['about_media_cat_id']               = 1; //关于我们之媒体报道新闻分类id
