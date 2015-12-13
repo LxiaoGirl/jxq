@@ -2297,7 +2297,7 @@ class User_model extends CI_Model{
 			$data['status'] = '10003';
 			$data['msg'] = '订单号为空!';
 		}
-		if(!session_id())session_start();
+		session_start();
 		unset($temp);
 		return $data;
 	}

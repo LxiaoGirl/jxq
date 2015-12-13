@@ -67,19 +67,26 @@
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){
         $(function () {
-            $(".recharge-refresh").bind('click',function(){
-                var that = $(this);
-                $.post('/index.php/user/user/ajax_recharge_auto_refresh',{'recharge_no':$(this).data('rechargeNo')},function(rs){
+            var refresh_func = function(obj){
+                $.post('/index.php/user/user/ajax_recharge_auto_refresh',{'recharge_no':obj.data('rechargeNo')},function(rs){
                     if(rs.status == '10000'){
                         $("#balance").text(rs.data);
-                        that.parent().html('充值成功');
+                        obj.parent().html('充值成功');
                         wsb_alert('充值已成功',1);
                     }else if(rs.status == '10002' || rs.status == '10003'){
                         wsb_alert(rs.msg,2);
                     }else{
                         wsb_alert('充值尚未成功,如确认已充值扣费请稍后查询或联系客服人员!',3);
                     }
+                    $(".recharge-refresh").bind('click',function(){
+                        $(".recharge-refresh").unbind('click');
+                        refresh_func($(this));
+                    });
                 },'json');
+            };
+            $(".recharge-refresh").bind('click',function(){
+                $(".recharge-refresh").unbind('click');
+                refresh_func($(this));
             });
         });
     });
