@@ -39,7 +39,7 @@ class Login extends MY_Controller{
 				//验证
 				if($this->session->userdata('captcha') != $captcha){
 					$data = array('status'=>'10001','msg'=>'验证码不正确!');
-					return $data;
+					exit(json_encode($data));
 				}
 			}
 			$data = $this->user->login($this->input->post('mobile',true),$this->input->post('password',true));
