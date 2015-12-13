@@ -2241,7 +2241,7 @@ class User_model extends CI_Model{
 	public function recharge_refresh($recharge_no='',$uid=0){
 		$data = array('name'=>'订单号刷新','status'=>'10001','msg'=>'订单未成功!','data'=>'');
 		$temp =array();
-		$recharge_no = authcode(urldecode($recharge_no),'',TRUE);
+		$recharge_no = authcode($recharge_no,'',TRUE);
 
 		if($uid == 0){
 			$data['msg'] = '用户uid为空!';
@@ -2252,35 +2252,43 @@ class User_model extends CI_Model{
 			session_write_close();//關閉session 防止session鎖頁面
 			$temp['where'] = array(
 					'select'   => 'recharge_no,uid,type,amount,source,remarks,add_time,status',
-					'where'    => array('uid' => $uid,'recharge_no' => $recharge_no,'status' => '0','type' => 2)
+					'where'    => array('uid' => $uid,'recharge_no' => $recharge_no,'status' => '0')
 			);
 			$temp['data'] = $this->c->get_row(self::recharge, $temp['where']);
 			if($temp['data']){
-				$this->load->model('pay_model','pay');
-				$res = $this->pay->dingdanchaxun($recharge_no);
-				if($res['FlagInfo']['Flag3']==1 || $res['FlagInfo']['Flag3']==9){
-					$temp['update_data'] = array('status' => '1');
-					$this->db->trans_start();
-					$temp['where'] = array('where' => array('recharge_no' => $temp['data']['recharge_no']));
-					$query = $this->c->update(self::recharge, $temp['where'], $temp['update_data']);
-					if($query){
-						$query=$this->_add_cash_flow($temp['data']['uid'],$temp['data']['amount'],$temp['data']['recharge_no']);
+				if($temp['data']['type'] != '2'){
+					$data['status'] = '10000';
+					$data['msg'] = '该类型订单不能在此刷新!';
+				}else{
+					$this->load->model('pay_model','pay');
+					$res = $this->pay->dingdanchaxun($recharge_no);
+					if($res['FlagInfo']['Flag3']==1 || $res['FlagInfo']['Flag3']==9){
+						$temp['update_data'] = array('status' => '1');
+						$this->db->trans_start();
+						$temp['where'] = array('where' => array('recharge_no' => $temp['data']['recharge_no']));
+						$query = $this->c->update(self::recharge, $temp['where'], $temp['update_data']);
 						if($query){
-							$this->db->trans_complete();
-							$query = $this->db->trans_status();
+							$query=$this->_add_cash_flow($temp['data']['uid'],$temp['data']['amount'],$temp['data']['recharge_no']);
 							if($query){
-								session_start();
-								$temp['balance'] = $this->_get_user_balance($uid);
-								$this->session->set_userdata('balance',$temp['balance']);
-								$data['status'] = '10000';
-								$data['data'] = $temp['balance'];
-								$data['msg'] = 'ok';
+								$this->db->trans_complete();
+								$query = $this->db->trans_status();
+								if($query){
+									session_start();
+									$temp['balance'] = $this->_get_user_balance($uid);
+									$this->session->set_userdata('balance',$temp['balance']);
+									$data['status'] = '10000';
+									$data['data'] = $temp['balance'];
+									$data['msg'] = 'ok';
+								}
 							}
 						}
+					}else{
+						$data['msg'] = '改订单尚未充值成功,请稍后重试或联系客服人员!';
+						$temp['balance'] = $this->_get_user_balance($uid);
+						$data['data'] = $temp['balance'];
 					}
 				}
 			}else{
-				session_start();
 				$temp['balance'] = $this->_get_user_balance($uid);
 				$data['data'] = $temp['balance'];
 				$data['status'] = '10000';
@@ -2290,7 +2298,7 @@ class User_model extends CI_Model{
 			$data['status'] = '10003';
 			$data['msg'] = '订单号为空!';
 		}
-
+		session_start();
 		unset($temp);
 		return $data;
 	}

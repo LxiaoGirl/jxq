@@ -31,7 +31,7 @@
                     <li class="active">
                     <form id="tx" action="" method="" accept-charset="utf-8">                    
                         <div class="zysx">
-                            <p>温馨提示：网加禁止信用卡充值、套现等行为，一经发现将予以处罚，包括但不限于：限制收款、冻结账户、永久停止服务，并会影响银行征信记录。网上银行充值过程中请耐心等待，充值成功后，请不要关闭浏览器，充值成功后返回网加，充值金额才能打入您的账号。如有问题，请联系客服。
+                            <p>温馨提示：网加禁止信用卡充值、套现等行为，一经发现将予以处罚，包括但不限于：限制收款、冻结账户、永久停止服务，并会影响银行征信记录。网上银行充值过程中请耐心等待，充值成功后，请不要关闭浏览器，充值成功后返回网加，充值金额才能打入您的账号。如有问题，请联系客服。如有充值扣款但是余额并未更新，可能是由于您的操作不规范，您可以在充值记录中点击充值失败，系统将会与银行核实充值交易。
                             </p>
                         </div>
                         <div class="fl rechar">请输入充值金额：</div>
@@ -44,6 +44,7 @@
                                 <span>充值结果</span><font class="fr close">×</font>
                             </div>
                             <div class="popbody">
+                                <p class="cz_pop_msg" style="text-align: center;display: none;">正在查询订单充值结果,请稍后...</p>
                                 <button type="button">充值成功</button><button class="czsb" type="button">充值失败</button>
                             </div>
                         </div>
@@ -99,14 +100,18 @@
         var recharge_auto_refresh = function(recharge_no){
             var recharge_fresh_time = 0;
             var refresh_recharge = function(){
+                $('.cz_pop_msg').text('正在查询订单充值结果,请稍后...').show();
                 $.post('<?php echo site_url('user/user/ajax_recharge_auto_refresh'); ?>',{'recharge_no':'<?php echo $recharge_no; ?>'},function(rs){
                     if(rs.status == '10000'){
                         $('#balance').html(rs.data);
                         clearTimeout(recharge_fresh_time);
+                        $('.cz_pop_msg').text('充值成功!');
                     } else if(rs.status == '10001'){
+                        $('.cz_pop_msg').text('充值尚未成功,1秒后继续查询!');
                         recharge_fresh_time = setTimeout(function(){refresh_recharge();},1000);
                     }else{
                         //什么也不做了
+                        $('.cz_pop_msg').text(rs.msg);
                     }
                 },'json');
             };

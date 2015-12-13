@@ -81,6 +81,15 @@ define(function (require, exports, module) {
 
     $.fn.send_sms = function(type,mobile,action){
         var wait = 60,last_send_time_go = '',tag_default_msg = '',is_input = false;
+        if(typeof g_sms_apace_time != 'undefined'){
+            wait = g_sms_apace_time;
+        }
+        if(type == 'sms' && typeof g_sms_last_time != 'undefined' && g_sms_last_time > 0){
+            last_send_time_go = Date.parse(new Date())/1000 - g_sms_last_time;
+        }
+        if(type == 'voice' && typeof g_voice_last_time != 'undefined' && g_voice_last_time > 0){
+            last_send_time_go = Date.parse(new Date())/1000 - g_voice_last_time;
+        }
 
         if( ! mobile){
             wsb_alert('电话号码不能为空!',2);

@@ -91,6 +91,9 @@
 </script>
 <?php   if(('https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] != site_url('user/user/account_home'))&&('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] != site_url('user/user/account_home'))):?><script type="text/javascript" src="<?php echo base_url('assets/js/seajs/sea.js')?>"></script>
 <script type="text/javascript">
+	var g_sms_apace_time = parseInt('<?php echo item('sms_space_time')?item('sms_space_time'):60; ?>');
+	var g_voice_last_time = parseInt('<?php echo profile('voice_last_send_time')?profile('voice_last_send_time'):0; ?>');
+	var g_sms_last_time = parseInt('<?php echo profile('sms_last_send_time')?profile('sms_last_send_time'):0; ?>');
 $(document).ready(function(){
 	seajs.use(['jquery','sys','wsb_sys'],function(){
 		main_nav_pop($(".main_nav").find($(".fr")).find($("li")));

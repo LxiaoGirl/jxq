@@ -448,7 +448,7 @@ class Cash_model extends CI_Model{
             if($temp['data']['data']){
                 foreach($temp['data']['data'] as $key=>$val){
                     $temp['data']['data'][$key]['status'] = $this->_get_recharge_status($val['status'],$val['type']);
-                    unset($temp['data']['data'][$key]['type']);
+                   // unset($temp['data']['data'][$key]['type']);
                 }
                 $data['data']   = $temp['data'];
                 $data['status'] = '10000';
