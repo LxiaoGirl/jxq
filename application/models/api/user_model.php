@@ -2273,7 +2273,6 @@ class User_model extends CI_Model{
 								$this->db->trans_complete();
 								$query = $this->db->trans_status();
 								if($query){
-									session_start();
 									$temp['balance'] = $this->_get_user_balance($uid);
 									$this->session->set_userdata('balance',$temp['balance']);
 									$data['status'] = '10000';
@@ -2298,7 +2297,7 @@ class User_model extends CI_Model{
 			$data['status'] = '10003';
 			$data['msg'] = '订单号为空!';
 		}
-		session_start();
+		if(!session_id())session_start();
 		unset($temp);
 		return $data;
 	}
