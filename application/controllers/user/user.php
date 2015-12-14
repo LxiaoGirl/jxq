@@ -155,6 +155,11 @@ class User extends Login_Controller{
 		exit(json_encode($data));
 	}
 
+	public function url_recharge_auto_refresh(){
+		$data = $this->user->recharge_refresh($this->input->post('recharge_no',true),$this->session->userdata('uid'));
+		redirect('user/user/recharge_jl', 'refresh');
+	}
+	
 	public function invest_agreement(){
 		echo '123';
 	}
@@ -603,7 +608,7 @@ class User extends Login_Controller{
 				if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)){
 					$type = $result[2];
 					$dir = "uploads/profile/".$this->session->userdata('uid')."/";
-					$new_file = date('YmdHis').'.'.$type;
+					$new_file = 'avatar.'.$type;
 
 					if(item('oss_upload')){
 						$new_file = $dir.$new_file;

@@ -495,19 +495,23 @@ class Project_model extends CI_Model{
 	/**
 	 * 获取项目投资记录
 	 * @param string $borrow_no
+	 * @param int $page_id
+	 * @param int $page_size
 	 *
 	 * @return array
 	 * 'mobile' => string '135*****887' (length=11)
 	 *'amount' => string '400000.00' (length=9)
 	 *'pay_time' => string '1444616171' (length=10)
 	 */
-	public function get_project_invest_list($borrow_no=''){
+	public function get_project_invest_list($borrow_no='', $page_id=0, $page_size=0){
 		$temp = array();
 		$data = array('name'=>'项目投资记录','status'=>'10001','msg'=>'服务器繁忙请稍后重试!','sign'=>'','data'=>array());
 
+		$this->_set_cutpage_params($page_id,$page_size);
+
 		if( ! empty($borrow_no)){
 			$temp['where'] = array(
-				'select'   => join_field('mobile', self::user).','.join_field('payment_no,amount,pay_time,automatic_type', self::payment),//uid,rate,amount,charge,dateline,pay_time real_name user_name dateline
+				'select'   => join_field('mobile,user_name,avatar', self::user).','.join_field('payment_no,amount,pay_time,automatic_type', self::payment),//uid,rate,amount,charge,dateline,pay_time real_name user_name dateline
 				'where'    => array(
 					join_field('borrow_no', self::payment) => $borrow_no,
 					join_field('type', self::payment) => 1
@@ -519,13 +523,17 @@ class Project_model extends CI_Model{
 				'order_by' 	=> join_field('dateline', self::payment).' desc'
 			);
 
-			$temp['data'] = $this->c->get_all(self::payment, $temp['where']);
+			$temp['data'] = $this->c->show_page(self::payment, $temp['where']);
 
 			$data['status'] = '10000';
-			if( ! empty($temp['data'])){
+			if( ! empty($temp['data']['data'])){
+				$data['total'] = $temp['data']['total'];
+				$temp['data'] = $temp['data']['data'];
 				//加密必要信息
 				foreach($temp['data'] as $k=>$v){
-//					$temp['data'][$k]['real_name'] 	= $this->secret($temp['data'][$k]['real_name'],mb_strlen($temp['data'][$k]['real_name'])-1);
+					if($temp['data'][$k]['user_name'] != '聚保宝')
+					$temp['data'][$k]['user_name'] 	= $this->_secret($temp['data'][$k]['user_name'],2,mb_strlen($temp['data'][$k]['user_name'])>2?mb_strlen($temp['data'][$k]['user_name'])-2:mb_strlen($temp['data'][$k]['user_name'])-1,3);
+					$temp['data'][$k]['avatar'] 	= $v['avatar']?$this->c->get_oss_image($v['avatar']):'';
 					$temp['data'][$k]['mobile'] 	= $this->_secret($temp['data'][$k]['mobile'],4,4);
 				}
 				$data['data'] 	= $temp['data'];
@@ -2072,7 +2080,7 @@ class Project_model extends CI_Model{
 			$lately_time = $this->c->get_one(self::payment, $temp['where']);
 			if( ! $lately_time){
 				$temp['repay_plan']	=$this->get_project_repayment_list($borrow_no);
-				$lately_time 		= $temp['repay_plan']['data'][0]['repay_date'];
+				$lately_time 		= date('Ymd',$temp['repay_plan']['data'][0]['repay_date']);
 			}
 		}
 
@@ -2476,10 +2484,11 @@ class Project_model extends CI_Model{
 	 * @param int    $start
 	 * @param int    $length
 	 * @param string $replace
+	 * @param int $replace_show_max
 	 *
 	 * @return string
 	 */
-	protected function _secret($string = '', $start=0, $length = 0, $replace = '*'){
+	protected function _secret($string = '', $start=0, $length = 0, $replace_show_max=0, $replace = '*'){
 		if(empty($string)) return '';
 
 		$str  = '';
@@ -2489,8 +2498,19 @@ class Project_model extends CI_Model{
 		$temp['start'] = $start?$start-1:round((count($temp['arr']) - $length) / 2);
 		$temp['end']   = $temp['start'] + $length;
 
+		$temp['replace_count'] = 0;
+		if($replace_show_max > 0 && $replace_show_max > $temp['end']-$temp['start'])$replace_show_max = $temp['end']-$temp['start'];
 		for($i = $temp['start']; $i < $temp['end']; $i++){
-			$temp['arr'][$i] = $replace;
+			if($replace_show_max > 0){
+				if($temp['replace_count'] <= $replace_show_max){
+					$temp['arr'][$i] = $replace;
+					$temp['replace_count']++;
+				}else{
+					unset($temp['arr'][$i]);
+				}
+			}else{
+				$temp['arr'][$i] = $replace;
+			}
 		}
 		$str = implode('', $temp['arr']);
 

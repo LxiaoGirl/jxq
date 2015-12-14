@@ -60,7 +60,7 @@
 			<p class="fo-p3 tc">
                 <a href="javascript:void(0);" target = "_blank"><img class="a_q" src="../../../../assets/images/common/footer1.jpg"><img class="a_f" src="../../../../assets/images/common/footer1_1.png"></a>
 				<a href="http://www.sygsj.gov.cn/index.asp" target = "_blank"><img class="a_q" src="../../../../assets/images/common/footer2.jpg"><img class="a_f" src="../../../../assets/images/common/footer2_1.png"></a>
-				<a href="http://www.miitbeian.gov.cn" target = "_blank"><img class="a_q" src="../../../../assets/images/common/footer3.jpg"><img class="a_f" src="../../../../assets/images/common/footer3_1.png"></a>
+				<a href="http://www.miitbeian.gov.cn/publish/query/indexFirst.action" target = "_blank"><img class="a_q" src="../../../../assets/images/common/footer3.jpg"><img class="a_f" src="../../../../assets/images/common/footer3_1.png"></a>
 				<a href="https://trustsealinfo.websecurity.norton.com/splash?form_file=fdf/splash.fdf&dn=www.zgwjjf.com&lang=zh_cn" target = "_blank"><img class="a_q" src="../../../../assets/images/common/footer4.jpg" ><img class="a_f" src="../../../../assets/images/common/footer4_1.png"></a>
                 <a href="http://www.itrust.org.cn/home/index/itrust_certifi/wm/1313278548.html" target = "_blank"><img class="a_q" src="../../../../assets/images/common/footer5.png" ><img class="a_f" src="../../../../assets/images/common/footer5_1.png"></a>
             </p>
@@ -94,13 +94,14 @@
 	var g_sms_apace_time = parseInt('<?php echo item('sms_space_time')?item('sms_space_time'):60; ?>');
 	var g_voice_last_time = parseInt('<?php echo profile('voice_last_send_time')?profile('voice_last_send_time'):0; ?>');
 	var g_sms_last_time = parseInt('<?php echo profile('sms_last_send_time')?profile('sms_last_send_time'):0; ?>');
+	var ajax_loading_obj = '';
 $(document).ready(function(){
 	seajs.use(['jquery','sys','wsb_sys'],function(){
 		main_nav_pop($(".main_nav").find($(".fr")).find($("li")));
 		nav_pop($(".nav_have_son"));
 		
 		$(function(){
-			var ajax_loading_obj = new  ajax_loading();
+			ajax_loading_obj = new  ajax_loading();
 			ajax_loading_obj.init(1,true,1);//ajax提交 禁用处理
 			if(navigator.userAgent.indexOf("Firefox") > -1){
 				$("."+ajax_loading_obj.get_class_flag()).hover(function(){ajax_loading_obj.set_src($(this));},function(){ajax_loading_obj.set_src(false);});

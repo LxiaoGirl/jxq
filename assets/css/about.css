@@ -369,7 +369,7 @@
 .about_bigt LI div.big_top{  background:url(../images/about/about/about_circle1.png) no-repeat left bottom;  }
 .about_bigt LI div.big_bot{ margin-top:20px; background:url(../images/about/about/about_circle2.png) no-repeat left top; }
 .about_bigt LI div .about_p1{ color:#05a1ea; font-size:16px; font-family:Arial;}
-.about_bigt LI div .about_p2{ color:#999; font-size:14px; line-height:24px;}
+.about_bigt LI div .about_p2{ color:#999; font-size:14px; line-height:24px;height: 75px; overflow: hidden; text-overflow: ellipsis;}
 .about_bigt LI div{ width:180px; padding-right:104px; float:left; height:105px; padding-left:18px;}
 .about_bigt LI div.about_bigt5{ width:180px;}
 .about_bigt1{ margin-left:226px;}

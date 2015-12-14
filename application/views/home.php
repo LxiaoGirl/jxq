@@ -253,7 +253,7 @@
 <!--	加载脚部文件-->
 <?php $this->load->view('common/footer'); ?>
 <script type="text/javascript">
-	seajs.use(['jquery','sys','slider'],function(){
+	seajs.use(['jquery','sys','slider','wsb_sys'],function(){
 		tab($(".lcdrb"));
         //标地TAB
         $('.sy_xm_tit').find('li').click(function(){

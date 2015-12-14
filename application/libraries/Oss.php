@@ -11,7 +11,7 @@
 class CI_Oss {
 
      //OSS服务地址
-    const DEFAULT_OSS_HOST = 'image.juxueqiu.com';
+    const DEFAULT_OSS_HOST = 'image.zgwjjf.com';
 
     //OSS 内部常量
 

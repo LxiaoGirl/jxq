@@ -675,6 +675,8 @@ var each_html = function(id,url,option,field_func,flag,func,callback,hide_nodata
     if( ! url)return'';
     $.post(url,option,function(rs){
         var data = rs.data;
+        var links = '';
+        if(rs.links)links=rs.links;
         var list_html = '';
         if(typeof id == "object"){
             list_html = id;
@@ -748,7 +750,7 @@ var each_html = function(id,url,option,field_func,flag,func,callback,hide_nodata
         }else{
             $("#"+id).append(htmls);
         }
-        if(typeof callback == "function") callback(no_data);
+        if(typeof callback == "function") callback(no_data,links);
     },'json');
 };
 

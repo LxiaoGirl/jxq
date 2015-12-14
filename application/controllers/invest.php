@@ -200,7 +200,10 @@ class Invest extends MY_Controller{
 	 */
 	public function ajax_get_invest_list(){
 		if($this->input->is_ajax_request() == TRUE){
-			$data = $this->project->get_project_invest_list($this->input->post('borrow_no',TRUE));
+			$data = $this->project->get_project_invest_list($this->input->post('borrow_no',TRUE),$this->input->post('page_id',TRUE),10);
+			if($data['total']){
+				$data['links'] = $this->c->get_links($data['total'],$this->input->post('page_id',TRUE),10);
+			}
 			exit(json_encode($data));
 		}
 	}

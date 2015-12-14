@@ -54,7 +54,11 @@
                     </div>
                 </div>
                 <div class="hy fr">
-                    <a class="yw" href="<?php echo site_url('about/help_list?cat_id=36'); ?>">投资有疑问？点此查看帮助</a>
+                    <!---->
+                    <p class="dlye login-flag-tag" <?php if($this->session->userdata('uid')): ?> style="display: none;" <?php endif; ?>>登陆后可以投资 <span class="fr"><button type="button" onclick="window.location.href='<?php echo site_url('login/index?redirect_url='.urlencode($this->c->show_url())); ?>'">登录</button></span></p>
+                    <p class="dlye recharge-flag-tag" <?php if( ! $this->session->userdata('uid')): ?> style="display: none;" <?php endif; ?>>账户余额 <span class="fr"><?php echo isset($balance)?$balance:0; ?>元<button type="button" onclick="window.location.href='/index.php/user/user/recharge'">充值</button></span></p>
+
+                    <!---->
 					<p class="jbb">可投额度:<span class="fr"><font><?php echo price_format($jbb_list['data']['development_amount']-$jbb_list['data']['balance'],2,false);?></font>元</span></p>
                     <p class="jbb">投资上限:<span class="fr"><?php echo price_format($jbb_list['data']['all_amount'],2,false)?>元</span></p>
                     <p class="jbb">起投金额:<span class="fr"><?php echo price_format($jbb_list['data']['start_amount'],2,false)?>元</span></p>

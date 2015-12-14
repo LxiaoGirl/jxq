@@ -2,8 +2,48 @@
 * @Author: anchen
 * @Date:   2015-10-14 10:37:00
 * @Last Modified by:   anchen
-* @Last Modified time: 2015-12-09 16:12:34
+* @Last Modified time: 2015-12-14 14:11:36
 */
+/*投资页面改*/
+.invest_detail .invest_body_bdxx .hy.fr p.dlye{
+    font-size: 14px;
+    line-height: 24px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+}
+.invest_detail .invest_body_bdxx .hy.fr p.dlye button{
+    border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -webkit-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    -ms-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: background-color;
+    -o-transition-property: background-color;
+    -ms-transition-property: background-color;
+    -moz-transition-property: background-color;
+    transition-property: background-color;
+    border:none;
+    cursor: pointer;
+    outline: 0;
+    background: #fff;
+    border:1px solid #3cb5ec;
+    color: #3cb5ec;
+    width:46px;
+    height:24px;
+    font-family: "宋体";
+    font-size: 12px;
+    margin-left: 10px;
+}
+.invest_detail .invest_body_bdxx .hy.fr p.dlye button:hover{
+    background:#3189e3;
+    color:#fff;
+}
+/*投资页面改*/
 /*2015-11-10*/
 /*首页项目改版*/
 .home_left h1 ul.sy_xm_tit{
@@ -3540,7 +3580,6 @@ p.border_bot b{
     width:877px;
     border:1px solid #3cb5ec;
     padding: 20px 10px;
-    height: 40px;
     background:#cbedfc url(../images/user/ts_tip.jpg) center left no-repeat;
     background-position: 10px;
 }
