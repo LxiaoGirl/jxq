@@ -14,6 +14,7 @@ class User_model extends CI_Model{
 	const company = 'company'; // 子公司邀请码表
 	const recharge = 'user_recharge'; // 充值
 	const user_renzheng = 'user_renzheng'; // 用户实名认证是否认证表
+	const bank = 'bank';
 
 
 
@@ -1516,38 +1517,74 @@ class User_model extends CI_Model{
 	}
 
 
-
 	/**
 	 * 添加银行卡
-	 *$uid 用户uid
-	 *$account 银行卡号
-	 *$bank_id 银行卡id
-	 *$bankaddr 银行地址
+	 * @param int $uid 用户uid
+	 * @param string $account 银行卡号
+	 * @param int $bank_id 银行卡id
+	 * @param string $bankaddr 银行地址
+	 * @return array
 	 */
 	public function Add_bank_card($uid=0,$account='',$bank_id=0,$bankaddr=''){
-		$data = $temp = array();
-		$data = array('status' => '10001', 'msg' => '你提交的数据有误,请重试！', 'url' => '');
-		//$_POST['password'] = '123456';
-		//$_POST['retype'] = $this->input->post('account');
-		//$temp['authcode'] = $this->input->post('authcode',true);
-		// if(empty( $temp['authcode'])) exit(json_encode(array('code'=>1,'msg'=>'请输入短信验证码！')));
-		// $temp['is_check'] = $this->send->validation_authcode($this->session->userdata('mobile'), $temp['authcode'], 11, 5);
-		//if(empty($temp['is_check'])){
-		//   exit(json_encode(array('code'=>1,'msg'=>'你输入短信验证码错误或已过期！')));
-		//}
+		$temp = array();
+		$data = array('name'=>'绑定银行卡','status' => '10001', 'msg' => '你提交的数据有误,请重试！', 'data' => array());
+
+		if( !$uid){
+			$data['msg'] = '用户uid为空!';
+			return $data;
+		}
+
 		$temp['where'] = array(
-				'select' => 'user_name',
+				'select' => 'real_name',
 				'where'  => array('uid' => $uid)
 		);
-		$temp['user']  = $this->c->get_row(self::user, $temp['where']);
-		if(empty($temp['user'])) return array('status' => '10001', 'msg' => '你提交的数据有误,请重试！');
+		$temp['real_name']  = $this->c->get_one(self::user, $temp['where']);
+
+		if(empty($temp['real_name'])){
+			$data['msg'] = '用户不存在!';
+			return $data;
+		}
+		if( !$bank_id){
+			$data['msg'] = '银行卡id为空!';
+			return $data;
+		}
+		$temp['bank_info'] = $this->common->get_bank($bank_id);
+		if($temp['bank_info']['status'] == '10000' && $temp['bank_info']['data']){
+			$temp['bank_info'] = $temp['bank_info']['data'];
+		}else{
+			$data['msg'] = '银行卡信息为空!';
+			return $data;
+		}
+
+		$account = str_replace(' ', '', $account);
+		if( !$account || !is_numeric($account)){
+			$data['msg'] = '请输入正确格式银行卡账号!';
+			return $data;
+		}else{
+			$temp['card_bin'] = $this->common->get_bankcard_bin($account);
+			if($temp['card_bin']['status'] == '10000'){
+				if($temp['card_bin']['data']['ban_name'] != $temp['bank_info']['bank_name']){
+					$data['msg'] = '当前帐号开户银行名称与选择不对应,请选择正确的银行名称!';
+					return $data;
+				}
+			}else{
+				$data['msg'] = $temp['card_bin']['msg'];
+				return $data;
+			}
+		}
+		$temp['card_exists'] = $this->c->count(self::card,array('where'=>array('account'=>$account,'uid'=>$uid)));
+		if($temp['card_exists']){
+			$data['msg'] = '你已绑定了该卡请勿重复绑定!';
+			return $data;
+		}
+
 		$temp['data'] = array(
 				'card_no'   => $this->c->transaction_no(self::card, 'card_no'),
 				'uid'       => $uid,
-				'real_name' => $temp['user']['user_name'],
+				'real_name' => $temp['real_name'],
 				'account'   => $account,
 				'bank_id'   => $bank_id,
-				'bank_name' => '',
+				'bank_name' => $temp['bank_info']['bank_name'],
 				'bankaddr' => $bankaddr,
 			//'province' => $this->input->post('province', TRUE),
 			//'city' => $this->input->post('bankaddr', TRUE),
@@ -1555,22 +1592,16 @@ class User_model extends CI_Model{
 				'dateline'  => time(),
 		);
 
-		$temp['data']['account'] = str_replace(' ', '', $temp['data']['account']);
-
-		if( ! empty($temp['data']['bank_id']))
-		{
-			$temp['data']['bank_name'] = $this->_get_bank_name($temp['data']['bank_id']);
-		}
-
 		$query = $this->c->insert(self::card, $temp['data']);
 
-		if( ! empty($query))
-		{
-			$this->_add_user_log('Add_bank_card', '添加银行卡',$uid,$temp['user']['user_name']);
-			$data = array(
-					'status' => '10000',
-					'msg'  => '恭喜，你的银行卡绑定成功！',
-					'url'  => site_url('user/account')
+		if( ! empty($query)){
+			$this->_add_user_log('Add_bank_card', '添加银行卡',$uid,$temp['real_name']);
+			$data['status'] = '10000';
+			$data['msg'] = '恭喜，你的银行卡绑定成功!';
+			$data['data'] = array(
+				'bank_name'=>$temp['data']['bank_name'],
+				'real_name'=>$this->_secret($temp['real_name'],2,mb_strlen($temp['real_name'])>2?mb_strlen($temp['real_name'])-2:mb_strlen($temp['real_name'])-1),
+				'account'=>$this->_secret($temp['data']['account'],5,strlen($temp['data']['account'])-8)
 			);
 		}
 
@@ -1579,6 +1610,45 @@ class User_model extends CI_Model{
 		return $data;
 	}
 
+	/**
+	 * 可固定开始位的加密字符串
+	 * @param string $string
+	 * @param int    $start
+	 * @param int    $length
+	 * @param string $replace
+	 * @param int $replace_show_max
+	 *
+	 * @return string
+	 */
+	protected function _secret($string = '', $start=0, $length = 0, $replace_show_max=0, $replace = '*'){
+		if(empty($string)) return '';
+
+		$str  = '';
+		$temp = array();
+
+		$temp['arr']   = preg_split('//u', $string, -1, PREG_SPLIT_NO_EMPTY);
+		$temp['start'] = $start?$start-1:round((count($temp['arr']) - $length) / 2);
+		$temp['end']   = $temp['start'] + $length;
+
+		$temp['replace_count'] = 0;
+		if($replace_show_max > 0 && $replace_show_max > $temp['end']-$temp['start'])$replace_show_max = $temp['end']-$temp['start'];
+		for($i = $temp['start']; $i < $temp['end']; $i++){
+			if($replace_show_max > 0){
+				if($temp['replace_count'] <= $replace_show_max){
+					$temp['arr'][$i] = $replace;
+					$temp['replace_count']++;
+				}else{
+					unset($temp['arr'][$i]);
+				}
+			}else{
+				$temp['arr'][$i] = $replace;
+			}
+		}
+		$str = implode('', $temp['arr']);
+
+		unset($temp);
+		return $str;
+	}
 
 
 	/**
@@ -1625,7 +1695,9 @@ class User_model extends CI_Model{
 		$data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
 		$temp = array();
 		$temp['where'] = array(
-				'where'  => array('uid' => $uid)
+				'select' => join_field('card_no,real_name,account,remarks,dateline',self::card).','.join_field('bank_name,code,content',self::bank),
+				'join'=> array('table' => self::bank,'where'=> self::bank.'.bank_id='.self::card.'.bank_id'),
+				'where'  => array(self::card.'.uid' => $temp['uid'])
 		);
 		$temp['user']  = $this->c->get_row(self::card, $temp['where']);
 		if(!empty($temp['user'])){

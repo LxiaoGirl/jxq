@@ -164,7 +164,7 @@
 
 </body>
 <script type="text/javascript">
-    seajs.use(['jquery','sys'],function(){
+    seajs.use(['jquery','sys','wsb_sys'],function(){
         tab($(".invest_detail_tab"));
 	    $(function(){
             //必要数据

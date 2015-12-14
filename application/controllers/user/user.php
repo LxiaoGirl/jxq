@@ -17,7 +17,7 @@ class User extends Login_Controller{
 		$this->load->model('api/common/send_model','send');
 		$this->load->model('api/cash_model','cash');
 		$this->load->model('api/project_model','project');
-		$this->_is_login();
+//		$this->_is_login();
 	}
 
 
@@ -676,11 +676,16 @@ class User extends Login_Controller{
 	 * 银行卡管理
 	 */
 	public function card(){
-		$data = array();
-		$uid = $this->session->userdata('uid');
-		$data['bank'] = $this->user->user_bank($uid);
-		$data['all_bank'] =$this->user->bank_card_list();
-		$this->load->view('user/profile/card',$data);
+		if($this->input->is_ajax_request() == TRUE){
+			$data = $this->user->Add_bank_card($this->session->userdata('uid'),$this->input->post('account',true),$this->input->post('bank_id',true));
+			exit(json_encode($data));
+		}else{
+			$data = array();
+			$uid = $this->session->userdata('uid');
+			$data['bank'] = $this->user->user_bank($uid);
+			$data['all_bank'] =$this->user->bank_card_list();
+			$this->load->view('user/profile/card',$data);
+		}
 	}
 
 	/**

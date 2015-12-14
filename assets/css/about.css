@@ -500,7 +500,18 @@
 .news_right1{ width:318px; float:right; border-left:1px solid #ccc; padding-top:30px; padding-bottom:150px;}
 .news_right1 p{ font-size:16px;border-top:1px solid #ccc; padding-left:20px; padding-top:15px;}
 .news_right1 p span{ float:right; padding-right:18px; background:url(../images/about/news/notice_more.jpg) no-repeat right 6px; font-size:14px;}
-.news_detail_list li{ line-height:30px; background:url(../images/about/news/list_circle.jpg) no-repeat left center; padding-left:18px; overflow:hidden;}
+.news_detail_list li{ line-height:30px; background:url(../images/about/news/list_circle.jpg) no-repeat left center; padding-left:18px; overflow:hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 250px;
+    padding-right: 10px;
+    position: relative;
+    }
+.news_detail_list li img{
+    position: absolute;
+    right: 0;
+    top: 0;
+}
 .news_right1 ul{padding-left:20px; border-bottom:1px solid #ccc; padding-top:6px; padding-bottom:6px;}
 .new{ position:relative; top:-5px; padding-left:5px;}
 /*媒体*/
