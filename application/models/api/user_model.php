@@ -1563,7 +1563,7 @@ class User_model extends CI_Model{
 		}else{
 			$temp['card_bin'] = $this->common->get_bankcard_bin($account);
 			if($temp['card_bin']['status'] == '10000'){
-				if($temp['card_bin']['data']['ban_name'] != $temp['bank_info']['bank_name']){
+				if($temp['card_bin']['data']['bank_name'] != $temp['bank_info']['bank_name']){
 					$data['msg'] = '当前帐号开户银行名称与选择不对应,请选择正确的银行名称!';
 					return $data;
 				}
@@ -1697,7 +1697,7 @@ class User_model extends CI_Model{
 		$temp['where'] = array(
 				'select' => join_field('card_no,real_name,account,remarks,dateline',self::card).','.join_field('bank_name,code,content',self::bank),
 				'join'=> array('table' => self::bank,'where'=> self::bank.'.bank_id='.self::card.'.bank_id'),
-				'where'  => array(self::card.'.uid' => $temp['uid'])
+				'where'  => array(self::card.'.uid' => $uid)
 		);
 		$temp['user']  = $this->c->get_row(self::card, $temp['where']);
 		if(!empty($temp['user'])){
