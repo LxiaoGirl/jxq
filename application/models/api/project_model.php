@@ -532,7 +532,7 @@ class Project_model extends CI_Model{
 				//加密必要信息
 				foreach($temp['data'] as $k=>$v){
 					if($temp['data'][$k]['user_name'] != '聚保宝')
-					$temp['data'][$k]['user_name'] 	= $this->_secret($temp['data'][$k]['user_name'],2,mb_strlen($temp['data'][$k]['user_name'])>2?mb_strlen($temp['data'][$k]['user_name'])-2:mb_strlen($temp['data'][$k]['user_name'])-1,3);
+					$temp['data'][$k]['user_name'] 	= $this->_secret($temp['data'][$k]['user_name'],2,mb_strlen($temp['data'][$k]['user_name'])-1,2);
 					$temp['data'][$k]['avatar'] 	= $v['avatar']?$this->c->get_oss_image($v['avatar']):'';
 					$temp['data'][$k]['mobile'] 	= $this->_secret($temp['data'][$k]['mobile'],4,4);
 				}
@@ -2502,7 +2502,7 @@ class Project_model extends CI_Model{
 		if($replace_show_max > 0 && $replace_show_max > $temp['end']-$temp['start'])$replace_show_max = $temp['end']-$temp['start'];
 		for($i = $temp['start']; $i < $temp['end']; $i++){
 			if($replace_show_max > 0){
-				if($temp['replace_count'] <= $replace_show_max){
+				if($temp['replace_count'] < $replace_show_max){
 					$temp['arr'][$i] = $replace;
 					$temp['replace_count']++;
 				}else{
