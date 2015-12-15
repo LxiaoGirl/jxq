@@ -27,7 +27,7 @@ class Jujianren extends My_Controller{
     /**
      * 主页
      */
-     public function index(){
+    public function index(){
          $data['inviter_no'] = '';
          $inviter_no = $this->input->get('inviter_no', TRUE);
 
@@ -43,6 +43,38 @@ class Jujianren extends My_Controller{
          }
 
          $this->load->view('jujianren/home', $data);
+    }
+
+    public function jieshao(){
+        $data = array(
+            'inviter_no'=>$this->input->get('inviter_no',true),
+            'nickname' => '',
+            'headimgurl' => '',
+            'is_myself'=>($this->session->userdata('is_myself')?1:0)
+        );
+
+        $openid = $this->input->get('openid');
+
+
+        if($data['inviter_no']){
+            $userinfo = $this->c->get_row('user',array('select'=>'real_name,user_name,avatar','where'=>array('inviter_no'=>$data['inviter_no'])));
+
+            if($userinfo){
+                if(!$openid){
+                    $data['nickname']   = $userinfo['real_name']?$userinfo['real_name']:$userinfo['user_name'];
+                    $data['headimgurl'] = $userinfo['avatar']?$this->c->get_oss_image($userinfo['avatar']):'';
+                }else{
+                    $this->load->library('wx');
+                    $wx_userinfo        = $this->wx->get_wx_userinfo($openid);
+                    $data['nickname']   = $wx_userinfo['nickname'];
+                    $data['headimgurl'] = $wx_userinfo['headimgurl'];
+                }
+            }else{
+                $data['inviter_no'] = '';
+            }
+        }
+
+        $this->load->view('mobiles/intermediary/share_page',$data);
     }
 
     /**

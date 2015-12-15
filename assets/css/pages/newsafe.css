@@ -1,0 +1,44 @@
+/* 
+* @Author: anchen
+* @Date:   2015-08-04 09:58:20
+* @Last Modified by:   anchen
+* @Last Modified time: 2015-08-04 10:22:03
+*/
+body{
+    background:#fff;
+}
+.aqbz_g-wrap{
+    border-bottom:1px dashed #a9a4a4;
+    height: 399px;
+}
+.aqbz_g-wrap div{
+    padding: 40px;
+    height: 319px;
+    width:725px;
+}
+.aqbz_g-wrap div h1{
+    font-size: 36px;
+    color:#333;
+    line-height: 110px;
+    font-weight: 400;
+}
+.aqbz_g-wrap div p{
+    font-size: 18px;
+    color:#666;
+    line-height: 26px;
+}
+.aqbz_g-wrap_1{
+    background:url("../../images/aqbz/aqbz_2.png") center center no-repeat;
+}
+.aqbz_g-wrap_2{
+    background:url("../../images/aqbz/aqbz_3.png") center center no-repeat;
+}
+.aqbz_g-wrap_3{
+    background:url("../../images/aqbz/aqbz_4.png") center center no-repeat;
+}
+.aqbz_g-wrap_4{
+    background:url("../../images/aqbz/aqbz_6.png") center center no-repeat;
+}
+.aqbz_g-wrap_5{
+    background:url("../../images/aqbz/aqbz_5.png") center center no-repeat;
+}

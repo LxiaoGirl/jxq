@@ -212,14 +212,13 @@ class Intermediary extends MY_Controller{
 
         $openid = $this->input->get('openid');
         
-        
         if($data['inviter_no']){
             $userinfo = $this->c->get_row('user',array('select'=>'real_name,user_name,avatar','where'=>array('inviter_no'=>$data['inviter_no'])));
 
             if($userinfo){
                 if(!$openid){
                     $data['nickname']   = $userinfo['real_name']?$userinfo['real_name']:$userinfo['user_name'];
-                    $data['headimgurl'] = $userinfo['avatar'];
+                    $data['headimgurl'] = $userinfo['avatar']?$this->c->get_oss_image($userinfo['avatar']):'';
                 }else{
                     $this->load->library('wx');
                     $wx_userinfo        = $this->wx->get_wx_userinfo($openid);

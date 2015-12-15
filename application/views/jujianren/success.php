@@ -8,7 +8,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <meta charset="utf-8"/>
     <meta name="baidu-site-verification" content="NWiIzGM1AG"/>
-    <link href="/assets/css/web_1/mycss.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/pages/mycss.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="wrap">

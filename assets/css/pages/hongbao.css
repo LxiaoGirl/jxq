@@ -1,0 +1,28 @@
+
+.ly{Z-INDEX:8888; POSITION:fixed; -moz-opacity:0.50; opacity:0.5; filter:alpha(opacity=50); BACKGROUND-COLOR:#000; display:none;}
+.tan_div{ background:url(../../images/hongbao/hongbao.png) no-repeat left top; height:665px;width:480px; position:fixed; top:50%; left:50%; margin-top:-332px; margin-left:-240px; z-index:10001; display:none;}
+.close{ position:absolute; right:18px; top:108px;}
+.btn_close{ background:url(../../images/hongbao/close.jpg) no-repeat left top; width:36px; height:36px; cursor:pointer; outline:none;border:none;
+   -webkit-background-size: 36px 36px;
+    -moz-background-size: 36px 36px;
+    background-size: 36px 36px;
+    -webkit-transition: -webkit-transform 0.3s ease-out;
+    -moz-transition: -moz-transform 0.3s ease-out;
+    -o-transition: -o-transform 0.3s ease-out;
+    -ms-transition: -ms-transform 0.3s ease-out;}
+.btn_close:hover{
+	-moz-transform: rotateZ(180deg);
+    -o-transform: rotateZ(180deg);
+    -ms-transform: rotateZ(180deg);
+    transform: rotateZ(180deg);}
+.hong_h1{ font-size:100px; padding-left:210px; color:#fff; padding-top:145px; padding-bottom:35px;}
+.hong_h1 b{ font-size:50px;}
+.hong_txt{ color:#fff; font-size:24px; width:335px; padding-left:75px; padding-bottom:30px; line-height:32px; text-align:center;}
+.hong_txt span{ font-size:20px; padding-bottom:8px;}
+.tab_hong1 td{ font-size:14px; line-height:24px; padding-top:10px; padding-bottom:10px;}
+.btn_hong1{ width:100px; height:32px; background:#da251c; opacity:0.8; color:#fff; border:none; margin:0 auto; font-size:14px;}
+.btn_hong1:hover{opacity:1;}
+.btn_hong2{width:100px; height:32px; background:#cdcdcd; opacity:0.8; color:#fff; border:none; margin:0 auto; font-size:14px; line-height:32px;}
+.btn_hong2:hover{opacity:1;}
+.btn_ensure{ width:270px; height:70px; background:url(../../images/hongbao/btn_sure.png) no-repeat left top; cursor:pointer; border:none;outline:none; }
+.ensure_w{width:270px;  margin:0 auto;}

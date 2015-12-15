@@ -1,4 +1,4 @@
-<!DOCTYPE !!>
+<!DOCTYPE html>
 <html>
 <head>
     <title></title>
@@ -8,10 +8,7 @@
     <meta http-equiv="Cache-Control" content="no-siteapp"/>
     <meta charset="utf-8"/>
 	<meta name="baidu-site-verification" content="NWiIzGM1AG" />
-    <link href="https://www.zgwjjf.com/assets/css/pages/mycss.css" rel="stylesheet" type="text/css">
-<script src="https://www.zgwjjf.com/assets/js/seajs/sea.js" type="text/javascript"></script>
-<script src="https://www.zgwjjf.com/assets/js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
-<script src="https://www.zgwjjf.com/assets/js/jquery/myjs.js" type="text/javascript"></script>
+    <link href="/assets/css/pages/mycss.css" rel="stylesheet" type="text/css">
 </head>
 
 <body class="content_wrap">
@@ -30,8 +27,6 @@
 		 <?php echo "您没有邀请人哦";?>
 		<?php endif;?>
         </div>
-        
     </div>
-    
 </body>
 </html>
