@@ -292,10 +292,6 @@
                         obj.siblings('button').removeClass('jjksbut').addClass('ajax-submit-button').html('马上投标').attr('data-status',2).attr('data-loading-msg','投资中...').bind('click',function(){invest();});
                         obj.remove();
                         $('.time-down').show();
-                        ajax_loading_obj.init(1,true,1);//ajax提交 禁用处理
-                        if(navigator.userAgent.indexOf("Firefox") > -1){
-                            $("."+ajax_loading_obj.get_class_flag()).hover(function(){ajax_loading_obj.set_src($(this));},function(){ajax_loading_obj.set_src(false);});
-                        }
                         $("#enable_invest_max").text('<?php echo price_format($project['amount']-$project['receive'],2,false); ?>');
                         is_click1 = false;
                     },'','',<?php echo time(); ?>);

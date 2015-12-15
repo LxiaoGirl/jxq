@@ -94,14 +94,13 @@
 	var g_sms_apace_time = parseInt('<?php echo item('sms_space_time')?item('sms_space_time'):60; ?>');
 	var g_voice_last_time = parseInt('<?php echo profile('voice_last_send_time')?profile('voice_last_send_time'):0; ?>');
 	var g_sms_last_time = parseInt('<?php echo profile('sms_last_send_time')?profile('sms_last_send_time'):0; ?>');
-	var ajax_loading_obj = '';
 $(document).ready(function(){
 	seajs.use(['jquery','sys','wsb_sys'],function(){
 		main_nav_pop($(".main_nav").find($(".fr")).find($("li")));
 		nav_pop($(".nav_have_son"));
 		
 		$(function(){
-			ajax_loading_obj = new  ajax_loading();
+			var ajax_loading_obj = new  ajax_loading();
 			ajax_loading_obj.init(1,true,1);//ajax提交 禁用处理
 			if(navigator.userAgent.indexOf("Firefox") > -1){
 				$("."+ajax_loading_obj.get_class_flag()).hover(function(){ajax_loading_obj.set_src($(this));},function(){ajax_loading_obj.set_src(false);});
