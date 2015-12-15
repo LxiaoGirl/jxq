@@ -62,24 +62,18 @@
 					<p class="jbb">可投额度:<span class="fr"><font><?php echo price_format($jbb_list['data']['development_amount']-$jbb_list['data']['balance'],2,false);?></font>元</span></p>
                     <p class="jbb">投资上限:<span class="fr"><?php echo price_format($jbb_list['data']['all_amount'],2,false)?>元</span></p>
                     <p class="jbb">起投金额:<span class="fr"><?php echo price_format($jbb_list['data']['start_amount'],2,false)?>元</span></p>
-					<?php if($this->session->userdata('uid')):?>
-                    <!--<p class="jbb">我的可用余额:<span class="fr"><?php echo $balance;?>元</span></p>-->
-					<?php else:?>
-					<p class="jbb">您还未登录请点击<a href="<?php echo site_url('login'); ?>">登陆</a></p>
-					<?php endif;?>
                     <form action="" method="" accept-charset="utf-8">
                         <p class="but">
 							<?php if($jbb_list['data']['start_day']+3600*$jbb_list['data']['start_time']<=time()&&$jbb_list['data']['type']==1):?>
                             <input type="text" value="" placeholder="<?php echo $jbb_list['data']['start_amount']?>" class="invest-amount">
                             <input type="button"   id="invest-button" value="马上加入" >
-							<p class="but_pop_tip msg" style="display: none;"></p>
-							<?php elseif($jbb_list['data']['type']==2):?>
-							<p class="tc"><input type="button" class="ymbbut" value="已售罄" ></p>
-							<?php else:?>
-							<p class="tc"><input type="button" class="jjks" value="即将开始" ></p>
-							<?php endif;?>
+                            <span class="but_pop_tip msg" style="display: none; top:42px;"></span>
+                            <?php elseif($jbb_list['data']['type']==2):?>
+                            <input type="button" class="ymbbut" value="已售罄" >
+                            <?php else:?>
+                            <input type="button" class="jjks" value="即将开始" >
+                            <?php endif;?>
                         </p>
-						<div class="msg" style="display: none;"><p></p></div>
                         <div class="invest_zjmm_pop">
                             <div class="invest_zjmm_pop_body">
                             <div class="title">
@@ -212,11 +206,11 @@
 		var invest = function() {
                if (is_login == "1") {
                     if ( is_security == '0') {
-                        $(".msg").show().find('p').html('您还没有设置资金密码哦<a href="<?php echo site_url('user/user/account_security'); ?>">设置资金密码</a>');
+                        $(".msg").show().html('您还没有设置资金密码哦<a href="<?php echo site_url('user/user/account_security'); ?>">设置资金密码</a>');
                         return false;
                     }
                     if ( is_real_name != '1') {
-                        $(".msg").show().find('p').html('您还没有进行实名认证哦<a href="<?php echo site_url('user/user/account_security'); ?>">实名认证</a>');
+                        $(".msg").show().html('您还没有进行实名认证哦<a href="<?php echo site_url('user/user/account_security'); ?>">实名认证</a>');
                         return false;
                     }
 					
@@ -240,7 +234,7 @@
                         wsb_alert('投资金额不能大于￥' + invest_max + '元!',2);
 						return false;
                     }else if(money > my_balance) {
-                        $(".msg").show().find('p').html('你的余额不足<a href="<?php echo site_url('user/user/recharge'); ?>">充值</a>');
+                        $(".msg").show().html('你的余额不足<a href="<?php echo site_url('user/user/recharge'); ?>">充值</a>');
                     }else{
                         $('.black_bg').fadeIn();
                         $('.invest_zjmm_pop').fadeIn("fast",function(){

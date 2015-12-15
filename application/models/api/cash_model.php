@@ -21,14 +21,12 @@ class Cash_model extends CI_Model{
 	const risk          = 'risk_money';          //风险保证金
 
 
-    const RUN_DATE      = '2015-06-12';         //网站运行时间
-    const TRANSFE_MIN   = '50';                 //提现最低金额
-    private $_page_size = '10';                 //分页每页记录数
+    const RUN_DATE           = '2015-06-12';         //网站运行时间
+    private $_transfer_min   = '50';                 //提现最低金额
+    private $_page_size      = '10';                 //分页每页记录数
 
     public function __construct(){
         parent::__construct();
-		date_default_timezone_set('PRC');
-		$this->load->model('api/common/send_model','send');
     }
 
     /**
@@ -514,12 +512,11 @@ class Cash_model extends CI_Model{
      * @param int $amount
      * @param string $card_no
      * @param string $security
-     * @param string $authcode
      * @param int $charge
      * @return array
      *  balance=>0
      */
-    public function user_transfer($uid=0,$amount=0,$card_no='',$security='',$authcode='',$charge=2){
+    public function user_transfer($uid=0,$amount=0,$card_no='',$security='',$charge=2){
         $data = array(
             'name'   =>'提现',
             'status' =>'10001',
@@ -532,14 +529,13 @@ class Cash_model extends CI_Model{
             $data['status'] = '10002';
             return $data;
         }
-
         if(!is_numeric($amount)){
             $data['msg'] = '请输入数字类型的提现金额!';
             return $data;
         }
-
-        if($amount < self::TRANSFE_MIN){
-            $data['msg'] = '最低提现金额'.self::TRANSFE_MIN.'元!';
+        if(item('transfer_min'))$this->_transfer_min = item('transfer_min');
+        if($amount < $this->_transfer_min){
+            $data['msg'] = '最低提现金额'.$this->_transfer_min.'元!';
             return $data;
         }
         if(!$card_no){
@@ -550,10 +546,6 @@ class Cash_model extends CI_Model{
             $data['msg'] = '交易密码为空!';
             return $data;
         }
-//        if(!$authcode){
-//            $data['msg'] = '短信验证码为空!';
-//            return $data;
-//        }
 
         //查询该用户是否存在
         $temp['user_info'] = $this->_get_userinfo($uid);
@@ -566,12 +558,14 @@ class Cash_model extends CI_Model{
             $data['status'] = '10003';
             return $data;
         }
+
         //查询提现卡号信息是否存在
         $temp['card_info'] = $this->_get_card_info($uid);
         if(!$temp['card_info']){
             $data['msg'] = '银行账户信息不存在!';
             return $data;
         }
+
         //获取余额 验证余额
         $temp['balance']  = $this->get_user_balance($uid);
         $temp['balance']  = $temp['balance']['data']['balance'];
@@ -579,13 +573,6 @@ class Cash_model extends CI_Model{
             $data['msg']    = '余额不足!';
             $data['status'] = '10004';
             return $data;
-        }
-        //验证手机验证码
-        $temp['is_check'] = $this->send->validation_authcode($temp['user_info']['mobile'], $authcode, 'transfer');
-        if($temp['is_check']['status']=='10001'){
-			$data['status'] = '10006';
-            $data['msg'] = $temp['is_check']['msg'];
-           return $data;
         }
 
         //验证资金密码
@@ -595,6 +582,7 @@ class Cash_model extends CI_Model{
             $data['msg'] = '交易密码有误!';
             return $data;
         }
+
         //开启事务
         $this->db->trans_start();
 
@@ -620,7 +608,7 @@ class Cash_model extends CI_Model{
             'amount'   => $amount,
             'balance'  => round($temp['balance'] - $amount, 2),
             'source'   => $temp['transaction_no'],
-            'remarks'  => '会员提现',
+            'remarks'  => '提现冻结',
             'dateline' => time()
         );
         $this->c->insert(self::cash, $temp['data']);
@@ -836,7 +824,7 @@ class Cash_model extends CI_Model{
         unset($temp['data']['links']);
         if($temp['data']['data']){
             foreach($temp['data']['data'] as $key=>$val){
-                $temp['data']['data'][$key]['mobile'] = $this->_secret($val['mobile'],4,4);
+                $temp['data']['data'][$key]['mobile'] = $this->_secret($val['mobile'],4,5);
             }
             $data['data']   = $temp['data'];
             $data['status'] = '10000';

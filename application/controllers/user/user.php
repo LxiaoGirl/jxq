@@ -98,13 +98,14 @@ class User extends Login_Controller{
 	public function withdrawals(){
 		$data = array();
 		$uid=$this->session->userdata('uid');
-		$data['user_bank'] = $this->user->user_bank($uid);
-		if($data['user_bank']['status']==10000){
-			$data['bank'] = $this->user->bank_card_list($data['user_bank']['data']['bank_id']);
-		}else{
+
+		$data['bank'] = $this->user->user_bank($uid);
+		if($data['bank']['status'] != '10000'){
 			redirect('user/user/card', 'refresh');
 		}
+
 		$data['balance'] = $this->cash->get_user_balance($uid);
+
 		$this->load->view('user/myaccount/withdrawals',$data);
 	}
 
@@ -112,20 +113,22 @@ class User extends Login_Controller{
 	 *提现操作
 	 */
 	public function user_transfer(){
-		$uid=$this->session->userdata('uid');
-		$card_no=$this->user->user_bank($uid);
-		$card_no = $card_no['data']['account'];
-		$amount=$this->input->get('amount',true);
-		$security=$this->input->get('security',true);
-		$authcode=$this->input->get('authcode',true);
-		//查询今天的提现情况
-		$today_transfer = $this->cash->get_user_transfer_list($uid,0,strtotime(date('Y-m-d').' 00:00:00'),time());
+		//验证短信
+		$sms_check = $this->commons->validation_authcode($this->session->userdata('mobile'),$this->input->post('authcode',true),'transfer',$this->session->userdata('uid'));
+		if($sms_check['status'] != '10000'){
+			$data = array('status'=>'10001','msg'=>$sms_check['msg'],'data'=>array());
+			exit(json_encode($data));
+		}
+		//查询今天的提现情况 处理手续费
+		$today_transfer = $this->cash->get_user_transfer_list($this->session->userdata('uid'),0,strtotime(date('Y-m-d').' 00:00:00'),time());
 		if($today_transfer['status'] == '10000' && $today_transfer['data'] && (isset($today_transfer['data']['data']) && count($today_transfer['data']['data'])>0)){
 			$charge = 2;
 		}else{
 			$charge = 0;
 		}
-		$data = $this->cash->user_transfer($uid,$amount,$card_no,$security,$authcode,$charge);
+		//执行体现处理
+		$data = $this->cash->user_transfer($this->session->userdata('uid'),$this->input->post('amount',true),$this->input->post('card_no',true),$this->input->post('security',true),$charge);
+		//操作成功 处理余额session
 		if($data['status'] == '10000'){
 			$this->session->set_userdata(array('balance'=>$data['data']['balance']));
 		}

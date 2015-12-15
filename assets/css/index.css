@@ -5619,3 +5619,28 @@ p.border_bot b{
 
 
 /*聚保宝个人中心*/
+
+
+/*2015.12.15 11:56*/
+.home_right h1 a.fr,.home_left h1 a.fr{
+    width:108px;
+    height:24px;
+    background:#76caf0;
+    color:#fff;
+    padding:0;
+    margin:0;
+    text-indent:0px;
+    border-radius:15px;
+    text-align:center;
+    line-height:24px;
+    margin-top:15px;
+}
+.home_left h1 ul.sy_xm_tit a.fr{
+    line-height:24px;
+    margin-top:5px;
+}
+.home_right h1 a.fr:hover,.home_left h1 a.fr:hover{
+    background:#3cb5ec;
+    color:#fff;
+}
+/*2015.12.15 11:56*/

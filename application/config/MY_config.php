@@ -62,3 +62,4 @@ $config['invest_home_tips_cat_id_4']          = 54; //聚保宝小贴士新闻�
 
 $config['max_rate_cat_id']                  = 45; //logo后面的高收益利率
 $config['recharge_min']                     = 50; //最小充值金额
+$config['transfer_min']                     = 10; //最小提现金额
