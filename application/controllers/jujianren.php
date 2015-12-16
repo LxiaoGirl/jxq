@@ -7,11 +7,7 @@
 
 class Jujianren extends My_Controller{
     const user     = 'user'; // 会员
-    const admin    = 'admin'; // 管理员
-    const message  = 'message'; // 系统消息
-    const log      = 'user_log'; // 会员日志
-    const authcode = 'authcode'; // 验证授权
-    const flow     = 'cash_flow'; // 资金记录
+    const company     = 'company'; // 公司
 
     /**
      * 初始化
@@ -23,9 +19,8 @@ class Jujianren extends My_Controller{
         $this->load->model('api/user_model', 'user');
     }
 
-
     /**
-     * 主页
+     * 注册 主页
      */
     public function index(){
          $data['inviter_no'] = '';
@@ -45,6 +40,9 @@ class Jujianren extends My_Controller{
          $this->load->view('jujianren/home', $data);
     }
 
+    /**
+     * 介绍页面
+     */
     public function jieshao(){
         $data = array(
             'inviter_no'=>$this->input->get('inviter_no',true),
@@ -81,7 +79,7 @@ class Jujianren extends My_Controller{
      * 注册处理
      */
     public function sign_up(){
-        $data = $this->user->register($this->input->post('mobile',true),$this->input->post('password',true),$this->input->post('authcode',true),$this->input->post('inviter_no',true));
+        $data = $this->user->register($this->input->post('mobile',true),$this->input->post('password',true),$this->input->post('authcode',true),'',$this->input->post('inviter_no',true));
         if($data['status'] == '10000'){
             $this->session->set_userdata($data['data']);
         }
@@ -96,6 +94,28 @@ class Jujianren extends My_Controller{
     }
 
     /**
+     * 公司二维码扫描后显示页面
+     */
+    public function company(){
+        $data = array(
+            'inviter_no'=>$this->input->get('inviter_no',true),
+            'nickname' => ''
+        );
+
+        if($data['inviter_no']){
+            $company_info = $this->c->get_row(self::company,array('where'=>array('company_inviter_no'=>$data['inviter_no'])));
+
+            if($company_info){
+                $data['nickname']   = $company_info['company_name'];
+            }else{
+                $data['inviter_no'] = '';
+            }
+        }
+
+        $this->load->view('jujianren/company', $data);
+    }
+
+    /**
      * 根据邀请码获取邀请人信息
      * @param string $code
      * @return array
@@ -104,6 +124,10 @@ class Jujianren extends My_Controller{
         $data = array();
         if($code != ''){
             $data = $this->c->get_row(self::user,array('where'=>array('inviter_no'=>$code)));
+            if( !$data){
+                //查看是不是公司码
+                $data = $this->c->get_row(self::company,array('where'=>array('company_inviter_no'=>$code)));
+            }
         }
 
         return $data;
