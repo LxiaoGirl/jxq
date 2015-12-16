@@ -136,6 +136,11 @@ class Home extends MY_Controller{
      */
     public function ajax_get_slider_list(){
         $data = $this->c->get_all('article',array('where'=>array('cat_id'=>32,'status'=>1),'select'=>'source,link_url','order_by'=>'id DESC'));
+        if($data){
+            foreach($data as $k=>$v){
+                if($v['link_url'])$data[$k]['link_url'] = str_replace('__APP__',rtrim(self::dir,'/'),$v['link_url']);
+            }
+        }
         exit(json_encode($data));
     }
 
