@@ -27,9 +27,6 @@ class Intermediary extends MY_Controller{
     public function __construct(){
         parent::__construct();
 
-        //验证居间人起始时间
-        if($this->uri->uri_string() != 'apps/intermediary/no_start')$this->_check_intermediary_time();
-
         if( ! $this->session->userdata('captcha'))$this->session->set_userdata(array('captcha'=>md5('wang')));//发送短信 处理
 
         //分页参数的修正
@@ -135,6 +132,9 @@ class Intermediary extends MY_Controller{
         if($this->session->userdata('inviter_no')){
             redirect(self::dir.'intermediary/index','location');
         }
+        //验证居间人起始时间
+        $this->_check_intermediary_time();
+
         $data['inviter_no'] = $this->input->get('inviter_no')?$this->input->get('inviter_no'):'';
         $this->load->view(self::dir.'intermediary/guide',$data);
     }
@@ -244,6 +244,8 @@ class Intermediary extends MY_Controller{
      * 居间人 申请 主页
      */
     public function apply(){
+        //验证居间人起始时间
+        $this->_check_intermediary_time();
         $data['inviter_no'] = $this->input->get('inviter_no')?$this->input->get('inviter_no'):'';
         $this->load->view(self::dir.'intermediary/apply',$data);
     }
@@ -318,6 +320,19 @@ class Intermediary extends MY_Controller{
         if($this->input->is_ajax_request() == TRUE){
             $data = array('data'=>'','msg'=>'你提交的数据有误！','code'=>1);
             $temp = array();
+
+            $this->config->load('intermediary');//加载居间人时间配置
+            $start_time = $this->config->item('intermediary_start_time')?$this->config->item('intermediary_start_time'):'2015-10-10 09:00:00';
+            $end_time   = $this->config->item('intermediary_end_time')?$this->config->item('intermediary_end_time'):'2035-10-10 09:00:00';
+
+            if(strtotime($start_time) > time()){
+                $data['msg'] = '活动尚未开始';
+                exit(json_encode($data));
+            }
+            if(strtotime($end_time) < time()){
+                $data['msg'] = '活动已结束';
+                exit(json_encode($data));
+            }
             
             $temp['mobile']   = $this->input->post('mobile',true);
             $temp['password'] = $this->input->post('password',true);
@@ -741,7 +756,6 @@ class Intermediary extends MY_Controller{
 
     /**
      * 验证居间人起始时间
-     * @return [type] [description]
      */
     protected function _check_intermediary_time(){
         $this->config->load('intermediary');//加载居间人时间配置
@@ -762,9 +776,12 @@ class Intermediary extends MY_Controller{
     public function no_start(){
         $this->config->load('intermediary');//加载居间人时间配置
 
-        $data['start_time'] = $this->config->item('intermediary_start_time');
-        if(!$data['start_time'])$data['start_time'] = '2015-10-10 09:00:00';
+        $data['start_time'] = $this->config->item('intermediary_start_time')?$this->config->item('intermediary_start_time'):'2015-10-10 09:00:00';
+        $data['end_time'] = $this->config->item('intermediary_end_time')?$this->config->item('intermediary_end_time'): '2035-10-10 09:00:00';
 
+        if(time() >= strtotime($data['start_time']) && time() <= strtotime($data['end_time'])){
+            redirect('apps/intermediary/guide');
+        }
         $this->load->view(self::dir.'/intermediary/no_start',$data);
     }
 }

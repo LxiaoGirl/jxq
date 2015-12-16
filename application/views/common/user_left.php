@@ -45,7 +45,9 @@
                 <a class="leaders" href="<?php echo site_url('user/user/account_information');?>"><li class="leaders"><img src="../../../assets/images/common/user_left_icon_4.png">账户设置</li></a>
                 <a href="<?php echo site_url('user/user/account_information');?>" <?php if(in_array($this->router->fetch_method(),array('account_information','head_portrait','account_security'))): ?>class="selected"<?php endif; ?>><li>基本信息<font class="fr">></font></li></a>
                 <a href="<?php echo site_url('user/user/card');?>" <?php if($this->router->fetch_method() == 'card'): ?>class="selected"<?php endif; ?>><li>银行卡管理<font class="fr">></font></li></a>
+                <?php if(profile('inviter_no')): ?>
                 <a href="<?php echo site_url('user/user/invite');?>" <?php if(in_array($this->router->fetch_method(),array('invite','invite_customer'))): ?>class="selected"<?php endif; ?>><li>邀请好友<font class="fr">></font></li></a>
+                <?php endif; ?>
             </ul>
         </div>
 
