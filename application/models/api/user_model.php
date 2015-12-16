@@ -361,7 +361,7 @@ class User_model extends CI_Model{
 						if( ! empty($ceshi['FundAcc']['VaccId'])){//if( ! empty($ceshi['data']['sex']))// if( ! empty($ceshi['FundAcc']['VaccId']))
 							$temp['data'] = array(
 									'gender' => $gender,
-//									'user_name' => $real_name,
+									'user_name' => $real_name,
 									'real_name' => $real_name,
 									'nric'      => $nric,
 									'firmid' 	=> $ceshi['FundAcc']['FirmId'],

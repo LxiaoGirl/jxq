@@ -1364,17 +1364,18 @@ class Project_model extends CI_Model{
 				'msg'=>'暂无相关信息!'
 			);
 		$temp['where'] = array(
-			'select'   => 'count(*)',
+			'select'   => '*',
 			'like'	   =>array('field'=>'type_code','match'=>$type_code,'flag'=>'both'),
 			'group_by' => 'borrow_no'
 		);
-		$temp['data'] = $this->c->get_one(self::payment, $temp['where']);	
+		$temp['data'] = $this->c->get_all(self::payment, $temp['where']);
+		$num = count($temp['data']);
 		if(!empty($temp['data'])){
 			$data = array(
 				'status'=>'10000',
 				'msg'=>'ok!',
 				'data'=>array(
-					'jbb_invest_nums' => $temp['data']
+					'jbb_invest_nums' => $num
 				)
 			);
 		}else{
@@ -2002,7 +2003,7 @@ class Project_model extends CI_Model{
 			//查询已还款的利息  如果已收利息大于
 			$repay_interest = $this->c->get_one(self::payment,array('select'=>'SUM(amount)','where'=>array('borrow_no'=>$borrow_no,'type'=>3,'status'=>1,'uid'=>$uid)));
 			if($repay_interest && $repay_interest>$amount){
-				$interest = round($repay_interest-$amount,2);
+				$interest = bcsub($repay_interest,$amount,2);
 			}else{
 				$interest = $this->get_project_interest($amount,$rate,$months,$mode);
 			}
@@ -2258,7 +2259,7 @@ class Project_model extends CI_Model{
 		$temp['m_rate']   = ($rate/100)/12;//月利率
 		$temp['m_amount'] = $amount*$temp['m_rate']*pow((1+$temp['m_rate']),$months)/(pow((1+$temp['m_rate']),$months)-1);//每月还款 金额
 
-		return round(($months*$temp['m_amount']-$amount),2);
+		return floor(($months*$temp['m_amount']-$amount)*100)/100;
 	}
 
 	/**
@@ -2295,14 +2296,14 @@ class Project_model extends CI_Model{
 	 * @return float
 	 */
 	public function get_debj_all_interest($amount,$rate,$months){
-		return round(($months+1)*$amount*(($rate/100)/12)/2,2);
+		return floor((($months+1)*$amount*(($rate/100)/12)/2)*100)/100;
 	}
 
 	/**
 	 * 一次性本息 利息
 	 */
 	public function get_ycxbx_interest($amount,$rate,$months){
-		return round($amount*(($rate/100)/360)*($months*30),2);
+		return floor($amount*(($rate/100)/360)*($months*30)*100)/100;
 	}
 
 	/**

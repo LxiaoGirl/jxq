@@ -991,7 +991,7 @@ class Home extends MY_Controller{
                     $repay_interest = $this->c->get_one(self::payment,array('select'=>'SUM(amount)','where'=>array('borrow_no'=>$v['borrow_no'],'type'=>3,'status'=>1,'uid'=>$this->session->userdata("uid"))));
                     if($repay_interest && $repay_interest>$v['amount']){
 //                        $data['data'][$k]['project_interest'] = round($repay_interest-$v['amount'],2);
-                        $data['data'][$k]['project_interest'] = floor($repay_interest-$v['amount']*100)/100;//2015.12.16-wsb-修改为不进位保留两位小数
+                        $data['data'][$k]['project_interest'] = bcsub($repay_interest,$v['amount'],2);//2015.12.16-wsb-修改为不进位保留两位小数
                     }else{
                         $data['data'][$k]['project_interest'] = $this->app->get_project_interest(array('mode'=>$v['mode'],'amount'=>$v['amount'],'rate'=>$v['rate'],'months'=>$v['months']));
                         // if($repay_interest){
