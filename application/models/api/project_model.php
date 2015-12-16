@@ -86,6 +86,8 @@ class Project_model extends CI_Model{
 						.join_field('sort_order',self::borrow).' DESC,'
 						.join_field('productcategory',self::borrow).' ASC,'
 						.join_field('status',self::borrow).' ASC,'
+						.join_field('buy_time',self::borrow).' ASC,'
+						.join_field('receive DIV amount',self::borrow).' DESC,'
 						.join_field('id',self::borrow).' DESC',
             'where'=>array(
                 join_field('status',self::borrow).' >'=>1,//项目状态审核通过 未取消
