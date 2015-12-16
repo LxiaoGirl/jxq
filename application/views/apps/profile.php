@@ -19,7 +19,7 @@
                 <td align="right" width="50" height="50">
                     <a href="#">
                         <img style="border-radius:50%"
-                             src="<?php echo profile('avatar') ? base_url(profile('avatar')) : assets('images/personal/default-faceimage.png'); ?>"
+                             src="<?php echo profile('avatar') ? $this->c->get_oss_image(profile('avatar')) : assets('images/personal/default-faceimage.png'); ?>"
                              width="50" height="50" alt="">
                     </a>
                 </td>

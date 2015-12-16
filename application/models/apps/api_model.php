@@ -55,7 +55,7 @@ class Api_model extends CI_Model
                             'data'  => array(
                                 'uid'=>urlencode(authcode($temp['user']['uid'])),
                                 'user_name'=>$temp['user']['user_name'],
-                                'avatar'=>$temp['user']['avatar']?$temp['user']['avatar']:assets('images/personal/default-faceimage.png'),
+                                'avatar'=>$temp['user']['avatar']?$this->c->get_oss_image($temp['user']['avatar']):assets('images/personal/default-faceimage.png'),
                                 'mobile'=>$temp['user']['mobile'],
                                 'inviter_no'=>$temp['user']['inviter_no']
                             )

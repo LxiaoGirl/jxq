@@ -1533,4 +1533,19 @@ public function ajax_get_redbagdata(){
         $this->session->sess_destroy();
         redirect('mobiles/home/index','location');
     }
+
+
+    /**
+     * 聚宝宝管理
+     */
+    public function jbb(){
+        $this->load->view(self::dir.'jbb');
+    }
+
+    /**
+     * 自动投设置
+     */
+    public function my_auto_invest(){
+        $this->load->view(self::dir.'my_auto_invest');
+    }
 }
