@@ -349,16 +349,16 @@
                     //if(v.avatar == '')obj.find('.avatar').attr('src','/assets/images/common/my_icon.jpg');
                     switch (v.automatic_type){
                         case '1'://自动
-                            obj.find('.mobile').append('<img style="cursor: pointer;" src="/assets/images/invest/a_zhi.png" title="自动投">');
+                            obj.find('.user_name').append('<img style="cursor: pointer;" src="/assets/images/invest/a_zhi.png" title="自动投">');
                             break;
                         case '2'://自动
-                            obj.find('.mobile').append('<img style="cursor: pointer;" src="/assets/images/invest/a_zhi.png" title="自动投">');
+                            obj.find('.user_name').append('<img style="cursor: pointer;" src="/assets/images/invest/a_zhi.png" title="自动投">');
                             break;
                         case '3'://app
-                            obj.find('.mobile').append('<img style="cursor: pointer;" src="/assets/images/invest/a_app.png" title="APP端投资">');
+                            obj.find('.user_name').append('<img style="cursor: pointer;" src="/assets/images/invest/a_app.png" title="APP端投资">');
                             break;
                         case '4'://m
-                            obj.find('.mobile').append('<img style="cursor: pointer;" src="/assets/images/invest/a_wap.png" title="手机端投资">');
+                            obj.find('.user_name').append('<img style="cursor: pointer;" src="/assets/images/invest/a_wap.png" title="手机端投资">');
                             break;
                         default://pc
                     }

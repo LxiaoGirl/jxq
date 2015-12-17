@@ -156,7 +156,12 @@ class App_model extends CI_Model{
         $temp['where'] = array(
             'select'   => join_field('borrow_no,subject,type,uid,amount,months,mode,rate,receive,lowest,due_date,last_investor,last_amount,last_time,add_time,buy_time,status',self::borrow).','.join_field('category',self::cate),
             'where'    => array(join_field('show_time',self::borrow).' <=' => time(),join_field('status',self::borrow).' > ' => 1),
-            'order_by' => join_field('sort_order',self::borrow).' desc,'.join_field('productcategory',self::borrow).' asc,'.join_field($temp['sort'],self::borrow).' '.$temp['order'],
+            'order_by' => join_field('active',self::borrow).' DESC,'
+//                .join_field('sort_order',self::borrow).' DESC,'
+                .join_field('productcategory',self::borrow).' ASC,'
+                .join_field('status',self::borrow).' ASC,'
+                .join_field('receive',self::borrow).' / '.join_field('amount',self::borrow).' DESC,'
+                .join_field($temp['sort'],self::borrow).' '.$temp['order'],
             'join'=>array(
                 'table'=>self::cate,
                 'where'=>join_field('cat_id',self::cate).'='.join_field('productcategory',self::borrow)
