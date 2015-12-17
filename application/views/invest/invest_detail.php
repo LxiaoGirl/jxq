@@ -21,13 +21,15 @@
             <h1>
 	            <?php echo $project['subject'];?>
 	            <b>编号：<?php echo $project['borrow_no']; ?></b>
-	            <span class="bao">
-		            <em><?php echo type_name_2($project['type']); ?></em>
-		            <font><?php echo $project['company_name']; ?></font>
-	            </span>
+                <?php if(!empty($v['company_name'])): ?>
+                    <span class="bao">
+                        <em><?php echo type_name_2($project['type']); ?></em>
+                        <font><?php echo $project['company_name']; ?></font>
+                    </span>
+                <?php endif;?>
 <!--	            <span class="zhi"><em>A</em><font>支持自动投资</font></span>-->
 <!--	            <span class="jia"><em>加</em><font>+0.9%</font></span>-->
-	            <i class="fr"><a href="<?php echo site_url('about/invest_agreement');?>" target="_blank">《聚雪球投资协议（范本）》</a></i>
+	            <i class="fr"><a href="<?php echo site_url('terms/index?borrow_no='.$project['borrow_no']);?>" target="_blank">《聚雪球投资协议（范本）》</a></i>
             </h1>
             <!---->
             <div class="invest_body_bdxx">
@@ -39,7 +41,7 @@
                         </li>
                         <li>
                             <p><i><img src="../../../../assets/images/invest/tzxx_2.png" alt=""></i>借款期限</p>
-                            <p class="qdcn"><?php echo $project['months']; ?><font>个月</font></p>
+                            <p class="qdcn"><?php echo $project['months']==0.9?$project['months']*30:$project['months']; ?><font><?php echo $project['months']==0.9?'天':'个月'; ?></font></p>
                         </li>
                         <li>
                             <p><i><img src="../../../../assets/images/invest/tzxx_3.png" alt=""></i>项目金额(元)</p>
@@ -60,9 +62,12 @@
                     </div>
                 </div>
                 <div class="hy fr">
-                    <a class="yw" href="<?php echo site_url('about/help_list?cat_id=36'); ?>">投资有疑问？点此查看帮助</a>
+
+                    <p class="dlye login-flag-tag" <?php if($this->session->userdata('uid')): ?> style="display: none;" <?php endif; ?>>登陆后可以投资 <span class="fr"><button type="button" onclick="window.location.href='<?php echo site_url('login/index?redirect_url='.urlencode($this->c->show_url())); ?>'">登录</button></span></p>
+                    <p class="dlye recharge-flag-tag" <?php if( ! $this->session->userdata('uid')): ?> style="display: none;" <?php endif; ?>>账户余额 <span class="fr"><?php echo isset($balance)?$balance:0; ?>元<button type="button" onclick="window.location.href='/index.php/user/user/recharge'">充值</button></span></p>
+
                     <p class="ktje">可投金额</p>
-                    <p class="ktjes"><span><?php echo price_format($project['amount']-$project['receive'],2,false); ?></span><font>元</font></p>
+                    <p class="ktjes"><span id="enable_invest_max"><?php echo $project['new_status'] == 1?0:price_format($project['amount']-$project['receive'],2,false); ?></span><font>元</font></p>
                     <p class="jdt sy_jdt" jdt="<?php echo $project['receive_rate']; ?>"><span><i></i></span></p>
                     <p class="xmjd">项目进度：<?php echo $project['receive_rate']; ?>%</p>
                     <p class="yjsy cal" style="display: none;">预计收益：<font>0.00</font>元</p>
@@ -83,7 +88,7 @@
                                     echo '<button type="button"  id="invest-button" data-status="2">马上投标</button>';
                                     break;
                                 case '3':
-                                    echo '<button type="button" class="ymbbut">已售罄</button>';
+                                    echo '<button type="button" class="ymbbut">复审中</button>';
                                     break;
                                 case '4':
                                     echo '<button type="button" class="ymbbut">回款中</button>';
@@ -101,7 +106,7 @@
                         <div class="invest_zjmm_pop">
                             <div class="invest_zjmm_pop_body">
                             <div class="title">
-                                <span>输入资金密码</span><font class="fr">×</font>
+                                <span>输入资金密码</span><font class="fr close">×</font>
                             </div>
                             <div class="popbody tc">
                                 <input type="password" value="" class="security" placeholder="请输入资金密码"/>
@@ -138,13 +143,14 @@
                     <li class="tzjl">
                         <h2><span>流水号</span><span>投资人</span><span>金额（元）</span><span>时间</span></h2>
                         <div id="invest-list">
-                            <p><span class="payment_no">0</span><span><font class="mobile">0</font></span><span class="amount">0</span><span class="pay_time">0000-00-00 00:00:00</span></p>
+                            <p><span class="payment_no">0</span><span><font><!--<img class="avatar" style="width: 30px;height: 30px; top: -7px;right: 60px;"/>--> <span class="user_name">**</span></font></span><span class="amount">0</span><span class="pay_time">0000-00-00 00:00:00</span></p>
                         </div>
+                        <div class="invest_home_paging tc"></div>
                     </li>
                     <li class="hkjh">
                         <h2><span>期数</span><span>应还利息（元）</span><span>应还本金（元）</span><span>剩余本金（元）</span><span>还款时间</span></h2>
                         <div id="repay-list">
-                            <p><span><span class="repay_index">0</span>期</span><span class="repay_interest">0</span><span class="repay_principal">0</span><span class="repay_surplus_principal">0</span><span class="rapay_time">0000-00-00 00:00:00</span></p>
+                            <p><span><span class="repay_index">0</span>期</span><span class="repay_interest">0</span><span class="repay_principal">0</span><span class="repay_surplus_principal">0</span><span class="repay_date">0000-00-00 00:00:00</span></p>
                         </div>
                     </li>
                 </ul>
@@ -158,7 +164,7 @@
 
 </body>
 <script type="text/javascript">
-    seajs.use(['jquery','sys'],function(){
+    seajs.use(['jquery','sys','wsb_sys'],function(){
         tab($(".invest_detail_tab"));
 	    $(function(){
             //必要数据
@@ -225,12 +231,16 @@
                         $('.black_bg').fadeIn();
                         $('.invest_zjmm_pop').fadeIn("fast",function(){
                             $(".security").focus();
-                            $('#invest-submit').bind('click',function(){
+                            $('#invest-submit').unbind('click').bind('click',function(){
                                 if($('.security').val().length < 6){
                                     wsb_alert('请输入正确格式的资金密码!',2);
                                 }else{
                                     invest_submit();
                                 }
+                            });
+                            $('.invest_zjmm_pop .close').bind('click',function(){
+                                $('.black_bg').fadeOut();
+                                $('.invest_zjmm_pop').fadeOut();
                             });
                         });
                     }
@@ -267,7 +277,7 @@
                     if($('#invest-button').attr('data-status') == '2')
                         $('#invest-button').html('投资结束').unbind('click').addClass('ymbbut');
                     obj.remove();
-                });
+                },'',<?php echo time(); ?>);
             }
             //开标倒计时处理
             if('<?php echo $project['new_status']; ?>' == '1'){
@@ -282,8 +292,9 @@
                         obj.siblings('button').removeClass('jjksbut').addClass('ajax-submit-button').html('马上投标').attr('data-status',2).attr('data-loading-msg','投资中...').bind('click',function(){invest();});
                         obj.remove();
                         $('.time-down').show();
-                        ajax_loading(1);
-                    });
+                        $("#enable_invest_max").text('<?php echo price_format($project['amount']-$project['receive'],2,false); ?>');
+                        is_click1 = false;
+                    },'','',<?php echo time(); ?>);
                 }
             }
 
@@ -321,57 +332,97 @@
             //投资记录和还款记录处理
             var invest_list = $("#invest-list").clone();
             var repay_list = $("#repay-list").clone();
-            var is_click1 = false;
+            //未开始时 不显示数据
+            var is_click1 = '<?php echo $project['new_status']>1?'':1; ?>';
+            if(is_click1)$("#invest-list").html('<p style="text-align: center;">暂无投资记录!</p>');
+
             var is_click2 = false;
+            var page_id = 1;
+            var get_invest_list = function(pageId){
+                if(typeof pageId != 'undefined' && pageId > 0){
+                    page_id = pageId;
+                }
+                each_html(invest_list.clone(),'/index.php/invest/ajax_get_invest_list',{'borrow_no':'<?php echo $project['borrow_no'] ?>',page_id:page_id},{
+                    'pay_time':function(v){ return unixtime_style(v,'Y-m-d H:i:s')},
+                    'amount':function(v){return price_format(v,2,false)}
+                },true,function(obj,v){
+                    //if(v.avatar == '')obj.find('.avatar').attr('src','/assets/images/common/my_icon.jpg');
+                    switch (v.automatic_type){
+                        case '1'://自动
+                            obj.find('.user_name').append('<img style="cursor: pointer;" src="/assets/images/invest/a_zhi.png" title="自动投">');
+                            break;
+                        case '2'://自动
+                            obj.find('.user_name').append('<img style="cursor: pointer;" src="/assets/images/invest/a_zhi.png" title="自动投">');
+                            break;
+                        case '3'://app
+                            obj.find('.user_name').append('<img style="cursor: pointer;" src="/assets/images/invest/a_app.png" title="APP端投资">');
+                            break;
+                        case '4'://m
+                            obj.find('.user_name').append('<img style="cursor: pointer;" src="/assets/images/invest/a_wap.png" title="手机端投资">');
+                            break;
+                        default://pc
+                    }
+                },function(no_data,links){
+                    is_click1=true;
+                    if(links){
+                        var my_links = $(links).clone();
+                        $(my_links).find('[onclick]').removeAttr('onclick').addClass('pageNum');
+                        $('.invest_home_paging').html($(my_links).get(0));
+
+                        $('.invest_home_paging').find('.pageNum').bind('click',function(){
+                            if($('.invest_home_paging').find('.pageNum').text() != '上一页' && $('.invest_home_paging').find('.pageNum').text() != '下一页'){
+                                get_invest_list(parseInt($(this).text()));
+                            }
+                        });
+                        if($('.invest_home_paging').find('.pre').attr('class').indexOf('nocli') == -1){
+                            $('.invest_home_paging').find('.pre').unbind('click').bind('click',function(){
+                                get_invest_list(page_id-1);
+                            });
+                        }
+
+                        if($('.invest_home_paging').find('.next').attr('class').indexOf('nocli') == -1){
+                            $('.invest_home_paging').find('.next').unbind('click').bind('click',function(){
+                                get_invest_list(page_id+1);
+                            });
+                        }
+                    }
+                });
+            };
             $('.invest-list').bind('click',function(){
                 if( ! is_click1){
-                    each_html(invest_list,'/index.php/invest/ajax_get_invest_list',{'borrow_no':'<?php echo $project['borrow_no'] ?>'},{
-                        'pay_time':function(v){ return unixtime_style(v,'Y-m-d H:i:s')},
-                        'amount':function(v){return price_format(v,2,false)}
-                    },true,function(obj,v){
-                        switch (v.automatic_type){
-                            case '1'://自动
-                                obj.find('.mobile').append('<img style="cursor: pointer;" src="/assets/images/invest/a_zhi.png" title="自动投">');
-                                break;
-                            case '2'://自动
-                                obj.find('.mobile').append('<img style="cursor: pointer;" src="/assets/images/invest/a_zhi.png" title="自动投">');
-                                break;
-                            case '3'://app
-                                obj.find('.mobile').append('<img style="cursor: pointer;" src="/assets/images/invest/a_app.png" title="APP端投资">');
-                                break;
-                            case '4'://m
-                                obj.find('.mobile').append('<img style="cursor: pointer;" src="/assets/images/invest/a_wap.png" title="手机端投资">');
-                                break;
-                            default://pc
-                        }
-                    },function(){is_click1=true;});
+                    get_invest_list();
                 }
             });
+            var new_status = '<?php echo $project['new_status'] ?>';
             $('.repay-list').bind('click',function(){
                 if( ! is_click2) {
                     each_html(repay_list, '/index.php/invest/ajax_get_repay_list', {'borrow_no': '<?php echo $project['borrow_no'] ?>'}, {
-                        'rapay_time':function(v){ return unixtime_style(v,'Y-m-d H:i:s')}
+                        'repay_date':function(v){ return unixtime_style(v,'Y-m-d H:i:s')}
                     }, true, function (obj, v) {
-                        if(v.rapay_time == 0)obj.find('.rapay_time').html('-');
-                        switch (v.status){
-                            case '1':
-                                obj.find('.rapay_time').append('<img class="ywc" src="/assets/images/invest/ywc_c.png">');
-                                break;
-                            case '2'://提前
-                                obj.find('.rapay_time').append('<img class="ywc" src="/assets/images/invest/tq_c.png">');
-                                break;
-                            case '3'://预期
-                                obj.find('.rapay_time').append('<img class="ywc" src="/assets/images/invest/yq_c.png">');
-                                break;
-                            case '4'://预付
-                                obj.find('.rapay_time').append('<img class="ywc" src="/assets/images/invest/yf_c.png">');
-                                break;
-                            default:
-                                if(v.repay_date < unixtime_style(Date.parse(new Date())/1000,'Ymd')){
+                        if(v.repay_date == 0)obj.find('.repay_date').html('-');
+                        if(new_status == '1' || new_status == '2'){
+                            obj.find('.repay_date').html('筹集中');
+                        }else{
+                            switch (v.status){
+                                case '1':
+                                    obj.find('.repay_date').append('<img class="ywc" src="/assets/images/invest/ywc_c.png">');
+                                    break;
+                                case '2'://提前
+                                    obj.find('.repay_date').append('<img class="ywc" src="/assets/images/invest/tq_c.png">');
+                                    break;
+                                case '3'://预期
+                                    obj.find('.repay_date').append('<img class="ywc" src="/assets/images/invest/yq_c.png">');
+                                    break;
+                                case '4'://预付
+                                    obj.find('.repay_date').append('<img class="ywc" src="/assets/images/invest/yf_c.png">');
+                                    break;
+                                default:
+                                if(v.repay_date < Date.parse(new Date())/1000){
                                     //逾期
-                                    obj.find('.rapay_time').append('<img class="ywc" src="/assets/images/invest/yq_c.png">');
+                                    //obj.find('.repay_date').append('<img class="ywc" src="/assets/images/invest/yq_c.png">');
                                 }
-                                break;
+                                    break;
+                            }
                         }
                     },function(){is_click2=true;});
                 }

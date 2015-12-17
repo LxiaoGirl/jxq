@@ -25,7 +25,9 @@
 			            <?php echo $v['category']; ?><font class="fr">|</font>
 		            </li>
 	            <?php endforeach;endif; ?>
+            
                 <li onclick="window.location.href='<?php echo site_url('invest/index?c=4') ?>'" class="jbb <?php if($category == 4): ?>active<?php endif; ?>" ><em>宝</em>聚保宝</li>
+            
             </ul>
             <!--TAB头 标的名-->
             <!--公告-->
@@ -42,6 +44,7 @@
             <!--标的主体-->
             <ul class="invest_home_body tab_con">
                 <li class="active li">
+				<?php if($category != 4): ?>
                     <div class="invest_home_screening">
                         <p>年化收益率：
 	                        <font <?php if($rate == ''): ?>class="selected"<?php endif; ?> onclick="window.location.href='<?php echo site_url('invest/index?c='.$category.'&r=0&m='.$months) ?>'">全部</font>
@@ -61,78 +64,61 @@
 	                        <font <?php if($months == '15-100'): ?>class="selected"<?php endif; ?> onclick="window.location.href='<?php echo site_url('invest/index?c='.$category.'&r='.$rate.'&m=15-100') ?>'">15个月以上</font>
                         </p>
                     </div>
-
+					<?php else:?>
+					<br/>
+					<?php endif;?>
                     <div class="invest_home_product">
                         <?php if($category == 4): ?>
+						<?php if($project['status']==10000):foreach($project['data'] as $k=>$v): ?>
                         <div class="product_of_invest_home product_of_invest_home_1">
-                            <div class="fl yi zi">
-                                <span>益</span>
-                                <p>聚益盈</p>
+                            <div class="fl <?php echo jbb_icon($v['type_code'])?> zi">
+                                <span style="
+    background: #c795df;
+"><?php echo jbb_word($v['type_code'])?> </span>
+                                <p><?php echo $v['type_name']?></p>
                             </div>
-                            <div class="lv fl">
-                                <p class="yqb">预计年化收益率</p>
-                                13.2<font>%</font>
-                            </div>
-                            <div class="qtje fl">
-                                <p class="yqb">起投金额</p>
-                                100元
-                            </div>
-                            <div class="bzfs fl">
-                                <p class="yqb">保障方式</p>
-                                本息保障
+							
+                            <div class="fl">
+							<?php if( $v['type']==1 && ($v['start_day']+3600*$v['start_time'])>time()):?>
+							<div class="time-down " data-start-time="<?php echo ($v['start_day']+3600*$v['start_time']); ?>" data-type="<?php echo $v['type'];?>"  style="visibility: hidden;">
+                                <div class="hjdjs">还有<font class="d">00</font>天<font class="h">00</font>小时<font class="m">00</font>分<font class="s">00</font>秒<span class="js_flag">开始</span></div>
+								</div>
+								<?php elseif($v['type']==1 && ($v['start_day']+3600*$v['start_time'])<=time()):?>
+									<div class="hjdjs">已开始</div>
+								<?php else:?>
+									<div class="hjdjs">已售罄</div>
+								<?php endif;?>
+                                <div>
+                                    <div class="lv fl">
+                                        <p class="yqb">预计年化收益率</p>
+                                        <?php echo $v['view_rate'];?><font>%</font>
+                                    </div>
+                                    <div class="qtje fl">
+                                        <p class="yqb">起投金额</p>
+                                        <?php echo $v['start_amount']?>元
+                                    </div>
+                                    <div class="bzfs fl">
+                                        <p class="yqb">保障方式</p>
+                                        本息保障
+                                    </div>
+                                </div>
                             </div>
                             <div class="fr jbb_an">
-                                <p>累计投资：1,203,264元</p>
-                                <p class='mar0'>累计入团：152,211人次</p>
-                                <a class="jb">立即投资</a>
+                                <p>累计投资：<?php echo round($v['jbb_all_invest']/10000,2)?>万元</p>
+                                <p class='mar0'>累计加入：<?php echo $v['jbb_nums']?>人次</p>
+								<?php  if(($v['start_day']+3600*$v['start_time'])>=time()&&$v['type']==1):?>
+								<a class="yy" href="<?php echo site_url('invest/detail_jbb?type_code='.$v['type_code']); ?>">即将开始</a>
+								<?php elseif(($v['start_day'])<time()&&$v['type']==1):?>
+                                <a class="jb" href="<?php echo site_url('invest/detail_jbb?type_code='.$v['type_code']); ?>">立即投资</a>
+								<?php else:?>
+								<a class="jb sq" href="<?php echo site_url('invest/detail_jbb?type_code='.$v['type_code']); ?>">已售罄</a>
+								<?php endif;?>
+								
                             </div>
                         </div>
-                        <div class="product_of_invest_home product_of_invest_home_1">
-                            <div class="fl wen zi">
-                                <span>稳</span>
-                                <p>聚稳盈</p>
-                            </div>
-                            <div class="lv fl">
-                                <p class="yqb">预计年化收益率</p>
-                                13.2<font>%</font>
-                            </div>
-                            <div class="qtje fl">
-                                <p class="yqb">起投金额</p>
-                                100元
-                            </div>
-                            <div class="bzfs fl">
-                                <p class="yqb">保障方式</p>
-                                本息保障
-                            </div>
-                            <div class="fr jbb_an">
-                                <p>累计投资：1,203,264元</p>
-                                <p class='mar0'>累计入团：152,211人次</p>
-                                <a class="jb sq">已售罄</a>
-                            </div>
-                        </div>
-                        <div class="product_of_invest_home product_of_invest_home_1">
-                            <div class="fl fu zi">
-                                <span>富</span>
-                                <p>聚富盈</p>
-                            </div>
-                            <div class="lv fl">
-                                <p class="yqb">预计年化收益率</p>
-                                13.2<font>%</font>
-                            </div>
-                            <div class="qtje fl">
-                                <p class="yqb">起投金额</p>
-                                100元
-                            </div>
-                            <div class="bzfs fl">
-                                <p class="yqb">保障方式</p>
-                                本息保障
-                            </div>
-                            <div class="fr jbb_an">
-                                <p>累计投资：1,203,264元</p>
-                                <p class='mar0'>累计入团：152,211人次</p>
-                                <a class="yy">立即预约</a>
-                            </div>
-                        </div>
+						<?php endforeach;else: ?>
+	                    <div class="product_of_invest_home"><p style="text-align: center;"><?php echo $project['msg']?></p></div>
+	                    <?php endif; ?>
                         <?php else: ?>
 
 	                    <?php if($project):foreach($project as $k=>$v): ?>
@@ -153,10 +139,12 @@
                                 </font>
 	                            <a href="<?php echo site_url('invest/detail?borrow_no='.$v['borrow_no']); ?>"> <?php echo $v['subject']; ?></a>
 	                            <b>（编号：<?php echo $v['borrow_no']; ?>）</b>
+                                <?php if( $v['company_name']): ?>
 	                            <span class="bao">
 		                            <em><?php echo type_name_2($v['type']); ?></em>
-		                            <font><?php echo $v['company_name']; ?></font>
+                                    <font><?php echo $v['company_name']; ?></font>
 	                            </span>
+                                <?php endif; ?>
 <!--	                            <span class="zhi"><em>A</em><font>支持自动投资</font></span>-->
 <!--	                            <span class="jia"><em>加</em><font>+0.9%</font></span>-->
                             </h1>
@@ -174,8 +162,8 @@
                                             <div class="product_of_invest_num_bot tc col_blu"><?php echo $v['rate']; ?><i>%</i></div>
                                         </li>
                                         <li>
-                                            <div class="product_of_invest_home_num_bot tc">借款期限(月)</div>
-                                            <div class="product_of_invest_num_bot tc"><?php echo $v['months']; ?></div>
+                                            <div class="product_of_invest_home_num_bot tc">借款期限(<?php echo $v['months']==0.9?'天':'月'; ?>)</div>
+                                            <div class="product_of_invest_num_bot tc"><?php echo $v['months']==0.9?$v['months']*30:$v['months']; ?></div>
                                         </li>
                                         <li>
                                             <div class="product_of_invest_home_num_bot tc">借款总额(万元)</div>
@@ -209,7 +197,7 @@
                                             break;
                                         case '3':
                                             echo '<h5></h5>';
-                                            echo '<a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'" class="ymbbut">已售罄</a>';
+                                            echo '<a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'" class="ymbbut">复审中</a>';
                                             break;
                                         case '4':
                                             echo '<h5></h5>';
@@ -230,11 +218,11 @@
 	                    <?php endforeach;else: ?>
 	                    <div class="product_of_invest_home"><p style="text-align: center;">暂无相关信息</p></div>
 	                    <?php endif; ?>
-
+							<?php echo $links; ?>
                         <?php endif; ?>
                     </div>
                     <!--分页-->
-	                <?php echo $links; ?>
+	                
                 </li>
             </ul>
             <!--标的主体-->
@@ -258,7 +246,17 @@
 <?php $this->load->view('common/footer'); ?>
 
 <script type="text/javascript">
-    seajs.use(['jquery','sys'],function(){
+    seajs.use(['jquery','sys','wsb_sys'],function(){
+		if($('.time-down').length){
+                $('.time-down').count_down(function(obj){
+                  
+                },function(obj){
+					
+                });
+            }
+			$('#invest-button').bind('click',function(){
+				invest();
+				});
         $(function(){
             each_html('announcement-top','/index.php/about/ajax_get_news',{'page_id':1,'page_size':5,'category':'<?php echo item('announcement_home_top_cat_id')?item('announcement_home_top_cat_id'):0; ?>'},'',true,function(obj,v){
                 obj.find('a').attr('href','<?php echo site_url('about/news_detail?id='); ?>'+ v.id);
@@ -275,7 +273,7 @@
                         e.find('.h').text(h);
                         e.find('.d').text(d);
                     }
-                });
+                },<?php echo time(); ?>);
             }
 
             //小贴士

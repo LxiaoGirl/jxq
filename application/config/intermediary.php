@@ -5,4 +5,4 @@
  * 2015-09-29
  */
 $config['intermediary_start_time'] = '2015-10-10 09:00:00'; //居间人开启时间
-$config['intermediary_end_time']   = '2035-10-10 09:00:00'; //居间人截止时间
+$config['intermediary_end_time']   = '2015-12-10 09:00:00'; //居间人截止时间

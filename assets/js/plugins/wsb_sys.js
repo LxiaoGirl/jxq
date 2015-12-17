@@ -6,12 +6,14 @@ define(function (require, exports, module) {
      * @param callback2 标的结束的处理函数
      * @param func 处理函数
      */
-    $.fn.count_down = function(callback1,callback2,func){
+    $.fn.count_down = function(callback1,callback2,func,now_time){
         var curren_run_time = 1;
-        var count_down = function() {this.tt=0;};
+        if( ! now_time)now_time = Date.parse(new Date())/1000;
+        var count_down = function() {this.tt=0;this.now_time=null};
         count_down.prototype = {
             'go':function(e,end_time,callback,deal_func) {
-                var time = Date.parse(new Date())/1000;
+                if(this.now_time == null)this.now_time=now_time;
+                var time = this.now_time;//Date.parse(new Date())/1000;
                 var time_space =end_time-time;
                 var s = 0,m = 0,h = 0,d = 0;
                 if(time_space > 0){
@@ -46,6 +48,7 @@ define(function (require, exports, module) {
                     clearTimeout(this.tt);
                     if(typeof callback == 'function')callback();
                 }
+                this.now_time++;
             }
         };
         if(this.length > 1){
@@ -77,7 +80,16 @@ define(function (require, exports, module) {
     };
 
     $.fn.send_sms = function(type,mobile,action){
-        var wait = 60,last_send_time_go = '',tag_default_msg = '';
+        var wait = 60,last_send_time_go = '',tag_default_msg = '',is_input = false;
+        if(typeof g_sms_apace_time != 'undefined'){
+            wait = g_sms_apace_time;
+        }
+        if(type == 'sms' && typeof g_sms_last_time != 'undefined' && g_sms_last_time > 0){
+            last_send_time_go = Date.parse(new Date())/1000 - g_sms_last_time;
+        }
+        if(type == 'voice' && typeof g_voice_last_time != 'undefined' && g_voice_last_time > 0){
+            last_send_time_go = Date.parse(new Date())/1000 - g_voice_last_time;
+        }
 
         if( ! mobile){
             wsb_alert('电话号码不能为空!',2);
@@ -89,13 +101,14 @@ define(function (require, exports, module) {
         if(this.data('lastTime') != 'undefined' && parseInt(this.data('lastTime')) > 0){
             last_send_time_go = Date.parse(new Date())/1000 - parseInt(this.data('lastTime'));
         }
-
         if(this.get(0).tagName == 'INPUT'){
             tag_default_msg = this.val();
+            is_input = true;
         }else{
-            tag_default_msg = this.text();
+            tag_default_msg = this.html();
         }
 
+        var _this = this;
         //倒计时 效果处理
         var sms_count_down = function(e,space_time,all_time,callback){
             var wait=space_time;
@@ -103,15 +116,27 @@ define(function (require, exports, module) {
             var time = function(o){
                 if (wait == 0) {
                     o.removeAttr("disabled");
-                    o.val(tag_default_msg);
+                    if(is_input){
+                        o.val(tag_default_msg);
+                    }else{
+                        o.html(tag_default_msg);
+                    }
+
                     wait = all_time;
                     clearTimeout(t);
+                    _this.bind('click',function(){send_event();});
                     if(typeof callback == "function"){
                         callback();
                     }
                 } else {
                     o.attr("disabled","true");
-                    o.val("" + wait + "秒后再次发送");
+                    _this.unbind('click');
+                    if(is_input){
+                        o.val("" + wait + "秒后再次发送");
+                    }else{
+                        o.html("" + wait + "秒后再次发送");
+                    }
+
                     wait--;
                     t = setTimeout(function() {
                         time(o)
@@ -120,7 +145,7 @@ define(function (require, exports, module) {
             };
             time(e);
         };
-        var _this = this;
+
         //发送到ajax事件
         var send_event = function(){
             _this.unbind('click');

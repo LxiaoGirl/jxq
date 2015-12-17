@@ -11,7 +11,7 @@
     <!--head end-->
     <!--user start-->
 	<div class="user_nav row">
-        <a href="">首页</a>&nbsp;>&nbsp;<a href="">我的账户</a>&nbsp;>&nbsp;<a href="">提现</a>
+        <a href="/index.php">首页</a>&nbsp;>&nbsp;<a href="/index.php/user/user/account_home">我的账户</a>&nbsp;>&nbsp;<a href="javascript:void(0);">提现</a>
     </div>
     <div class="row user">
         <!--左侧通用-->
@@ -19,7 +19,7 @@
         <!--右侧-->
         <div class="user_right">
             <h1>提现</h1>
-            <p class="border_bot">帐户余额（元）：<b><?php echo $balance['data']['balance']?></b></p>
+            <p class="border_bot">帐户余额（元）：<b id="my-balance"><?php echo $balance['data']['balance']?></b></p>
             <div class="tra_note cztx">
                 <ul class="tab_title ">
                     <a href='<?php echo site_url('user/user/recharge');?>'><li>充值<font class="fr">|</font></li></a>
@@ -42,24 +42,20 @@
 						<div <?php if($balance['status']=='10001'):?>style="display:none"<?php endif;?>>
                         <div class="qx_yhk">
                             <div class="left">提现的银行卡：</div>
-                            <div class="right"><img src="<?php echo base_url('assets/images/bank/'.$bank['data']['code'].'.png')?>" style="float:left"><font style="text-indent:0px">尾号：<?php echo substr($user_bank['data']['account'],-4);?></font></div>
+                            <div class="right"><img src="<?php echo base_url('assets/images/bank/'.$bank['data']['code'].'.png')?>" style="float:left"><font style="text-indent:0px">尾号：<?php echo substr($bank['data']['account'],-4);?></font></div>
                         </div>
                         <div class="qx_inp">
                             <div class="left">请输入提现金额：</div>
                             <div class="right">
-                                <input class="txje" type="text" / placeholder="最大可提现100元">
+                                <input class="txje" type="text" placeholder="输入提现金额" />
                                 <div class="tip_qx"></div>
                             </div>
                         </div>
                         <div class="qx_inp">
-                            <div class="left">输入语音验证码：</div>
+                            <div class="left">输入验证码：</div>
                             <div class="right">
                                 <input class="tx_yzm" type="text" placeholder="输入验证码" / >
                                 <input class="hqyzm sms" type="button" value="短信验证码" />
-                                <input class="hqyzm voice" type="button"
-                                       data-wait-time="<?php echo item("sms_space_time")?item("sms_space_time"):60; ?>"
-                                       data-last-time="<?php echo profile("voice_last_send_time")?profile("voice_last_send_time"):0; ?>"
-                                       value="语音验证码" />
                                 <div class="tip_qx_1"></div>
                             </div>
                         </div>
@@ -70,9 +66,9 @@
                                 <div class="tip_qx_2"></div>
                             </div>
                         </div>
-                        <p class="but_qx"><button class="but_qx_but" type="button" id="sub">确认提现<i></i></button></p>
+                        <p class="but_qx"><button class="but_qx_but ajax-submit-button" data-loading-msg="提交中..." type="button" id="sub">确认提现<i></i></button></p>
                         <div class="pop"><img src="<?php echo base_url('assets/images/user/txcg.png')?>" height="135" width="165"></div><!--不可以用图片做-->
-						<input type="hidden" value="<?php echo (profile('mobile'))?profile('mobile'):'123'?>" id="mobile"/>
+						<input type="hidden" value="<?php echo (profile('mobile'))?profile('mobile'):''?>" id="mobile"/>
 						</div>
                     </form>
                     </li>
@@ -95,116 +91,109 @@
 			$.post('/index.php/user/user/send_sms?action=transfer&mobile='+mobile,{},function(result){
 				result = JSON.parse(result);
 				if(result.status=='10000'){
-				dxdjs($(this));
-				var text = '注意查收来自手机'+mobile.substring(0, 3) + "*****" + mobile.substring(8, 11)+'的短信';
-				$('.tip_qx_1').html(text);
-				}else{	
+                    dxdjs($(this));
+                    var text = '注意查收来自手机'+mobile.substring(0, 3) + "*****" + mobile.substring(8, 11)+'的短信。';
+                    $('.tip_qx_1').html(text);
+                    //附加语音
+                    $('.tip_qx_1').append('短信接不到？<a href="javascript:void(0);" style="text-decoration: underline;" id="transfer-voice" ' +
+                        'data-wait-time="<?php echo item("sms_space_time")?item("sms_space_time"):60; ?>" '+
+                        'data-last-time="<?php echo profile("voice_last_send_time")?profile("voice_last_send_time"):0; ?>">试试语音验证码</a>');
+                    $("#transfer-voice").send_sms('voice',mobile,'transfer');
+				}else{
 					var text = result.msg;
-					$('.tip_qx_1').html(text);		
+					$('.tip_qx_1').html(text);
 				}
-				
+
 			});
             
         });
-        $(function(){
-            $('.voice').send_sms('voice','<?php echo profile("mobile");?>','transfer',<?php echo item("sms_space_time")?item("sms_space_time"):60; ?>,'<?php echo profile("sms_last_send_time")?time()-profile("sms_last_send_time"):0; ?>');
-        });
         var pit_1=0,pit_2=0,pit_3=0;
-        $(".but_qx_but").click(function (){		
+        var card_no = '<?php echo isset($bank['data']['card_no'])?$bank['data']['card_no']:''; ?>';
+        var transfer_min = parseInt('<?php echo item('transfer_min')?item('transfer_min'):10; ?>')
+        if( !card_no){
+            window.location.href='/index.php/user/user/card';
+        }
+
+        $(".but_qx_but").click(function (){
+            if(pit_1 == 0){
+                $('.txje').focus();
+                return false;
+            }
+            if(pit_2 == 0){
+                $('.tx_yzm').focus();
+                return false;
+            }
+            if(pit_2 == 0){
+                $('.tx_zjmm').focus();
+                return false;
+            }
+            var balance = parseFloat('<?php echo isset($balance['data']['balance'])?$balance['data']['balance']:0?>');
+            if(parseFloat($('.txje').val()) > balance){
+                wsb_alert('你的余额不足',2);
+                return false;
+            }
             if((pit_1+pit_2+pit_3)==3){
-				var authcode = $('.tx_yzm').val();
-				var security = $('.tx_zjmm').val();
-				var amount = $('.txje').val();
-				var contion = '?authcode='+authcode+'&security='+security+'&amount='+amount;
-				$.post('/index.php/user/user/user_transfer'+contion,{},function(result){
-					result = JSON.parse(result);
+				$.post('/index.php/user/user/user_transfer',{authcode:$('.tx_yzm').val(),security:$('.tx_zjmm').val(),amount:$('.txje').val(),'card_no':card_no},function(result){
 					if(result.status=='10000'){
-						$(".pop").fadeIn(2000).fadeOut(2000);
-						window.location.href="/index.php/user/user/withdrawals_jl"; 
-						return;
-					}
-					if(result.status=='10002'){
-						//跳登录页面
-						alert(result.msg);
-						return;
-					}
-					if(result.status=='10003'){
-						//交易密码未设置
-						alert(result.msg);
-						return;
-					}
-					if(result.status=='10004'){
-						//余额不足
-						var text = '<i class="icon-tip-no"></i>'+result.msg;
-						$('.tip_qx').html(text);
-						return;
-					}
-					if(result.status=='10005'){
-						var text = '<i class="icon-tip-no"></i>'+result.msg;
-						$('.tip_qx_2').html(text);
-						return;
-					}
-					if(result.status=='10006'){
-						var text = '<i class="icon-tip-no"></i>'+result.msg;
-						$('.tip_qx_1').html(text);
-						return;
-					}
-				 });
-                
+                        $('#my-balance').text(result.data.balance);
+                        $(".pop").fadeIn(1000,function(){
+                            window.location.href="/index.php/user/user/withdrawals_jl";
+                        }).fadeOut(2000);
+					}else{
+                        wsb_alert(result.msg);
+                    }
+                },'json');
             }
         });
-                $('#tx').validate({
-                    '.txje': {
-                        filtrate: 'required number',
-                        callback: function (index) {
-                            var tip = this.parent().find('.tip_qx').eq(0),
-                                text = '';
-                            if (index === 0) {
-                                text = '<i class="icon-tip-no"></i>请输入提现金额';
-                            } else if (index === 1) {
-                                text = '<i class="icon-tip-no"></i>请输入正确金额';
-                            } else if ($('.txje').val()<100) {
-                                text = '<i class="icon-tip-no"></i>最少提现100元';
-                            } else {
-                               pit_1=1;                                 
-                            }
-                            tip.html(text);
-                        }
-                    },
-                    '.tx_yzm': {
-                        filtrate: 'required',
-                        callback: function (index) {
-                            var tip = this.parent().find('.tip_qx_1').eq(0),
-                                text = '';
-                            if (index === 0) {
-                                text = '<i class="icon-tip-no"></i>请输入验证码';
-                            } else {
-                                //验证验证码
-                                 pit_2=1;   
-                            }
-                            tip.html(text);
-                        }
-                    },
-                    '.tx_zjmm': {
-                        filtrate: 'required',
-                        callback: function (index) {
-                            var tip = this.parent().find('.tip_qx_2').eq(0),
-                                text = '';
-                            if (index === 0) {
-                                text = '<i class="icon-tip-no"></i>请输入资金密码';
-                            } else {
-                                //验证验证码
-                                 pit_3=1;   
-                               
-                            }
-                            tip.html(text);
-                        }
+        $('#tx').validate({
+            '.txje': {
+                filtrate: 'required number',
+                callback: function (index) {
+                    var tip = this.parent().find('.tip_qx').eq(0),
+                        text = '';
+                    if (index === 0) {
+                        text = '<i class="icon-tip-no"></i>请输入提现金额';
+                    } else if (index === 1) {
+                        text = '<i class="icon-tip-no"></i>请输入正确金额';
+                    } else if ($('.txje').val()<transfer_min) {
+                        text = '<i class="icon-tip-no"></i>最少提现'+transfer_min+'元';
+                    } else {
+                       pit_1=1;
                     }
-                });
+                    tip.html(text);
+                }
+            },
+            '.tx_yzm': {
+                filtrate: 'required',
+                callback: function (index) {
+                    var tip = this.parent().find('.tip_qx_1').eq(0),
+                        text = '';
+                    if (index === 0) {
+                        text = '<i class="icon-tip-no"></i>请输入验证码';
+                    } else {
+                        //验证验证码
+                         pit_2=1;
+                    }
+                    tip.html(text);
+                }
+            },
+            '.tx_zjmm': {
+                filtrate: 'required',
+                callback: function (index) {
+                    var tip = this.parent().find('.tip_qx_2').eq(0),
+                        text = '';
+                    if (index === 0) {
+                        text = '<i class="icon-tip-no"></i>请输入资金密码';
+                    } else {
+                        //验证验证码
+                         pit_3=1;
+
+                    }
+                    tip.html(text);
+                }
+            }
+        });
     });
-	//$('#sub').click(function(){
-		
-	//});
 </script>
 </body> 
 </html>

@@ -1,0 +1,355 @@
+body{
+    background:#f3f3f3;
+}
+.tab_c{
+    border-bottom: 1px solid #cccccc;
+    height: 46px;
+    margin-top: 20px;
+}
+.sp{
+  height:46px;
+  display:block;
+  text-align: left;
+  line-height: 46px;
+  text-indent: 70px;
+  font-size: 14px;
+  color: #666666;
+  float: left;
+  cursor: pointer;
+  padding-right: 10px;
+  margin-right: 2px;
+  width: 180px;
+  position: relative;
+}
+.sp em{
+    display: none;
+    position:absolute;
+    bottom:0px;
+    left:80px;
+    width: 12px;
+    height: 8px;
+    background: url("../../images/n_p_h/emi.png");
+}
+.sp:hover,.sp.active{
+  background: #da251c;
+  color:#fff;
+}
+.sp:hover em,.sp.active em{
+    display: block;
+}
+.sp1{
+  background: url("../../images/n_p_h/xszy-r-h.png") no-repeat left top;
+}
+.sp2{
+  background: url("../../images/n_p_h/xszy-q-h.png") no-repeat left top;
+}
+.sp1:hover,.sp1.active{
+  background: url("../../images/n_p_h/xszy-r-y.png") #da251c no-repeat left top;
+}
+.sp2:hover,.sp2.active{
+  background: url("../../images/n_p_h/xszy-q-y.png") #da251c no-repeat left top;
+}
+.tablist{
+    display:none;
+}
+.tablist.active{
+    display:block;
+}
+.top_pic{
+    margin-top: 20px;
+}
+.tztj{
+    width: 100%;
+    height: 280px;
+    margin-top: 20px;
+    overflow:hidden;
+}
+.tztj1{
+    height:200px;
+}
+.tztj2{
+    height:auto;
+}
+.tztj2 p{
+    margin-bottom:30px;
+}
+.tztj p{
+    text-align: center;
+    margin-top:20px;
+}
+.tztj p font{
+    color:#666666;
+    font-size: 20px;
+    padding: 8px 45px;
+    border:1px solid #ccc;
+    border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -ms-webkit-border-radius: 2px;
+    -moz-webkit-border-radius: 2px;
+    font-weight:500;
+}
+.hvf4{
+    width: 100%;
+    height: 180px;
+    margin-top: 40px;
+}
+.hvf4 .coin{
+    width: 291px;
+    height: 100%;
+    float:left;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -ms-webkit-border-radius: 10px;
+    -moz-webkit-border-radius: 10px;
+}
+.hvf4 .coin .haf{
+    width: 50%;
+    height: 100%;
+    float:left;
+}
+.hvf4 .coin .haf p{
+    padding: 20px 10px;
+    color: #fff;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: left;
+}
+.hvf4 .coin1{
+    background:#318bff;
+}
+.hvf4 .coin2{
+    background:#665cbe;
+}
+.hvf4 .coin3{
+    background:#ee802f;
+}
+.hvf4 .coin4{
+    background:#5cb868;
+}
+.hvf4 .coin1 .haf-l{
+  background: url("../../images/n_p_h/xszy-2.png") center center no-repeat;
+}
+.hvf4 .coin2 .haf-l{
+  background: url("../../images/n_p_h/xszy-3.png") center center no-repeat;
+}
+.hvf4 .coin3 .haf-l{
+  background: url("../../images/n_p_h/xszy-4.png") center center no-repeat;
+}
+.hvf4 .coin4 .haf-l{
+  background: url("../../images/n_p_h/xszy-5.png") center center no-repeat;
+}
+.hvf4 .kx{
+    width: 12px;
+    height: 100%;
+    float:left;
+}
+.tztj .lunbo{
+    width:9999px;
+    height:100px;
+    top:40px;
+    position:relative;
+    left:0px;
+    overflow:hidden;
+}
+.con1{
+    height:100%;
+    float:left;
+}
+.lb_pic{
+    width:200px;
+    height:100px;
+    float:left;
+    margin-left:10px;
+}
+.pic_2{
+    width: 100%;
+}
+.pic_2 img{
+    width: 100%;
+    display:inline-block;
+    float:left;
+}
+.son{
+    height:240px;
+    float:left;
+}
+.wid30{
+    width:392px;
+}
+.wid5{
+    width:12px;
+}
+.wid8{
+    width:1%;
+}
+.wid46{
+    width:593px;
+    margin-top:20px;
+}
+.sontop{
+    width:100%;
+    height:40px;
+    border-radius:8px 8px 0 0;
+    background:#da251c;
+    color:#fff;
+    font-size:14px;
+    line-height:40px;
+    text-indent:30px;
+}
+.sonbot{
+    width:100%;
+    height:200px;
+    background:#f3f3f3;
+    padding-top:10px;
+}
+.sonbot p{
+    text-align:left;
+    padding: 5px 10px;
+    margin:0px;
+    font-size:14px;
+    text-indent:24px;
+    line-height:26px;
+}
+.sonbot p.pdlt20{
+    text-indent:44px;
+}
+.sonbot p font{
+    font-size:14px;
+    font-weight:100;
+    border:none;
+    padding:0;
+    margin:0;
+    color:#da251c;
+}
+.sonbot .bz{
+    width:100%;
+    height:120px;
+    margin-top:10px;
+    padding-left:10px;
+}
+.sonbot .sp_con{
+    width:120px;
+    height:120px;
+    float:left;
+    border-radius:5px;
+}
+.sonbot img{
+    display:block;
+    float:left;
+}
+.sonbot .sp_con1{
+    background:#318bff;
+}
+.sonbot .sp_con2{
+    background:#665cbe;
+}
+.sonbot .sp_con3{
+    background:#ee802f;
+}
+.sonbot .sp_con4{
+    background:#5cb868;
+}
+.sonbot .sp_con p{
+    color:#fff;
+}
+.sonbot .sp_con p.sma{
+    color:#fff;
+    font-size:12px;
+    text-align:center;
+    text-indent:0px;
+    line-height:20px;
+}
+.qtwt{
+    width:600px;
+    height:130px;
+    float:left;
+}
+.qtwt .le{
+    width:130px;
+    height:130px;
+    float:left;
+}
+.le1{
+  background: url("../../images/n_p_h/xszy-8.png") center center no-repeat;
+}
+.le2{
+  background: url("../../images/n_p_h/xszy-9.png") center center no-repeat;
+}
+.le3{
+  background: url("../../images/n_p_h/xszy-10.png") center center no-repeat;
+}
+.le4{
+  background: url("../../images/n_p_h/xszy-11.png") center center no-repeat;
+}
+.qtwt .ri{
+    width:470px;
+    height:130px;
+    float:left;
+}
+.qtwt .ri h1{
+    color:#da251c;
+    font-size:16px;
+    text-indent:16px;
+}
+.qtwt .ri p{
+    color:#666666;
+    font-size:12px;
+    padding-left:16px;
+    text-align:left;
+    line-height:20px;
+}
+
+
+
+
+
+
+
+/*新手指引投资服务介绍*/
+.guide_nav{ overflow:hidden;}
+.guide_nav li{ width:600px; float:left; text-align:center; font-size:18px; margin-top:93px; cursor:pointer; padding-bottom:48px;}
+
+.guide_li01{ background:url(../../images/n_p_h/images/h_img1.jpg) no-repeat center top; padding-top:130px;}
+.hover1{background:url(../../images/n_p_h/images/h_img3.jpg) no-repeat center top; padding-top:130px;}
+
+.guide_li02{ background:url(../../images/n_p_h/images/h_img0.jpg) no-repeat center top; padding-top:130px;}
+.hover2{background:url(../../images/n_p_h/images/h_img2.jpg) no-repeat center top; padding-top:130px;}
+
+.li01 {
+            background:url(../../images/n_p_h/images/img1_off.jpg) no-repeat center top; padding-top:130px;
+        }
+.li01.active{
+           background:url(../../images/n_p_h/images/img1.jpg) no-repeat center top; padding-top:130px;
+        }
+
+.li02 {
+            background:url(../../images/n_p_h/images/img2_off.jpg) no-repeat center top; padding-top:130px;
+        }
+
+.li02.active{
+            background:url(../../images/n_p_h/images/img2.jpg) no-repeat center top; padding-top:130px;
+        }
+
+.guide_nav li span{ font-size:13px;}
+.guide_nav li p{ color:#333; padding-bottom:10px;}
+    #main1 ul {
+            display: none;
+        }
+
+            #main1 ul.block {
+                display: block;
+            }
+.step_top{ background:url(../../images/n_p_h/images/gui_bg1.jpg) no-repeat left top; height:32px;}
+.step_center{ background:url(../../images/n_p_h/images/gui_bg2.jpg) repeat-y left top; padding-bottom:20px;}
+.step_bottom{ background:url(../../images/n_p_h/images/gui_bg3.jpg) no-repeat left top; height:30px;}
+.step{  padding-bottom:50px; border-bottom:1px dashed #ccc; width:600px; text-align:center; float:left;}
+.clear{ clear:both;}
+.step p{font-size:24px; color:#333; padding-top:50px; height:75px; line-height:34px;}
+.step p span{ font-family:Arial; color:#888;}
+.step p strong{ color:#000;}
+.gui_line{ border-bottom:none;}
+.guide_div{ position:relative;}
+.angle1{ position:absolute; left:280px; top:-30px;}
+.angle2{ position:absolute; right:280px; top:-30px;}
+
+/*新手指引投资服务介绍*/

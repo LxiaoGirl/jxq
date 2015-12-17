@@ -178,6 +178,25 @@ class About extends MY_Controller{
 	public function help(){
         //获取分类导航数据
         $data['category_list'] = $this->_get_category_list();
+        $data['cat_id'] = (int)$this->input->get('cat_id',true);
+        $data['id'] = (int)$this->input->get('id',true);
+        if($data['cat_id']){
+            $data['list'] = $this->other->get_news($data['cat_id'],1,100);
+            if($data['list']['status'] == '10000' && $data['list']['data'] && $data['list']['data']['data']){
+                $data['list'] = $data['list']['data']['data'];
+            }else{
+                $data['list'] = array();
+            }
+        }
+
+        if($data['id']){
+            $data['info'] = $this->other->get_news_detail($data['id']);
+            if($data['info']['status'] == '10000' && $data['info']['data']){
+                $data['info'] = $data['info']['data'];
+            }else{
+                $data['info'] = array();
+            }
+        }
 
         //查询热点问题用的帮助类cat_id 数组
         $temp['search_cat_id_array'] = array();
@@ -310,7 +329,7 @@ class About extends MY_Controller{
         $temp = array();
         $temp['cat_pid'] = item('help_news_cat_id')?item('help_news_cat_id'):2;
         $temp['category'] = $this->other->get_news_category($temp['cat_pid'] );
-
+/*
         if($temp['category']['status'] == '10000' && $temp['category']['data']){
             $temp['category_id_arr'] = array();
             foreach($temp['category']['data'] as $k=>$v){
@@ -327,7 +346,7 @@ class About extends MY_Controller{
                     }
                 }
             }
-        }
+        }*/
 
         return $temp['category']['data'];
     }
@@ -362,6 +381,10 @@ class About extends MY_Controller{
     public function invest_agreement(){
         $data = array();
         $this->load->view('about/invest_agreement', $data);
+    }
+
+    public function legal_declaration(){
+        $this->load->view('about/legal_declaration');
     }
 /***************************************协议************************************************************************/
 

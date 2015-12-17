@@ -10,7 +10,7 @@
     <!--head end-->
     <!--user start-->
     <div class="user_nav row">
-        <a href="">首页</a>&nbsp;>&nbsp;<a href="">账户设置</a>&nbsp;>&nbsp;<a href="">个人资料</a>
+        <a href="/index.php">首页</a>&nbsp;>&nbsp;<a href="/index.php/user/user/account_information">账户设置</a>&nbsp;>&nbsp;<a href="javascript:void(0);">基本信息-账号安全</a>
     </div>
     <div class="row user">
         <!--左侧通用-->
@@ -78,7 +78,7 @@
                             </div>
                         </div>
                         <!--实名认证_2-->
-                    <p><font>登录密码</font><font class="zj">已设置</font><font class="yc"><i class="xgmm">修改密码</i> | <i class="wjmm">重置密码</i></font></p>
+                    <p><font>登录密码</font><font class="zj">已设置</font><font class="yc"><i class="xgmm">修改</i> | <i class="wjmm">重置</i></font></p>
                         <!--修改密码 1-->
                         <div class="user_data_pop xgmm_1">
                             <div class="title">
@@ -215,7 +215,7 @@
                             </div>
                         </div>
                         <!--修改密码 2-->
-                    <p><font>资金密码</font><font class="zj"><?php echo (!empty($data['security']))?'已设置':'未设置'?></font><font class="yc"><?php if(empty($data['security'])):?><i class="szzjmm">设置密码</i>  <?php else:?> <i class="xgzjmm">修改密码</i> | <i class="wjzjmm">忘记密码</i><?php endif;?></font></p>
+                    <p><font>资金密码</font><font class="zj"><?php echo (!empty($data['security']))?'已设置':'未设置'?></font><font class="yc"><?php if(empty($data['security'])):?><i class="szzjmm">设置</i>  <?php else:?> <i class="xgzjmm">修改</i> | <i class="wjzjmm">重置</i><?php endif;?></font></p>
                         <!--设置资金密码 1-->
                         <div class="user_data_pop xgmm_5">
                             <div class="title">
@@ -729,11 +729,16 @@
        // pop_sub($('.xgmm_7').find('.sub'),$('.xgmm_8'),$('.xgmm_8').find('.close'));
         $("#but_sent_xgzjmm").click(function(){
             var mobile = <?php echo $data['mobile']?>;
+            var _this = $(this);
 			$.post('/index.php/user/user/send_sms?action=security&mobile='+mobile,{},function(result){
 				result = JSON.parse(result);
 				if(result.status=='10000'){
 					$('#fund_password_update_explain_one').html('验证码已发送至您的手机<?php echo secret($data['mobile'],5)?>，请注意查收');
-					dxdjs($(this));
+					dxdjs(_this);
+                    $('#fund_password_update_explain_one').append('<br/>短信接不到？<a href="javascript:void(0);" style="text-decoration: underline;" id="xgzjmm-voice" ' +
+                        'data-wait-time="<?php echo item("sms_space_time")?item("sms_space_time"):60; ?>" '+
+                    'data-last-time="<?php echo profile("voice_last_send_time")?profile("voice_last_send_time"):0; ?>">试试语音验证码</a>');
+                    $("#xgzjmm-voice").send_sms('voice',mobile,'security');
 				}else{
 					$('#fund_password_update_explain_one').html(result.msg);
 				}		

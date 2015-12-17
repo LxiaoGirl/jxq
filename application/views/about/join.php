@@ -56,6 +56,7 @@
 <!--      <a href="#"><div class="fr clearfix">立即申请职位</div></a>-->
         </div>
       </li>
+      <!--
       <li>
           <h1 class="accordion_toggle">Why another Accordion?</h1>
         <div class="accordion_content">
@@ -66,7 +67,7 @@
 3. 根据客户的资产规模、预期收益目标和风险承受能力进行需求分析，出具专业的理财计划方案，推荐合适的理财产品；<br>
 4. 定期与客户联系，报告理财产品的收益情况，向客户介绍新的金融服务、理财产品及金融市场动向，维护良好的信任关系
       </p>
-<!--      <a href="#"><div class="fr clearfix">立即申请职位</div></a>-->
+      <a href="#"><div class="fr clearfix">立即申请职位</div></a>
         </div>
       </li>
       <li>
@@ -79,9 +80,10 @@
 3. 根据客户的资产规模、预期收益目标和风险承受能力进行需求分析，出具专业的理财计划方案，推荐合适的理财产品；<br>
 4. 定期与客户联系，报告理财产品的收益情况，向客户介绍新的金融服务、理财产品及金融市场动向，维护良好的信任关系
       </p>
-<!--      <a href="#"><div class="fr clearfix">立即申请职位</div></a>-->
+      <a href="#"><div class="fr clearfix">立即申请职位</div></a>
         </div>
       </li>
+      -->
   </ul>        					
 	</div>
   </div>

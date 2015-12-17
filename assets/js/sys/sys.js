@@ -12,15 +12,21 @@ function addnav (e) {
 };
 function main_nav_pop (e) {
     //main_nav_pop
-    e.hover(function (){
-        $(".mnavtop").stop(true,true);
-        $(this).find($(".mian_nav_li_pop")).toggle();
-        $(this).find($(".mnavtop")).toggle(function() {
-            $(this).find($(".mnavtop")).animate({width:'100%'});
-        }, function() {
-            $(this).find($(".mnavtop")).animate({width:'1%'});
-        });    
-    })
+    
+    e.hover(
+        function () {
+            $(".mnavtop").stop(true,true);
+            $(".mian_nav_li_pop").stop(true,true);
+            $(this).find($(".mian_nav_li_pop")).slideDown();
+            $(this).find($(".mnavtop")).animate({width:'100%'}); 
+        },
+        function () {
+            $(".mnavtop").stop(true,true);
+            $(".mian_nav_li_pop").stop(true,true);
+            $(this).find($(".mian_nav_li_pop")).slideUp();
+            $(this).find($(".mnavtop")).animate({width:'0%'});
+        }
+    ); 
 };
 function nav_pop (e) {
     // nav_pop
@@ -520,138 +526,6 @@ function cs_js (e) {
     });
 };
 
-/************************倒计时函数 发送短信 ajax提交禁用-wsb-add-2015.11.04****************************************************/
-
-//(function($){
-//    /**
-//     * jquery 倒计时 两个时间 放在对象内标签（calss=start-time/end-time text() 取值） 开标时间 和截至时间 对应两个时间截至到处理函数
-//     * @param callback1 开标时间截至到处理函数
-//     * @param callback2 标的结束的处理函数
-//     */
-//    $.fn.count_down = function(callback1,callback2){
-//        var count_down = function() {this.tt=0;};
-//        count_down.prototype = {
-//            'go':function(e,end_time,callback) {
-//                var time = Date.parse(new Date())/1000;
-//                var time_space =end_time-time;
-//                var s = 0,m = 0,h = 0,d = 0;
-//                if(time_space > 0){
-//                    s = time_space%60;
-//                    m = Math.floor(time_space/60)%60;
-//                    h = Math.floor(Math.floor(time_space/60)/60)%24;
-//                    d = Math.floor(Math.floor(Math.floor(time_space/60)/60)/24);
-//                    if(s<10)s="0"+s;
-//                    if(m<10)m="0"+m;
-//                    if(h<10)h="0"+h;
-//                    if(d<10)d="0"+d;
-//                    e.find('.s').text(s);
-//                    e.find('.m').text(m);
-//                    e.find('.h').text(h);
-//                    e.find('.d').text(d);
-//                    var _this = this;
-//                    this.tt=setTimeout(function(){_this.go(e,end_time,callback);},1000);
-//                }else{
-//                    e.find('.s').text('00');
-//                    e.find('.m').text('00');
-//                    e.find('.h').text('00');
-//                    e.find('.d').text('00');
-//                    clearTimeout(this.tt);
-//                    if(typeof callback == 'function')callback();
-//                }
-//            }
-//        };
-//        if(this.length > 1){
-//            $(this).each(function(i,v){
-//                var _this =$(v);
-//                var time1 = _this.find('.start-time')?_this.find('.start-time').text():0;
-//                var time2 = _this.find('.end-time')?_this.find('.end-time').text():0;
-//                var cd = new count_down();
-//                cd.go(_this,time1,function(){
-//                    if(typeof callback1 == 'function')callback1(_this);
-//                    cd.go(_this,time2,function(){
-//                        if(typeof callback2 == 'function')callback2(_this);
-//                    });
-//                });
-//            });
-//        }else{
-//            var _this =this;
-//            var time1 = _this.find('.start-time')?_this.find('.start-time').text():0;
-//            var time2 = _this.find('.end-time')?_this.find('.end-time').text():0;
-//            var cd = new count_down();
-//            cd.go(_this,time1,function(){
-//                if(typeof callback1 == 'function')callback1(_this);
-//                cd.go(_this,time2,function(){
-//                    if(typeof callback2 == 'function')callback2(_this);
-//                });
-//            });
-//        }
-//        return this;
-//    };
-//
-//    $.fn.send_sms = function(type,mobile,action,wait,last_send_time_go){
-//        if( ! mobile){
-//            alert('电话号码不能为空!');
-//            return;
-//        }
-//        //倒计时 效果处理
-//        var sms_count_down = function(e,space_time,all_time,callback){
-//            var wait=space_time;
-//            var t = 0;
-//            var time = function(o){
-//                if (wait == 0) {
-//                    o.removeAttr("disabled");
-//                    o.val("获取验证码");
-//                    wait = all_time;
-//                    clearTimeout(t);
-//                    if(typeof callback == "function"){
-//                        callback();
-//                    }
-//                } else {
-//                    o.attr("disabled","true");
-//                    o.val("" + wait + "秒后再次发送");
-//                    wait--;
-//                    t = setTimeout(function() {
-//                        time(o)
-//                    },1000)
-//                }
-//            };
-//            time(e);
-//        };
-//        var _this = this;
-//        //发送到ajax事件
-//        var send_event = function(){
-//            _this.unbind('click');
-//            $.ajax({
-//                type: 'POST',
-//                url: '/index.php/send/index',
-//                data: {'type':type,'mobile':mobile,'action':action},
-//                dataType: 'json',
-//                success: function (result) {
-//                    if(result.status == '10000'){
-//                        if(type == 'voice'){
-//                            alert('稍后聚雪球将通过电话4007-918-333拨打' +
-//                                '您的手机'+mobile+'告知验证码!');
-//                        }else{
-//                            alert('短信已发送,请注意查收!');
-//                        }
-//                        //发送成功 执行显示效果
-//                        sms_count_down(_this,wait,wait,function(){ _this.bind('click',function(){send_event();});});
-//                    }else{
-//                        alert(result.msg);
-//                    }
-//                }
-//            });
-//        };
-//        //验证上一次发送到时间间隔
-//        if(last_send_time_go !== '' && last_send_time_go < wait){
-//            sms_count_down(this,wait-last_send_time_go,wait,function(){_this.bind('click',function(){send_event();});});
-//        }else{
-//            _this.bind('click',function(){send_event();});
-//        }
-//        return this;
-//    }
-//})(jQuery);
-
 /**
  * jquery ajax 提交的按钮设置
  * 提交按钮 加class ajax-submit-button
@@ -665,96 +539,124 @@ function cs_js (e) {
  * @param bg_flag
  * @param end_delay
  */
-var ajax_loading = function(flag,bg_flag,end_delay){
-    var ajax_class_flag = 'ajax-submit-button';     //ajax 提交按钮的 class标识
-    var ajax_submit_button_text = '';               //按钮的最初的文本或html
-    var ajax_submit_button_obj = '';                //按钮obj
-    var ajax_submit_button_load_msg = '提交中...';  //默认 ajax处理中 按钮显示的文本
-    var ajax_submit_button_bg_color = '';           //背景
-    var ajax_submit_button_bg_flag = bg_flag | false;//背景变化启用
-    var ajax_submit_button_end_delay = end_delay | 0; //提交按钮回复延时
+var ajax_loading = function(){
+    this.src_tag_obj = false;
+    this.ajax_class_flag = 'ajax-submit-button';
+};
+ajax_loading.prototype = {
+    'init':function(flag,bg_flag,end_delay){
+        var ajax_class_flag = this.ajax_class_flag;     //ajax 提交按钮的 class标识
+        var ajax_submit_button_text = '';               //按钮的最初的文本或html
+        var ajax_submit_button_obj = '';                //按钮obj
+        var ajax_submit_button_load_msg = '提交中...';  //默认 ajax处理中 按钮显示的文本
+        var ajax_submit_button_bg_color = '';           //背景
+        var ajax_submit_button_bg_flag = bg_flag | false;//背景变化启用
+        var ajax_submit_button_end_delay = end_delay | 0; //提交按钮回复延时
 
-    /**
-     * ajax开始的处理
-     */
-    var ajax_start_deal = function(){
-        //取信息
-        if($(ajax_submit_button_obj).data('loadingMsg') != undefined)ajax_submit_button_load_msg = $(ajax_submit_button_obj).data('loadingMsg');
+        /**
+         * ajax开始的处理
+         */
+        var ajax_start_deal = function(){
+            //取信息
+            if($(ajax_submit_button_obj).data('loadingMsg') != undefined)ajax_submit_button_load_msg = $(ajax_submit_button_obj).data('loadingMsg');
 
-        switch (ajax_submit_button_obj.tagName) {
-            case 'INPUT':
-                if (!ajax_submit_button_text)ajax_submit_button_text = $(ajax_submit_button_obj).val();
-                $(ajax_submit_button_obj).removeAttr('disabled').attr('disabled', true).val(ajax_submit_button_load_msg);
-                break;
-            case 'BUTTON':
-                if (!ajax_submit_button_text)ajax_submit_button_text = $(ajax_submit_button_obj).html();
-                $(ajax_submit_button_obj).removeAttr('disabled').attr('disabled', true).html(ajax_submit_button_load_msg);
-                break;
-            default:
-                if (!ajax_submit_button_text)ajax_submit_button_text = $(ajax_submit_button_obj).html();
-                $(ajax_submit_button_obj).removeAttr('disabled').attr('disabled', true).html(ajax_submit_button_load_msg);
-        }
-        //处理按钮背景变化
-        if(ajax_submit_button_bg_flag){
-            ajax_submit_button_bg_color = $(ajax_submit_button_obj).css('background-color');
-            $(ajax_submit_button_obj).css('background-color','gainsboro');
-        }
-    };
-    /**
-     * ajax结束的处理
-     */
-    var ajax_end_deal = function(){
-        switch (ajax_submit_button_obj.tagName) {
-            case 'INPUT':
-                $(ajax_submit_button_obj).removeAttr('disabled').val(ajax_submit_button_text);
-                break;
-            case 'BUTTON':
-                $(ajax_submit_button_obj).removeAttr('disabled').html(ajax_submit_button_text);
-                break;
-            default:
-                $(ajax_submit_button_obj).removeAttr('disabled').html(ajax_submit_button_text);
-        }
-
-        //恢复按钮背景变化
-        if(ajax_submit_button_bg_flag)$(ajax_submit_button_obj).css('background-color',ajax_submit_button_bg_color);
-    };
-
-    $(document).ajaxStart(function(){
-        if(event && (event.srcElement || event.target))ajax_submit_button_obj = event.srcElement?event.srcElement:event.target;
-        var ajax_button = false;
-        if(ajax_submit_button_obj && ajax_submit_button_obj.tagName){
-            var class_str = $(ajax_submit_button_obj).attr('class');
-            //标签的class包含标识
-            if(class_str && class_str.indexOf(ajax_class_flag) != -1) {
-                ajax_button = true;
-                if($(ajax_submit_button_obj).data('loadingFlag') != undefined)flag = parseInt($(ajax_submit_button_obj).data('loadingFlag'));
+            switch (ajax_submit_button_obj.tagName) {
+                case 'INPUT':
+                    if (!ajax_submit_button_text)ajax_submit_button_text = $(ajax_submit_button_obj).val();
+                    $(ajax_submit_button_obj).removeAttr('disabled').attr('disabled', true).val(ajax_submit_button_load_msg);
+                    break;
+                case 'BUTTON':
+                    if (!ajax_submit_button_text)ajax_submit_button_text = $(ajax_submit_button_obj).html();
+                    $(ajax_submit_button_obj).removeAttr('disabled').attr('disabled', true).html(ajax_submit_button_load_msg);
+                    break;
+                default:
+                    if (!ajax_submit_button_text)ajax_submit_button_text = $(ajax_submit_button_obj).html();
+                    $(ajax_submit_button_obj).removeAttr('disabled').attr('disabled', true).html(ajax_submit_button_load_msg);
             }
-        }
-        if(flag != 2 && ajax_button){
-            ajax_start_deal();
-        }
-        if(flag != 1){
-            layer.load(2);
-        }
-    }).ajaxStop(function(){
-        if(flag != 2 && ajax_submit_button_obj && ajax_submit_button_obj.tagName) {
-            var class_str = $(ajax_submit_button_obj).attr('class');  //event.fromElement event.toElement
-            if(class_str && class_str.indexOf(ajax_class_flag) != -1) { //标签的class包含标识
-                if(ajax_submit_button_end_delay > 0){
-                    var endt = setTimeout(function(){
-                        clearTimeout(endt);
-                        ajax_end_deal();
-                    },ajax_submit_button_end_delay*1000);
-                }else{
-                    ajax_end_deal();
+            //处理按钮背景变化
+            if(ajax_submit_button_bg_flag){
+                ajax_submit_button_bg_color = $(ajax_submit_button_obj).css('background-color');
+                $(ajax_submit_button_obj).css('background-color','gainsboro');
+            }
+        };
+        /**
+         * ajax结束的处理
+         */
+        var ajax_end_deal = function(){
+            switch (ajax_submit_button_obj.tagName) {
+                case 'INPUT':
+                    $(ajax_submit_button_obj).removeAttr('disabled').val(ajax_submit_button_text);
+                    break;
+                case 'BUTTON':
+                    $(ajax_submit_button_obj).removeAttr('disabled').html(ajax_submit_button_text);
+                    break;
+                default:
+                    $(ajax_submit_button_obj).removeAttr('disabled').html(ajax_submit_button_text);
+            }
+
+            //恢复按钮背景变化
+            if(ajax_submit_button_bg_flag)$(ajax_submit_button_obj).css('background-color',ajax_submit_button_bg_color);
+        };
+        var that = this;
+        $(document).ajaxStart(function(){
+            if(that.src_tag_obj != false){
+                ajax_submit_button_obj = that.src_tag_obj;
+            }else{
+                var theEvent = window.event || arguments.callee.caller.arguments[0];//这个依然是获取不到具体源的
+                if(theEvent && (theEvent.srcElement || theEvent.target))ajax_submit_button_obj = theEvent.srcElement?theEvent.srcElement:theEvent.target;
+            }
+            var ajax_button = false;
+            if(ajax_submit_button_obj && ajax_submit_button_obj.tagName){
+                var class_str = $(ajax_submit_button_obj).attr('class');
+                //标签的class包含标识
+                if(class_str && class_str.indexOf(ajax_class_flag) != -1) {
+                    ajax_button = true;
+                    if($(ajax_submit_button_obj).data('loadingFlag') != undefined)flag = parseInt($(ajax_submit_button_obj).data('loadingFlag'));
                 }
             }
+            if(flag != 2 && ajax_button){
+                ajax_start_deal();
+            }
+            if(flag != 1){
+                layer.load(2);
+            }
+        }).ajaxStop(function(){
+            if(flag != 2 && ajax_submit_button_obj && ajax_submit_button_obj.tagName) {
+                var class_str = $(ajax_submit_button_obj).attr('class');  //event.fromElement event.toElement
+                if(class_str && class_str.indexOf(ajax_class_flag) != -1) { //标签的class包含标识
+                    if(ajax_submit_button_end_delay > 0){
+                        var endt = setTimeout(function(){
+                            clearTimeout(endt);
+                            ajax_end_deal();
+                        },ajax_submit_button_end_delay*1000);
+                    }else{
+                        ajax_end_deal();
+                    }
+                }
+            }
+            if(flag != 1)var t= setTimeout(function(){
+                layer.closeAll('loading');
+                clearTimeout(t);
+            },1000);
+        });
+    },
+    'set_src':function(obj){
+        if(obj){
+            if(typeof obj == "string"){
+                this.src_tag_obj = $("#"+obj).get(0)
+            }else{
+                this.src_tag_obj = obj.get(0);
+            }
+        }else{
+            this.src_tag_obj = false;
         }
-        if(flag != 1)var t= setTimeout(function(){
-            layer.closeAll('loading');
-            clearTimeout(t);
-        },1000);
-    });
+    },
+    'get_class_flag':function(){
+        return this.ajax_class_flag;
+    },
+    'set_class_flag':function(class_name){
+        this.ajax_class_flag = class_name;
+    }
 };
 
 /**
@@ -773,6 +675,8 @@ var each_html = function(id,url,option,field_func,flag,func,callback,hide_nodata
     if( ! url)return'';
     $.post(url,option,function(rs){
         var data = rs.data;
+        var links = '';
+        if(rs.links)links=rs.links;
         var list_html = '';
         if(typeof id == "object"){
             list_html = id;
@@ -846,7 +750,7 @@ var each_html = function(id,url,option,field_func,flag,func,callback,hide_nodata
         }else{
             $("#"+id).append(htmls);
         }
-        if(typeof callback == "function") callback(no_data);
+        if(typeof callback == "function") callback(no_data,links);
     },'json');
 };
 
@@ -939,7 +843,7 @@ var wsb_alert = function(msg, flag, url){
     }
     if(isNaN(flag))flag=2;
 
-    $('.but_pop_tip_1').fadeIn(500,function(){
+    $('.but_pop_tip_1').fadeIn(100,function(){
         var alert_t = setTimeout(function(){
             $('.but_pop_tip_1').fadeOut(500,function(){
                 clearTimeout(alert_t);

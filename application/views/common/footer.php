@@ -14,7 +14,7 @@
 			<div class="fo1_l fl clearfix">
 				<dl class="fo_dl">
 					<dt>我的钱包</dt>
-					<a href="<?php echo site_url('about/help_tail?cat_id=30') ?>"><dd>如何注册</dd></a>
+					<a href="#"><dd>如何注册</dd></a>
 					<a href="#"><dd>修改或找回密码</dd></a>
 					<a href="#"><dd>个人资料修改</dd></a>
 					<a href="#"><dd>充值与提现</dd></a>
@@ -54,13 +54,16 @@
 			</div>
 		</div>
 		<div class="fo2">
-			<p class="fo-p1 tc"><a href="<?php echo site_url('about/company'); ?>"><img src="../../../../assets/images/common/f_logo.png" width="21" height="15">关于聚雪球</a>   <a href="<?php echo site_url('about/certificates'); ?>">公司资质</a>   <a href="<?php echo site_url('about/media'); ?>">媒体报道</a>   <a href="<?php echo site_url('about/news'); ?>">新闻中心 </a>  <a href="<?php echo site_url('about/join'); ?>">加入我们</a>  <a href="#"> 法律声明</a>   <a href="<?php echo site_url('about/contact'); ?>">联系我们</a>   <a href="<?php echo site_url('about/help'); ?>">帮助中心</a>   <a href="<?php echo site_url('about/guide'); ?>">新手指引</a>   辽ICP备15006535号</p>
+			<p class="fo-p1 tc"><a href="<?php echo site_url('about/company'); ?>"><img src="../../../../assets/images/common/f_logo.png" width="21" height="15">关于聚雪球</a>   <a href="<?php echo site_url('about/certificates'); ?>">公司资质</a>   <a href="<?php echo site_url('about/media'); ?>">媒体报道</a>   <a href="<?php echo site_url('about/news'); ?>">新闻中心 </a>  <a href="<?php echo site_url('about/join'); ?>">加入我们</a>  <a href="<?php echo site_url('about/legal_declaration'); ?>"> 法律声明</a>   <a href="<?php echo site_url('about/contact'); ?>">联系我们</a>   <a href="<?php echo site_url('about/help'); ?>">帮助中心</a>   <a href="<?php echo site_url('about/guide'); ?>">新手指引</a>   辽ICP备15006535号-1</p>
 			<p class="fo-p1 tc"><span>Copyright © 2009-2015 ZGWJJF 沈阳网加互联网金融服务有限公司</span>   <span>服务热线：4007 918 333（个人/企业）</span>服务时间：9:00-21:00</p>
 			<p class="fo-p2 tc">友情链接：<a href="http://ln.qq.com/" target="_new">腾讯·大辽网</a> ·<a href="http://www.ce.cn/" target="_new"> 中国经济网 </a>·<a href="http://www.163.com/" target="_new"> 网易</a> ·<a href="http://cn.chinadaily.com.cn/" target="_new"> 中国日报网</a> · <a href="http://www.wangdaizhijia.com/" target="_new">网贷之家</a> ·<a href="http://www.eastmoney.com/" target="_new"> 东方财富网</a> ·<a href="http://www.eeo.com.cn/" target="_new"> 经济观察网</a></p>
-			<p class="fo-p3 tc"><img src="../../../../assets/images/common/footer1.jpg">
-				<img src="../../../../assets/images/common/footer2.jpg">
-				<img src="../../../../assets/images/common/footer3.jpg">
-				<img src="../../../../assets/images/common/footer4.jpg" ></p>
+			<p class="fo-p3 tc">
+                <a href="javascript:void(0);" target = "_blank"><img class="a_q" src="../../../../assets/images/common/footer1.jpg"><img class="a_f" src="../../../../assets/images/common/footer1_1.png"></a>
+				<a href="http://www.sygsj.gov.cn/index.asp" target = "_blank"><img class="a_q" src="../../../../assets/images/common/footer2.jpg"><img class="a_f" src="../../../../assets/images/common/footer2_1.png"></a>
+				<a href="http://www.miitbeian.gov.cn/publish/query/indexFirst.action" target = "_blank"><img class="a_q" src="../../../../assets/images/common/footer3.jpg"><img class="a_f" src="../../../../assets/images/common/footer3_1.png"></a>
+				<a href="https://trustsealinfo.websecurity.norton.com/splash?form_file=fdf/splash.fdf&dn=www.zgwjjf.com&lang=zh_cn" target = "_blank"><img class="a_q" src="../../../../assets/images/common/footer4.jpg" ><img class="a_f" src="../../../../assets/images/common/footer4_1.png"></a>
+                <a href="http://www.itrust.org.cn/home/index/itrust_certifi/wm/1313278548.html" target = "_blank"><img class="a_q" src="../../../../assets/images/common/footer5.png" ><img class="a_f" src="../../../../assets/images/common/footer5_1.png"></a>
+            </p>
 		</div>
 	</div>
 </div>
@@ -86,16 +89,25 @@
             });
     }); 
 </script>
-<?php   if('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] != site_url('user/user/account_home')):?><script type="text/javascript" src="<?php echo base_url('assets/js/seajs/sea.js')?>"></script>
+<?php   if(('https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] != site_url('user/user/account_home'))&&('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] != site_url('user/user/account_home'))):?><script type="text/javascript" src="<?php echo base_url('assets/js/seajs/sea.js')?>"></script>
 <script type="text/javascript">
+	var g_sms_apace_time = parseInt('<?php echo item('sms_space_time')?item('sms_space_time'):60; ?>');
+	var g_voice_last_time = parseInt('<?php echo profile('voice_last_send_time')?profile('voice_last_send_time'):0; ?>');
+	var g_sms_last_time = parseInt('<?php echo profile('sms_last_send_time')?profile('sms_last_send_time'):0; ?>');
+$(document).ready(function(){
 	seajs.use(['jquery','sys','wsb_sys'],function(){
 		main_nav_pop($(".main_nav").find($(".fr")).find($("li")));
 		nav_pop($(".nav_have_son"));
 		
 		$(function(){
-			ajax_loading(1,true,2);//ajax提交 禁用处理
+			var ajax_loading_obj = new  ajax_loading();
+			ajax_loading_obj.init(1,true,1);//ajax提交 禁用处理
+			if(navigator.userAgent.indexOf("Firefox") > -1){
+				$("."+ajax_loading_obj.get_class_flag()).hover(function(){ajax_loading_obj.set_src($(this));},function(){ajax_loading_obj.set_src(false);});
+			}
+
 			//覆盖登录 处理未读消息
-			if('<?php echo profile('uid'); ?>'){
+			/*if('<?php echo profile('uid'); ?>'){
 				$.ajax({
 					type: 'POST',
 					url: '<?php echo site_url('user/message/ajax_get_not_read_message_count'); ?>',
@@ -113,8 +125,9 @@
 						}
 					}
 				});
-			}
+			}*/
 		});
 	});
+})
 </script>
 <?php endif;?>

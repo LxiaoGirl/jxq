@@ -1,0 +1,120 @@
+/* 
+* @Author: anchen
+* @Date:   2015-12-09 16:46:35
+* @Last Modified by:   anchen
+* @Last Modified time: 2015-12-09 17:24:11
+*/
+
+.hdy_12 .con1{
+    height: 50px;
+    background: url(../images/hdy_12/hdy.jpg) center no-repeat;
+}
+.hdy_12 .con2{
+    height: 574px;
+    background: url(../images/hdy_12/hdy_121.jpg) center no-repeat;
+}
+.hdy_12 .con3{
+    height: 574px;
+    background: url(../images/hdy_12/hdy_122.jpg) center no-repeat;
+}
+.hdy_12 .con4{
+    height: 574px;
+    background: url(../images/hdy_12/hdy_123.jpg) center no-repeat;
+}
+.hdy_12 .con5{
+    height: 574px;
+    background: url(../images/hdy_12/hdy_124.jpg) center no-repeat;
+}
+.hdy_12 .con6{
+    height: 574px;
+    background: url(../images/hdy_12/hdy_125.jpg) center no-repeat;
+}
+.hdy_12 .cell{
+    position: relative;
+    width: 1200px;
+    height:100%;
+    margin:0 auto;
+}
+.hdy_12 .con1 a{
+    line-height: 48px;
+}
+.hdy_12 .con1 a:hover{
+    color: #3cb5ec;
+}
+.hdy_12 .con2 p.mac{
+    position: absolute;
+    width:100%;
+    top:440px;
+    text-align: center;
+    font-size: 30px;
+    color:#161616;
+    font-weight: bold;
+    line-height: 50px;
+}
+.hdy_12 .con2 p.hdsj{
+    position: absolute;
+    width:100%;
+    top:540px;
+    text-align: center;
+    font-size: 24px;
+    color:#fff;
+    line-height: 50px;
+}
+.hdy_12 .con2 p.hdbd{
+    position: absolute;
+    width:100%;
+    top:570px;
+    text-align: center;
+    font-size: 14px;
+    color:#ffd100;
+    line-height: 50px;
+}
+.hdy_12 .con3 p.but{
+    position: absolute;
+    width:100%;
+    top:72px;
+    text-align: center;
+}
+.hdy_12 .con3 p.but a{
+    width:300px;
+    height:80px;
+    display: inline-block;
+}
+.hdy_12 .con4 p.jp1{
+    position: absolute;
+    width:100%;
+    top:90px;
+    font-size: 24px;
+    color:#fff;
+    line-height: 50px;
+}
+.hdy_12 .con4 p.jp2{
+    position: absolute;
+    width:100%;
+    top:310px;
+    font-size: 24px;
+    color:#fff;
+    line-height: 50px;
+}
+.hdy_12 .con4 p.jp3{
+    position: absolute;
+    width:100%;
+    top:520px;
+    font-size: 24px;
+    color:#fff;
+    line-height: 50px;
+}
+.hdy_12 .con4 p span{
+    width:300px;
+    text-align: center;
+    display: inline-block;
+}
+.hdy_12 .con6 p.hdxz{
+    position: absolute;
+    width:100%;
+    top:190px;
+    font-size: 14px;
+    color:#ffd100;
+    line-height: 30px;
+    padding-left: 30px;
+}

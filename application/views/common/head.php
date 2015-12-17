@@ -31,14 +31,15 @@
 		            <li class="org" onclick="window.location.href='<?php echo site_url('login/register'); ?>'">免费注册</li>
 	            <?php else: ?>
                     <li class="nav_have_son">
-                        <span onclick="window.location.href='<?php echo site_url('user/user/account_home'); ?>'">我的聚雪球</span><font class="msg-count-flag"></font><em>></em>
+                        <span onclick="window.location.href='<?php echo site_url('user/user/account_home'); ?>'"><span class="login" onclick="window.location.href='<?php echo site_url('user/user/account_information'); ?>'">您好！<span id="head_user_name_span"><?php echo profile('user_name'); ?></span></span></span><font class="msg-count-flag"></font><em>></em>
                         <div class="nav_pop">
                             <div class="nav_pop_body1">
                                 <div class="top">
                                     <div class="my_icon" onclick="window.location.href='<?php echo profile('avatar')?site_url('user/user/account_home'):site_url('user/user/head_portrait'); ?>'"><img style="width: 50px;height: 50px;" src="<?php if(!profile('avatar')): ?>/assets/images/common/my_icon.jpg<?php else:echo $this->c->get_oss_image(profile('avatar')); endif; ?>"></div>
                                     <div class="right">
-                                        <p class="login" onclick="window.location.href='<?php echo site_url('user/user/account_information'); ?>'">您好，<span id="head_user_name_span"><?php if( ! profile('uid')): ?></span>请<a href="<?php echo site_url('login'); ?>">登录</a><?php else:echo profile('user_name'); endif; ?></p>
-                                        <p><span><a href="<?php echo site_url('user/user/account_home'); ?>">个人中心</a></span>&nbsp;|&nbsp;<span><a href="<?php echo site_url('user/user/information'); ?>">消息<font class="msg-count">（0）</font></a></span></p>
+                                        <p><span><a href="<?php echo site_url('user/user/account_home'); ?>">我的账户</a></span>&nbsp;|&nbsp;<span><a href="<?php echo site_url('user/user/information'); ?>">消息</a></span></p>
+                                        <p><span style="margin-left: 55px;"><a style="color:red;" href="<?php echo site_url('login/logout'); ?>">安全退出</a></span></p>
+                                        <!--&nbsp;|&nbsp;<span><a href="<?php echo site_url('user/user/information'); ?>">消息<font class="msg-count">（0）</font></a></span>-->
                                     </div>
                                 </div>
                                 <div class="bottom">
@@ -47,7 +48,6 @@
                             </div>
                         </div>
                     </li>
-                    <li onclick="window.location.href='<?php echo site_url('login/logout'); ?>'">退出</li>
                 <?php endif; ?>
 
                 <li onclick="window.location.href='<?php echo site_url('about/help'); ?>'">帮助中心</li>
@@ -71,7 +71,7 @@
     <div class="row">
         <div class="fl">
             <ul>
-                <li><img src="../../../../assets/images/common/logo.jpg"/></li>
+                <li onclick="window.location.href='/index.php'" style="cursor: pointer;"><img src="../../../../assets/images/common/logo.jpg"/></li>
                 <?php if( !profile('logo_rate')): $logo_rate=$this->c->get_logo_rate_image();$logo_rate = $logo_rate?$logo_rate:'/assets/images/common/sec_logo.jpg';$this->session->set_userdata(array('logo_rate'=>$logo_rate));endif; ?>
                 <li><img src="<?php echo profile('logo_rate'); ?>"/></li>
             </ul>
@@ -95,6 +95,7 @@
 		                        }
 	                        }
 	                        ?>
+                            <p><a href="/index.php/invest/index?c=4">聚保宝</a></p>
                         </div>
                     </div>
                 </li>

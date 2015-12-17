@@ -564,7 +564,7 @@ $i = $i+1;
 				$type ="41019";
 				$xmldata="<?xml version='1.0'encoding='UTF-8'standalone='no'?><root><Pub><Version>3.0</Version><TradeCode>".$type."</TradeCode><Date>".date('Ymd')."</Date><Time>".date('His')."</Time><EntWay>I</EntWay><BankId>A14</BankId><TradeSrc>I</TradeSrc><MktCode>".$MktCode."</MktCode></Pub><Serial><MktSer>".$MarketSerial."</MktSer><OTSer>".$OTSer."</OTSer></Serial><FlagInfo><Flag1>5</Flag1><Flag2>0</Flag2></FlagInfo><SummaryInfo><Summary1>订单查询</Summary1><Summary2/><Tel>~</Tel><BatchId>~</BatchId><Number/></SummaryInfo></root>";
 				$data = $this->vpostdata($xmldata,$MktCode,$type);
-				echo $xmldata;
+				//echo $xmldata;
 				$result = $this->vpost($data);
 				$configData = $this->geshihua($result);
 				return  $configData;	

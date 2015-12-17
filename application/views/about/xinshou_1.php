@@ -100,6 +100,7 @@
                         <p>修改手机号码</p>
                     </li>
                 </a>
+                <!--
                 <a href="<?php echo site_url('user/user/account_security?type=change_password'); ?>">
                     <li>
                         <img src="../../../../assets/images/about/help/help3_5.png"> 
@@ -112,6 +113,7 @@
                         <p>修改交易密码</p>
                     </li>
                 </a>
+                -->
             </ul>
         </div>
     </div>

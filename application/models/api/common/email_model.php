@@ -73,7 +73,7 @@ class Email_model extends CI_Model{
 
         $temp['send']  = array(
             'from'    => $this->_config['smtp_user'],
-            'name'    => '网加金服客服',
+            'name'    => '聚雪球',
             'to'      => $email,
             'subject' => $subject,
             'message' => $content

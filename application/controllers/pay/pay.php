@@ -40,6 +40,11 @@ class Pay extends Login_Controller
         if($this->session->userdata('clientkind') != '1'){
             $this->_redirect('user/user/account_security',3,'请先进行实名认证!');
         }
+
+         if((int)date('Hi') >= 2330 || (int)date('Hi') <= 30){
+             $this->_redirect('user/user/account_security',3,'聚雪球平台每日凌晨23:30-00:30间不可充值，为银行日切时间，请大家避开此时间段充值。带来不便，敬请谅解。望周知！');
+         }
+
         //接受参数
         $temp['bank']        = $this->input->post('bank');
         $temp['recharge_no'] = authcode($this->input->get('recharge_no',TRUE),'',TRUE);

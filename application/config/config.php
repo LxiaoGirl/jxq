@@ -20,6 +20,12 @@ $config['system_run_date']='2015-06-12';
 $config['application_url']='http://localhost';//前台地址
 $config['charge_rate']='5';//收益手续费百分比
 
+
+
+//聚保宝可退出时间段
+$config['jbb_start_time']='9:00';//起始时间
+$config['jbb_end_time']='16:00';//结束时间
+
 /*
 |--------------------------------------------------------------------------
 | Index File

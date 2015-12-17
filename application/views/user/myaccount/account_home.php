@@ -14,7 +14,7 @@
     <!--head end-->
     <!--user start-->
     <div class="user_nav row">
-        <a href="">首页</a>&nbsp;>&nbsp;<a href="">我的账户</a>&nbsp;>&nbsp;<a href="">资金总览</a>
+        <a href="/index.php">首页</a>&nbsp;>&nbsp;<a href="javascript:void(0);">我的账户</a>&nbsp;>&nbsp;<a href="javascript:void(0);">资金总览</a>
     </div>
     <div class="row user">
         <!--左侧通用-->
@@ -29,12 +29,12 @@
                             账户总资产（元）
                         </div>
                         <div class="height_half col_333 font_size_40 font_w_bold line_hei80 text_in">
-                            <?php echo $data['property_total'];?>
+                            <?php echo rate_format(price_format($data['property_total'],2,false));?>
                         </div>
                     </div>
                     <div class="center">
                         <div class="height_half">
-                            <a href="<?php echo site_url('user/user/recharge');?>"><button class="cz">充值</button></a><a href="<?php echo site_url('user/user/withdrawals');?>"><button class="tx">提现</button></a><a href="<?php echo site_url('user/user/transaction_details');?>">查看交易明细</a><a href="<?php echo site_url('invest');?>">去投资</a>
+                            <button class="cz" onclick="window.location.href='<?php echo site_url('user/user/recharge');?>'">充值</button><button class="tx" onclick="window.location.href='<?php echo site_url('user/user/withdrawals');?>'">提现</button><a href="<?php echo site_url('user/user/transaction_details');?>">查看交易明细</a><a href="<?php echo site_url('invest');?>">去投资</a>
                         </div>
                     </div>
                     <div class="right">
@@ -43,7 +43,7 @@
                                 <span>我的雪球：<?php echo $snowball_num?>个</span>
                             </div>
                             <div class="height_half">
-                                <a href="<?php echo site_url('about/help'); ?>">如何获得雪球</a><a href="<?php echo site_url('about/help'); ?>">雪球能做什么</a>
+                                <a href="javascript:void(0);" title="通过参与平台活动来获取">如何获得雪球</a><a href="javascript:void(0);" title="雪球可以用于参与平台的活动">雪球能做什么</a>
                             </div>
                         </div>
                         <div class="height_half">
@@ -61,39 +61,39 @@
                     <div class="precent_q">
                         <div class="precent_ec" id="acc_mian_1"></div>
                         <div class="top">可用余额（元）</div>
-                        <div class="botton color_3cb5ec"><?php echo $data['balance']?></div>
+                        <div class="botton color_3cb5ec"><?php echo rate_format(price_format($data['balance'],2,false));?></div>
                         <div class="pre_sz"><?php echo percent($data['property_total'],$data['balance']);?>%</div>
                     </div>
                     <div class="jiah">+</div>
                     <div class="precent_q">
                         <div class="precent_ec" id="acc_mian_2"></div>
                         <div class="top">待收本金（元）</div>
-                        <div class="botton"><?php echo $data['wait_principal_total']?></div>
+                        <div class="botton"><?php echo rate_format(price_format($data['wait_principal_total'],2,false));?></div>
                         <div class="pre_sz"><?php echo percent($data['property_total'],$data['wait_principal_total']);?>%</div>
                     </div>
                     <div class="jiah">+</div>
                     <div class="precent_q">
                         <div class="precent_ec" id="acc_mian_3"></div>
                         <div class="top">冻结金额（元）</div>
-                        <div class="botton"><?php echo $data['invest_freeze_total']+$data['transfer_freeze_total']?></div>
+                        <div class="botton"><?php echo rate_format(price_format($data['invest_freeze_total']+$data['transfer_freeze_total'],2,false));?></div>
                         <div class="pre_sz"><?php echo percent($data['property_total'],$data['invest_freeze_total']+$data['transfer_freeze_total']); ?>%</div>
                     </div>
                 </div>
                 <div class="dssy">
                     <div class="wid33">
                         <div class="top">累计投资（元）</div>
-                        <div class="botton"><?php echo $data['invest_total']?></div>
+                        <div class="botton"><?php echo rate_format(price_format($data['invest_total'],2,false));?></div>
                     </div>
                     <div class="wid33">
                         <div class="top">累计收益（元）</div>
-                        <div class="botton"><?php echo $data['receive_interest_total']?></div>
+                        <div class="botton"><?php echo rate_format(price_format($data['receive_interest_total'],2,false));?></div>
                     </div>
                     <div class="wid33">
                         <div class="top">预计收益（元）</div>
-                        <div class="botton"><?php echo $data['wait_interest_total']?></div>
+                        <div class="botton"><?php echo rate_format(price_format($data['wait_interest_total'],2,false));?></div>
                     </div>
                 </div>
-                <p class="line_h86">投资收益<a href="<?php echo site_url('user/user/transaction_note');?>">查看投标记录</a></p>
+                <p class="line_h86">投资一览<a href="<?php echo site_url('user/user/transaction_note');?>">查看投标记录</a></p>
                 <div class="tzfb_ec" id="tzfb_ec"></div>
                 <p id="char-load-msg" style="text-align: center;visibility: hidden;">图表数据加载中...</p>
             </div>
@@ -229,7 +229,7 @@ option2 = {
 };
 var option3 = { 
     title : {
-        text: '最近六个月投资收益一览',
+        text: '最近六个月投资一览',
         x:'center',
         textStyle:{
             fontSize: 16,
@@ -242,6 +242,10 @@ var option3 = {
             type: "none"
         }
     },
+    legend: {
+            data:['投资总额'],
+            x:'right',
+        },
     xAxis : [
         {
             type : 'category',
@@ -252,13 +256,6 @@ var option3 = {
         {
             type: "value",
             name : '金额',
-        },
-        {
-                            type : 'value',
-                            name : '金额',
-                            axisLabel : {
-                                formatter: '{value}'
-                            }
         }
     ],
     series : [
@@ -272,17 +269,6 @@ var option3 = {
             },
             data:[0]
 
-        },
-        {
-                            name:'投资收益',
-                            type:'line',
-                            itemStyle: {        // 系列级个性化样式，纵向渐变填充
-                                normal: {
-                                    color : "#599b30"
-                                }
-                            },
-                            yAxisIndex: 1,
-                            data:[0]
         }
     ]
 };
@@ -302,7 +288,7 @@ myChart3.setOption(option3);
         $("#char-load-msg").css('visibility','hidden');
         option3 = {
             title : {
-                text: '最近六个月投资收益一览',
+                text: '最近六个月投资一览',
                 x:'center',
                 textStyle:{
                     fontSize: 16,
@@ -315,6 +301,10 @@ myChart3.setOption(option3);
                     type: "none"
                 }
             },
+	    legend: {
+	            data:['投资总额'],
+	            x:'right',
+	        },
             xAxis : [
                 {
                     type : 'category',
@@ -325,13 +315,6 @@ myChart3.setOption(option3);
                 {
                     type: "value",
                     name : '金额',
-                },
-                {
-                    type : 'value',
-                    name : '金额',
-                    axisLabel : {
-                        formatter: '{value}'
-                    }
                 }
             ],
             series : [
@@ -345,17 +328,6 @@ myChart3.setOption(option3);
                     },
                     data:rs.data.invest
 
-                },
-                {
-                    name:'投资收益',
-                    type:'line',
-                    itemStyle: {        // 系列级个性化样式，纵向渐变填充
-                        normal: {
-                            color : "#599b30"
-                        }
-                    },
-                    yAxisIndex: 1,
-                    data:rs.data.interest
                 }
             ]
         };

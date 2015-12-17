@@ -24,11 +24,10 @@
 				<UL class="ks-switchable-content">
 					<?php if($data):$count_data = count($data);foreach($data as $k=>$v): ?>
 						<?php if($k+1 == 1 || (($k+1)>1 && ($k+1)%5 == 1)): ?><LI> <?php endif; ?>
-						<div class="about_bigt<?php echo (($k+1)%5 == 0)?5:($k+1)%5; ?>  <?php echo (in_array(($k+1)%5,array(1,2)))?'big_top':'big_bot'; ?> fl"
-							 onclick="window.location.href='<?php echo site_url('about/news_detail?id='.$v['id']) ?>'">
+						<div class="about_bigt<?php echo (($k+1)%5 == 0)?5:($k+1)%5; ?>  <?php echo (in_array(($k+1)%5,array(1,2)))?'big_top':'big_bot'; ?> fl">
 <!--							<p class="about_p1">--><?php //echo date('Y.m.d',$v['update_time']); ?><!--</p>-->
 							<p class="about_p1"><?php echo $v['title']; ?></p>
-							<p class="about_p2"><?php echo $v['description']; ?></p>
+							<p class="about_p2" onclick="window.location.href='<?php echo $v['link_url']?$v['link_url']:'javascript:void(0);'; ?>'" style="cursor: pointer;"><?php echo $v['description']; ?></p>
 						</div>
 						<?php if( ($k+1 > 0 && ($k+1)%5 == 0) || $k+1 == $count_data): ?><div class="clear"></div></LI> <?php endif; ?>
 					<?php endforeach;endif; ?>
@@ -73,6 +72,7 @@
 </div>
 <!--footer start-->
 <?php $this->load->view('common/footer'); ?>
+<script type="text/javascript" src="<?php echo base_url('assets/js/about/tbhb.js')?>"></script>
 <SCRIPT type=text/javascript>
 	$(function(){
 		//处理 大事件 的时间排序与点的对应

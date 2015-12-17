@@ -12,7 +12,7 @@
 <!--home start-->
     <!--banner-->
     <div class="home_bannner" id="js_banner">
-        <a href="" class="link_url" target="_blank"><img src="../../../assets/images/banner/banner_1.jpg" alt="" class="source"/></a>
+        <a href="" class="link_url" target="_blank"><div class="bannerbgdiv" style="width:100%; height:350px;"></div></a>
     </div>
     <!--banner-->
     <!--gg-->
@@ -30,16 +30,17 @@
     <div class="row">
         <ul class="home_three_c">
             <li>
-                <p>高额收益</p>
-                <p>预期年化收益率最高13.2%</p>
+                <p>优势股东</p>
+                <p>国资平台 银行监管</p>
+
             </li>
             <li>
                 <p>安全保障</p>
-                <p>100%本息保障</p>
+                <p>国资担保 本息保障</p>
             </li>
             <li>
-                <p>优势股东</p>
-                <p>国资参与 银行监管</p>
+                <p>高额收益</p>
+                <p>预期收益率6%-13.2%</p>
             </li>
         </ul>
     </div>
@@ -50,7 +51,6 @@
             <li>累计注册人数：<font><?php echo rate_format(price_format($total['user_total'],2,false)); ?></font>人</li>
             <li class="sec">累计投资总额：<font><?php echo rate_format(price_format($total['invest_total'],2,false)); ?></font>元</li>
             <li class="thr">累计运行天数：<font><?php echo rate_format(price_format($total['days_total'],2,false)); ?></font>天</li>
-            <li class="four">风险保证金：<font><?php echo rate_format(price_format($total['risk_total'],2,false)); ?></font>元</li>
         </ul>
     </div>
     <!--平台数据-->
@@ -58,98 +58,143 @@
         <!--左侧-->
         <div class="home_left fl">
             <ul>
-	            <?php if($project):foreach($project as $k=>$v):?>
-		            <li>
-			            <h1><?php echo $v['category']; ?><a href="<?php echo site_url('invest/index?c='.$v['cat_id']) ?>" class="fr">查看全部项目 > </a></h1>
-			            <div class="home_product_body">
-				            <div class="top">
-					            <div class="title fl"><a href="<?php echo site_url('invest/detail?borrow_no='.$v['borrow_no']); ?>"><?php echo $v['subject']; ?></a></div>
-					            <div class="baozhi fl">
-                                <?php if(!empty($v['company_name'])): ?>
-						            <span class="bao">
-							            <em><?php echo type_name_2($v['type']); ?></em>
-							            <font><?php echo $v['company_name']; ?></font>
-						            </span>
-                                <?php endif;?>
-<!--						            <span class="zhi"><em>A</em><font>支持自动投资</font></span>-->
-<!--						            <span class="jia"><em>加</em><font>+0.9%</font></span>-->
-					            </div>
-                                <?php if($v['new_status'] == 1 || $v['new_status'] == 2): ?>
-                                    <div class="djs fr time-down" data-start-time="<?php echo $v['buy_time']; ?>" data-end-time="<?php echo $v['due_date']; ?>" style="visibility: hidden;<?php if($v['new_status'] == 1): ?>display:none;<?php endif; ?>">
-                                        还有<font class="d">00</font>天<font class="h">00</font>:<font class="m">00</font>:<font class="s">00</font><span class="js_flag">开始</span>
+                <li>
+                    <h1>12.12聚雪球狂欢盛典活动专享<a href="/index.php/invest/index?c=4" class="fr">查看全部产品 > </a></h1>
+                    <div class="home_product_body">
+                        <div class="top">
+                            <div class="icon fl" style = 'background: #c795df;'>富</div>
+                            <div class="title fl" style="color:#3cb5ec; margin-left:80px;">聚富盈</div>
+                            <div class="baozhi fl" style="min-width:300px">&nbsp;</div>
+                        </div>
+                        <p>“聚富盈”是聚雪球网络平台推出的期限固定型投资产品，以聚雪球网络平台提取的部分融资项目作为投资标的，投资人购买本产品后，聚雪球后台系统将收到投资人指令，依照分散投资原则由系统自动进行投标，并在收到用户指令的情况下由系统自动发起债权转让，通过出让持有的债权实现流动性的需求，进而实现分散投资并获取收益的目的。</p>
+                        <ul>
+                            <li>
+                                <div class="product_four_num_top tc">年化收益率</div>
+                                <div class="product_four_num_bot tc col_blu">12.6<i>%</i></div>
+                            </li>
+                            <li>
+                                <div class="product_four_num_top tc">起投金额(元)</div>
+                                <div class="product_four_num_bot tc">100.00</div>
+                            </li>
+                            <li>
+                                <div class="product_four_num_top tc">保障方式</div>
+                                <div class="product_four_num_bot tc hanzi">本息保障</div>
+                            </li>
+                        </ul>
+                        <div class="bot">
+                           <div class="fr tc">
+                                <a href="https://www.zgwjjf.com/index.php/invest/detail_jbb?type_code=JBB03">马上投资</a>
+                            </div>
+                        </div>
+                        <div class="corner"></div>
+                    </div>
+                </li>
+                <?php if($category): ?>
+                <h1>
+                    <ul class="sy_xm_tit">
+                    <?php foreach($category as $k=>$v):?>
+                            <li <?php if($k==0): ?>class="active"<?php endif; ?> data-cat-id="<?php echo $v['cat_id']; ?>"><?php echo $v['category']; ?></li>
+                    <?php endforeach;?>
+                    <a href="<?php echo site_url('invest/index?c=1') ?>" class="fr all-project-tag">查看全部项目 > </a>
+                    </ul>
+                </h1>
+                <?php foreach($category as $key=>$val):?>
+                    <?php if($val['project']):?>
+                        <li class="bidi <?php if($key==0): ?>active<?php endif; ?>">
+                            <?php  foreach($val['project'] as $k=>$v): ?>
+                            <div class="home_product_body">
+                                <div class="top">
+                                    <div class="title fl"><a href="<?php echo site_url('invest/detail?borrow_no='.$v['borrow_no']); ?>"><?php echo $v['subject']; ?></a></div>
+                                    <div class="baozhi fl">
+                                    <?php if(!empty($v['company_name'])): ?>
+                                        <span class="bao">
+                                            <em><?php echo type_name_2($v['type']); ?></em>
+                                            <font><?php echo $v['company_name']; ?></font>
+                                        </span>
+                                    <?php endif;?>
+    <!--						            <span class="zhi"><em>A</em><font>支持自动投资</font></span>-->
+    <!--						            <span class="jia"><em>加</em><font>+0.9%</font></span>-->
                                     </div>
-                                <?php endif; ?>
-				            </div>
-				            <p><?php echo mb_substr($v['summary'],0,120).'...'; ?></p>
-				            <ul>
-					            <li>
-						            <div class="product_four_num_top tc">年化收益率</div>
-						            <div class="product_four_num_bot tc col_blu"><?php echo $v['rate']; ?><i>%</i></div>
-					            </li>
-					            <li>
-						            <div class="product_four_num_top tc">借款期限(月)</div>
-						            <div class="product_four_num_bot tc"><?php echo $v['months']; ?></div>
-					            </li>
-                                <li>
-                                    <div class="product_four_num_top tc">借款总额(万元)</div>
-                                    <div class="product_four_num_bot tc"><?php echo price_format($v['amount'],3,false); ?></div>
-                                </li>
-					            <li>
-						            <div class="product_four_num_top tc">起投金额(元)</div>
-						            <div class="product_four_num_bot tc"><?php echo rate_format($v['lowest']); ?></div>
-					            </li>
-					            <li>
-						            <div class="product_four_num_top tc">还款方式</div>
-						            <div class="product_four_num_bot tc hanzi"><?php echo $v['mode']; ?></div>
-					            </li>
-				            </ul>
-				            <div class="bot">
-                                <div class="fl sy_jdt" jdt="<?php echo $v['receive_rate']; ?>" pos="<?php echo $v['receive_rate']-3; ?>">
-                                    <span><i></i><font class="font"><?php echo $v['receive_rate']; ?>%</font></span>
+                                    <?php if($v['new_status'] == 1 || $v['new_status'] == 2): ?>
+                                        <div class="djs fl time-down" data-start-time="<?php echo $v['buy_time']; ?>" data-end-time="<?php echo $v['due_date']; ?>" style="visibility: hidden;<?php if($v['new_status'] == 1): ?>display:none;<?php endif; ?>">
+                                            还有<font class="d">00</font>天<font class="h">00</font>:<font class="m">00</font>:<font class="s">00</font><span class="js_flag">开始</span>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
-					            <div class="fr tc">
-						            <?php if($v['can_invest']): ?>
-                                        <h5>可投金额：<font><?php echo rate_format(price_format($v['amount']-$v['receive'],2,false)); ?></font>元</h5>
-                                        <a class="invest-button" data-status="<?php echo $v['new_status']; ?>" href="<?php echo site_url('invest/detail?borrow_no='.$v['borrow_no']); ?>">马上投资</a>
-						            <?php else: switch($v['new_status']){
-                                        case '1':
-                                            echo '<h5
-                                            class="settime"
-                                            data-start-time="'.$v['buy_time'].'"
-                                            data-end-time="'.$v['due_date'].'"
-                                            data-amount="'.rate_format(price_format($v['amount']-$v['receive'],2,false)).'"
-                                            data-borrow_no="'.$v['borrow_no'].'">
-                                            <span>距开标 还剩<span class="d">00</span>天<span class="h">00</span>小时</span>
-                                            </h5>';
-                                            echo '<a class="invest-button jjksbut" data-status="'.$v['new_status'].'" href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'">即将开始</a>';
-                                            break;
-                                        case '3':
-                                            echo '<h5></h5>';
-                                            echo '<a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'" class="ymbbut">已售罄</a>';
-                                            break;
-                                        case '4':
-                                            echo '<h5></h5>';
-                                            echo '<a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'" class="ymbbut">回款中</a>';
-                                            break;
-                                        case '5':
-                                            echo '<h5></h5>';
-                                            echo '<div class="hkwc"><div class="hkwc_top"></div><div class="hkwc_bot"></div> <div class="pos-a-a"><a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'">回款完成</a></div></div>';
-                                            break;
-                                        case '6':
-                                            echo '<h5></h5>';
-                                            echo '<div class="hkwc"> <div class="hkwc_top ygq"></div> <div class="hkwc_bot"></div> <div class="pos-a-a"><a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'" class="ygq">已过期</a></div> </div>';
-                                            break;
-                                    }?>
-						            <?php endif; ?>
-					            </div>
-				            </div>
-				            <?php if($v['months'] <= 0.2):  ?><div class="corner"></div><?php endif;  ?>
-			            </div>
-		            </li>
+                                <p><?php echo mb_substr($v['summary'],0,120).'...'; ?></p>
+                                <ul>
+                                    <li>
+                                        <div class="product_four_num_top tc">年化收益率</div>
+                                        <div class="product_four_num_bot tc col_blu"><?php echo $v['rate']; ?><i>%</i></div>
+                                    </li>
+                                    <li>
+                                        <div class="product_four_num_top tc">借款期限(<?php echo $v['months']==0.9?'天':'月'; ?>)</div>
+                                        <div class="product_four_num_bot tc"><?php echo $v['months']==0.9?$v['months']*30:$v['months']; ?></div>
+                                    </li>
+                                    <li>
+                                        <div class="product_four_num_top tc">借款总额(万元)</div>
+                                        <div class="product_four_num_bot tc"><?php echo price_format($v['amount'],3,false); ?></div>
+                                    </li>
+                                    <li>
+                                        <div class="product_four_num_top tc">起投金额(元)</div>
+                                        <div class="product_four_num_bot tc"><?php echo rate_format($v['lowest']); ?></div>
+                                    </li>
+                                    <li>
+                                        <div class="product_four_num_top tc">还款方式</div>
+                                        <div class="product_four_num_bot tc hanzi"><?php echo $v['mode']; ?></div>
+                                    </li>
+                                </ul>
+                                <div class="bot">
+                                    <div class="fl sy_jdt" jdt="<?php echo $v['receive_rate']; ?>" pos="<?php echo $v['receive_rate']-3; ?>">
+                                        <span><i></i><font class="font"><?php echo $v['receive_rate']; ?>%</font></span>
+                                    </div>
+                                    <div class="fr tc">
+                                        <?php if($v['can_invest']): ?>
+                                            <h5>可投金额：<font><?php echo rate_format(price_format($v['amount']-$v['receive'],2,false)); ?></font>元</h5>
+                                            <a class="invest-button" data-status="<?php echo $v['new_status']; ?>" href="<?php echo site_url('invest/detail?borrow_no='.$v['borrow_no']); ?>">马上投资</a>
+                                        <?php else: switch($v['new_status']){
+                                            case '1':
+                                                echo '<h5
+                                                class="settime"
+                                                data-start-time="'.$v['buy_time'].'"
+                                                data-end-time="'.$v['due_date'].'"
+                                                data-amount="'.rate_format(price_format($v['amount']-$v['receive'],2,false)).'"
+                                                data-borrow_no="'.$v['borrow_no'].'">
+                                                <span>距开标 还剩<span class="d">00</span>天<span class="h">00</span>小时</span>
+                                                </h5>';
+                                                echo '<a class="invest-button jjksbut" data-status="'.$v['new_status'].'" href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'">即将开始</a>';
+                                                break;
+                                            case '3':
+                                                echo '<h5></h5>';
+                                                echo '<a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'" class="ymbbut">复审中</a>';
+                                                break;
+                                            case '4':
+                                                echo '<h5></h5>';
+                                                echo '<a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'" class="ymbbut">回款中</a>';
+                                                break;
+                                            case '5':
+                                                echo '<h5></h5>';
+                                                echo '<div class="hkwc"><div class="hkwc_top"></div><div class="hkwc_bot"></div> <div class="pos-a-a"><a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'">回款完成</a></div></div>';
+                                                break;
+                                            case '6':
+                                                echo '<h5></h5>';
+                                                echo '<div class="hkwc"> <div class="hkwc_top ygq"></div> <div class="hkwc_bot"></div> <div class="pos-a-a"><a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'" class="ygq">已过期</a></div> </div>';
+                                                break;
+                                        }?>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <?php if($v['months'] <= 0.2):  ?><div class="corner"></div><?php endif;  ?>
+                                <?php if($v['active'] == 1):  ?><div class="corner"></div><?php endif;  ?>
+                            </div>
+                            <?php endforeach; ?>
+                        </li>
+                    <?php else: ?>
+                        <li style="text-align: center;">暂无相关信息</li>
+	                <?php endif; ?>
 	            <?php endforeach;else: ?>
-	            <li style="text-align: center;">暂无相关信息</li>
-	            <?php endif; ?>
-
+                    <li style="text-align: center;">暂无相关信息</li>
+                <?php endif; ?>
             </ul>
         </div>
         <!--左侧-->
@@ -187,6 +232,7 @@
                     <p class="gg"><a href="" class="link_url"><font class="key">1</font><span class="title"></span></a></p>
                 </div>
             </div>
+<!--
             <div class="axgyj">
                 <h1>爱心公益基金</h1>
                 <a href="">
@@ -198,6 +244,7 @@
                     </p>
                 </a>
             </div>
+            -->
         </div>
         <!--右侧-->
     </div>
@@ -206,8 +253,18 @@
 <!--	加载脚部文件-->
 <?php $this->load->view('common/footer'); ?>
 <script type="text/javascript">
-	seajs.use(['jquery','sys','slider'],function(){
+	seajs.use(['jquery','sys','slider','wsb_sys'],function(){
 		tab($(".lcdrb"));
+        //标地TAB
+        $('.sy_xm_tit').find('li').click(function(){
+            $(this).addClass('active');
+            $(this).siblings().removeClass('active');
+            var i=$(this).index();
+            $('.bidi').hide();
+            $('.bidi').eq(i).fadeIn();
+            $('.all-project-tag').attr('href','/index.php/invest/index?c='+$(this).data('catId'));
+        });
+        //标地TAB
 		$(function(){
             //倒计时处理
             if($('.time-down').length){
@@ -217,7 +274,7 @@
                     if(obj.parent().parent().find('.invest-button').attr('data-status') == '2')
                         obj.parent().parent().find('.invest-button').html('投资结束').attr('href','javascript:void(0);').addClass('ymbbut').siblings('H5').text('');
                     obj.remove();
-                });
+                },'',<?php echo time(); ?>);
             }
             //按钮上面的倒计时
             if($('.settime').length) {
@@ -231,7 +288,7 @@
                         e.find('.h').text(h);
                         e.find('.d').text(d);
                     }
-                });
+                },<?php echo time(); ?>);
             }
             //投资榜
             var invest_html = $('#invest-total-list').clone(),invest_month_html = $('#invest-total-list-month').clone();
@@ -263,7 +320,9 @@
                 obj.find('a').attr('href','<?php echo site_url('about/news_detail?id='); ?>'+ v.id);
             });
             //banner
-            each_html('js_banner','/index.php/about/ajax_get_news',{'page_id':1,'page_size':5,'category':'<?php echo item('banner_home_cat_id')?item('banner_home_cat_id'):0; ?>'},'',true,'',function(){
+            each_html('js_banner','/index.php/about/ajax_get_news',{'page_id':1,'page_size':5,'category':'<?php echo item('banner_home_cat_id')?item('banner_home_cat_id'):0; ?>'},'',true,function(obj,v){
+                    obj.find('.bannerbgdiv').css({'background':'url('+v.source+') center no-repeat'});
+                },function(){
                 $('#js_banner').slider({
                     height: 400,
                     start: 1,

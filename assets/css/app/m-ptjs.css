@@ -1,0 +1,247 @@
+/* 
+* @Author: anchen
+* @Date:   2015-08-20 10:26:13
+* @Last Modified by:   anchen
+* @Last Modified time: 2015-08-21 15:05:29
+*/
+body{
+    background:#eeeeee;
+    min-width: 320px;
+    max-width: 640px;
+    width:100%;
+    margin:0 auto;
+}
+.con_wap{
+    padding-bottom:4rem;
+    width:100%;
+}
+.con_wap .log,.con_wap .wj,.con_wap .xgxx{
+    width: 100%;
+}
+.con_wap .xgxx,.con_wap .wj{
+    width: 100%;
+    padding:0 1.5rem;
+}
+.con_wap .log img{
+    width: 100%;
+    position: relative;
+    z-index: 99;
+}
+.con_wap .wj_1{
+    background:#fff;
+    border-radius: 1em;
+    width:90%;
+    margin-left: 5%;
+    margin-top: -1em;
+    padding: 2em 1em;
+}
+.con_wap .wj_1 .line_jg{
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+.con_wap .wj_1 img{
+    width: 100%;
+    margin-bottom: 1em;
+}
+.con_wap .wj_1 p{
+    text-indent: 2em;
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+    color:#646464;
+}
+.con_wap .wj p{
+    text-indent: 2em;
+    margin-top: 0.5rem;
+    font-size: 1.6rem;
+    line-height: 2rem;
+    color:#646464;
+}
+.con_wap .wj_1 .p1{
+    text-indent: 0;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.6rem;
+    line-height: 2rem;
+    color:#666666;
+    font-weight: 700;
+}
+.con_wap .wj_1 .p1 font{
+    background:#da251c;
+    width:10px;
+    color:#da251c;
+    display:inline-block;
+    margin-right: 10px;
+}
+.con_wap .xgxx p{
+    width: 100%;
+    background:#ffffff;
+    height: 4rem;
+    display:inline-block;
+    padding:0.5rem;
+    line-height: 3rem;
+    border-radius: 0.4rem;
+}
+.con_wap .xgxx p img{
+    height: 100%;
+    display:block;
+    float:left;
+}
+.con_wap .xgxx p font{
+    font-size: 1.2rem;
+    height: 100%;
+    display:block;
+    float:left;
+    margin-left: 1rem;
+    color:#646464;
+}
+.con_wap .xgxx p font.fr{
+    float: right;
+}
+.con_wap .xgxx p font em{
+    color:#2d74b4;
+}
+.con_wap{
+    margin-top: 50px;
+}
+/*充值须知*/
+.re_nt{
+    width: 100%;
+    font-size: 1.4rem;
+    color:#333333;
+    line-height: 5rem;
+    padding: 0 2rem 0 1rem;
+    position: relative;
+}
+.re_nt4{
+    width: 100%;
+    font-size: 1.4rem;
+    color:#333333;
+    line-height: 2rem;
+    padding: 0.5rem 3.5rem 0.5rem 1rem;
+    position: relative;
+    display:inline-block;
+    height:5rem;
+}
+@media screen and (min-width:370px) {
+    .re_nt4{
+        width: 100%;
+        font-size: 1.4rem;
+        color:#333333;
+        line-height: 5rem;
+        padding: 0 2rem 0 1rem;
+        position: relative;
+    }
+}
+.re_nt img{
+    width:2rem;
+    top: 1.4rem;
+    right:1rem;
+    position: absolute;
+}
+.re_nt .red{
+    display:none;
+}
+.re_nt .bla{
+    display:block;
+}
+.re_nt.active{
+    background:#eeeeee;
+    color:#da251c;
+    display:none;
+}
+.re_nt.active .bla{
+    display:none;
+}
+.re_nt.active .red{
+    display:block;
+}
+.stree{
+    border-bottom: 1px solid #eeeeee;
+}
+.comner{
+    padding:0 1rem;
+}
+.hid_hy{
+    display:none;
+}
+.comner .yh{
+    padding:1rem 0;
+    width:100%;
+    padding-left: 4rem;
+    border-bottom: 1px dashed #ccc;
+}
+.comner p{
+    line-height: 1.5rem;
+}
+.comner p.answ{
+    font-size: 1.2rem;
+    color:#333333;
+    line-height: 2rem;
+    padding: 1rem 0;
+}
+.comner p.top{
+    font-size: 1.4rem;
+    color:#333333;
+}
+.comner p.bot{
+    font-size: 1.2rem;
+    color:#ff8700;
+}
+.comner .yh.yh1{
+    background:url(../../images/app/ptjs/bank_icon/zsyh.png) left center no-repeat; 
+    background-size:3rem 3rem;
+}
+.comner .yh.yh2{
+    background:url(../../images/app/ptjs/bank_icon/gsyh.png) left center no-repeat; 
+    background-size:3rem 3rem;
+}
+.comner .yh.yh3{
+    background:url(../../images/app/ptjs/bank_icon/nyyh.png) left center no-repeat; 
+    background-size:3rem 3rem;
+}
+.comner .yh.yh4{
+    background:url(../../images/app/ptjs/bank_icon/zgyh.png) left center no-repeat; 
+    background-size:3rem 3rem;
+}
+.comner .yh.yh5{
+    background:url(../../images/app/ptjs/bank_icon/jsyh.png) left center no-repeat; 
+    background-size:3rem 3rem;
+}
+.comner .yh.yh6{
+    background:url(../../images/app/ptjs/bank_icon/xyyh.png) left center no-repeat; 
+    background-size:3rem 3rem;
+}
+.comner .yh.yh7{
+    background:url(../../images/app/ptjs/bank_icon/pfyh.png) left center no-repeat; 
+    background-size:3rem 3rem;
+}
+.comner .yh.yh8{
+    background:url(../../images/app/ptjs/bank_icon/gdyh.png) left center no-repeat; 
+    background-size:3rem 3rem;
+}
+.comner .yh.yh9{
+    background:url(../../images/app/ptjs/bank_icon/payh.png) left center no-repeat; 
+    background-size:3rem 3rem;
+}
+.comner .yh.yh10{
+    background:url(../../images/app/ptjs/bank_icon/hxyh.png) left center no-repeat; 
+    background-size:3rem 3rem;
+}
+.comner .yh.yh11{
+    background:url(../../images/app/ptjs/bank_icon/zxyh.png) left center no-repeat; 
+    background-size:3rem 3rem;
+}
+.comner .yh.yh12{
+    background:url(../../images/app/ptjs/bank_icon/ycyh.png) left center no-repeat; 
+    background-size:3rem 3rem;
+}
+.comner .yh.yh13{
+    background:url(../../images/app/ptjs/bank_icon/msyh.png) left center no-repeat; 
+    background-size:3rem 3rem;
+}
+.comner .yh.yh14{
+    background:url(../../images/app/ptjs/bank_icon/gfyh.png) left center no-repeat; 
+    background-size:3rem 3rem;
+    border-bottom: none;
+}

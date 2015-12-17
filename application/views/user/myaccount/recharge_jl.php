@@ -11,7 +11,7 @@
     <!--head end-->
     <!--user start-->
 	<div class="user_nav row">
-        <a href="">首页</a>&nbsp;>&nbsp;<a href="">我的账户</a>&nbsp;>&nbsp;<a href="">充值</a>
+        <a href="/index.php">首页</a>&nbsp;>&nbsp;<a href="/index.php/user/user/account_home">我的账户</a>&nbsp;>&nbsp;<a href="javascript:void(0);">充值记录</a>
     </div>
     <div class="row user">
         <!--左侧通用-->
@@ -19,7 +19,7 @@
         <!--右侧-->
         <div class="user_right">
             <h1>充值</h1>
-            <p class="border_bot">帐户余额（元）：<b><?php echo $balance['data']['balance']?></b></p>
+            <p class="border_bot">帐户余额（元）：<b id="balance"><?php echo $balance['data']['balance']?></b></p>
             <div class="tra_note">
                 <ul class="tab_title ">
 					<a href='<?php echo site_url('user/user/recharge');?>'><li>充值<font class="fr">|</font></li></a>
@@ -43,7 +43,7 @@
 						<?php if($status=='10000'):?>
 						<?php if(!empty($data['data'])):?>
 						<?php foreach($data['data'] as $k => $v):?>
-						<p class="lie"><span class="wid201"><?php echo $v['recharge_no'];?></span><span class="wid149"><?php echo $v['amount'];?></span><span class="wid187"><?php echo date('Y-m-d H:i',$v['add_time']);?></span><span class="wid177"><?php echo $v['remarks'];?></span><span class="wid181 green"><?php echo $v['status'];?></span></p>
+						<p class="lie"><span class="wid201"><?php echo $v['recharge_no'];?></span><span class="wid149"><?php echo $v['amount'];?></span><span class="wid187"><?php echo date('Y-m-d H:i',$v['add_time']);?></span><span class="wid177"><?php echo $v['remarks'];?></span><span class="wid181 green"><?php echo $v['status'];?><?php if($v['type'] == 2 && $v['status'] == '充值失败'): ?>[<a href="javascript:void(0);" style="text-decoration: underline;" class="recharge-refresh ajax-submit-button" data-recharge-no="<?php echo authcode($v['recharge_no']); ?>" data-loading-msg="刷新中...">刷新</a>] <?php endif; ?></span></p>
 						<?php endforeach;?>
 						<?php else:?>
 						<?php echo  $msg?>
@@ -63,11 +63,32 @@
     <!--底部-->       
 
 <!--userjs start-->
-<script src="<?php echo base_url('assets/js/jquery/jquery-1.8.5.min.js')?>"></script>
 <script type="text/javascript" src="<?php echo base_url('assets/js/plugins/jquery.date_input.pack.js')?>"></script> 
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){
-
+        $(function () {
+            var refresh_func = function(obj){
+                $.post('/index.php/user/user/ajax_recharge_auto_refresh',{'recharge_no':obj.data('rechargeNo')},function(rs){
+                    if(rs.status == '10000'){
+                        $("#balance").text(rs.data);
+                        obj.parent().html('充值成功');
+                        wsb_alert('充值已成功',1);
+                    }else if(rs.status == '10002' || rs.status == '10003'){
+                        wsb_alert(rs.msg,2);
+                    }else{
+                        wsb_alert('充值尚未成功,如确认已充值扣费请稍后查询或联系客服人员!',3);
+                    }
+                    $(".recharge-refresh").bind('click',function(){
+                        $(".recharge-refresh").unbind('click');
+                        refresh_func($(this));
+                    });
+                },'json');
+            };
+            $(".recharge-refresh").bind('click',function(){
+                $(".recharge-refresh").unbind('click');
+                refresh_func($(this));
+            });
+        });
     });
     $('.date_picker_1').date_input();
     $('.date_picker_2').date_input();

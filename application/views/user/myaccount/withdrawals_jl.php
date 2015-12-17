@@ -10,7 +10,7 @@
     <!--head end-->
     <!--user start-->
 	<div class="user_nav row">
-        <a href="">首页</a>&nbsp;>&nbsp;<a href="">我的账户</a>&nbsp;>&nbsp;<a href="">提现记录</a>
+        <a href="/index.php">首页</a>&nbsp;>&nbsp;<a href="/index.php/user/user/account_home">我的账户</a>&nbsp;>&nbsp;<a href="javascript:void(0);">提现记录</a>
     </div>
     <div class="row user">
         <!--左侧通用-->
@@ -62,7 +62,6 @@
     <!--底部-->       
 
 <!--userjs start-->
-<script src="<?php echo base_url('assets/js/jquery/jquery-1.8.5.min.js')?>"></script>
 <script type="text/javascript" src="<?php echo base_url('assets/js/plugins/jquery.date_input.pack.js')?>"></script> 
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){

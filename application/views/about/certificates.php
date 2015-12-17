@@ -10,7 +10,7 @@
 
 <div class="mnx2">
 <div class="about_w">
-  <img src="../../../../assets/images/common/mb_ico.png">您当前所在的位置：<a href="#">关于我们</a> ><span class="mb_blue"> 团队管理</span>
+  <img src="../../../../assets/images/common/mb_ico.png">您当前所在的位置：<a href="<?php echo site_url('about'); ?>">关于我们</a> ><span class="mb_blue"> 公司资质</span>
 </div>
 </div>
 

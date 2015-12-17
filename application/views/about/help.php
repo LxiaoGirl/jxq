@@ -35,12 +35,12 @@
 <div class="help_sider fl">
     <p>常见问题分类</p>
     <?php if($category_list):foreach($category_list as $k=>$v): ?>
-        <div class="subNav"><?php echo $v['category']; ?></div>
-        <?php if(isset($v['child'])): ?>
-            <ul class="navContent " >
-                <?php foreach($v['child'] as $k1=>$v1): ?>
-                <li><a href="<?php echo site_url('about/help_list?cat_id='.$v1['cat_id']); ?>"><?php echo $v1['category']; ?></a></li>
-            <?php endforeach; ?>
+        <div <?php if($v['cat_id'] != $cat_id): ?> onclick="window.location.href='<?php echo site_url('about/help?cat_id='.$v['cat_id']); ?>'"<?php endif; ?> class="subNav <?php if($v['cat_id'] == $cat_id): ?>currentDd currentDt<?php endif; ?>"  ><?php echo $v['category']; ?></div>
+        <?php if($v['cat_id'] == $cat_id): ?>
+            <ul class="navContent " <?php if($v['cat_id'] == $cat_id): ?>style="display:block"<?php endif; ?>>
+                <?php if($list): foreach($list as $k1=>$v1): ?>
+                    <li><a href="<?php echo site_url('about/help?cat_id='.$v['cat_id'].'&id='.$v1['id']); ?>"><?php echo $v1['title']; ?></a></li>
+                <?php endforeach;endif; ?>
             </ul>
         <?php endif; ?>
     <?php endforeach;endif; ?>
@@ -49,7 +49,12 @@
    <ul class="help_list1">
    <div class="help_hot_h">热点问题</div>
        <div id="hot-help">
+           <?php if(isset($info) && $info): ?>
+               <div style=" background:#f2f2f2; line-height:44px; padding-left:20px; margin-bottom:35px"><b>问：<?php echo $info['title'];  ?></b><p><?php echo $info['content'];  ?></p></div>
+
+           <?php else:?>
            <li><a href="#"><span class="title"></span></a></li>
+           <?php endif; ?>
        </div>
    <div class="clear"></div>  
    </ul>
@@ -72,9 +77,12 @@
 			// 修改数字控制速度， slideUp(500)控制卷起速度
 			$(this).next(".navContent").slideToggle(500).siblings(".navContent").slideUp(500);
 		});
-        each_html('hot-help','/index.php/about/ajax_get_news',{'page_id':1,'page_size':10,'category':'<?php echo $cat_id_str; ?>','order_by':'rank DESC'},'',true,function(obj,v){
-            obj.find('a').attr('href','<?php echo site_url('about/help_detail?id='); ?>'+ v.id+'&cat_id='+ v.cat_id)
-        });
+        var is_detail = <?php echo $id; ?>;
+        if( ! is_detail){
+            each_html('hot-help','/index.php/about/ajax_get_news',{'page_id':1,'page_size':10,'category':'<?php echo $cat_id_str; ?>','order_by':'rank DESC'},'',true,function(obj,v){
+                obj.find('a').attr('href','<?php echo site_url('about/help_detail?id='); ?>'+ v.id+'&cat_id='+ v.cat_id)
+            });
+        }
 	})
 </script>
 <!--footer end-->

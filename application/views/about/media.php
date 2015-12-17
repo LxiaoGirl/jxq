@@ -31,7 +31,7 @@
                   <a href="<?php echo $top['link_url']; ?>" target="_blank">查看详情</a>
                 </div>
                 <div class="rig fl">
-                  <img src="<?php echo $top['content']; ?>">
+                  <img src="<?php echo $top['source']; ?>">
                 </div>
             </div>
         <?php endif;?>

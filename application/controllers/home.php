@@ -25,10 +25,11 @@ class Home extends MY_Controller{
 		//项目列表�
 		$temp['category'] = $this->project->get_project_category();
 		if($temp['category']['status'] == '10000' && $temp['category']['data']){
-			foreach($temp['category']['data'] as $key=>$val){
-				$temp['project'] = $this->project->get_project_list($val['cat_id'],'2,3,4,7','','','','',1,1);
+			$data['category'] = $temp['category']['data'];
+			foreach($data['category'] as $key=>$val){
+				$temp['project'] = $this->project->get_project_list($val['cat_id'],'2,3,4,7','','','','',1,1,0);
 				if($temp['project']['status'] == '10000' && $temp['project']['data']['data']){
-					$data['project'][$key] = $temp['project']['data']['data'][0];
+					$data['category'][$key]['project'] = $temp['project']['data']['data'];
 				}
 			}
 		}
@@ -41,6 +42,17 @@ class Home extends MY_Controller{
 
 		//公益基金
 		$data['public_fund'] = '100000';
+
+		//活动标
+		$temp['active_project'] = $this->project->get_project_list('','2,3,4,7','','','','',1,1,1);
+		if($temp['active_project']['status'] == '10000' && $temp['active_project']['data']['data']){
+			$temp['active_category'] = array(
+				'cat_id'=>1,
+				'category'=>'活动标',
+				'project'=>$temp['active_project']['data']['data']
+			);
+			array_unshift($data['category'],$temp['active_category']);
+		}
 
 		$this->load->view('home',$data);
 	}

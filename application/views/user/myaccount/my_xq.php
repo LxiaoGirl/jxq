@@ -10,7 +10,7 @@
     <!--head end-->
     <!--user start-->
 	<div class="user_nav row">
-        <a href="">首页</a>&nbsp;>&nbsp;<a href="">我的账户</a>&nbsp;>&nbsp;<a href="">我的雪球</a>
+        <a href="/index.php">首页</a>&nbsp;>&nbsp;<a href="/index.php/user/user/account_home">我的账户</a>&nbsp;>&nbsp;<a href="javascript:void(0);">我的雪球</a>
     </div>
     <div class="row user">
         <!--左侧通用-->
@@ -19,7 +19,7 @@
         <div class="user_right">
             <div class="my_level">
                 <div class="h1">
-                    <p class="top">我的雪球（个）<a href="<?php echo site_url('about/help'); ?>">如何获得雪球</a><a href="<?php echo site_url('about/help'); ?>">雪球能做什么</a></p>
+                    <p class="top">我的雪球（个）<a href="javascript:void(0);" title="通过参与平台活动来获取">如何获得雪球</a><a href="javascript:void(0);" title="雪球可以用于参与平台的活动">雪球能做什么</a></p>
                     <p class="bot"><?php echo isset($snowball_num)?$snowball_num:0?></p>
                 </div>
                 <p class="hbmx">雪球明细</p>

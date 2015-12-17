@@ -17,7 +17,7 @@ class User extends Login_Controller{
 		$this->load->model('api/common/send_model','send');
 		$this->load->model('api/cash_model','cash');
 		$this->load->model('api/project_model','project');
-		$this->_is_login();
+//		$this->_is_login();
 	}
 
 
@@ -98,13 +98,14 @@ class User extends Login_Controller{
 	public function withdrawals(){
 		$data = array();
 		$uid=$this->session->userdata('uid');
-		$data['user_bank'] = $this->user->user_bank($uid);
-		if($data['user_bank']['status']==10000){
-			$data['bank'] = $this->user->bank_card_list($data['user_bank']['data']['bank_id']);
-		}else{
+
+		$data['bank'] = $this->user->user_bank($uid);
+		if($data['bank']['status'] != '10000'){
 			redirect('user/user/card', 'refresh');
 		}
+
 		$data['balance'] = $this->cash->get_user_balance($uid);
+
 		$this->load->view('user/myaccount/withdrawals',$data);
 	}
 
@@ -112,20 +113,22 @@ class User extends Login_Controller{
 	 *提现操作
 	 */
 	public function user_transfer(){
-		$uid=$this->session->userdata('uid');
-		$card_no=$this->user->user_bank($uid);
-		$card_no = $card_no['data']['account'];
-		$amount=$this->input->get('amount',true);
-		$security=$this->input->get('security',true);
-		$authcode=$this->input->get('authcode',true);
-		//查询今天的提现情况
-		$today_transfer = $this->cash->get_user_transfer_list($uid,0,strtotime(date('Y-m-d').' 00:00:00'),time());
+		//验证短信
+		$sms_check = $this->commons->validation_authcode($this->session->userdata('mobile'),$this->input->post('authcode',true),'transfer',$this->session->userdata('uid'));
+		if($sms_check['status'] != '10000'){
+			$data = array('status'=>'10001','msg'=>$sms_check['msg'],'data'=>array());
+			exit(json_encode($data));
+		}
+		//查询今天的提现情况 处理手续费
+		$today_transfer = $this->cash->get_user_transfer_list($this->session->userdata('uid'),0,strtotime(date('Y-m-d').' 00:00:00'),time());
 		if($today_transfer['status'] == '10000' && $today_transfer['data'] && (isset($today_transfer['data']['data']) && count($today_transfer['data']['data'])>0)){
 			$charge = 2;
 		}else{
 			$charge = 0;
 		}
-		$data = $this->cash->user_transfer($uid,$amount,$card_no,$security,$authcode,$charge);
+		//执行体现处理
+		$data = $this->cash->user_transfer($this->session->userdata('uid'),$this->input->post('amount',true),$this->input->post('card_no',true),$this->input->post('security',true),$charge);
+		//操作成功 处理余额session
 		if($data['status'] == '10000'){
 			$this->session->set_userdata(array('balance'=>$data['data']['balance']));
 		}
@@ -155,7 +158,14 @@ class User extends Login_Controller{
 		exit(json_encode($data));
 	}
 
-
+	public function url_recharge_auto_refresh(){
+		$data = $this->user->recharge_refresh($this->input->post('recharge_no',true),$this->session->userdata('uid'));
+		redirect('user/user/recharge_jl', 'refresh');
+	}
+	
+	public function invest_agreement(){
+		echo '123';
+	}
 
 	/**
 	 * 充值列表
@@ -191,13 +201,11 @@ class User extends Login_Controller{
 
 		$data = $this->cash->get_user_recharge_list($uid,'',$start,$end);
 		$temp['page_id'] 	= $this->c->get_page_id(7);
-		if($data['status']=='10000'){
-			if($data['data']['total']){
+		if($data['status']=='10000'&& $data['data']){
 				$data['links'] 	= $this->c->get_links($data['data']['total'],$temp['page_id'],7);
-			}else{
+		}else{
 				$data['links'] = '';
 			}
-		}
 		$data['balance'] = $this->cash->get_user_balance($uid);
 		$this->load->view('user/myaccount/recharge_jl',$data);
 	}
@@ -221,7 +229,7 @@ class User extends Login_Controller{
 				$temp['end_time'] = time();
 				break;
 			case 'w';
-				$temp['start_time'] = strtotime(date('Y-m-d',strtotime('-7 day')),' 00:00:00');
+				$temp['start_time'] = strtotime(date('Y-m-d',strtotime('-7 day')).' 00:00:00');
 //				$temp['start_time'] = strtotime(date('Y-m-d',strtotime('-'.(date('w')>0?date('w')-1:6).' day')),' 00:00:00');
 				$temp['end_time'] = time();
 				break;
@@ -441,24 +449,31 @@ class User extends Login_Controller{
 	 * 修改姓名
 	 */
 	public function Change_name(){
-		$data = array();
-		$uid=$this->session->userdata('uid');
-		$name = $this->input->get('name',true);
-		$f = $this->input->get('f',true);
-		if($f!=''){
-			$data = $this->user->Change_name($name,$uid);
-			if($data['status'] == '10000'){
-				$this->session->set_userdata(array('user_name'=>$name));
-			}
-		}else{
-			$data = $this->user->Change_name($name,0);
-		}
-		$data['name'] = $name;
 		if($this->input->is_ajax_request() == TRUE){
-			exit(json_encode(array($data)));
+			$data = $this->user->Change_name($this->input->get('name',true),$this->session->userdata('uid'));
+			if($data['status'] == '10000'){
+				$this->session->set_userdata(array('user_name'=>$this->input->get('name',true)));
+			}
+
+			exit(json_encode($data));
 		}
 	}
 
+	/**
+	 * 公司邀请码
+	 */
+	public function company_invite_code(){
+		$data = $this->user->company_invite_code($this->session->userdata('uid'),$this->input->post('code',true));
+		exit(json_encode($data));
+	}
+
+	/**
+	 * 理财师邀请码
+	 */
+	public function lcs_invite_code(){
+		$data = $this->user->lcs_invite_code($this->session->userdata('uid'),$this->input->post('code',true));
+		exit(json_encode($data));
+	}
 
 
 	/**
@@ -596,7 +611,7 @@ class User extends Login_Controller{
 				if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)){
 					$type = $result[2];
 					$dir = "uploads/profile/".$this->session->userdata('uid')."/";
-					$new_file = date('YmdHis').'.'.$type;
+					$new_file = 'avatar.'.$type;
 
 					if(item('oss_upload')){
 						$new_file = $dir.$new_file;
@@ -664,11 +679,16 @@ class User extends Login_Controller{
 	 * 银行卡管理
 	 */
 	public function card(){
-		$data = array();
-		$uid = $this->session->userdata('uid');
-		$data['bank'] = $this->user->user_bank($uid);
-		$data['all_bank'] =$this->user->bank_card_list();
-		$this->load->view('user/profile/card',$data);
+		if($this->input->is_ajax_request() == TRUE){
+			$data = $this->user->Add_bank_card($this->session->userdata('uid'),$this->input->post('account',true),$this->input->post('bank_id',true));
+			exit(json_encode($data));
+		}else{
+			$data = array();
+			$uid = $this->session->userdata('uid');
+			$data['bank'] = $this->user->user_bank($uid);
+			$data['all_bank'] =$this->user->bank_card_list();
+			$this->load->view('user/profile/card',$data);
+		}
 	}
 
 	/**
@@ -688,7 +708,7 @@ class User extends Login_Controller{
 		$data['invite_code'] = $this->session->userdata('inviter_no');
 		$data['jujian_amount'] = $this->activity->get_settle_amount($uid);
 		$data['jujian_list'] = $this->activity->get_settle_list($uid);
-		$temp['page_id'] 	= $this->c->get_page_id(5);
+		$temp['page_id'] 	= $this->c->get_page_id(3);
 		if($data['jujian_list']['status']=='10000'){
 			$data['links'] 	= $this->c->get_links($data['jujian_list']['data']['total'],$temp['page_id'],3);
 		}
@@ -712,7 +732,7 @@ class User extends Login_Controller{
 		$data['invite_code'] = $this->session->userdata('inviter_no');
 		$data['jujian'] = $this->activity->get_intermediary_user(true,$uid);
 		$data['jujian_amount'] = $this->activity->get_settle_amount($uid);
-		$temp['page_id'] 	= $this->c->get_page_id(5);
+		$temp['page_id'] 	= $this->c->get_page_id(3);
 		if($data['jujian']['status']=='10000'){
 			$data['links'] 	= $this->c->get_links($data['jujian']['data']['total'],$temp['page_id'],3);
 		}
@@ -727,6 +747,149 @@ class User extends Login_Controller{
 	public function get_commission_list(){
 		$uid = $this->input->get('uid',true);//客户uid
 		$data = $this->activity->get_commission_list($uid);
+		exit(json_encode($data));
+	}
+
+
+
+
+	/**
+	 * 聚保宝
+	 */
+	public function jbb(){
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$data['links']='';
+		$data['add_amount'] = $this->cash->jbb_add_amount($uid);//累计加入
+		$data['buy_nums'] = $this->cash->jbb_buy_nums($uid);//购买笔数
+		$data['cumulative_yield'] = $this->cash->jbb_cumulative_yield($uid);//累计提取收益
+		$data['jbb_receive'] = $this->cash->jbb_receive($uid);//可领取收益
+		$data['mate_nums'] = $this->cash->jbb_mate_nums($uid);//配标数目
+		$data['jbb_list'] = $this->project->jbb_per_list($uid);//列表
+		$temp['page_id'] 	= $this->c->get_page_id(4);
+		if($data['jbb_list']['status']=='10000'){
+			$data['links'] 	= $this->c->get_links($data['jbb_list']['data']['total'],$temp['page_id'],4);
+		}
+		$this->load->view('user/myinvestment/jbb',$data);
+	}
+
+
+
+	/**
+	 * 聚保宝排队
+	 */
+	public function jbb_line(){
+		$uid = $this->session->userdata('uid');
+		$data['links']='';
+		$data['add_amount'] = $this->cash->jbb_add_amount($uid);//累计加入
+		$data['buy_nums'] = $this->cash->jbb_buy_nums($uid);//购买笔数
+		$data['cumulative_yield'] = $this->cash->jbb_cumulative_yield($uid);//累计提取收益
+		$data['jbb_receive'] = $this->cash->jbb_receive($uid);//可领取收益
+		$data['mate_nums'] = $this->cash->jbb_mate_nums($uid);//配标数目
+		$data['jbb_list'] = $this->project->jbb_per_list($uid,2);//列表
+		$temp['page_id'] 	= $this->c->get_page_id(4);
+		if($data['jbb_list']['status']=='10000'){
+			$data['links'] 	= $this->c->get_links($data['jbb_list']['data']['total'],$temp['page_id'],4);
+		}
+		$this->load->view('user/myinvestment/jbb_line',$data);
+	}
+
+
+
+	/**
+	 * 聚保宝历史
+	 */
+	public function jbb_history(){
+		$uid = $this->session->userdata('uid');
+		$data['links']='';
+		$data['add_amount'] = $this->cash->jbb_add_amount($uid);//累计加入
+		$data['buy_nums'] = $this->cash->jbb_buy_nums($uid);//购买笔数
+		$data['cumulative_yield'] = $this->cash->jbb_cumulative_yield($uid);//累计提取收益
+		$data['jbb_receive'] = $this->cash->jbb_receive($uid);//可领取收益
+		$data['mate_nums'] = $this->cash->jbb_mate_nums($uid);//配标数目
+		$data['jbb_list'] = $this->project->jbb_per_list($uid,3);//列表
+		$temp['page_id'] 	= $this->c->get_page_id(4);
+		if($data['jbb_list']['status']=='10000'){
+			$data['links'] 	= $this->c->get_links($data['jbb_list']['data']['total'],$temp['page_id'],4);
+		}
+		$this->load->view('user/myinvestment/jbb_history',$data);
+	}
+
+
+
+	/**
+	 * 聚保宝产生利息
+	 */
+	public function jbb_interest(){
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$id = $this->input->get('id',true);//投标id
+		$data = $this->cash->jbb_receive($uid,$id);
+		exit(json_encode($data));
+	}
+
+
+
+	/**
+	 * 聚保宝查看投资详情
+	 */
+	public function jbb_jbb_details(){
+		$data = array();
+		$type_code = $this->input->get('type_code',true);//编号
+		$data = $this->cash->jbb_jbb_details($type_code);
+		exit(json_encode($data));
+	}
+
+
+
+	/**
+	 * 聚保宝提取利息
+	 */
+	public function jbb_sub_receive(){
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$id = $this->input->get('id',true);//投标id
+		$data = $this->cash->jbb_sub_receive($uid,$id);
+		exit(json_encode($data));
+	}
+
+
+
+	/**
+	 * 聚保宝申请退出
+	 */
+	public function jbb_out(){
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$id = $this->input->get('id',true);//投标id
+		$data = $this->cash->jbb_out($uid,$id);
+		exit(json_encode($data));
+	}
+
+
+
+	/**
+	 * 聚保宝取消退出
+	 */
+	public function jbb_off(){
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$id = $this->input->get('id',true);//投标id
+		$data = $this->cash->jbb_off($uid,$id);
+		exit(json_encode($data));
+	}
+
+
+
+
+	/**
+	 * 聚保宝申请退出手续费
+	 */
+	public function jbb_poundage(){
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$id = $this->input->get('id',true);//投标id
+		$data = $this->cash->jbb_poundage($uid,$id);
 		exit(json_encode($data));
 	}
 	/******************************************通用************************/

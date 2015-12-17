@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
     <title>聚雪球_网加金服_P2P理财首选互联网金融P2P网贷平台_100元即可投资!</title>
@@ -11,7 +11,7 @@
     <!--head end-->
     <!--user start-->
 	<div class="user_nav row">
-        <a href="">首页</a>&nbsp;>&nbsp;<a href="">我的账户</a>&nbsp;>&nbsp;<a href="">我的雪球</a>
+        <a href="/index.php">首页</a>&nbsp;>&nbsp;<a href="/index.php/user/user/jbb">我的投资</a>&nbsp;>&nbsp;<a href="javascript:void(0);">自动投标</a>
     </div>
     <div class="row user">
         <!--左侧通用-->
@@ -30,13 +30,13 @@
                     <li class="zdtbsz select">
                         <em class="jian"></em>
                         <div class="zdtsz">自动投设置</div>
-                        <p class="sanfen"><input type="radio" name="tbms" value="ft" />复投模式<input type="radio" name="tbms" value="ge" />固额投资模式<font class="fr tr font"><a href=""><i>?</i>有什么区别？</a></font><font class="fr tr font">自动投标模式</font></p>
+                        <p class="sanfen"><input type="radio" name="tbms" class="tbms" value="ft" checked/>复投模式<input type="radio"  name="tbms"   class="tbms" value="ge" />固额投资模式<font class="fr tr font"><a href=""><i>?</i>有什么区别？</a></font><font class="fr tr font">自动投标模式</font></p>
                         <p class="sanfen"><input type="text" class="date_picker_1">至<input type="text" class="date_picker_2"><font class="fr tr font"><a href=""><i>?</i>我该怎么选？</a></font><font class="fr tr font">本次设置有效期</font></p>
                         <div class="zdtsz">标的设置</div>
                         <p class="sanfen"><em class="select">不限</em><em>车贷宝</em><em>聚农贷</em><em>聚惠理财</em><em>债权转让</em><em>车贷宝2号</em><font class="fr tr font">标的类别（单选）</font></p>
                         <p class="sanfen">最低收益<input class="wid60" type="text" name=""/>%<font class="fr tr font"><a href=""><i>?</i>我该怎么选？</a></font><font class="fr tr font">标的最低范围</font></p>
                         <p class="sanfen">最长期限<input class="wid60" type="text" name=""/>个月<font class="fr tr font"><a href=""><i>?</i>我该怎么选？</a></font><font class="fr tr font">标的最长期限</font></p>
-                        <p class="sanfen">最大配额<input class="wid120" type="text" name=""/>元（可用余额<?php echo price_format($data['balance'],2,false); ?>元）<font class="fr tr font"><a href=""><i>?</i>我该怎么选？</a></font><font class="fr tr font">自动投标配额</font></p>
+                        <p class="sanfen">最大配额<input class="wid120" type="text" name="" id="max_amount"  readonly/>元（可用余额800,000元）<font class="fr tr font"><a href=""><i>?</i>我该怎么选？</a></font><font class="fr tr font">自动投标配额</font></p>
                         <p class="two_but"><button id="_bc">保存</button><button class="qx" id="_qx">取消</button></p>
                     </li>
                     <li class="wid400 select">
@@ -91,6 +91,17 @@
     }else{
         $('.ztxz').find('.wkq').addClass('run');
     }
+	$(".tbms").change(function() {
+		var selectedvalue = $("input[name='tbms']:checked").val();
+		 if(selectedvalue=='ge'){
+			$('#max_amount').removeAttr("readonly");
+		 }
+		 if(selectedvalue=='ft'){
+			$('#max_amount').attr("readonly","readonly");
+		 }
+	});
+		
+
     $('#checbox').click(function () {
         if(dis==1){
             return false;

@@ -393,6 +393,120 @@ if( ! function_exists('status'))
     }
 }
 
+
+
+/**
+ * 聚保宝图标
+ *
+ * @access public
+ * @param  integer  $code 编码
+ * @return string
+ */
+
+if( ! function_exists('jbb_icon'))
+{
+    function jbb_icon($code = '')
+    {
+        $str = '';
+
+        switch ($code) {
+            case 'JBB01':
+                $str = 'yi';
+                break;
+			case 'JBB02':
+                $str = 'fu';
+                break;
+			case 'JBB03':
+                $str = 'wen';
+                break;
+            default:
+                $str = 'fu';
+                break;
+        }
+
+        return $str;
+ }
+
+
+
+ /**
+ * 聚保宝文字
+ *
+ * @access public
+ * @param  integer  $code 编码
+ * @return string
+ */
+
+if( ! function_exists('jbb_word'))
+{
+    function jbb_word($code = '')
+    {
+        $str = '';
+
+        switch ($code) {
+            case 'JBB01':
+                $str = '益';
+                break;
+			case 'JBB02':
+                $str = '新';
+                break;
+			case 'JBB03':
+                $str = '富';
+                break;
+            default:
+                $str = '稳';
+                break;
+        }
+
+        return $str;
+    }
+
+}
+
+
+
+ /**
+ * 聚保宝复利
+ *
+ * @access public
+ * @param  integer  $code 编码
+ * @return string
+ */
+
+if( ! function_exists('jbb_product_amount'))
+{
+    function jbb_product_amount($days = 0,$rate = 0,$amount = 0)
+    {
+        $nums = 0;
+					         
+        $nums =  sprintf("%.2f",substr(sprintf("%.3f", $amount*((1+$rate/100/360)*(POW((1+$rate/100/360),($days-1))-1))), 0, -1)) + sprintf("%.2f",substr(sprintf("%.3f", $rate*$amount/100/360), 0, -1));
+
+        return $nums;
+    }
+
+}
+
+/**
+ * 聚保宝非复利
+ *
+ * @access public
+ * @param  integer  $code 编码
+ * @return string
+ */
+
+if( ! function_exists('jbb_no_product_amount'))
+{
+    function jbb_no_product_amount($days = 0,$rate = 0,$amount = 0)
+    {
+        $nums = 0;
+
+        $nums =  sprintf("%.2f",substr(sprintf("%.3f", $amount*$rate/100/360*$days), 0, -1));
+         
+        return $nums;
+    }
+
+}
+
 /**
  * 审核状态
  *
@@ -450,7 +564,7 @@ if( ! function_exists('recharge_status'))
         return $str;
     }
 }
-
+}
 /**
  * 隐藏字符串
  *

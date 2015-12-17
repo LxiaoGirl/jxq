@@ -32,12 +32,12 @@
 <div class="help_sider fl">
     <p>常见问题分类</p>
     <?php if($category_list):foreach($category_list as $k=>$v): ?>
-        <div class="subNav <?php if($v['cat_id'] == $cat_pid): ?>currentDd currentDt<?php endif; ?>"><?php echo $v['category']; ?></div>
-        <?php if(isset($v['child'])): ?>
-            <ul class="navContent " <?php if($v['cat_id'] == $cat_pid): ?>style="display:block"<?php endif; ?>>
-                <?php foreach($v['child'] as $k1=>$v1): ?>
-                    <li><a href="<?php echo site_url('about/help_list?cat_id='.$v1['cat_id']); ?>"><?php echo $v1['category']; ?></a></li>
-                <?php endforeach; ?>
+        <div <?php if($v['cat_id'] != $cat_id): ?> onclick="window.location.href='<?php echo site_url('about/help?cat_id='.$v['cat_id']); ?>'"<?php endif; ?> class="subNav <?php if($v['cat_id'] == $cat_id): ?>currentDd currentDt<?php endif; ?>"  ><?php echo $v['category']; ?></div>
+        <?php if($v['cat_id'] == $cat_id): ?>
+            <ul class="navContent " <?php if($v['cat_id'] == $cat_id): ?>style="display:block"<?php endif; ?>>
+                <?php if($list): foreach($list as $k1=>$v1): ?>
+                    <li><a href="<?php echo site_url('about/help?cat_id='.$v['cat_id'].'&id='.$v1['id']); ?>"><?php echo $v1['title']; ?></a></li>
+                <?php endforeach;endif; ?>
             </ul>
         <?php endif; ?>
     <?php endforeach;endif; ?>

@@ -3,6 +3,11 @@
 <head>
     <title>聚雪球_网加金服_P2P理财首选互联网金融P2P网贷平台_100元即可投资!</title>
     <?php $this->load->view('common/head_file'); ?>
+    <style>
+        .tra_note .tab_con p span.wid20 {
+            width: 16%;
+        }
+    </style>
 </head>
 <body>
 <!--head start-->
@@ -10,7 +15,7 @@
     <!--head end-->
     <!--user start-->
     <div class="user_nav row">
-        <a href="">首页</a>&nbsp;>&nbsp;<a href="">我的投资</a>&nbsp;>&nbsp;<a href="">投资记录</a>
+        <a href="/index.php">首页</a>&nbsp;>&nbsp;<a href="/index.php/user/user/jbb">我的投资</a>&nbsp;>&nbsp;<a href="javascript:void(0);">投资记录</a>
     </div>
     <div class="row user">
         <!--左侧通用-->
@@ -21,28 +26,29 @@
             <div class="tra_note">
                 <ul class="tab_title tab_title_small">
                     <li <?php if($type == ''): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?start_time='.$start_time.'&end_time='.$end_time); ?>'">全部<font class="fr">|</font></li>
-                    <li <?php if($type == '4'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=4&start_time='.$start_time.'&end_time='.$end_time); ?>'">回款中<font class="fr">|</font></li>
+                    <li <?php if($type == '4'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=4&start_time='.$start_time.'&end_time='.$end_time); ?>'">还款中<font class="fr">|</font></li>
                     <li <?php if($type == '7'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=7&start_time='.$start_time.'&end_time='.$end_time); ?>'">回款完成<font class="fr">|</font></li>
                     <li <?php if($type == '2'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=2&start_time='.$start_time.'&end_time='.$end_time); ?>'">热售中<font class="fr">|</font></li>
-                    <li <?php if($type == '3'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=3&start_time='.$start_time.'&end_time='.$end_time); ?>'">已售馨</li>
+                    <li <?php if($type == '3'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=3&start_time='.$start_time.'&end_time='.$end_time); ?>'">复审中</li>
                         <div class="section">                            
-                            <font style="margin-left:30px;">选择日期：</font><input type="text" id="start-time" class="date_picker_1" value="<?php echo $start_time?date('Y-m-d',$start_time):''; ?>">
+                            <font style="margin-left:30px;">选择日期：</font><input type="text" id="start-time" class="date_picker_1" value="<?php echo $start_time?date('Y-m-d',$start_time):date('Y-m-d',strtotime('-60 day')); ?>">
                             <font>至&nbsp;&nbsp;</font><input type="text" id="end-time" class="date_picker_2" value="<?php echo $end_time?date('Y-m-d',$end_time):''; ?>">
                             <button onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type='.$type); ?>'+'&start_time='+document.getElementById('start-time').value+'&end_time='+document.getElementById('end-time').value">查询</button>
                         </div>
                 </ul>
                 <ul class="tab_con">
                     <li class="active">
-                        <p class="title"><span class="wid20">投资项目</span><span>年收益率</span><span class="wid20">投资金额（元）</span><span>投资时间</span><span>计息日</span><span>还款日</span><span>状态</span></p>
+                        <p class="title"><span class="wid20">投资项目</span><span>年收益率</span><span class="wid20">投资金额（元）</span><span>投资时间</span><span>计息日</span><span>还款日</span><span>状态</span><span style="width: 60px;">投资协议</span></p>
                         <?php if($project):foreach($project as $k=>$v): ?>
                             <p class="lie">
-                                <span class="wid20"><font><?php echo $v['subject']; ?></font></br>编号：<?php echo $v['borrow_no']; ?></span>
-                                <span>12%</span>
+                                <span class="wid20"><font><?php echo $v['subject']; ?></font></br>编号:<?php echo $v['borrow_no']; ?></span>
+                                <span><?php echo $v['rate']; ?>%</span>
                                 <span class="wid20"><font><?php echo $v['amount']; ?></font></br><?php if($v['status'] == '还款完成'): ?> 已<?php else: ?>预计<?php endif; ?>收益：<?php echo $v['interest']; ?></span>
                                 <span><?php echo date('Y-m-d',$v['invest_time']); ?></span>
                                 <span><?php echo date('Y-m-d',$v['interest_start_time']); ?></span>
-                                <span><?php echo date('Y-m-d',strtotime($v['interest_lately_time'])); ?></span>
-                                <span><?php echo $v['status']; ?></span>
+								<span><?php echo date('Y-m-d',strtotime($v['interest_lately_time'])); ?></span>
+								<span><?php echo $v['status']; ?></span>
+                                <span style="width: 60px;text-decoration: underline;"><a href="<?php echo site_url('terms/index?borrow_no='.$v['borrow_no']); ?>" target="_blank">查看</a> </span>
                             </p>
                         <?php endforeach;else: ?>
                             <p class="lie">暂无相关信息</p>
