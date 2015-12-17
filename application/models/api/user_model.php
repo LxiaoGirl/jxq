@@ -669,6 +669,15 @@ class User_model extends CI_Model{
 					$data['msg'] = '不能添加自己为自己的理财师!';
 					return $data;
 				}
+				//如果自己本身理财师 验证邀请码是否为自己的推荐关系的无限极下线人员
+				if($temp['user_info']['inviter_no']){
+					$temp['is_my_child'] = $this->_in_my_invite_relation($temp['inviter_info']['inviter_no'],$uid,$temp['user_info']['inviter_no']);
+					if($temp['is_my_child']){
+						$data['msg'] = '不能添加自己下线理财师为自己的理财师!';
+						return $data;
+					}
+				}
+
 				$temp['inviter_uid'] = $temp['inviter_info']['uid'];
 				$code = $temp['inviter_info']['inviter_no'];
 			}else{
@@ -694,7 +703,41 @@ class User_model extends CI_Model{
 		return $data;
 	}
 
+	/**
+	 * 检测 某一个邀请码 是否在自己的下级中
+	 * @param string $inviter_no 邀请码
+	 * @param int $uid 自己的uid
+	 * @param string $my_inviter_no 自己的邀请码
+	 * @return bool
+	 */
+	protected function _in_my_invite_relation($inviter_no='',$uid=0,$my_inviter_no=''){
+		$result = false;
+		$temp = array();
 
+		if($uid > 0 && $inviter_no && $my_inviter_no){
+			$temp['child_uid_str'] = (string)$uid;
+			$temp['child_inviter_no_str'] = '';
+			while($temp['child_uid_str']){
+				$temp['where'] = array(
+						'select'=>'GROUP_CONCAT(uid) as uid_str,GROUP_CONCAT(inviter_no) as inviter_no_str',
+						'where'=>array('inviter_no !='=>$my_inviter_no),//过滤已经绑定了自己的 防止无限循环
+						'where_in'=>array('field'=>'inviter','value'=>$temp['child_uid_str']),
+						'like'=>array('field'=>'inviter_no','match'=>'I','flag'=>'after')
+				);
+				$temp['data'] = $this->c->get_row('user',$temp['where']);
+				if($temp['data']){
+					$temp['child_uid_str'] = $temp['data']['uid_str'];
+					$temp['child_inviter_no_str'] .= ($temp['child_inviter_no_str']?',':'').$temp['data']['inviter_no_str'];
+				}else{
+					$temp['child_uid_str'] = '';
+				}
+			}
+			if(strpos($temp['child_inviter_no_str'],$inviter_no) !== false){
+				$result = true;
+			}
+		}
+		return $result;
+	}
 
 	/**
 	 * 忘记登录密码（图形）

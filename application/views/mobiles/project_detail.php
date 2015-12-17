@@ -365,7 +365,7 @@
                            <?php foreach ($log as $v): ?>
                                 <tr>
                                     <td class="text-center"><span
-                                            class="c_333"><?php echo secret($v['mobile'], 5); ?></span></td>
+                                            class="c_333"><?php echo secret($v['user_name'], mb_strlen($v['user_name'])-1); ?></span></td>
                                     <td class="text-center"><span
                                             class="c_333"><?php echo price_format($v['amount'], 2, false); ?></span>
                                     </td>

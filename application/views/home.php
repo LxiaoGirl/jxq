@@ -59,7 +59,7 @@
         <div class="home_left fl">
             <ul>
                 <li>
-                    <h1>12.12聚雪球狂欢盛典活动专享<a href="https://www.zgwjjf.com/active/1212/index.html" class="fr">查看活动详情 > </a></h1>
+                    <h1>12.12聚雪球狂欢盛典活动专享<a href="/index.php/invest/index?c=4" class="fr">查看全部产品 > </a></h1>
                     <div class="home_product_body">
                         <div class="top">
                             <div class="icon fl" style = 'background: #c795df;'>富</div>
