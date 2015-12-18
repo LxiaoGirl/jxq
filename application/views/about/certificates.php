@@ -17,6 +17,9 @@
 <div class="team_w tc">
     <img src="../../../../assets/images/bigpic/yyzz.png" alt="">
 </div>
+<div class="team_w tc">
+	<a href="http://www.miitbeian.gov.cn/publish/query/indexFirst.action" target="_blank">ICP备案快捷查询地址</a>
+</div>
   
 <!--footer start-->
 <?php $this->load->view('common/footer'); ?>

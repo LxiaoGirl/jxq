@@ -90,7 +90,7 @@
 								<?php endif;?>
                                 <div>
                                     <div class="lv fl">
-                                        <p class="yqb">预计年化收益率</p>
+                                        <p class="yqb">年化收益率</p>
                                         <?php echo $v['view_rate'];?><font>%</font>
                                     </div>
                                     <div class="qtje fl">

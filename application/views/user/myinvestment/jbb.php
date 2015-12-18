@@ -65,7 +65,7 @@
             <ul class="ul2">
                 <a href=""><li class="active"><font>聚保宝活期理财</a></li></font>
                 <a href="<?php echo site_url('user/user/jbb_line');?>"><li><font>排队信息</a></li></font>
-                <a href="<?php echo site_url('user/user/jbb_history');?>"><li><font>历史预约</a></li></font>
+                <a href="<?php echo site_url('user/user/jbb_history');?>"><li><font>历史退出</a></li></font>
             </ul>
             <ul class="ul3">
 			<?php if($jbb_list['status']=='10000'):?>
@@ -128,19 +128,32 @@
 			var name = $(this).attr('tab');
 			$.post('/index.php/user/user/jbb_jbb_details?type_code='+e.attr('id'),{},function(result){
 				    var text = '<p class="month_lie_poptitle">';
-					text=text+'<span class="tc">项目名称</span>';
-					text=text+'<span class="tc">项目年利率</span>';
-					text=text+'<span class="tc">项目融资金额（元）</span>';
-					text=text+'<span class="tc">项目状态</span>';
+					text=text+'<span class="tc"><strong>项目名称</strong></span>';
+					text=text+'<span class="tc"><strong>项目年利率</strong></span>';
+					text=text+'<span class="tc"><strong>项目融资金额（元）</strong></span>';
+					text=text+'<span class="tc"><strong>项目状态</strong></span>';
 					text=text+'</p>';
 					result = JSON.parse(result);
 					if(result.status==10000){
+						var status = '-';
 					for(var i=0;i<result.data.length;i++){
+						if(result.data[i].status==2){
+							 status = '募集中';
+						}
+						if(result.data[i].status==3){
+							 status = '复审中';
+						}
 						if(result.data[i].status==4){
-							var status = '还款中';
+							 status = '还款中';
+						}
+						if(result.data[i].status==5){
+							 status = '还款完成';
+						}
+						if(result.data[i].status==6){
+							 status = '流标';
 						}
 						if(result.data[i].status==7){
-							var status = '还款完成';
+							 status = '还款完成';
 						}
 						text = text+'<p class="month_lie_popnr">';
 						text=text+'<span class="tc">'+result.data[i].subject+'</span>';

@@ -134,7 +134,7 @@ class Intermediary extends MY_Controller{
         }
         //验证居间人起始时间
         $this->_check_intermediary_time();
-
+        
         $data['inviter_no'] = $this->input->get('inviter_no')?$this->input->get('inviter_no'):'';
         $this->load->view(self::dir.'intermediary/guide',$data);
     }

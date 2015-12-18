@@ -29,8 +29,8 @@
                             <span class='yi'><?php echo jbb_word(@$_GET['type_code'])?></span>
                         </li>
                         <li>
-                            <p class='tl'>预期年化收益率</p>
-                            <p class="tl qdcn"><?php echo $jbb_list['data']['rate']?>%</p>
+                            <p class='tl'>年化收益率</p>
+                            <p class="tl qdcn"><?php echo $jbb_list['data']['view_rate']?>%</p>
                         </li>
                         <li>
                             <p class='tl'>分散投资于</p>
