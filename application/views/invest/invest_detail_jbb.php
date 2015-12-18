@@ -2,14 +2,10 @@
 <html>
 <head>
     <title>聚雪球_网加金服_P2P理财首选互联网金融P2P网贷平台_100元即可投资!</title>
-	<?php $this->load->view('common/head_file'); ?>
+    <?php $this->load->view('common/head_file'); ?>
 </head>
 <body>
 <?php $this->load->view('common/head'); ?>
-
-<!---->
-<p class="hidden"><font class="syktje">1006000</font></p>
-<!---->
     <div class="invest_detail row">
         <!--面包屑导航-->
         <p class="invest_nav"><a href="<?php echo site_url(); ?>"> 首页 </a>> <a href="<?php echo site_url('invest/index?c=4'); ?>"> 聚保宝 </a>> <a href=""> 投资详情 </a></p>
@@ -55,23 +51,23 @@
                 </div>
                 <div class="hy fr">
                     <!---->
-                    <p class="dlye login-flag-tag" <?php if($this->session->userdata('uid')): ?> style="display: none;" <?php endif; ?>>登陆后可以投资 <span class="fr"><button type="button" onclick="window.location.href='<?php echo site_url('login/index?redirect_url='.urlencode($this->c->show_url())); ?>'">登录</button></span></p>
-                    <p class="dlye recharge-flag-tag" <?php if( ! $this->session->userdata('uid')): ?> style="display: none;" <?php endif; ?>>账户余额 <span class="fr"><?php echo isset($balance)?$balance:0; ?>元<button type="button" onclick="window.location.href='/index.php/user/user/recharge'">充值</button></span></p>
+                    <p class="dlye login-flag-tag" <?php if($this->session->userdata('uid')): ?> style="display: none;" <?php endif; ?>>登陆后可以投资 <span class="fr"><button class="ls_1" type="button" onclick="window.location.href='<?php echo site_url('login/index?redirect_url='.urlencode($this->c->show_url())); ?>'">登录</button></span></p>
+                    <p class="dlye recharge-flag-tag" <?php if( ! $this->session->userdata('uid')): ?> style="display: none;" <?php endif; ?>>账户余额 <span class="fr"><?php echo isset($balance)?$balance:0; ?>元<button  class="ls_1" type="button" onclick="window.location.href='/index.php/user/user/recharge'">充值</button></span></p>
 
                     <!---->
-					<p class="jbb">可投额度:<span class="fr"><font><?php echo price_format($jbb_list['data']['development_amount']-$jbb_list['data']['balance'],2,false);?></font>元</span></p>
+                    <p class="jbb">可投额度:<span class="fr"><font><?php echo price_format($jbb_list['data']['development_amount']-$jbb_list['data']['balance'],2,false);?></font>元</span></p>
                     <p class="jbb">投资上限:<span class="fr"><?php echo price_format($jbb_list['data']['all_amount'],2,false)?>元</span></p>
                     <p class="jbb">起投金额:<span class="fr"><?php echo price_format($jbb_list['data']['start_amount'],2,false)?>元</span></p>
                     <form action="" method="" accept-charset="utf-8">
                         <p class="but">
-							<?php if($jbb_list['data']['start_day']+3600*$jbb_list['data']['start_time']<=time()&&$jbb_list['data']['type']==1):?>
-                            <input type="text" value="" placeholder="<?php echo $jbb_list['data']['start_amount']?>" class="invest-amount">
-                            <input type="button"   id="invest-button" value="马上加入" >
+                            <?php if($jbb_list['data']['start_day']+3600*$jbb_list['data']['start_time']<=time()&&$jbb_list['data']['type']==1):?>
+                            <input type="text" value="" placeholder="<?php echo $jbb_list['data']['start_amount']?>" class="invest-amount ifhav">
+                            <input type="button" class="ls"   id="invest-button" value="马上加入" >
                             <span class="but_pop_tip msg" style="display: none; top:42px;"></span>
                             <?php elseif($jbb_list['data']['type']==2):?>
-                            <input type="button" class="ymbbut" value="已售罄" >
+                            <input type="button"  class="bs" class="ymbbut" value="已售罄" >
                             <?php else:?>
-                            <input type="button" class="jjks" value="即将开始" >
+                            <input type="button" class="ls_1" value="即将开始" >
                             <?php endif;?>
                         </p>
                         <div class="invest_zjmm_pop">
@@ -80,10 +76,10 @@
                                 <span>输入资金密码</span><font class="fr">×</font>
                             </div>
                             <div class="popbody tc">
-                                <input type="password" value="" class="security" placeholder="请输入资金密码"/>
+                                <input type="password" value="" class="security ifhav" placeholder="请输入资金密码"/>
                                 <div class="fr tl tip_pop">
                                 </div>
-                                <button type="button" id="invest-submit" class="ajax-submit-button" data-loadMsg="投资中..." >提交</button>
+                                <button type="button" id="invest-submit" class="ajax-submit-button ls   " data-loadMsg="投资中..." >提交</button>
                                 <a href="<?php echo site_url('user/user/account_security'); ?>">不记得资金密码？点此找回</a>
                             </div>
                             </div>
@@ -102,8 +98,8 @@
                 </ul>
                 <ul class="tab_con">
                     <li class="active jbb_tzxq">
-						<?php foreach($details['data'] as $k => $v):?>
-                        <p>						
+                        <?php foreach($details['data'] as $k => $v):?>
+                        <p>                     
                             <span class="shen">
                                 <?php echo $v['title']?>
                             </span>
@@ -111,14 +107,14 @@
                                 <?php echo $v['content']?>
                             </span>
                         </p>
-						<?php endforeach;?>
+                        <?php endforeach;?>
                     </li>
                     <li class="tzjl">
                         <h2><span>流水号</span><span>投资人</span><span>金额（元）</span><span>时间</span></h2>
                         <div id="invest-lists">
                             
                         </div>
-						<div class="invest_home_paging"></div>
+                        <div class="invest_home_paging"></div>
                     </li>
                     <!-- <li class="jbb_cjwt">
                         <h2 style="font-size:16px; font-weight:100; line-height:40px;">1.我加入投资团并投资1万元，12个月后我能赚到多少钱？</h2>
@@ -130,7 +126,7 @@
                         <h2 style="font-size:16px; font-weight:100; line-height:40px;">4.我的钱投给了谁？我怎么知道还款情况如何？</h2>
                         我们坚持向投资人披露每一笔资金的去向，和每一笔借款的还款情况。投资完成后，请登陆投资人账号，在“我的账户>我的投资>团团赚”中，点击投资的投资团的“详情”进行查看。
                     </li>
-					-->
+                    -->
                 </ul>
             </div>
             <!--TAB-->
@@ -144,66 +140,75 @@
 <script type="text/javascript">
     seajs.use(['jquery','sys','wsb_sys'],function(){
         tab($(".invest_detail_tab"));
-		var is_login = '<?php echo $this->session->userdata('uid')?'1':'0'; ?>';
-		var is_security = '<?php echo $this->session->userdata('security')?'1':'0'; ?>';
-		var is_real_name = '<?php echo $this->session->userdata('clientkind'); ?>';
-		var invest_max = parseFloat('<?php echo $jbb_list['data']['all_amount']; ?>');
-		var invest_min = parseFloat('<?php echo $jbb_list['data']['start_amount']; ?>');
-		var my_balance = parseFloat('<?php echo $balance; ?>');
-		var old_type_code = '<?php echo $jbb_list['data']['type_code']?>';
+        //INPUT框变色
+        $('.ifhav').focus(function(){
+            $(this).addClass('hav');
+        });
+        $('.ifhav').blur(function(){
+            if($.trim($(this).val())==''){
+                $(this).removeClass('hav');
+            }
+        });
+        var is_login = '<?php echo $this->session->userdata('uid')?'1':'0'; ?>';
+        var is_security = '<?php echo $this->session->userdata('security')?'1':'0'; ?>';
+        var is_real_name = '<?php echo $this->session->userdata('clientkind'); ?>';
+        var invest_max = parseFloat('<?php echo $jbb_list['data']['all_amount']; ?>');
+        var invest_min = parseFloat('<?php echo $jbb_list['data']['start_amount']; ?>');
+        var my_balance = parseFloat('<?php echo $balance; ?>');
+        var old_type_code = '<?php echo $jbb_list['data']['type_code']?>';
 
 
-		
-		//倒计时处理
+        
+        //倒计时处理
         if($('.time-down').length){
                 $('.time-down').count_down(function(obj){
                   
                 },function(obj){
-					if($('.time-down').attr('data-type') == 2){
+                    if($('.time-down').attr('data-type') == 2){
                     $('.time-down').html('已售罄');
-					return;
-					}
+                    return;
+                    }
                     if(($('.time-down').attr('data-start-time') <= <?php echo time();?>) && ($('.time-down').attr('data-type') == 1)){
                     $('.time-down').html('标的已经开始!');
-					return;
-					}
+                    return;
+                    }
                 });
             }
-			$('#invest-button').bind('click',function(){
-				
-				invest();
-				return false;
-				});
-		//提交
+            $('#invest-button').bind('click',function(){
+                
+                invest();
+                return false;
+                });
+        //提交
             var invest_submit = function(){
-				
-				$.post('/index.php/invest/ajax_jbb_sub?amount='+$(".invest-amount").val()+'&security='+$(".security").val()+'&type_code='+type_code,{},function(result){
-					result = JSON.parse(result);
-					$('.invest_zjmm_pop').fadeOut();
-					$('.black_bg').fadeOut();
-					if(result.status==10000){
-						wsb_alert(result.msg,2,result.url);
-					}else{
-						wsb_alert(result.msg);
-					}
-				})
+                
+                $.post('/index.php/invest/ajax_jbb_sub?amount='+$(".invest-amount").val()+'&security='+$(".security").val()+'&type_code='+type_code,{},function(result){
+                    result = JSON.parse(result);
+                    $('.invest_zjmm_pop').fadeOut();
+                    $('.black_bg').fadeOut();
+                    if(result.status==10000){
+                        wsb_alert(result.msg,2,result.url);
+                    }else{
+                        wsb_alert(result.msg);
+                    }
+                })
             };
-		
+        
 
-		
-						$('#invest-submit').click(function(){
+        
+                        $('#invest-submit').click(function(){
                                 if($('.security').val().length < 6){
                                     wsb_alert('请输入正确格式的资金密码!',2);
-									return false;
+                                    return false;
                                 }else{
                                     invest_submit();
-									return false;
+                                    return false;
                                 }
-								
+                                
                             });
 
-		//投资处理
-		var invest = function() {
+        //投资处理
+        var invest = function() {
                if (is_login == "1") {
                     if ( is_security == '0') {
                         $(".msg").show().html('您还没有设置资金密码哦<a href="<?php echo site_url('user/user/account_security'); ?>">设置资金密码</a>');
@@ -213,26 +218,26 @@
                         $(".msg").show().html('您还没有进行实名认证哦<a href="<?php echo site_url('user/user/account_security'); ?>">实名认证</a>');
                         return false;
                     }
-					
+                    
                     var money = $(".invest-amount").val();
-					if(money%invest_min!=0){
-						money = $(".invest-amount").val(Math.floor(money/invest_min)*parseFloat(invest_min));
-						return false;
-					}
-					
+                    if(money%invest_min!=0){
+                        money = $(".invest-amount").val(Math.floor(money/invest_min)*parseFloat(invest_min));
+                        return false;
+                    }
+                    
                     if(money)money=parseFloat(money);
                     if (money == "") {
                         wsb_alert('请输入投资金额!',2);
-						return false;
+                        return false;
                     }else if( ! /^[1-9]\d*$/.test(money)) {
                         wsb_alert('请输入正整数投资金额!',2);
-						return false;
+                        return false;
                     }else if(money < invest_min) {
                         wsb_alert('投资金额不能小于￥' + invest_min + '元!',2);
-						return false;
+                        return false;
                     }else if(money > invest_max) {
                         wsb_alert('投资金额不能大于￥' + invest_max + '元!',2);
-						return false;
+                        return false;
                     }else if(money > my_balance) {
                         $(".msg").show().html('你的余额不足<a href="<?php echo site_url('user/user/recharge'); ?>">充值</a>');
                     }else{
@@ -245,61 +250,61 @@
                 }else {
                     wsb_alert('您还没有登录哦！',2,'<?php echo site_url('login').'?redirect_url='.urlencode($this->c->show_url()); ?>');
                 }
-			};
-			
-			
+            };
+            
+            
     });
-		$('.invest_zjmm_pop_body').find('.fr').click(function(){
-			$('.invest_zjmm_pop').fadeOut();
-			$('.black_bg').fadeOut();
-		})
-		
+        $('.invest_zjmm_pop_body').find('.fr').click(function(){
+            $('.invest_zjmm_pop').fadeOut();
+            $('.black_bg').fadeOut();
+        })
+        
 var page = 0;
 var limit = 5;
 var type_code = '<?php echo $jbb_list['data']['type_code']?>';
 var pages = '<?php echo $total?>';
 pages = Math.ceil(pages/limit);
 var text ='<p>暂无相关数据</p>';
-		$('.invest').click(function(){			
-			$.post('/index.php/invest/detail_jbb_list?per_page='+limit*page+'&type_code='+type_code,{},function(result){
-						result = JSON.parse(result);
-						text = '';
-						for(var i=0;i<result.data.data.length;i++){						
-							text = text+'<p>';
-							text=text+'<span class="payment_no">'+result.data.data[i].order_code+'</span>';
-							text=text+'<span><font class="name">'+result.data.data[i].user_name.substring(0,1)+"**"+'</font></span>';
-							text=text+'<span class="amount">'+result.data.data[i].amount+'</span>';
-							text=text+'<span class="pay_time">'+unixtime_style(result.data.data[i].purchase_time,'Y-m-d h:i:s')+'</span>';
-							text=text+'</p>';	
-						}
-						$('#invest-lists').html(text);
-					});	
-		})
-		//分页
+        $('.invest').click(function(){          
+            $.post('/index.php/invest/detail_jbb_list?per_page='+limit*page+'&type_code='+type_code,{},function(result){
+                        result = JSON.parse(result);
+                        text = '';
+                        for(var i=0;i<result.data.data.length;i++){                     
+                            text = text+'<p>';
+                            text=text+'<span class="payment_no">'+result.data.data[i].order_code+'</span>';
+                            text=text+'<span><font class="name">'+result.data.data[i].user_name.substring(0,1)+"**"+'</font></span>';
+                            text=text+'<span class="amount">'+result.data.data[i].amount+'</span>';
+                            text=text+'<span class="pay_time">'+unixtime_style(result.data.data[i].purchase_time,'Y-m-d h:i:s')+'</span>';
+                            text=text+'</p>';   
+                        }
+                        $('#invest-lists').html(text);
+                    }); 
+        })
+        //分页
 if(pages!=0){
 $(".invest_home_paging").createPage({
-				pageCount:pages,
-				current:1,
-				backFn:function(p){
-					$.post('/index.php/invest/detail_jbb_list?per_page='+limit*(p-1)+'&type_code='+type_code,{},function(result){
-						page=p-1;
-						result = JSON.parse(result);
-						text = '';
-						for(var i=0;i<result.data.data.length;i++){	
-							text = text+'<p>';
-							text=text+'<span class="payment_no">'+result.data.data[i].order_code+'</span>';
-							text=text+'<span><font class="name">'+result.data.data[i].user_name.substring(0,1)+"**"+'</font></span>';
-							text=text+'<span class="amount">'+result.data.data[i].amount+'</span>';
-							text=text+'<span class="pay_time">'+unixtime_style(result.data.data[i].purchase_time,'Y-m-d h:i:s')+'</span>';
-							text=text+'</p>';	
-						}
-						$('#invest-lists').html(text);
-					});					
-				}
-			});
+                pageCount:pages,
+                current:1,
+                backFn:function(p){
+                    $.post('/index.php/invest/detail_jbb_list?per_page='+limit*(p-1)+'&type_code='+type_code,{},function(result){
+                        page=p-1;
+                        result = JSON.parse(result);
+                        text = '';
+                        for(var i=0;i<result.data.data.length;i++){ 
+                            text = text+'<p>';
+                            text=text+'<span class="payment_no">'+result.data.data[i].order_code+'</span>';
+                            text=text+'<span><font class="name">'+result.data.data[i].user_name.substring(0,1)+"**"+'</font></span>';
+                            text=text+'<span class="amount">'+result.data.data[i].amount+'</span>';
+                            text=text+'<span class="pay_time">'+unixtime_style(result.data.data[i].purchase_time,'Y-m-d h:i:s')+'</span>';
+                            text=text+'</p>';   
+                        }
+                        $('#invest-lists').html(text);
+                    });                 
+                }
+            });
 
 
-	function   formatDate(now)   {     
+    function   formatDate(now)   {     
               var   year=now.getYear();     
               var   month=now.getMonth()+1;     
               var   date=now.getDate();     

@@ -39,7 +39,7 @@
                                         真实姓名：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="text" id="real_name_input" value="" maxlength="5" placeholder="请输入姓名">
+                                        <input type="text" class="ifhav" id="real_name_input" value="" maxlength="5" placeholder="请输入姓名">
                                     </div>
                                 </div>
                                 <div class="p smrz_p">
@@ -47,7 +47,7 @@
                                         身份证号码：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="text" value="" id="nric_input" placeholder="请输入身份证号码" maxlength="18">
+                                        <input type="text" class="ifhav" value="" id="nric_input" placeholder="请输入身份证号码" maxlength="18">
                                     </div>
                                 </div>
                                 <div class="p smrz_p">
@@ -55,7 +55,7 @@
                                         
                                     </div>
                                 </div>
-                                <button type="submit" class="user_data_pop_but sub ajax-submit-button" id="real_name" data-loading-msg="提交认证中...">提交</button>
+                                <button type="submit" class="user_data_pop_but sub ajax-submit-button ls" id="real_name" data-loading-msg="提交认证中...">提交</button>
                             </div>
                         </div>
                         <!--实名认证_1-->
@@ -74,7 +74,7 @@
                                         <div class="popbody_p xb"><?php echo profile('user_name'); ?>，<font>您的安全等级已提升！</font></div>
                                     </div>
                                 </div>
-                                <button type="" class="user_data_pop_but sub close">完成</button>
+                                <button type="" class="user_data_pop_but sub close ls">完成</button>
                             </div>
                         </div>
                         <!--实名认证_2-->
@@ -90,7 +90,7 @@
                                         输入原密码：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="password" value="" placeholder="请输入密码" id="old_password">
+                                        <input type="password" class="ifhav" value="" placeholder="请输入密码" id="old_password">
                                     </div>
                                 </div>
 								<div class="p xgmm_p">
@@ -103,7 +103,7 @@
                                         输入新密码：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="password" value="" placeholder="请输入新密码" id="new_password">
+                                        <input class="ifhav" type="password" value="" placeholder="请输入新密码" id="new_password">
                                     </div>
                                 </div>
                                 <div class="p xgmm_p">
@@ -116,7 +116,7 @@
                                         确认新密码：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="password" value="" placeholder="请再次输入新密码"  id="new_password_two">
+                                        <input class="ifhav" type="password" value="" placeholder="请再次输入新密码"  id="new_password_two">
                                     </div>
                                 </div>
                                 <div class="p xgmm_p">
@@ -124,7 +124,7 @@
                                         
                                     </div>
                                 </div>
-                                <button type="" class="user_data_pop_but sub " id="passwoerd_sub" disabled >提交</button>
+                                <button type="" class="user_data_pop_but sub ls" id="passwoerd_sub" disabled >提交</button>
                             </div>
                         </div>
                         <!--修改密码 1-->
@@ -143,7 +143,7 @@
                                         <div class="popbody_p xb"><font>请妥善保管好您的密码！</font></div>
                                     </div>
                                 </div>
-                                <button type="" class="user_data_pop_but sub close">完成</button>
+                                <button type="" class="user_data_pop_but sub close ls">完成</button>
                             </div>
                         </div>
                         <!--修改密码 2-->
@@ -157,11 +157,11 @@
                                     <div class="fl tr">
                                         手机验证码：
                                     </div>
-                                    <div class="fl tl" style="width:34%">
-                                        <input type="text" value="" placeholder="请输入验证码" id="reset_verification">
+                                    <div class="fl tl" style="width:34%;line-height:45px;">
+                                        <input type="text" class="ifhav" value="" placeholder="请输入验证码" id="reset_verification">
                                     </div>
                                     <div class="fl tl">
-                                        <input type="button" class="but_sent" id="but_sent_wjmm" value="获取验证码">
+                                        <input type="button" class="but_sent ls" id="but_sent_wjmm" value="获取验证码">
                                     </div>
                                 </div>
                                 <div class="p xgmm_p">
@@ -173,7 +173,7 @@
                                         设置登录密码：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="password" value="" placeholder="请输入新密码" id="reset_password">
+                                        <input class="ifhav" type="password" value="" placeholder="请输入新密码" id="reset_password">
                                     </div>
                                 </div>
 								<div class="p xgmm_p">
@@ -185,14 +185,14 @@
                                         确认登录密码：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="password" value="" placeholder="请再次输入新密码" id="reset_password_two">
+                                        <input class="ifhav" type="password" value="" placeholder="请再次输入新密码" id="reset_password_two">
                                     </div>
                                 </div>
 								<div class="p xgmm_p">
                                     <div class="fr tl tip_pop" id="reset_mobile_explain_two">                                        
                                     </div>
                                 </div>
-                                <button type="" class="user_data_pop_but sub " id="reset_sub">提交</button>
+                                <button type="" class="user_data_pop_but sub ls" id="reset_sub">提交</button>
                             </div>
                         </div>
                         <!--忘记密码 1-->
@@ -211,7 +211,7 @@
                                         <div class="popbody_p xb"><font>请妥善保管好您的密码！</font></div>
                                     </div>
                                 </div>
-                                <button type="" class="user_data_pop_but sub close">完成</button>
+                                <button type="" class="user_data_pop_but sub close ls">完成</button>
                             </div>
                         </div>
                         <!--修改密码 2-->
@@ -227,7 +227,7 @@
                                         输入登录密码：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="password" value="" placeholder="请输入密码" id ="login_password">
+                                        <input class="ifhav" type="password" value="" placeholder="请输入密码" id ="login_password">
                                     </div>
                                 </div>
                                 <div class="p xgmm_p">
@@ -239,11 +239,11 @@
                                     <div class="fl tr">
                                         手机验证码：
                                     </div>
-                                    <div class="fl tl" style="width:34%">
-                                        <input type="text" value="" placeholder="请输入验证码" id="login_password_code">
+                                    <div class="fl tl" style="width:34%; line-height:45px;">
+                                        <input class="ifhav" type="text" value="" placeholder="请输入验证码" id="login_password_code">
                                     </div>
                                     <div class="fl tl">
-                                        <input type="button" class="but_sent" id="but_sent_szzjmm" value="获取验证码">
+                                        <input type="button" class="but_sent ls" id="but_sent_szzjmm" value="获取验证码">
                                     </div>
                                 </div>
                                 <div class="p xgmm_p">
@@ -256,7 +256,7 @@
                                         输入资金密码：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="password" value="" placeholder="请输入新密码" id="login_password_one">
+                                        <input class="ifhav" type="password" value="" placeholder="请输入新密码" id="login_password_one">
                                     </div>
                                 </div>
 								<div class="p xgmm_p">
@@ -269,7 +269,7 @@
                                         确认资金密码：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="password" value="" placeholder="请再次输入新密码"  id="login_password_two">
+                                        <input class="ifhav" type="password" value="" placeholder="请再次输入新密码"  id="login_password_two">
                                     </div>
                                 </div>
 								<div class="p xgmm_p">
@@ -277,7 +277,7 @@
                                         
                                     </div>
                                 </div>
-                                <button type="" class="user_data_pop_but sub " id="fund_password_sub">提交</button>
+                                <button type="" class="user_data_pop_but sub ls" id="fund_password_sub">提交</button>
                             </div>
                         </div>
                         <!--设置资金密码 1-->
@@ -296,7 +296,7 @@
                                         <div class="popbody_p xb"><font>请妥善保管好您的密码！</font></div>
                                     </div>
                                 </div>
-                                <button type="" class="user_data_pop_but sub close">完成</button>
+                                <button type="" class="user_data_pop_but sub close ls">完成</button>
                             </div>
                         </div>
                         <!--设置资金密码 2-->
@@ -311,7 +311,7 @@
                                         输入登录密码：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="password" value="" placeholder="请输入密码"  id ="login_password_update">
+                                        <input class="ifhav" type="password" value="" placeholder="请输入密码"  id ="login_password_update">
                                     </div>
                                 </div>
                                 <div class="p xgmm_p">
@@ -324,10 +324,10 @@
                                         手机验证码：
                                     </div>
                                     <div class="fl tl" style="width:34%">
-                                        <input type="text" value="" placeholder="请输入验证码"  id="login_password_update_code">
+                                        <input class="ifhav" type="text" value="" placeholder="请输入验证码"  id="login_password_update_code">
                                     </div>
                                     <div class="fl tl">
-                                        <input type="button" class="but_sent" id="but_sent_xgzjmm" value="获取验证码">
+                                        <input type="button" class="but_sent ls" id="but_sent_xgzjmm" value="获取验证码">
                                     </div>
                                 </div>
                                 <div class="p xgmm_p">
@@ -340,7 +340,7 @@
                                         输入原资金密码：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="password" value="" placeholder="请输入原密码" id="login_password_update_y">
+                                        <input class="ifhav" type="password" value="" placeholder="请输入原密码" id="login_password_update_y">
                                     </div>
                                 </div>
 								<div class="p xgmm_p">
@@ -353,7 +353,7 @@
                                         输入新资金密码：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="password" value="" placeholder="请输入新密码" id ="login_password_update_one">
+                                        <input class="ifhav" type="password" value="" placeholder="请输入新密码" id ="login_password_update_one">
                                     </div>
                                 </div>
 								<div class="p xgmm_p">
@@ -366,7 +366,7 @@
                                         确认新资金密码：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="password" value="" placeholder="请再次输入新密码" id ="login_password_update_two">
+                                        <input class="ifhav" type="password" value="" placeholder="请再次输入新密码" id ="login_password_update_two">
                                     </div>
                                 </div>
 								<div class="p xgmm_p">
@@ -374,7 +374,7 @@
                                         
                                     </div>
                                 </div>
-                                <button type="" class="user_data_pop_but sub " id="login_password_update_sub">提交</button>
+                                <button type="" class="user_data_pop_but sub ls" id="login_password_update_sub">提交</button>
                             </div>
                         </div>
                         <!--修改资金密码 1-->
@@ -393,7 +393,7 @@
                                         <div class="popbody_p xb"><font>请妥善保管好您的密码！</font></div>
                                     </div>
                                 </div>
-                                <button type="" class="user_data_pop_but sub close" >完成</button>
+                                <button type="" class="user_data_pop_but sub close ls" >完成</button>
                             </div>
                         </div>
                         <!--修改资金密码 2-->
@@ -408,7 +408,7 @@
                                         输入登录密码：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="password" value="" placeholder="请输入密码"  id ="login_password_forget">
+                                        <input class="ifhav" type="password" value="" placeholder="请输入密码"  id ="login_password_forget">
                                     </div>
                                 </div>
                                 <div class="p xgmm_p">
@@ -420,11 +420,11 @@
                                     <div class="fl tr">
                                         手机验证码：
                                     </div>
-                                    <div class="fl tl" style="width:34%">
-                                        <input type="text" value="" placeholder="请输入验证码"   id ="login_password_forget_code">
+                                    <div class="fl tl" style="width:34%; line-height:45px;">
+                                        <input class="ifhav" type="text" value="" placeholder="请输入验证码"   id ="login_password_forget_code">
                                     </div>
                                     <div class="fl tl">
-                                        <input type="button" class="but_sent" id="but_sent_wjzjmm" value="获取验证码">
+                                        <input type="button" class="but_sent ls" id="but_sent_wjzjmm" value="获取验证码">
                                     </div>
                                 </div>
                                 <div class="p xgmm_p">
@@ -437,7 +437,7 @@
                                         输入资金密码：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="password" value="" placeholder="请输入新密码" id ="login_password_forget_one">
+                                        <input class="ifhav" type="password" value="" placeholder="请输入新密码" id ="login_password_forget_one">
                                     </div>
                                 </div>
 								<div class="p xgmm_p">
@@ -450,7 +450,7 @@
                                         确认资金密码：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="password" value="" placeholder="请再次输入新密码" id ="login_password_forget_two">
+                                        <input class="ifhav" type="password" value="" placeholder="请再次输入新密码" id ="login_password_forget_two">
                                     </div>
                                 </div>
 								<div class="p xgmm_p">
@@ -458,7 +458,7 @@
                                         
                                     </div>
                                 </div>
-                                <button type="" class="user_data_pop_but sub " id="login_password_forget_sub">提交</button>
+                                <button type="" class="user_data_pop_but sub ls" id="login_password_forget_sub">提交</button>
                             </div>
                         </div>
                         <!--忘记资金密码 1-->
@@ -477,7 +477,7 @@
                                         <div class="popbody_p xb"><font>请妥善保管好您的密码！</font></div>
                                     </div>
                                 </div>
-                                <button type="" class="user_data_pop_but sub close">完成</button>
+                                <button type="" class="user_data_pop_but sub close ls">完成</button>
                             </div>
                         </div>
                         <!--忘记资金密码 2-->
@@ -493,6 +493,15 @@
 <!--userjs start-->
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){
+        //INPUT框变色
+        $('.ifhav').focus(function(){
+            $(this).addClass('hav');
+        });
+        $('.ifhav').blur(function(){
+            if($.trim($(this).val())==''){
+                $(this).removeClass('hav');
+            }
+        });
         //实名认证
         pop($('.smrz'),$('.smrz_1'),$('.smrz_1').find('.close'));
         $('#real_name').click(function(){

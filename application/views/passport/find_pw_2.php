@@ -31,7 +31,7 @@
             <div class="pit"></div>
         </div>
         <div class="but">
-            <button  type="submit" id="reg_xyb" class="ajax-submit-button" data-loading-msg="密码重置中...">下一步<i></i></button>
+            <button  type="submit" id="reg_xyb" class="ajax-submit-button ls" data-loading-msg="密码重置中...">下一步<i></i></button>
         </div>
         </form>
     </div>
@@ -97,7 +97,7 @@
                     text = '<i class="icon-tip-no"></i>建议密码由6位及以上数字、字母和特殊字符组成。';
                     pit_4=0;
                 } else {
-                    text = '安全程度：<div class="item z-sel">弱</div><div class="item ' + (other !== 0 ? 'z-sel' : '') + '">中</div><div class="item ' + (other === 1 ? 'z-sel' : '') + '">强</div>';
+                    text = '';
                     pit_4=1;
                 }
                 tip.html(text);

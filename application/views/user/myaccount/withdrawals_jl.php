@@ -34,9 +34,9 @@
                             <a href='<?php echo site_url('user/user/withdrawals_jl').'?limit_time=2';?>'><span class="spse  <?php echo (@$_GET['limit_time']==2)?'select':''?> ">三个月内</span></a>|
                             <a href='<?php echo site_url('user/user/withdrawals_jl').'?limit_time=3';?>'><span class="spse  <?php echo (@$_GET['limit_time']==3)?'select':''?> ">半年内</span></a>|
                             <a href='<?php echo site_url('user/user/withdrawals_jl').'?limit_time=4';?>'><span class="spse  <?php echo (@$_GET['limit_time']==4)?'select':''?> ">一年内</span></a>
-                            <font style="margin-left:30px;">选择日期：</font><input type="text" class="date_picker_1" id="start" value="<?php echo (isset($_GET['start']))?$_GET['start']:'';?>">
-                            <font>至&nbsp;&nbsp;</font><input type="text" class="date_picker_2"  id="end" value="<?php echo (isset($_GET['end']))?$_GET['end']:'';?>">
-                            <button  id="sub">查询</button>
+                            <font style="margin-left:30px;">选择日期：</font><input type="text" class="date_picker_1 ifhav" id="start" value="<?php echo (isset($_GET['start']))?$_GET['start']:'';?>">
+                            <font>至&nbsp;&nbsp;</font><input type="text" class="date_picker_2 ifhav"  id="end" value="<?php echo (isset($_GET['end']))?$_GET['end']:'';?>">
+                            <button  id="sub" class="ls">查询</button>
                         </div>
                         <p class="title"><span class="wid180">流水号</span><span class="wid128">金额（元）</span><span class="wid105">手续费（元）</span><span class="wid166">时间</span><span class="wid156">账户信息</span><span class="wid160">当前状态</span></p>
 						<?php if($status=='10000'):?>
@@ -65,7 +65,15 @@
 <script type="text/javascript" src="<?php echo base_url('assets/js/plugins/jquery.date_input.pack.js')?>"></script> 
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){
-
+        //INPUT框变色
+        $('.ifhav').focus(function(){
+            $(this).addClass('hav');
+        });
+        $('.ifhav').blur(function(){
+            if($.trim($(this).val())==''){
+                $(this).removeClass('hav');
+            }
+        });
     });
     $('.date_picker_1').date_input();
     $('.date_picker_2').date_input();

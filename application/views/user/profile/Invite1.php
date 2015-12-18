@@ -57,7 +57,7 @@
                                     <p>最近一次登录时间：<?php echo (my_date($v['last_date'],2))?my_date($v['last_date'],2):'很久没有登录过了哦'?></p>
                                 </div>
                                 <div class="fr">
-                                    <button class="invite_ckxq" id="<?php echo $v['uid']?>">查看详情<em><em></em></em></button>
+                                    <button class="invite_ckxq ls" id="<?php echo $v['uid']?>">查看详情<em><em></em></em></button>
                                 </div>
                             </div>
                             <div class="month_lie_pop">                         

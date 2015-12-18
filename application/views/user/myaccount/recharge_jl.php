@@ -35,9 +35,9 @@
                             <a href="<?php echo site_url('user/user/recharge_jl').'?time_limit=2'?>"><span class="spse <?php echo (@$_GET['time_limit']==2)?'select':''?>"> 三个月内</span></a>|
                             <a href="<?php echo site_url('user/user/recharge_jl').'?time_limit=3'?>"><span class="spse <?php echo (@$_GET['time_limit']==3)?'select':''?>"> 半年内</span></a>|
                             <a href="<?php echo site_url('user/user/recharge_jl').'?time_limit=4'?>"><span class="spse <?php echo (@$_GET['time_limit']==4)?'select':''?>"> 一年内</span></a>
-                            <font style="margin-left:30px;">选择日期：</font><input type="text" class="date_picker_1" id="start" value="<?php echo (isset($_GET['start']))?$_GET['start']:'';?>">
-                            <font>至&nbsp;&nbsp;</font><input type="text" class="date_picker_2"  id="end" value="<?php echo (isset($_GET['end']))?$_GET['end']:'';?>">
-                            <button id="sub">查询</button>
+                            <font style="margin-left:30px;">选择日期：</font><input type="text" class="date_picker_1 ifhav" id="start" value="<?php echo (isset($_GET['start']))?$_GET['start']:'';?>">
+                            <font>至&nbsp;&nbsp;</font><input type="text" class="date_picker_2 ifhav"  id="end" value="<?php echo (isset($_GET['end']))?$_GET['end']:'';?>">
+                            <button id="sub" class="ls">查询</button>
                         </div>
                         <p class="title"><span class="wid201">流水号</span><span class="wid149">金额（元）</span><span class="wid187">时间</span><span class="wid177">备注</span><span class="wid181">当前状态</span></p>
 						<?php if($status=='10000'):?>
@@ -66,6 +66,15 @@
 <script type="text/javascript" src="<?php echo base_url('assets/js/plugins/jquery.date_input.pack.js')?>"></script> 
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){
+        //INPUT框变色
+        $('.ifhav').focus(function(){
+            $(this).addClass('hav');
+        });
+        $('.ifhav').blur(function(){
+            if($.trim($(this).val())==''){
+                $(this).removeClass('hav');
+            }
+        });
         $(function () {
             var refresh_func = function(obj){
                 $.post('/index.php/user/user/ajax_recharge_auto_refresh',{'recharge_no':obj.data('rechargeNo')},function(rs){

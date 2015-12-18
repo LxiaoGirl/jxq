@@ -28,21 +28,21 @@
 					<p>服务费：<span id="service">0元</span></p>
 					<p>实收金额：<span id="real_amount">0</span>元</p>
                     <p class="blu">您可在排队信息中查看退出进度</p>
-                    <p class="but"><button class="qd" value=''>确定</button><button class="qx close">取消</button></p>
+                    <p class="but"><button class="qd ls" value=''>确定</button><button class="qx ls_1 close">取消</button></p>
                 </div>
                 <div class="pop pop_2">
                     <p class="tit">提取<span id="zong"></span>收益<font class="fr close">×</font></p>
                     <p>您将提取<span id="amount">0</span>元的<span id="zong_1"></span>收益</p>
 					<p>服务费：<span id="service_out">0元</span></p>
                     <p class="blu">提取收益后复利天数重新开始计算</p>
-                    <p class="but"><button class="qd" value="">确定</button><button class="qx close">取消</button></p>
+                    <p class="but"><button class="qd ls" value="">确定</button><button class="qx ls_1 close">取消</button></p>
                 </div>
                 <div class="pop_3">
                     <img src="../../../../assets/images/user/jbb_pop.png">
                 </div>
 				
             <!--弹出部分-->
-            <p class="jbb_tit">可领取的总收益（元）<button class="tq" value="总">提取</button><a href="<?php echo site_url('invest/index?c=4');?>"><button class="qgm">去购买</button></a><!--<font>我可以中途撤资吗？</font>--></p>
+            <p class="jbb_tit">可领取的总收益（元）<button class="tq ls" value="总">提取</button><button class="qgm ls_1"  onclick="window.location.href='<?php echo site_url('invest/index?c=4');?>'">去购买</button><!--<font>我可以中途撤资吗？</font>--></p>
             <p class="zsy"><?php echo round($jbb_receive['data']['receive'],2)?></p>
             <ul class="ul1">
                 <li>

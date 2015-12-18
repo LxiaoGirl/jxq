@@ -10,9 +10,9 @@
 <!--	加载头部文件-->
 <?php $this->load->view('common/head'); ?>
 <!--header-->
-<div class="register">
-    <div class="row">
-        <div class="reg_body">
+<div class="hole login">
+    <div class="row1">
+        <div class="login_body">
             <div class="pic"><img src="../../../../assets/images/bigpic/mian.jpg"></div>
             <div class="kuangjia">
                 <div class="step_1">
@@ -48,11 +48,11 @@
                     </div>
                     <div class="chick_xy">
                         <div class="nr_xy">
-                            <input class="check js_agr" type="checkbox" name="" value="1" <?php if($mobile): ?>checked<?php endif; ?>>记住我<span class="fr">密码忘了？<a href="<?php echo site_url('login/forget') ?>">点此找回</a></span>
+                            <input class="check js_agr" type="checkbox" name="" value="1" <?php if($mobile): ?>checked<?php endif; ?>>记住我<span class="fr">密码忘了？<a class="ls" href="<?php echo site_url('login/forget') ?>">点此找回</a></span>
                         </div>
                     </div>
                     <div class="but">
-                        <button  type="submit" id="reg_xyb" class="ajax-submit-button" data-loading-msg="登录中...">登  录<i></i></button>
+                        <button class="ls"  type="submit" id="reg_xyb" class="ajax-submit-button" data-loading-msg="登录中...">登  录<i></i></button>
                     </div>
                     <div class="yyzhdl"><a class="fr" href="<?php echo site_url('login/register') ?>">免费注册</a></div>
                 </form>

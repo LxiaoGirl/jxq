@@ -107,11 +107,11 @@
                                 <p>累计投资：<?php echo round($v['jbb_all_invest']/10000,2)?>万元</p>
                                 <p class='mar0'>累计加入：<?php echo $v['jbb_nums']?>人次</p>
 								<?php  if(($v['start_day']+3600*$v['start_time'])>=time()&&$v['type']==1):?>
-								<a class="yy" href="<?php echo site_url('invest/detail_jbb?type_code='.$v['type_code']); ?>">即将开始</a>
+								<button class="invest-button ls_1 button1" onclick="window.location.href='<?php echo site_url('invest/detail_jbb?type_code='.$v['type_code']); ?>'">即将开始</button>
 								<?php elseif(($v['start_day'])<time()&&$v['type']==1):?>
-                                <a class="jb" href="<?php echo site_url('invest/detail_jbb?type_code='.$v['type_code']); ?>">立即投资</a>
+                                <button class="invest-button ls button1" onclick="window.location.href='<?php echo site_url('invest/detail_jbb?type_code='.$v['type_code']); ?>'">立即投资</button>
 								<?php else:?>
-								<a class="jb sq" href="<?php echo site_url('invest/detail_jbb?type_code='.$v['type_code']); ?>">已售罄</a>
+								<button class="invest-button hs button1" onclick="window.location.href='<?php echo site_url('invest/detail_jbb?type_code='.$v['type_code']); ?>'">已售罄</button>
 								<?php endif;?>
 								
                             </div>
@@ -159,7 +159,7 @@
                                     <ul>
                                         <li>
                                             <div class="product_of_invest_home_num_bot tc">年化收益率</div>
-                                            <div class="product_of_invest_num_bot tc col_blu"><?php echo $v['rate']; ?><i>%</i></div>
+                                            <div class="product_of_invest_num_bot tc ft_3cb5ec"><?php echo $v['rate']; ?><i>%</i></div>
                                         </li>
                                         <li>
                                             <div class="product_of_invest_home_num_bot tc">借款期限(<?php echo $v['months']==0.9?'天':'月'; ?>)</div>
@@ -175,7 +175,7 @@
                                         </li>
                                         <li>
                                             <div class="product_of_invest_home_num_bot tc">还款方式</div>
-                                            <div class="product_of_invest_num_bot tc hanzi"><?php echo $v['mode']; ?></div>
+                                            <div class="product_of_invest_num_bot tc ft_14_my"><?php echo $v['mode']; ?></div>
                                         </li>
                                     </ul>
                                 </div>
@@ -190,18 +190,19 @@
                                             data-borrow_no="'.$v['borrow_no'].'">
                                             <span>距开标 还剩<span class="d">00</span>天<span class="h">00</span>小时</span>
                                             </h5>';
-                                            echo '<a class="invest-button jjksbut" data-status="'.$v['new_status'].'" href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'">即将开始</a>';
+                                            echo '<button class="invest-button button1 ls_1" data-status="'.$v['new_status'].'"  onclick="window.location.href=\''.site_url('invest/detail?borrow_no='.$v['borrow_no']).'\'">即将开始</button>';
                                             break;
                                         case '2':
-                                            echo '<h5>可投金额：'.rate_format(price_format($v['amount']-$v['receive'],2,false)).'元</h5><a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'">热售中</a>';
+                                            echo '<h5>可投金额：'.rate_format(price_format($v['amount']-$v['receive'],2,false)).'元</h5><button class="invest-button button1 ls" onclick="window.location.href=\''.site_url('invest/detail?borrow_no='.$v['borrow_no']).'\'">热售中</button>';
                                             break;
                                         case '3':
                                             echo '<h5></h5>';
-                                            echo '<a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'" class="ymbbut">复审中</a>';
+                                            echo'<button class="invest-button button1 hs" onclick="window.location.href=\''.site_url('invest/detail?borrow_no='.$v['borrow_no']).'\'">复审中</button>';
+                                            
                                             break;
                                         case '4':
                                             echo '<h5></h5>';
-                                            echo '<a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'" class="ymbbut">回款中</a>';
+                                            echo'<button class="invest-button button1 hs"  onclick="window.location.href=\''.site_url('invest/detail?borrow_no='.$v['borrow_no']).'\'">回款中</button>';
                                             break;
                                         case '5':
                                             echo '<h5></h5>';

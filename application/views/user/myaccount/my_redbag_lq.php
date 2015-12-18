@@ -35,7 +35,7 @@
 					<p class="title"><span class="wid15">金额（元）</span><span>描述</span><span>领取时间</span><span class="wid15"></span></p>
 					<?php if($redbag_receive['status']!='10001'):?>
 						<?php foreach($redbag_receive['data']['data'] as $k => $v):?>
-                        <p class="lie"><span class="wid15"><?php echo $v['amount'];?></span><span><?php echo $v['active'];?></span><span><?php echo my_date($v['receive_time'],2);?></span><span class="wid15"><button type="">已领取</button></span></p>
+                        <p class="lie"><span class="wid15"><?php echo $v['amount'];?></span><span><?php echo $v['active'];?></span><span><?php echo my_date($v['receive_time'],2);?></span><span class="wid15"><button class="hs" type="">已领取</button></span></p>
 						<?php endforeach;?>
 						<?php echo (isset($links))?$links:'';?>
 						<?php else:?>

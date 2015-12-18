@@ -10,9 +10,9 @@
 <!--    加载头部文件-->
 <?php $this->load->view('common/head'); ?>
 <!--header-->
-<div class="register">
-    <div class="row">
-        <div class="reg_body">
+<div class="login">
+    <div class="row1">
+        <div class="login_body">
             <div class="pic"><img src="../../../../assets/images/bigpic/mian.jpg"></div>
             <div class="kuangjia">
                 <div class="step_2">
@@ -22,7 +22,7 @@
                     <div class="inp_pit">
                         <div class="inp">
                             <input class="js_sjyzm" type="text" name="tpyzm" value="" placeholder="输入验证码" maxlength="6" />
-                            <input class="fsyzm" type="button" value="发送验证码"
+                            <input class="fsyzm ls" type="button" value="发送验证码"
                                    data-wait-time="<?php echo item("sms_space_time")?item("sms_space_time"):60; ?>"
                                    data-last-time="<?php echo profile("sms_last_send_time")?profile("sms_last_send_time"):0; ?>" />
                         </div>
@@ -53,9 +53,9 @@
                         <div class="pit"></div>
                     </div>
                     <div class="but">
-                        <button  type="submit" id="reg_wczc" class="ajax-submit-button" data-loading-msg="注册中...">完成注册</button>
+                        <button  type="submit" id="reg_wczc" class="ajax-submit-button ls" data-loading-msg="注册中...">完成注册</button>
                     </div>
-                    <div class="yyzhdl">已有帐号，<a href="<?php echo site_url('login');?>">立即登录</a></div>
+                    <div class="yyzhdl">已有帐号，<a class="ls" href="<?php echo site_url('login');?>">立即登录</a></div>
                 </form>
                 </div>
             </div>
@@ -72,12 +72,12 @@
     seajs.use(['jquery','sys','jqform','validator'],function(){
         //INPUT框变色
         $('.inp').find('input').focus(function(){
-            $(this).siblings('.ls').show();
+            $(this).siblings('img.ls').show();
             $(this).addClass('hav');
         });
         $('.inp').find('input').blur(function(){
             if($.trim($(this).val())==''){
-                $(this).siblings('.ls').hide();
+                $(this).siblings('img.ls').hide();
                 $(this).removeClass('hav');
             }
         });

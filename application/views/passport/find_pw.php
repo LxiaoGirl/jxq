@@ -36,7 +36,7 @@
             <div class="pit"></div>
         </div>
         <div class="but">
-            <button  type="submit" id="reg_xyb" class="ajax-submit-button" data-loading-msg="提交中...">下一步</button>
+            <button  type="submit" id="reg_xyb" class="ajax-submit-button ls" data-loading-msg="提交中...">下一步</button>
         </div>
         </form>
     </div>

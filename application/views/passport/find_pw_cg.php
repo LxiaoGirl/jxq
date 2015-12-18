@@ -16,7 +16,7 @@
         <div class="right fl">
             <p class="cg">登录密码重置成功～！</p>
             <p class="wz"><span>请妥善保管好您的密码</span></p>
-            <p class="but"><button type="button" onclick="window.location.href='<?php echo site_url('login'); ?>'">返回登录<i></i></button></p>
+            <p class="but"><button class="ls" type="button" onclick="window.location.href='<?php echo site_url('login'); ?>'">返回登录<i></i></button></p>
         </div>
     </div>
 </div>

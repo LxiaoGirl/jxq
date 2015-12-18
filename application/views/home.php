@@ -11,15 +11,15 @@
 
 <!--home start-->
     <!--banner-->
-    <div class="home_bannner" id="js_banner">
+    <div class="banner" id="js_banner">
         <a href="" class="link_url" target="_blank"><div class="bannerbgdiv" style="width:100%; height:350px;"></div></a>
     </div>
     <!--banner-->
     <!--gg-->
-    <div class="home_gg_after_banner">
+    <div class="home_bulletin">
         <div class="row">
             <div class="row_1">
-                <div class="home_gg_after_banner_con" id="announcement-top">
+                <div class="con" id="announcement-top">
                     <p><a href="" class="link_url">【最新动态】<span class="title"></span></a></p>
                 </div>
             </div>
@@ -54,13 +54,13 @@
         </ul>
     </div>
     <!--平台数据-->
-    <div class="row pdtop10">
+    <div class="row pdt10">
         <!--左侧-->
-        <div class="home_left fl">
+        <div class="main_l product">
             <ul>
                 <li>
                     <h1>聚保宝<a href="/index.php/invest/index?c=4" class="fr">查看全部产品 > </a></h1>
-                    <div class="home_product_body">
+                    <div class="product_body">
                         <div class="top">
                             <div class="icon fl" style = 'background: #c795df;'>富</div>
                             <div class="title fl" style="color:#3cb5ec; margin-left:80px;">聚富盈</div>
@@ -70,7 +70,7 @@
                         <ul>
                             <li>
                                 <div class="product_four_num_top tc">年化收益率</div>
-                                <div class="product_four_num_bot tc col_blu">12.6<i>%</i></div>
+                                <div class="product_four_num_bot tc ft_3cb5ec">12.6<i>%</i></div>
                             </li>
                             <li>
                                 <div class="product_four_num_top tc">起投金额(元)</div>
@@ -78,12 +78,12 @@
                             </li>
                             <li>
                                 <div class="product_four_num_top tc">保障方式</div>
-                                <div class="product_four_num_bot tc hanzi">本息保障</div>
+                                <div class="product_four_num_bot tc ft_14_my">本息保障</div>
                             </li>
                         </ul>
                         <div class="bot">
                            <div class="fr tc">
-                                <a href="https://www.zgwjjf.com/index.php/invest/detail_jbb?type_code=JBB03">马上投资</a>
+                                <button class="ls button1" onclick="window.location.href='https://www.zgwjjf.com/index.php/invest/detail_jbb?type_code=JBB03'">马上投资</button>
                             </div>
                         </div>
 <!--                        <div class="corner"></div>-->
@@ -102,7 +102,7 @@
                     <?php if($val['project']):?>
                         <li class="bidi <?php if($key==0): ?>active<?php endif; ?>">
                             <?php  foreach($val['project'] as $k=>$v): ?>
-                            <div class="home_product_body">
+                            <div class="product_body">
                                 <div class="top">
                                     <div class="title fl"><a href="<?php echo site_url('invest/detail?borrow_no='.$v['borrow_no']); ?>"><?php echo $v['subject']; ?></a></div>
                                     <div class="baozhi fl">
@@ -112,7 +112,6 @@
                                             <font><?php echo $v['company_name']; ?></font>
                                         </span>
                                     <?php endif;?>
-    <!--						            <span class="zhi"><em>A</em><font>支持自动投资</font></span>-->
     <!--						            <span class="jia"><em>加</em><font>+0.9%</font></span>-->
                                     </div>
                                     <?php if($v['new_status'] == 1 || $v['new_status'] == 2): ?>
@@ -125,7 +124,7 @@
                                 <ul>
                                     <li>
                                         <div class="product_four_num_top tc">年化收益率</div>
-                                        <div class="product_four_num_bot tc col_blu"><?php echo $v['rate']; ?><i>%</i></div>
+                                        <div class="product_four_num_bot tc ft_3cb5ec"><?php echo $v['rate']; ?><i>%</i></div>
                                     </li>
                                     <li>
                                         <div class="product_four_num_top tc">借款期限(<?php echo $v['months']==0.9?'天':'月'; ?>)</div>
@@ -141,7 +140,7 @@
                                     </li>
                                     <li>
                                         <div class="product_four_num_top tc">还款方式</div>
-                                        <div class="product_four_num_bot tc hanzi"><?php echo $v['mode']; ?></div>
+                                        <div class="product_four_num_bot tc ft_14_my"><?php echo $v['mode']; ?></div>
                                     </li>
                                 </ul>
                                 <div class="bot">
@@ -151,7 +150,7 @@
                                     <div class="fr tc">
                                         <?php if($v['can_invest']): ?>
                                             <h5>可投金额：<font><?php echo rate_format(price_format($v['amount']-$v['receive'],2,false)); ?></font>元</h5>
-                                            <a class="invest-button" data-status="<?php echo $v['new_status']; ?>" href="<?php echo site_url('invest/detail?borrow_no='.$v['borrow_no']); ?>">马上投资</a>
+                                            <button class="invest-button ls button1" data-status="<?php echo $v['new_status']; ?>" onclick="window.location.href='<?php echo site_url('invest/detail?borrow_no='.$v['borrow_no']); ?>'">马上投资</button>
                                         <?php else: switch($v['new_status']){
                                             case '1':
                                                 echo '<h5
@@ -162,15 +161,15 @@
                                                 data-borrow_no="'.$v['borrow_no'].'">
                                                 <span>距开标 还剩<span class="d">00</span>天<span class="h">00</span>小时</span>
                                                 </h5>';
-                                                echo '<a class="invest-button jjksbut" data-status="'.$v['new_status'].'" href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'">即将开始</a>';
+                                                echo '<button class="invest-button button1 ls_1" data-status="'.$v['new_status'].'"  onclick="window.location.href=\''.site_url('invest/detail?borrow_no='.$v['borrow_no']).'\'">即将开始</button>';
                                                 break;
                                             case '3':
                                                 echo '<h5></h5>';
-                                                echo '<a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'" class="ymbbut">复审中</a>';
+                                                echo'<button class="invest-button button1 hs" data-status="'.$v['new_status'].'"  onclick="window.location.href=\''.site_url('invest/detail?borrow_no='.$v['borrow_no']).'\'">复审中</button>';
                                                 break;
                                             case '4':
                                                 echo '<h5></h5>';
-                                                echo '<a href="'.site_url('invest/detail?borrow_no='.$v['borrow_no']).'" class="ymbbut">回款中</a>';
+                                                echo'<button class="invest-button button1 hs" data-status="'.$v['new_status'].'"  onclick="window.location.href=\''.site_url('invest/detail?borrow_no='.$v['borrow_no']).'\'">回款中</button>';
                                                 break;
                                             case '5':
                                                 echo '<h5></h5>';
@@ -199,7 +198,7 @@
         </div>
         <!--左侧-->
         <!--右侧-->
-        <div class="home_right fl">
+        <div class="main_f">
             <div class="lcdrb">
                 <h1>理财达人榜<!--<a href="<?php echo site_url('invest/ranking_list'); ?>" class="fr">查看详细榜单 > </a>--></h1>
                 <ul class="tab_title">
