@@ -14,34 +14,34 @@
 			<div class="fo1_l fl clearfix">
 				<dl class="fo_dl">
 					<dt>我的钱包</dt>
-					<a href="#"><dd>如何注册</dd></a>
-					<a href="#"><dd>修改或找回密码</dd></a>
-					<a href="#"><dd>个人资料修改</dd></a>
-					<a href="#"><dd>充值与提现</dd></a>
+					<a href="/index.php/about/help?cat_id=30&id=579"><dd>如何注册</dd></a>
+					<a href="/index.php/about/help?cat_id=30&id=589"><dd>修改或找回密码</dd></a>
+					<a href="/index.php/about/help"><dd>个人资料修改</dd></a>
+					<a href="/index.php/about/help?cat_id=34"><dd>充值与提现</dd></a>
 				</dl>
 				<dl class="fo_dl fo_dd">
 					<dt>投资和借款</dt>
-					<a href="#"><dd>聚雪球投款标的类型</dd></a>
-					<a href="#"><dd>聚雪球借款标的类型</dd></a>
-					<a href="#"><dd>投资人的资格</dd></a>
-					<a href="#"><dd>借款人的资格</dd></a>
-					<a href="#"><dd>投资的额度</dd></a>
-					<a href="#"><dd>借款人资料填写码</dd></a>
-					<a href="#"><dd>投标后能否取消</dd></a>
-					<a href="#"><dd>还款方式</dd></a>
+					<a href="/index.php/about/help?cat_id=36"><dd>聚雪球投款标的类型</dd></a>
+					<a href="/index.php/about/help?cat_id=36"><dd>聚雪球借款标的类型</dd></a>
+					<a href="/index.php/about/help?cat_id=36"><dd>投资人的资格</dd></a>
+					<a href="/index.php/about/help?cat_id=36"><dd>借款人的资格</dd></a>
+					<a href="/index.php/about/help?cat_id=36"><dd>投资的额度</dd></a>
+					<a href="/index.php/about/help?cat_id=36"><dd>借款人资料填写码</dd></a>
+					<a href="/index.php/about/help?cat_id=36"><dd>投标后能否取消</dd></a>
+					<a href="/index.php/about/help?cat_id=36"><dd>还款方式</dd></a>
 				</dl>
 				<dl class="fo_dl">
 					<dt>资费说明</dt>
-					<a href="#"><dd>第三方费用</dd></a>
-					<a href="#"><dd>借款用户费用</dd></a>
-					<a href="#"><dd>投资用户费用</dd></a>
+					<a href="/index.php/about/help"><dd>第三方费用</dd></a>
+					<a href="/index.php/about/help"><dd>借款用户费用</dd></a>
+					<a href="/index.php/about/help"><dd>投资用户费用</dd></a>
 				</dl>
 				<dl class="fo_dl">
 					<dt>还款</dt>
-					<a href="#"><dd>如何还款</dd></a>
-					<a href="#"><dd>借款到期后能否延期还款</dd></a>
-					<a href="#"><dd>逾期还款的处理办法</dd></a>
-					<a href="#"><dd>如何提前还款</dd></a>
+					<a href="/index.php/about/help"><dd>如何还款</dd></a>
+					<a href="/index.php/about/help"><dd>借款到期后能否延期还款</dd></a>
+					<a href="/index.php/about/help"><dd>逾期还款的处理办法</dd></a>
+					<a href="/index.php/about/help"><dd>如何提前还款</dd></a>
 				</dl>
 			</div>
 			<div class="fo1_r fr">
@@ -89,7 +89,8 @@
             });
     }); 
 </script>
-<?php   if(('https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] != site_url('user/user/account_home'))&&('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] != site_url('user/user/account_home'))):?><script type="text/javascript" src="<?php echo base_url('assets/js/seajs/sea.js')?>"></script>
+<?php   if(('https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] != site_url('user/user/account_home'))&&('http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'] != site_url('user/user/account_home'))):?>
+<script type="text/javascript" src="<?php echo base_url('assets/js/seajs/sea.js')?>"></script>
 <script type="text/javascript">
 	var g_sms_apace_time = parseInt('<?php echo item('sms_space_time')?item('sms_space_time'):60; ?>');
 	var g_voice_last_time = parseInt('<?php echo profile('voice_last_send_time')?profile('voice_last_send_time'):0; ?>');
