@@ -59,7 +59,7 @@
         <div class="home_left fl">
             <ul>
                 <li>
-                    <h1>12.12聚雪球狂欢盛典活动专享<a href="/index.php/invest/index?c=4" class="fr">查看全部产品 > </a></h1>
+                    <h1>聚保宝<a href="/index.php/invest/index?c=4" class="fr">查看全部产品 > </a></h1>
                     <div class="home_product_body">
                         <div class="top">
                             <div class="icon fl" style = 'background: #c795df;'>富</div>
@@ -86,7 +86,7 @@
                                 <a href="https://www.zgwjjf.com/index.php/invest/detail_jbb?type_code=JBB03">马上投资</a>
                             </div>
                         </div>
-                        <div class="corner"></div>
+<!--                        <div class="corner"></div>-->
                     </div>
                 </li>
                 <?php if($category): ?>

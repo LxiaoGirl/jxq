@@ -13,35 +13,36 @@
 		<div class="fo1 clearfix">
 			<div class="fo1_l fl clearfix">
 				<dl class="fo_dl">
-					<dt>我的钱包</dt>
+					<dt>注册</dt>
 					<a href="/index.php/about/help?cat_id=30&id=579"><dd>如何注册</dd></a>
 					<a href="/index.php/about/help?cat_id=30&id=589"><dd>修改或找回密码</dd></a>
-					<a href="/index.php/about/help"><dd>个人资料修改</dd></a>
-					<a href="/index.php/about/help?cat_id=34"><dd>充值与提现</dd></a>
+					<a href="/index.php/about/help?cat_id=30&id=585"><dd>验证码接收</dd></a>
+					<a href="/index.php/about/help?cat_id=30&id=587"><dd>登录失败</dd></a>
 				</dl>
 				<dl class="fo_dl fo_dd">
-					<dt>投资和借款</dt>
-					<a href="/index.php/about/help?cat_id=36"><dd>聚雪球投款标的类型</dd></a>
-					<a href="/index.php/about/help?cat_id=36"><dd>聚雪球借款标的类型</dd></a>
-					<a href="/index.php/about/help?cat_id=36"><dd>投资人的资格</dd></a>
-					<a href="/index.php/about/help?cat_id=36"><dd>借款人的资格</dd></a>
-					<a href="/index.php/about/help?cat_id=36"><dd>投资的额度</dd></a>
-					<a href="/index.php/about/help?cat_id=36"><dd>借款人资料填写码</dd></a>
-					<a href="/index.php/about/help?cat_id=36"><dd>投标后能否取消</dd></a>
-					<a href="/index.php/about/help?cat_id=36"><dd>还款方式</dd></a>
+					<dt>充值与提现</dt>
+					<a href="/index.php/about/help?cat_id=46&id=592"><dd>为何要实名认证</dd></a>
+					<a href="/index.php/about/help?cat_id=46&id=594"><dd>实名认证未成功</dd></a>
+					<a href="/index.php/about/help?cat_id=34&id=611"><dd>充值的几种方式</dd></a>
+					<a href="/index.php/about/help?cat_id=34&id=608"><dd>充值需要的条件</dd></a>
+					<a href="/index.php/about/help?cat_id=47&id=606"><dd>如何绑定银行卡</dd></a>
+					<a href="/index.php/about/help?cat_id=47&id=600"><dd>银行卡绑定要求</dd></a>
+					<a href="/index.php/about/help?cat_id=35&id=621"><dd>如何操作提现</dd></a>
+					<a href="/index.php/about/help?cat_id=35&id=616"><dd>提现到帐时间</dd></a>
 				</dl>
 				<dl class="fo_dl">
-					<dt>资费说明</dt>
-					<a href="/index.php/about/help"><dd>第三方费用</dd></a>
-					<a href="/index.php/about/help"><dd>借款用户费用</dd></a>
-					<a href="/index.php/about/help"><dd>投资用户费用</dd></a>
+					<dt>投资</dt>
+					<a href="/index.php/about/help?cat_id=36&id=628"><dd>收益计算</dd></a>
+					<a href="/index.php/about/help?cat_id=36&id=629"><dd>计息时间</dd></a>
+					<a href="/index.php/about/help?cat_id=36&id=622"><dd>投资费用</dd></a>
+					<a href="/index.php/about/help?cat_id=36&id=631"><dd>本息收回</dd></a>
 				</dl>
 				<dl class="fo_dl">
-					<dt>还款</dt>
-					<a href="/index.php/about/help"><dd>如何还款</dd></a>
-					<a href="/index.php/about/help"><dd>借款到期后能否延期还款</dd></a>
-					<a href="/index.php/about/help"><dd>逾期还款的处理办法</dd></a>
-					<a href="/index.php/about/help"><dd>如何提前还款</dd></a>
+					<dt>风险保障</dt>
+					<a href="/index.php/about/help?cat_id=48&id=659"><dd>安全保障</dd></a>
+					<a href="/index.php/about/help?cat_id=48&id=638"><dd>信息安全</dd></a>
+					<a href="/index.php/about/help?cat_id=48&id=639"><dd>风控管理</dd></a>
+					<a href="/index.php/about/help?cat_id=48&id=640"><dd>安全提示</dd></a>
 				</dl>
 			</div>
 			<div class="fo1_r fr">
