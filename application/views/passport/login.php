@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="but">
-                        <button class="ls"  type="submit" id="reg_xyb" class="ajax-submit-button" data-loading-msg="登录中...">登  录<i></i></button>
+                        <button type="submit" id="reg_xyb" class="ls ajax-submit-button" data-loading-msg="登录中...">登  录<i></i></button>
                     </div>
                     <div class="yyzhdl"><a class="fr" href="<?php echo site_url('login/register') ?>">免费注册</a></div>
                 </form>
