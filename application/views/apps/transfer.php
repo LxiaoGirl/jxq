@@ -46,7 +46,7 @@
                 <button id="btn_tj" type="button" class="btn btn-lg btn-danger btn-block">确认提现</button>
             </div>
         </div>
-        <p style="text-align:center;">每笔提现将扣除2元手续费</p>
+        <p style="text-align:center;">每笔提现将扣除2元手续费,每日首笔提现减免手续费</p>
     </div>
 </div>
 

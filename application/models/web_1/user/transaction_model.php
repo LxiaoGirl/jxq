@@ -190,7 +190,7 @@ class Transaction_model extends CI_Model
 
                 $temp['amount'] = (int)$this->input->post('amount', TRUE);
 				//提现手续费处理
-                $temp['charge'] = 2;
+                $temp['charge'] = $this->_check_today_transfer()?2:0;
 
                 $temp['transaction_no'] = $this->c->transaction_no(self::transaction, 'transaction_no');
 
@@ -258,6 +258,13 @@ class Transaction_model extends CI_Model
 
         unset($temp);
         return $data;
+    }
+
+    protected function _check_today_transfer(){
+        $data = $this->c->get_row(self::transaction,array(
+            'where'=>array('uid'=>$this->session->userdata('uid'),'add_time >='=>strtotime(date('Y-m-d').' 00:00:00'),'add_time <='=>time()))
+        );
+        return $data?true:false;
     }
 
     /**

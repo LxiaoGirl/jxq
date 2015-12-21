@@ -83,6 +83,7 @@
         if (phone.test(mobile)) {
             $.ajax({
                 url: '/index.php/send/index?captcha=<?php echo $this->session->userdata('captcha'); ?>',
+                type:'POST',
                 dataType: 'json',
                 data: {'action': 'forget', 'mobile': mobile,'type':type},
                 success: function (resut) {
