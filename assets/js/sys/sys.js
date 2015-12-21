@@ -562,15 +562,15 @@ ajax_loading.prototype = {
 
             switch (ajax_submit_button_obj.tagName) {
                 case 'INPUT':
-                    if (!ajax_submit_button_text)ajax_submit_button_text = $(ajax_submit_button_obj).val();
+                    ajax_submit_button_text = $(ajax_submit_button_obj).val();
                     $(ajax_submit_button_obj).removeAttr('disabled').attr('disabled', true).val(ajax_submit_button_load_msg);
                     break;
                 case 'BUTTON':
-                    if (!ajax_submit_button_text)ajax_submit_button_text = $(ajax_submit_button_obj).html();
+                    ajax_submit_button_text = $(ajax_submit_button_obj).html();
                     $(ajax_submit_button_obj).removeAttr('disabled').attr('disabled', true).html(ajax_submit_button_load_msg);
                     break;
                 default:
-                    if (!ajax_submit_button_text)ajax_submit_button_text = $(ajax_submit_button_obj).html();
+                    ajax_submit_button_text = $(ajax_submit_button_obj).html();
                     $(ajax_submit_button_obj).removeAttr('disabled').attr('disabled', true).html(ajax_submit_button_load_msg);
             }
             //处理按钮背景变化

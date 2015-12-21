@@ -1642,11 +1642,130 @@ class User_model extends CI_Model{
 			$data['status'] = '10000';
 			$data['msg'] = '恭喜，你的银行卡绑定成功!';
 			$data['data'] = array(
+				'card_no'=>$temp['data']['card_no'],
 				'bank_name'=>$temp['data']['bank_name'],
 				'real_name'=>$this->_secret($temp['real_name'],2,mb_strlen($temp['real_name'])>2?mb_strlen($temp['real_name'])-2:mb_strlen($temp['real_name'])-1),
 				'account'=>$this->_secret($temp['data']['account'],5,strlen($temp['data']['account'])-8)
 			);
 		}
+
+
+		unset($temp);
+		return $data;
+	}
+
+	public function check_card_unbind_enable($uid=0,$card_no=''){
+		$temp = array();
+		$data = array('name'=>'验证银行卡是否可自行解绑','status' => '10001', 'msg' => '你提交的数据有误,请重试！', 'data' => array());
+
+		if( !$uid){
+			$data['msg'] = '用户uid错误!';
+			return $data;
+		}
+		if( !$card_no){
+			$data['msg'] = '银行卡card_no不能为空!';
+			return $data;
+		}
+		$temp['card_info'] = $this->c->get_row(self::card,array('where'=>array('uid'=>$uid,'card_no'=>$card_no)));
+		if( !$temp['card_info']){
+			$data['msg'] = '银行卡信息不存在!';
+			return $data;
+		}
+		$temp['have_recharge_ok'] = $this->c->get_row(self::recharge,array('where'=>array('uid'=>$uid,'bank'=>$temp['card_info']['id'],'status'=>1)));
+		if($temp['have_recharge_ok']){
+			$data['msg'] = '请致电客服中心申请银行卡解绑!';
+			$data['status'] = '10002';
+		}else{
+			$data['msg'] = '可以自行解绑!';
+			$data['status'] = '10000';
+		}
+
+		unset($temp);
+		return $data;
+	}
+
+	public function card_unbind($uid=0,$card_no='',$security=''){
+		$temp = array();
+		$data = array('name'=>'银行卡自行解绑','status' => '10001', 'msg' => '你提交的数据有误,请重试！', 'data' => array());
+
+		if( !$uid){
+			$data['msg'] = '用户uid错误!';
+			return $data;
+		}
+		if( !$card_no){
+			$data['msg'] = '银行卡card_no不能为空!';
+			return $data;
+		}
+		if( !$security){
+			$data['msg'] = '资金密码不能为空!';
+			return $data;
+		}
+
+		$temp['user_info'] = $this->c->get_row(self::user,array('select'=>'security,hash','where'=>array('uid'=>$uid)));
+		if( !$temp['user_info']){
+			$data['msg'] = '用户信息不存在是否没登录哦!!';
+			return $data;
+		}
+
+		$temp['check_enable'] = $this->check_card_unbind_enable($uid,$card_no);
+		if($temp['check_enable']['status'] != '10000'){
+			$data['msg'] = $temp['check_enable']['status'];
+			return $data;
+		}
+		$temp['security'] = $this->c->password($security,$temp['user_info']['hash']);
+		if($temp['security'] != $temp['user_info']['security']){
+			$data['msg'] = '资金密码错误!';
+			return $data;
+		}
+		$temp['where'] = array('where'=>array('card_no'=>$card_no,'uid'=>$uid));
+		$temp['query'] = $this->c->delete(self::card,$temp['where']);
+		if($temp['query']){
+			$data['msg'] = '解绑银行卡成功!';
+			$data['status'] = '10000';
+		}else{
+			$data['msg'] = '服务器繁忙请稍后重试!';
+		}
+
+		unset($temp);
+		return $data;
+	}
+
+	public function card_show_account($uid=0,$card_no='',$authcode=''){
+		$temp = array();
+		$data = array('name'=>'银行卡好显示','status' => '10001', 'msg' => '你提交的数据有误,请重试！', 'data' => array());
+
+		if( !$uid){
+			$data['msg'] = '用户uid错误!';
+			return $data;
+		}
+		$temp['user_info'] = $this->c->get_row(self::user,array('select'=>'mobile','where'=>array('uid'=>$uid)));
+		if( !$temp['user_info']){
+			$data['msg'] = '用户信息不存在是否没登录哦!!';
+			return $data;
+		}
+		if( !$card_no){
+			$data['msg'] = '银行卡card_no不能为空!';
+			return $data;
+		}
+		if( !$authcode){
+			$data['msg'] = '短信验证码不能为空!';
+			return $data;
+		}
+
+
+		$temp['authcode_check'] = $this->common->validation_authcode($temp['user_info']['mobile'],$authcode,'showcard',$uid);
+		if($temp['authcode_check']['status'] != '10000'){
+			$data['msg'] = $temp['authcode_check']['msg'];
+			return $data;
+		}
+		$temp['card_info'] = $this->c->get_row(self::card,array('where'=>array('uid'=>$uid,'card_no'=>$card_no)));
+		if( !$temp['card_info']){
+			$data['msg'] = '卡号信息不存在!';
+			return $data;
+		}
+		$data['data'] = $temp['card_info']['account'];
+		$data['status'] = '10000';
+		$data['msg'] = 'ok!';
 
 
 		unset($temp);

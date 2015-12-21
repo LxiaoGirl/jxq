@@ -699,6 +699,22 @@ class User extends Login_Controller{
 		$data = $this->commons->get_bankcard_bin($account);
 		exit(json_encode($data));
 	}
+
+	public function ajax_check_card_unbind_enable(){
+		$data = $this->user->check_card_unbind_enable($this->session->userdata('uid'),$this->input->post('card_no',true));
+		exit(json_encode($data));
+	}
+
+	public function ajax_card_unbind(){
+		$data = $this->user->card_unbind($this->session->userdata('uid'),$this->input->post('card_no',true),$this->input->post('security',true));
+		exit(json_encode($data));
+	}
+
+	public function ajax_card_show_account(){
+		$data = $this->user->card_show_account($this->session->userdata('uid'),$this->input->post('card_no',true),$this->input->post('authcode',true));
+		exit(json_encode($data));
+	}
+
 	/**
 	 * 邀请好友
 	 */
