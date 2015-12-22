@@ -44,8 +44,7 @@
 
             <div id="yanzheng">
                 <div class="box2" style="margin-bottom:24px;height: 71px;">
-                    <input id="yuyin" name="authcode" maxlength="6" type="text"/><input type="button" id="send-sms"value="获取语音验证码"/>
-
+                    <input id="yuyin" name = "authcode" maxlength="6" type="text"  style="width:30%;"/><input  style="width:30%;" type="button" id="send-sms" value="语音验证码"/><input  style=" margin-right:4%; width:30%; height: 39px;background: #fe7000;color: #FFF;border: none;float: right;display: inline-block;" type="button" id="send-sms-1" value="短信验证码"/>
                     <div class="clear" id="chkvoice" style="  padding-top: 16px;"></div>
                 </div>
                 <div class="box2">

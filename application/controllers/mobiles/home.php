@@ -579,34 +579,34 @@ class Home extends MY_Controller{
             $temp['recharge_no'] = $this->c->transaction_no(self::recharge, 'recharge_no');
             $temp['account'] = (int)$this->input->post('account',true);
             $temp['amount'] = (float)$this->input->post('amount');
-
-            $temp['bank_id'] =  (int)$this->input->post('bank_id');
-            $temp['bank_name'] = $this->input->post('bank_name');
-            $temp['card_id'] =  $this->input->post('card_id',true);
-            $temp['no_agree'] =  ''; //签约号
-            if(empty($temp['card_id'])){ //账户no。为空 则新曾银行账户
-                $temp['is_bind'] = $this->c->count(self::card,array('where'=>array('account'=>$temp['account'],'uid'=>$this->session->userdata('uid'))));
-                if($temp['is_bind'] == 0){ //不存在 则新增
-                    $temp['new_card_data'] = array(
-                        'card_no'   => $this->c->transaction_no(self::card, 'card_no'),
-                        'uid'       => $this->session->userdata('uid'),
-                        'real_name' => $this->session->userdata('real_name'),
-                        'account'   => $temp['account'],
-                        'bank_id'   => $temp['bank_id'],
-                        'bank_name' => $temp['bank_name'],
-                        'bankaddr'  => '默认地址',
-                        'province'  => '默认地址',
-                        'city'      => '默认地址',
-                        'remarks'   => '',
-                        'dateline'  => time(),
-                    );
-                    $query = $this->c->insert(self::card, $temp['new_card_data']);
-                    $temp['card_id'] = $query;
-                }
-            }else{
-                $temp['no_agree'] = $this->c->get_one(self::card,array('select'=>'remarks','where'=>array('id'=>$temp['card_id'])));
-            }
             if( ! empty($temp['amount']) &&  ! empty($temp['account'])){
+                $temp['bank_id'] =  (int)$this->input->post('bank_id');
+                $temp['bank_name'] = $this->input->post('bank_name');
+                $temp['card_id'] =  $this->input->post('card_id',true);
+                $temp['no_agree'] =  ''; //签约号
+                if(empty($temp['card_id'])){ //账户no。为空 则新曾银行账户
+                    $temp['is_bind'] = $this->c->count(self::card,array('where'=>array('account'=>$temp['account'],'uid'=>$this->session->userdata('uid'))));
+                    if($temp['is_bind'] == 0){ //不存在 则新增
+                        $temp['new_card_data'] = array(
+                            'card_no'   => $this->c->transaction_no(self::card, 'card_no'),
+                            'uid'       => $this->session->userdata('uid'),
+                            'real_name' => $this->session->userdata('real_name'),
+                            'account'   => $temp['account'],
+                            'bank_id'   => $temp['bank_id'],
+                            'bank_name' => $temp['bank_name'],
+                            'bankaddr'  => '默认地址',
+                            'province'  => '默认地址',
+                            'city'      => '默认地址',
+                            'remarks'   => '',
+                            'dateline'  => time(),
+                        );
+                        $query = $this->c->insert(self::card, $temp['new_card_data']);
+                        $temp['card_id'] = $query;
+                    }
+                }else{
+                    $temp['no_agree'] = $this->c->get_one(self::card,array('select'=>'remarks','where'=>array('id'=>$temp['card_id'])));
+                }
+
                 $temp['add_time'] = time();
                 $temp['data'] = array(
                     'recharge_no' => $temp['recharge_no'],
@@ -638,6 +638,8 @@ class Home extends MY_Controller{
                 }else{
                     redirect(self::dir.'home/recharge','refresh');
                 }
+            }else{
+                redirect('mobiles/home/recharge');
             }
         }
     }

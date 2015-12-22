@@ -74,6 +74,12 @@ body { text-align: left; background-color: #ffffff;font-size: 12px;}
     font-family: "微软雅黑" !important;
     font-size: 14px!important;
 }
+.ftls12st{
+    font-family: '宋体'!important;
+    font-size: 12px!important;
+    line-height: 20px!important;
+    color: #3cb5ec!important;
+}
 /*文字 end*/
 /*input start*/
 input{
@@ -143,6 +149,16 @@ input[type="button"].hs{
 input[type="button"].hs:hover{
     background:#3189e3!important;
 }
+input[type="button"].green{
+    border:none!important;
+    color:#fff!important;
+    background:#72c572!important;
+    cursor: pointer!important;
+    outline:0!important;
+}
+input[type="button"].green:hover{
+    background:#3eb53e!important;
+}
 /*input start*/
 /*a start*/
 a{
@@ -202,12 +218,12 @@ button.hs:hover{
 button.green{
     border:none!important;
     color:#fff!important;
-    background:#ff7700!important;
+    background:#72c572!important;
     cursor: pointer!important;
     outline:0!important;
 }
 button.green:hover{
-    background:#eb5e12!important;
+    background:#3eb53e!important;
 }
     /*颜色*/
     /*尺寸*/
@@ -248,7 +264,7 @@ button.button1{
     color:#333;
     font-size: 14px;
     line-height: 20px;
-    z-index: 99;
+    z-index: 1000;
     min-width: 220px;
     text-align: center;
     border-radius: 4px;
@@ -324,7 +340,7 @@ button.button1{
   position: fixed;
   left:0;
   top:0;
-  z-index: 999;
+  z-index: 100;
 }
 .nav li{
   float: left;
@@ -380,7 +396,7 @@ button.button1{
   position: absolute;
   top:30px;
   left:-1px;
-  z-index: 99; 
+  z-index: 200; 
 }
 .nav_pop_body{
   width:196px;
@@ -1404,6 +1420,7 @@ a:hover{ color:#3cb5ec;}
     text-align: center;
     line-height: 24px;
     margin-top: 15px;
+    text-indent: 0;
 }
 .gfgg h1 .fr:hover{
     background:#3cb5ec;
@@ -1723,6 +1740,279 @@ a:hover{ color:#3cb5ec;}
     line-height: 36px;
     border-radius: 6px;
 }
+    /*公司注册*/
+.gs_zc1 h1{
+    font-size: 28px;
+    font-weight: 100;
+    line-height: 60px;
+}
+.gs_zc1 h2{
+    font-size: 18px;
+    font-weight: 100;
+    line-height: 40px;
+    color: #333;
+}
+.gs_zc1 form{
+    margin: 30px auto;
+    width: 540px;
+}
+.gs_zc2 form{
+    margin: 30px auto;
+    width: 700px;
+}
+.gs_zc3 form{
+    margin: 30px auto;
+    width: 700px;
+}
+.gs_zc1 form p{
+    line-height: 40px;
+    padding: 2px;
+    font-size: 14px;
+    overflow: hidden;
+    display: block;
+}
+.gs_zc1 form p.tip{
+    font-size: 12px;
+    font-family: '宋体';
+    line-height: 20px;
+    padding: 2px;
+    min-height: 10px;
+}
+.gs_zc1 form p span{
+    display: inline-block;
+}
+.gs_zc1 form p span.z1{
+    width: 110px;
+    min-height: 10px;
+    display: block;
+    float: left;
+}
+.gs_zc2 form p span.z1{
+    width: 200px;
+    min-height: 10px;
+    display: block;
+    float: left;
+    text-indent: 20px;
+}
+.gs_zc3 form p span.z1{
+    width: 180px;
+    min-height: 10px;
+    display: block;
+    float: left;
+}
+.gs_zc1 form p span.z2{
+    width: 300px;
+    display: block;
+    float: left;
+}
+.gs_zc1 form p.tip span.z2{
+    width: 400px;
+    display: block;
+    float: left;
+}
+.gs_zc2 form p.tip span.z2{
+    width: 480px;
+    display: block;
+    float: left;
+}
+.gs_zc1 form p.tip span.z3{
+    width: 1px;
+    display: block;
+    float: left;
+}
+.gs_zc1 form p span.z3{
+    color: #3cb5ec;
+    font-size: 12px;
+    display: block;
+    float: left;
+    text-indent: 2px;
+}
+.gs_zc3 form p span.z3{
+    display: block;
+    float: left;
+}
+.gs_zc1 form p span.z2 input[type="text"]{
+    width: 300px;
+    height: 36px;
+    line-height: 36px;
+    text-indent: 10px;
+}
+.gs_zc1 form p span.z2.sj input[type="text"]{
+    width: 190px;
+    margin-right: 10px;
+    display: block;
+    float: left;
+}
+.gs_zc1 form p span.z2.sj input[type="button"]{
+    width: 96px;
+    height: 36px;
+    border-radius: 3px;
+    display: block;
+    float: left;
+}
+.gs_zc1 form p span.z2.sj font{
+    width: 96px;
+    height: 36px;
+    border: 1px solid #ddd;
+    display: block;
+    float: left;
+}
+.gs_zc3 form p span.z3 button{
+    width: 96px;
+    height: 36px;
+    margin-left: 5px;
+}
+.gs_zc1 form p span.z2 button{
+    width: 230px;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 3px;
+}
+.gs_zc1 form p span.z2.sbut button{
+    width: 130px;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 3px;
+    margin-right: 10px;
+}
+.gs_zc4 h1{
+    font-size: 28px;
+    font-weight: 100;
+    line-height: 60px;
+}
+.gs_zc4 .fl{
+    width: 402px;
+    margin-left: 100px;
+    padding: 30px 0;
+}
+.gs_zc4 .fl p.p1{
+    font-size: 18px;
+    line-height: 30px;
+    color: #333;
+}
+.gs_zc4 .fl div{
+    border:1px solid #aaa;
+    margin-top: 20px;
+    width: 360px;
+    padding: 20px;
+    border-radius: 3px;
+}
+.gs_zc4 .fl div p{
+    font-size: 14px;
+    line-height: 25px;
+    color: #666;
+}
+.gs_zc4 .fl div p font{
+    color: #3cb5ec;
+}
+.gs_zc4 .fr{
+    width: 422px;
+    margin-right: 150px;
+    padding: 30px 0;
+}
+.gs_zc4 .fr p.p1{
+    font-size: 18px;
+    line-height: 30px;
+    color: #333;
+}
+.gs_zc4 .fr p.p1 button{
+    color: #3cb5ec;
+    font-size: 12px;
+    font-family: '宋体';
+    background: none;
+    padding: 0 10px;
+}
+.gs_zc4 .fr p.p1 button:hover{
+    color: #ff7700;
+}
+.gs_zc4 .fr p.p2{
+    font-size: 12px;
+    line-height: 20px;
+    color: #ff7700;
+    padding-top: 20px;
+}
+.gs_zc4 p.tc button{
+    margin: 10px;
+    width: 120px;
+    height: 40px;
+    font-size: 16px;
+}
+.gs_zc4 h2{
+    color: #3cb5ec;
+    font-size: 36px;
+    line-height: 50px;
+    padding:30px 0 ;
+    text-indent: 411px;
+}
+.gs_zc4 .ti411{
+    text-indent: 411px;
+    line-height: 30px;
+    font-size: 14px;
+    color: #888;
+}
+.popbj{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+}
+.gs_zc5 .pop{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    margin-left: -175px;
+    margin-top: -300px;
+    width: 334px;
+    background: rgba(4,0,0,0.2);
+    border-radius: 6px;
+    padding: 8px;
+}
+.gs_zc5 .pop .popnr{
+    background: #fff;
+    min-height: 300px;
+}
+.gs_zc5 .pop .popnr .title{
+    color: #333;
+    line-height: 40px;
+    text-indent: 20px;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid #eee;
+}
+.gs_zc5 .pop .popnr .title .fr{
+    color: #666;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    padding-right: 20px;
+    cursor: pointer;
+}
+.gs_zc5 .pop .popnr .title .fr:hover{
+    color: #3cb5ec;
+}
+.gs_zc5 .pop .popnr p{
+    padding: 10px 20px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #666;
+}
+.gs_zc5 .pop .popnr p font{
+    color: #3cb5ec;
+}
+.gs_zc5 .pop .popnr p.red{
+    color: #ff0000;
+}
+.gs_zc5 .pop .popnr p button{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    margin-bottom: 20px;
+}
+    /*公司注册*/
 /*登录 注册 找回密码 end*/
 /*投资列表 start*/
 .invest_home .invest_nav {
@@ -2836,7 +3126,7 @@ a:hover{ color:#3cb5ec;}
     top:50%;
     margin-left: -170px;
     margin-top: -240px;
-    z-index: 999;
+    z-index: 500;
 }
 .invest_zjmm_pop_body{
     width:340px;
@@ -3490,7 +3780,7 @@ a:hover{ color:#3cb5ec;}
     top:150px;
     min-height:150px;
     border-radius:4px;
-    z-index: 99;
+    z-index: 900;
 }
 .user_right .user_data_pop .title{
     height:40px;
@@ -3581,7 +3871,7 @@ a:hover{ color:#3cb5ec;}
     left:0;
     top:0;
     background: rgba(0, 0, 0, 0.4);
-    z-index: 50;
+    z-index: 800;
     display:none;
 }
 .user_right .user_data_pop .popbody .p.xgsjh_p{
@@ -3936,7 +4226,7 @@ margin-left: 2px;
     margin-left:-358px;
     top:200px;
     border-radius: 8px;
-    z-index: 99;
+    z-index: 900;
 }
 .user_right .yhk_pop .title{
     background:#fff;
@@ -4047,7 +4337,7 @@ margin-left: 2px;
     margin-left:-258px;
     top:200px;
     border-radius: 8px;
-    z-index: 99;
+    z-index: 900;
 }
 .user_right .bdyhk_cg .title{
     background:#fff;
@@ -4958,7 +5248,7 @@ p.border_bot b{
     margin-left: -175px;
     top: 150px;
     border-radius: 4px;
-    z-index: 99;
+    z-index: 900;
 }
 .user_right .cz_pop .title {
     height: 40px;
@@ -5893,7 +6183,7 @@ p.border_bot b{
 .news_nav ul li.news_nav_li7.select{background:#fff url(../images/about/news/news_nav7_on.png) no-repeat center 22px;}
 .news_nav ul li.news_nav_li8:hover{background:#fff url(../images/about/news/news_nav8_on.png) no-repeat center 22px;}
 .news_nav ul li.news_nav_li8.select{background:#fff url(../images/about/news/news_nav8_on.png) no-repeat center 22px;}
-.news_nav_fix{ position:fixed; top:30px; z-index:1000;}
+.news_nav_fix{ position:fixed; top:30px; z-index:50;}
 .news_mbx{border:1px solid #ededed; margin-top:25px; padding:25px; margin-bottom:35px;}
 .news_mbx2{border:1px solid #ededed; margin-top:25px; padding:25px; }
 .news_mbxl{ width:450px;}

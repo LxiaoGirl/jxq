@@ -293,7 +293,7 @@ class Activity_model extends CI_Model{
 		$data = array('data'=>array(),'status'=>'10001','msg'=>'没有相关信息!');
         if($uid){
 			$temp['where'] = array(
-					'select'   => 'SUM('.join_field('amount', self::payment).') as amount,'.join_field("user_name,uid,last_date",self::user),
+					'select'   => 'SUM('.join_field('amount', self::payment).') as amount,'.join_field("user_name,uid,last_date,real_name",self::user),
 					'where'    => array(join_field('inviter', self::user) => $uid),
 					'join'     => array(
 							array('table' => self::payment, 'where' => join_field('uid', self::payment).' = '.join_field('uid', self::user).' AND '.join_field('type', self::payment).'=1 '),

@@ -112,40 +112,40 @@
             <!--    解绑银行卡弹出     -->
             <div class="user_data_pop unbind-modal">
                 <div class="title">
-                    <span>解绑银行卡</span><font class="fr close">X</font>
+                    <span>解绑银行卡</span><font class="fr close">×</font>
                 </div>
                 <div class="popbody tc">
                     <div class="p smrz_p">
-                        <div class="yhk_left fl">
+                        <div class="yhk_left fl" style=" width:20%;line-height:45px;">
                             资金密码：
                         </div>
-                        <div class="yhk_right fl">
-                            <input class="unbind-zjmm" type="password" name="zjmm" value="" placeholder="请输入资金密码"/>
+                        <div class="yhk_right fl" style=" width:68%;line-height:45px;">
+                            <input class="unbind-zjmm ifhav" style=" width:95%; height:36px; text-indent:10px;" type="password" name="zjmm" value="" placeholder="请输入资金密码"/>
                         </div>
                     </div>
-                    <button type="button" class="unbind-do ajax-submit-button" data-loading-msg="解绑中..." >解除绑定</button>
+                    <button type="button" class="unbind-do ajax-submit-button ls" style="width: 120px;height: 40px;margin: 10px;" data-loading-msg="解绑中..." >解除绑定</button>
                 </div>
             </div>
 
             <!--    显示银行卡弹出     -->
             <div class="user_data_pop card-show-modal">
                 <div class="title">
-                    <span>显示银行卡号</span><font class="fr close">X</font>
+                    <span>显示银行卡号</span><font class="fr close">×</font>
                 </div>
                 <div class="popbody tc">
                     <div class="p smrz_p">
-                        <div class="yhk_left fl">
-                            资金密码：
+                        <div class="yhk_left fl" style=" width:20%;line-height:45px;">
+                            验证码：
                         </div>
-                        <div class="yhk_right fl">
-                            <input class="card-show-authcode" type="text" name="authcode" value="" placeholder="请输入传销验码"/>
+                        <div class="yhk_right fl" style=" width:68%;line-height:45px;">
+                            <input class="card-show-authcode ifhav" style=" width:95%; height:36px; text-indent:10px;" type="text" name="authcode" value="" placeholder="请输入验证码"/>
                         </div>
                     </div>
-                    <div class="p smrz_p">
-                        <button class="send-sms">发生短信</button>
-                        <button class="send-voice">发生语音</button>
+                    <div class="p smrz_p" style="margin-top:10px;">
+                        <button class="send-sms green" style="width: 120px;height: 40px;margin: 0 10px;">发生短信</button>
+                        <button class="send-voice ls" style="width: 120px;height: 40px;margin: 0 10px;">发生语音</button>
                     </div>
-                    <button type="button" class="card-show-do ajax-submit-button" data-loading-msg="查询中..." >显示</button>
+                    <button type="button" style="width: 120px;height: 40px;margin: 10px;" class="card-show-do ajax-submit-button ls" data-loading-msg="查询中..." >显示</button>
                 </div>
             </div>
         </div>
@@ -158,6 +158,14 @@
 <!--userjs start-->
 <script type="text/javascript">
     seajs.use(['jquery','sys','validator'],function(){
+        $('.ifhav').focus(function(){
+            $(this).addClass('hav');
+        });
+        $('.ifhav').blur(function(){
+            if($.trim($(this).val())==''){
+                $(this).removeClass('hav');
+            }
+        });
         yhkxz_tab($('.yhkxz_right'),$('.yhks'));
         pop($('.addcard'),$('.yhk_pop'),$('.yhk_pop').find('.close'));
         var card_bind = function(bankId,account){
