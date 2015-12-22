@@ -141,12 +141,15 @@ class User_model extends CI_Model{
 
 	/**
 	 * 注册
-	 *$mobile 手机号
-	 * $password 密码
-	 *$authcode 短信验证
-	 *$invite_code 邀请码
+	 * @param string $mobile 手机号
+	 * @param string $password 密码
+	 * @param string $authcode 短信验证
+	 * @param string $invite_code 邀请码
+	 * @param string $company_code 公司邀请码
+	 * @param bool $type ture公司注册 false个人注册
+	 * @return array
 	 */
-	public function register($mobile='',$password='',$authcode='',$invite_code='',$company_code=''){
+	public function register($mobile='',$password='',$authcode='',$invite_code='',$company_code='',$type=false){
 		$data = $temp = array();
 
 		$data = array('name'=>'注册','status'=>'10001','msg'=>'服务器繁忙请稍后重试!!','data'=>array());
@@ -166,9 +169,9 @@ class User_model extends CI_Model{
 			return $data;
 		}
 
-		$temp['is_register'] = $this->Registered_mobile($mobile);
-		if($temp['is_register']['status'] == '10001'){
-			$data['msg'] = '该手机号码已注册!';
+		$temp['is_register'] = $type?$this->is_company_register($mobile):$this->Registered_mobile($mobile);
+		if($temp['is_register']['status'] != '10000'){
+			$data['msg'] = $temp['is_register']['msg'];
 			return $data;
 		}
 
@@ -205,6 +208,7 @@ class User_model extends CI_Model{
 					'last_date'   => 0,
 					'last_ip'     => ''
 			);
+			if($type)$temp['data']['clientkind'] = '-2';
 			if($company_code){
 				$temp['data']['company'] = $company_code;
 			}
@@ -737,6 +741,46 @@ class User_model extends CI_Model{
 			}
 		}
 		return $result;
+	}
+
+	public function is_company_register($mobile=''){
+		$temp = array();
+
+		$data = array('name'=>'企业注册手机验证','status'=>'10001','msg'=>'手机不能为空!','data'=>array());
+
+		if($mobile){
+			if(! $this->_is_mobile($mobile)) return array('status' =>'10001', 'msg' => '手机号码格式不正确！');
+
+			$temp['where'] = array('where' => array('mobile' => $mobile),'select'=>'password,uid,mobile,clientkind');
+			$temp['info'] = $this->c->get_row(self::user, $temp['where']);
+			if($temp['info']){
+				switch($temp['info']['clientkind']){
+					case '-1':
+						$data['msg'] = '该手机已进行了个人注册不能用作企业用户申请!';
+						break;
+					case '1':
+						$data['msg'] = '该手机已是个人用户不能用作企业用户申请!';
+						break;
+					case '-2':
+						$data['status'] = '10003';
+						$data['msg'] = '该手机已是企业用户请完善企业用户申请资料!';
+						break;
+					case '2':
+						$data['status'] = '10002';
+						$data['msg'] = '该手机已是企业用户无需再申请';
+						break;
+					default:
+						$data['status'] = '10000';
+						$data['msg'] = '手机号码可以使用！';
+				}
+			}else{
+				$data['status'] = '10000';
+				$data['msg'] = '手机号码可以使用！';
+			}
+		}
+
+
+		return $data;
 	}
 
 	/**

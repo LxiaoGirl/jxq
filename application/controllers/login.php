@@ -304,7 +304,46 @@ class Login extends MY_Controller{
 
 /******************************************************公司注册************************************************************************/
 	public function company(){
-		$this->load->view('passport/co_reg');
+		if($this->input->is_ajax_request() == TRUE){
+			$data = $this->user->register($this->input->post('mobile',true),$this->input->post('password',true),$this->input->post('authcode',true),'','',true);
+			if($data['status'] == '10000'){
+				$this->session->set_userdata($data['data']);
+			}
+			exit(json_encode($data));
+		}
+		if($this->session->userdata('uid') > 0){
+			if(profile('clientkind') == '-2'){
+				redirect('login/company_apply');
+			}else{
+				redirect('home');
+			}
+		}
+		$this->load->view('passport/company');
+	}
+
+	public function company_apply(){
+		if($this->input->is_ajax_request() == TRUE){
+			$data = '';
+			exit(json_encode($data));
+		}
+		if($this->session->userdata('uid') > 0){
+			if(profile('clientkind') != '-2')redirect('home');
+		}else{
+			redirect('login');
+		}
+		$data['info'] = '';
+
+		$this->load->view('passport/company_apply');
+	}
+
+	/**
+	 * 注册用 是否注册ajax验证
+	 */
+	public function ajax_is_company_register(){
+		if($this->input->is_ajax_request() == TRUE){
+			$data = $this->user->is_company_register($this->input->post('mobile',true));
+			exit(json_encode($data));
+		}
 	}
 
 	public function company_register(){

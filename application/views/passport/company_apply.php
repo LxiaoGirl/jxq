@@ -7,83 +7,7 @@
 <body>
 <!--	加载头部文件-->
 <?php $this->load->view('common/head'); ?>
-    <div id="step-1" class="row gs_zc1 gs_zc5 step">
-        <h1>企业用户注册</h1>
-        <img src="../../../../assets/images/passport/step_1.jpg" alt="">
-        <form action="" onsubmit="return false;">
-            <p>
-                <span class="z1">企业联系人手机</span>
-                <span class="z2"><input type="text" class="ifhav" name="mobile" id="mobile" placeholder="请输入企业联系人的手机号码" maxlength="11" /></span>
-                <span class="z3"></span>
-            </p>
-            <p class="tip">
-                <span class="z1"></span>
-                <span class="z2 mobile-tip"></span>
-                <span class="z3"></span>
-            </p>
-            <p>
-                <span class="z1">图片验证码</span>
-                <span class="z2 sj"><input type="text" class="ifhav" name="captcha" id="captcha" placeholder="请输入右侧的验证码" maxlength="6" />
-                    <font>
-                        <img id="img-code" src="/index.php/send/captcha" title="点击刷新"
-                             style="width: 96px;height: 36px;"
-                             onclick="javascript:this.src = '/index.php/send/captcha?t='+ new Date().valueOf()"/>
-                    </font>
-                </span>
-                <span class="z3" onclick="javascript:document.getElementById('img-code').src = '/index.php/send/captcha?t='+ new Date().valueOf()" style="cursor: pointer;">看不清？点此更换</span>
-            </p>
-            <p class="tip">
-                <span class="z1"></span>
-                <span class="z2 captcha-tip"></span>
-                <span class="z3"></span>
-            </p>
-            <p>
-                <span class="z1"></span>
-                <span class="z2"><input type="checkbox" checked>我同意<a href="" class="ls">《聚雪球企业用户注册协议》</a></span>
-                <span class="z3"></span>
-            </p>
-            <p>
-                <span class="z1"></span>
-                <span class="z2"><button type="button" class="ls" id="step-1-submit">下一步</button></span>
-                <span class="z3"></span>
-            </p>
-        </form>
-        <div class="popbj"></div>
-        <div class="pop">
-            <div class="popnr">
-                <p class="title">企业用户注册须知<font class="fr close">×</font></p>
-                <p>欢迎您注册聚雪球企业用户，为了让您更好的享受我们为企业用户提供的服务，在注册之前，您需要准备以下材料：</p>
-                <p>1.企业营业执照（扫描件）</p>
-                <p>2.企业银行开户许可证（扫描件）</p>
-                <p class="ie-msg-after">3.企业联系人身份证复印件（正反面）</p>
-                <p><button type="button" class="ls close">我准备好了</button></p>
-            </div>
-        </div>
-    </div>
-
-    <div id="step-2" style="display: none;" class="row gs_zc1 step">
-    <h1>企业用户注册</h1>
-    <img src="../../../../assets/images/passport/step_2.jpg" alt="">
-    <form action="" onsubmit="return false;">
-        <p>
-            <span class="z1">手机验证码</span>
-            <span class="z2 sj"><input type="text" name="authcode" id="authcode" class="ifhav" placeholder="请输入右侧的验证码"><input type="button" class="green send-sms" value="重新发送"></span>
-            <span class="z3"></span>
-        </p>
-        <p>
-            <span class="z1"></span>
-            <span class="z2 ftls12st authcode-tip">短信验证码已发送至您的手机<span class="send-mobile-show">185****4564</span>上，请在输入框内填写收到的验证码，若未收到请在倒计时后点击重新发送按钮。</span>
-            <span class="z3"></span>
-        </p>
-        <p>
-            <span class="z1"></span>
-            <span class="z2 sbut"><button type="button" class="hs" onclick="goto_page(1);">上一步</button><button type="button" id="step-2-submit" class="ls">下一步</button></span>
-            <span class="z3"></span>
-        </p>
-    </form>
-</div>
-
-    <div id="step-3" style="display: none;" class="row gs_zc1 gs_zc2 step">
+    <div id="step-3" class="row gs_zc1 gs_zc2 step">
     <h1>企业用户注册</h1>
     <img src="../../../../assets/images/passport/step_3.jpg" alt="">
     <form action="" onsubmit="return false;">
@@ -151,7 +75,7 @@
         </p>
         <p>
             <span class="z1"></span>
-            <span class="z2 sbut"><button type="button" class="hs" onclick="goto_page(2);">上一步</button><button type="button" class="ls" id="step-3-submit">下一步</button></span>
+            <span class="z2 sbut"><button type="button" class="ls" id="step-3-submit">下一步</button></span>
             <span class="z3"></span>
         </p>
     </form>
@@ -206,28 +130,28 @@
         <div class="fl">
             <p class="p1">以下为您提交的注册信息</p>
             <div>
-                <p>企业名称：<font>沈阳网加互联网金融服务有限公司</font></p>
-                <p>营业执照号码：<font>4464616667846513</font></p>
-                <p>企业开户银行：<font>中国工商银行</font></p>
-                <p>企业银行账号：<font>6261 4566 4568 1252</font></p>
+                <p>企业名称：<font class="company-name-show"></font></p>
+                <p>营业执照号码：<font class="company-code-show"></font></p>
+                <p>企业开户银行：<font class="company-bank-name-show"></font></p>
+                <p>企业银行账号：<font class="company-bank-account-show"></font></p>
             </div>
         </div>
         <div class="fr">
-            <p class="p1">当前账户余额：0.00元 <button type="button">充值</button><button type="button">刷新余额</button></p>
+            <p class="p1">当前账户余额：<?php echo isset($balance)?$balance:'0.00'; ?>元 <button type="button">充值</button><button type="button">刷新余额</button></p>
             <p class="p2">企业信息审核由第三方公司负责审核，需要收取审核费300元。如果由于您提供的资料错误导致审核失败，再次提交审核时需再次缴纳300元审核费。</p>
         </div>
     </div>
 
-    <p class="tc"><button class="hs" type="button">上一步</button><button class="ls" type="button" onclick="goto_page(6);">提交审核</button></p>
-    <div class="popbj"></div>
-    <div class="pop">
+    <p class="tc"><button class="hs" type="button">上一步</button><button class="ls" type="button" id="step-5-submit"">提交审核</button></p>
+    <div class="popbj recharge-confirm" style="display: none;"></div>
+    <div class="pop recharge-confirm" style="display: none;">
         <div class="popnr">
             <p class="title">充值提示<font class="fr close">×</font></p>
             <p>请再次确认您的银行账号信息，一旦充值后，您在注册过程中将无法修改您的开户银行和开户银行账号。</p>
-            <p>开户银行：<font>中国工商银行</font></p>
-            <p>开户银行账号：<font>6225 1236 5478 9546</font></p>
+            <p>开户银行：<font class="company-bank-name-show">中国工商银行</font></p>
+            <p>开户银行账号：<font class="company-bank-account-show">6225 1236 5478 9546</font></p>
             <p class="red">充值金额：300元</p>
-            <p><button type="button" class="ls">提交</button></p>
+            <p><button type="button" class="ls" id="recharge-confirm-submit">提交</button></p>
         </div>
     </div>
 </div>
@@ -236,11 +160,11 @@
     <h1>企业用户注册</h1>
     <img src="../../../../assets/images/passport/step_5.jpg" alt="">
     <h2>您已成功完成企业注册！</h2>
-    <p class="ti411">企业名称：沈阳网加互联网金融服务有限公司</p>
-    <p class="ti411">营业执照号码：4464616667846513</p>
-    <p class="ti411">企业开户银行：中国工商银行</p>
-    <p class="ti411">企业银行账号：6261 4566 4568 1252</p>
-    <p class="tc"><button style="width:250px;" class="ls" type="button">进入个人中心</button></p>
+    <p class="ti411">企业名称：<font class="company-name-show"></font></p>
+    <p class="ti411">营业执照号码：<font class="company-code-show"></font></p>
+    <p class="ti411">企业开户银行：<font class="company-bank-name-show"></font></p>
+    <p class="ti411">企业银行账号：<font class="company-bank-account-show"></font></p>
+    <p class="tc"><button style="width:250px;" class="ls" type="button" onclick="window.location.href='/index.php/user/user/account_home'">进入个人中心</button></p>
 </div>
 </body>
 <!--	加载头部文件-->
@@ -248,7 +172,7 @@
 <script type="text/javascript">
 
         if(navigator.userAgent.indexOf("MSIE") > -1){
-            $('.ie-msg-after').after('<p style="color: red;">ie浏览器暂不支持本页文件上传,可使用谷歌火狐等其他浏览器</p>');
+            wsb_alert('ie浏览器暂不支持本页文件上传,请使用谷歌火狐等其他浏览器',3);
         }else{
             //INPUT框变色
             $('.ifhav').focus(function(){
@@ -272,8 +196,7 @@
                         $('.pop').fadeOut();
                         $('.popbj').fadeOut();
                     });
-                    var mobile='',authcode='',authcode_msg='',company_name='',
-                        company_code='',company_bank_name='',company_bank_account='',
+                    var company_name='',company_code='',company_bank_name='',company_bank_account='',
                         company_user_name='',company_user_nric='';
                     //ajax上传
                     var jquery_ajax_upload_file = function(id,url,callback){
@@ -318,70 +241,6 @@
                             error:function(a,b,c){ alert(a+b+c)}
                         });
                     };
-                    //step-1
-                    var mobile_check = function(flag){
-                        if(mobile)return;
-                        if(/^1[345789][0-9]{9}$/.test($("#mobile").val())){
-                            $.post('/index.php/login/ajax_is_register',{mobile:$("#mobile").val(),type:'company'},function(rs){
-                                if(rs.status == '10000'){
-                                    $(".mobile-tip").text('可以注册!');
-                                    mobile = $("#mobile").val();
-                                }else{
-                                    mobile = '';
-                                    $(".mobile-tip").text(rs.msg);
-                                }
-                            },'json');
-                        }else{
-                            if(flag)$(".mobile-tip").text('请输入正确格式的手机号码!');
-                        }
-                    };
-                    $("#mobile").keyup(function(){mobile_check();}).blur(function(){mobile_check(1);});
-                    $('#step-1-submit').click(function(){
-                        if(mobile){
-                            if(/^[0-9]{5,}$/.test($("#captcha").val())){
-                                $.post('/index.php/send/ajax_check_captcha',{captcha:$("#captcha").val()},function(rs){
-                                    if(rs.status == '10000'){
-                                        $(".captcha-tip").text('验证码正确!');
-                                        $('.send-mobile-show').text(mobile.substr(0,3)+'****'+mobile.substr(7,10));
-                                        authcode_msg = $('.authcode-tip').clone();
-                                        $('.authcode-tip').html('');
-                                        goto_page(2);
-                                        $('.send-sms').send_sms('sms',mobile,'register',function(rs){
-                                            if(rs.status == '10000'){
-                                                $('.authcode-tip').html($(authcode_msg).html());
-                                            }else{
-                                                $('.authcode-tip').html(rs.msg);
-                                            }
-                                        });
-                                    }else{
-                                        $(".captcha-tip").text(rs.msg);
-                                    }
-                                },'json');
-                            }else{
-                                $(".captcha-tip").text('请输入正确格式的图片验证码!');
-                            }
-                        }
-                    });
-                    //step-2
-                    $('#step-2-submit').click(function(){
-                        if(mobile){
-                            if(/^[0-9]{6}$/.test($("#authcode").val())){
-                                $.post('/index.php/send/validate_authcode',{mobile:mobile,authcode:$("#authcode").val(),action:'register'},function(rs){
-                                    if(rs.status == '10000'){
-                                        $(".authcode-tip").text('验证码正确!');
-                                        authcode = $("#authcode").val();
-                                        goto_page(3);
-                                    }else{
-                                        $(".authcode-tip").text(rs.msg);
-                                    }
-                                },'json');
-                            }else{
-                                $(".authcode-tip").text('请输入正确格式的手机验证码!');
-                            }
-                        }else{
-                            goto_page(1);
-                        }
-                    });
                     //step-3
                     var nric_check = function(flag){
                         if(company_user_nric)return;
@@ -391,7 +250,7 @@
                                 company_user_nric = $("#company-user-nric").val();
                             }else{
                                 company_user_nric = '';
-                                $(".company-user-nric-tip").text(rs.msg);
+                                $(".company-user-nric-tip").text('身份证号码格式不正确!');
                                 $("#company-user-nric").focus();
                             }
                         }else{
@@ -400,20 +259,13 @@
                     };
                     $("#company-user-nric").keyup(function(){nric_check();}).blur(function(){nric_check(1);});
                     $('#step-3-submit').click(function(){
-                        if( !mobile){
-                            goto_page(1);
-                            return false;
-                        }
-                        if( !authcode){
-                            goto_page(2);
-                            return false;
-                        }
                         if($("#company-name").val() == ''){
                             $(".company-name-tip").text('请输入公司名称!');
                             $("#company-name").focus();
                             return false;
                         }else{
                             company_name = $("#company-name").val();
+                            $(".company-name-show").html(company_name);
                         }
                         if($("#company-code").val() == ''){
                             $(".company-code-tip").text('请输入公司执照注册号!');
@@ -421,6 +273,7 @@
                             return false;
                         }else{
                             company_code = $("#company-code").val();
+                            $(".company-code-show").html(company_code);
                         }
                         if($("#company-bank-name").val() == ''){
                             $(".company-bank-name-tip").text('请输入公司开户银行!');
@@ -428,20 +281,22 @@
                             return false;
                         }else{
                             company_bank_name = $("#company-bank-name").val();
+                            $(".company-bank-name-show").html(company_bank_name);
                         }
                         if($("#company-bank-account").val() == ''){
                             $(".company-bank-account-tip").text('请输入公司开户银行帐号!');
                             $("#company-bank-account").focus();
                             return false;
                         }else{
-                            company_name = $("#company-bank-account").val();
+                            company_bank_account = $("#company-bank-account").val();
+                            $(".company-bank-account-show").html(company_bank_account);
                         }
                         if($("#company-user-name").val() == ''){
                             $(".company-user-name-tip").text('请输入公司联系人姓名!');
                             $("#company-user-name").focus();
                             return false;
                         }else{
-                            company_name = $("#company-user-name").val();
+                            company_user_name = $("#company-user-name").val();
                         }
                         if( !company_user_nric){
                             nric_check(1);
@@ -468,9 +323,7 @@
                         }
                     });
                     $("#step-4-submit").click(function(){
-                        if( !mobile){ goto_page(1);return false;}
-                        if( !authcode){ goto_page(2);return false;}
-                        if( !company_name || company_code || company_bank_name || company_bank_account || company_user_name || company_user_nric){ goto_page(3);return false;}
+                        if( !company_name || !company_code || !company_bank_name || !company_bank_account || !company_user_name || !company_user_nric){ goto_page(3);return false;}
                         if($('#business-license-flag').val() == 0){
                             $('#business-license-tips').html('请选择文件!');
                             return false;
@@ -485,7 +338,30 @@
                         }
                         goto_page(5);
                     });
-                    goto_page(5);
+                    $("#step-5-submit").click(function(){
+                        $('.recharge-confirm').fadeIn();
+                    });
+                    $("#recharge-confirm-submit").click(function(){
+                        var balance = parseFloat('<?php echo isset($balance)?$balance:0; ?>');
+                        if(balance >= 300){
+                            $.post('/index.php/login/company_apply',{
+                                company_name:company_name,
+                                company_code:company_code,
+                                company_bank_name:company_bank_name,
+                                company_bank_account:company_bank_account,
+                                company_user_name:company_user_name,
+                                company_user_nric:company_user_nric,
+                            },function(rs){
+                                if(rs.status == '10000'){
+                                    goto_page(6);
+                                }else{
+                                    wsb_alert(rs.msg,2);
+                                }
+                            });
+                        }else{
+                            wsb_alert('余额不足请先充值后来提交!',2)
+                        }
+                    });
                 });
             });
         }
