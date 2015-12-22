@@ -308,7 +308,7 @@ class App_model extends CI_Model{
             'where'    => array(join_field('show_time',self::borrow).' <=' => time(),join_field('status',self::borrow).' > ' => 1),
             'order_by' => join_field('active',self::borrow).' DESC,'
 //                .join_field('sort_order',self::borrow).' DESC,'
-                .join_field('productcategory',self::borrow).' ASC,'
+//                .join_field('productcategory',self::borrow).' ASC,'
                 .join_field('status',self::borrow).' ASC,'
                 .join_field('receive',self::borrow).' / '.join_field('amount',self::borrow).' DESC,'
                 .join_field($temp['sort'],self::borrow).' '.$temp['order'],
@@ -346,8 +346,12 @@ class App_model extends CI_Model{
                 $string="/^[0-9]/";
                 //if(preg_match($string,$temp['months_arr'][0])||preg_match($string,$temp['months_arr'][1])){
                 //}else{
-                $temp['where']['where'][join_field('months',self::borrow).' >=']=$temp['months_arr'][0];
-                $temp['where']['where'][join_field('months',self::borrow).' <=']=$temp['months_arr'][1];
+                if($temp['months_arr'][0] == $temp['months_arr'][1]){
+                    $temp['where']['where'][join_field('months',self::borrow)]=$temp['months_arr'][0];
+                }else{
+                    $temp['where']['where'][join_field('months',self::borrow).' >']=$temp['months_arr'][0];
+                    $temp['where']['where'][join_field('months',self::borrow).' <=']=$temp['months_arr'][1];
+                }
                 //}
             }
         }

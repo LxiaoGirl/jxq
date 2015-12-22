@@ -1545,6 +1545,7 @@ public function ajax_get_redbagdata(){
      * 聚宝宝管理
      */
     public function jbb(){
+        redirect('apps/home/my_project');
         $this->load->view(self::dir.'jbb');
     }
 
@@ -1552,6 +1553,7 @@ public function ajax_get_redbagdata(){
      * 自动投设置
      */
     public function my_auto_invest(){
+        redirect('apps/home/profile');
         $this->load->view(self::dir.'my_auto_invest');
     }
 }
