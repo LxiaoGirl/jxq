@@ -2191,7 +2191,8 @@ class Cash_model extends CI_Model{
             $temp['where'] = array(
                 'select' => 'real_name,bank_name,account',
                 'where'  => array(
-                    'uid'     => $uid
+                    'uid'     => $uid,
+                    'status'=>1
                 )
             );
 

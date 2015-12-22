@@ -301,6 +301,33 @@ class Login extends MY_Controller{
 		$this->load->view('passport/find_pw_cg');
 	}
 
+
+/******************************************************公司注册************************************************************************/
+	public function company(){
+		$this->load->view('passport/co_reg');
+	}
+
+	public function company_register(){
+		$dir = 'company_user/18725677969/';
+		$file_name = $this->input->post('file_name',true);
+		$temp = $this->c->upload($dir,$file_name,'*',$file_name);
+		if($temp['query']){
+
+			$data = array(
+				'status'=>'10000',
+				'msg'=>'上传成功!'
+			);
+		}else{
+			$data = array(
+				'status'=>'10001',
+				'msg'=>'上传失败:'.$temp['info']
+			);
+		}
+		exit(json_encode($data));
+	}
+
+
+
 	/**
 	 * 退出登录 处理方法
 	 */

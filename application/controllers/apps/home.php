@@ -428,7 +428,8 @@ class Home extends MY_Controller{
                 'select' => join_field('id,card_no,real_name,account,bank_id,remarks',self::card).','.join_field('code,bank_name',self::bank),
                 'where'  => array(
                     join_field('card_no',self::card) => $card_no,
-                    join_field('uid',self::card)     => $temp['uid']
+                    join_field('uid',self::card)     => $temp['uid'],
+                    join_field('status',self::card)  => 1
                 ),
                 'join'=>array(
                     'table'=>self::bank,
@@ -573,7 +574,7 @@ class Home extends MY_Controller{
                 $temp['card_id']     =  $this->input->post('card_id',true);
                 $temp['no_agree']    =  ''; //签约号
                 if(empty($temp['card_id'])){ //账户no。为空 则新曾银行账户
-                    $temp['is_bind'] = $this->c->count(self::card,array('where'=>array('account'=>$temp['account'],'uid'=>$this->session->userdata('uid'))));
+                    $temp['is_bind'] = $this->c->count(self::card,array('where'=>array('account'=>$temp['account'],'uid'=>$this->session->userdata('uid'),'status'=>1)));
                     if($temp['is_bind'] == 0){ //不存在 则新增
                         $temp['new_card_data'] = array(
                             'card_no'   => $this->c->transaction_no(self::card, 'card_no'),
@@ -587,6 +588,7 @@ class Home extends MY_Controller{
                             'city'      => '默认地址',
                             'remarks'   => '',
                             'dateline'  => time(),
+                            'status'  => 1
                         );
                         $query = $this->c->insert(self::card, $temp['new_card_data']);
                         $temp['card_id'] = $query;
@@ -932,7 +934,7 @@ class Home extends MY_Controller{
             $temp['where'] = array(
                 'select' => join_field('card_no,real_name,account,remarks,dateline',self::card).','.join_field('bank_name,code',self::bank),
                 'join'   => array('table' => self::bank,'where'=> self::bank.'.bank_id='.self::card.'.bank_id'),
-                'where'  => array(self::card.'.uid' => $temp['uid'],self::card.'.card_no'=>$temp['card_no'])
+                'where'  => array(self::card.'.uid' => $temp['uid'],self::card.'.card_no'=>$temp['card_no'],self::card.'.status'=>1)
             );
             $data = $this->c->get_row(self::card, $temp['where']);
         }else{

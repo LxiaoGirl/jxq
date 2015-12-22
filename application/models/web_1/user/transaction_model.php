@@ -698,7 +698,7 @@ class Transaction_model extends CI_Model
 
         $temp['where'] = array(
                             'select'   => join_field('card_no,account', self::card).','.join_field('bank_name,code', self::bank),
-                            'where'    => array(self::card.'.uid' => $temp['uid']),
+                            'where'    => array(self::card.'.uid' => $temp['uid'],self::card.'.status' => 1),
                             'join'      => array(
                                             'table' => self::bank,
                                             'where' => join_field('bank_id', self::card).' = '.join_field('bank_id', self::bank),
@@ -732,7 +732,8 @@ class Transaction_model extends CI_Model
                                 'select' => 'real_name,bank_name,account',
                                 'where' => array(
                                                 'card_no' => $card_no,
-                                                'uid'     => $temp['uid']
+                                                'uid'     => $temp['uid'],
+                                                'status'  => 1
                                             )
                             );
 

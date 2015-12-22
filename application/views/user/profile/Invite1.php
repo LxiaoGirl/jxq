@@ -47,17 +47,17 @@
 					<?php foreach($jujian['data']['data'] as $k => $v):?>
                         <div class="month_lie" id="123">
                             <div class="kuhf_pos_a">
-                                <div class="kh_tx"><img src="<?php echo base_url('assets/images/user/mrtx.png')?>"></div>
-                                <h5><?php echo $v['user_name']?></h5>
-								<h5><?php echo $v['ralation']?></h5>
+                                <div class="kh_tx"><img src="<?php echo base_url('assets/images/user/mrtx.png');?>"></div>
+                                <h5><?php echo $v['real_name']?$v['real_name']:$v['user_name']; ?></h5>
+								<h5><?php echo $v['ralation']; ?></h5>
                             </div>
                             <div class="tit_k">
                                 <div class="fl">
                                     <h5 class="linh_gg"><font>累计投资金额金额（元）:</font><?php echo $v['amount']?></h5>
-                                    <p>最近一次登录时间：<?php echo (my_date($v['last_date'],2))?my_date($v['last_date'],2):'很久没有登录过了哦'?></p>
+                                    <p>最近一次登录时间：<?php echo (my_date($v['last_date'],2))?my_date($v['last_date'],2):'很久没有登录过了哦'; ?></p>
                                 </div>
                                 <div class="fr">
-                                    <button class="invite_ckxq ls" id="<?php echo $v['uid']?>">查看详情<em><em></em></em></button>
+                                    <button class="invite_ckxq ls" id="<?php echo $v['uid'] ;?>">查看详情<em><em></em></em></button>
                                 </div>
                             </div>
                             <div class="month_lie_pop">                         

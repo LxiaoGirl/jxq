@@ -1615,7 +1615,7 @@ class User_model extends CI_Model{
 				return $data;
 			}
 		}
-		$temp['card_exists'] = $this->c->count(self::card,array('where'=>array('account'=>$account,'uid'=>$uid)));
+		$temp['card_exists'] = $this->c->count(self::card,array('where'=>array('account'=>$account,'uid'=>$uid,'status'=>1)));
 		if($temp['card_exists']){
 			$data['msg'] = '你已绑定了该卡请勿重复绑定!';
 			return $data;
@@ -1629,10 +1629,11 @@ class User_model extends CI_Model{
 				'bank_id'   => $bank_id,
 				'bank_name' => $temp['bank_info']['bank_name'],
 				'bankaddr' => $bankaddr,
-			//'province' => $this->input->post('province', TRUE),
-			//'city' => $this->input->post('bankaddr', TRUE),
+				//'province' => $this->input->post('province', TRUE),
+				//'city' => $this->input->post('bankaddr', TRUE),
 				'remarks'   => '',
 				'dateline'  => time(),
+				'status'	=>1
 		);
 
 		$query = $this->c->insert(self::card, $temp['data']);
@@ -1666,7 +1667,7 @@ class User_model extends CI_Model{
 			$data['msg'] = '银行卡card_no不能为空!';
 			return $data;
 		}
-		$temp['card_info'] = $this->c->get_row(self::card,array('where'=>array('uid'=>$uid,'card_no'=>$card_no)));
+		$temp['card_info'] = $this->c->get_row(self::card,array('where'=>array('uid'=>$uid,'card_no'=>$card_no,'status'=>1)));
 		if( !$temp['card_info']){
 			$data['msg'] = '银行卡信息不存在!';
 			return $data;
@@ -1709,7 +1710,7 @@ class User_model extends CI_Model{
 
 		$temp['check_enable'] = $this->check_card_unbind_enable($uid,$card_no);
 		if($temp['check_enable']['status'] != '10000'){
-			$data['msg'] = $temp['check_enable']['status'];
+			$data['msg'] = $temp['check_enable']['msg'];
 			return $data;
 		}
 		$temp['security'] = $this->c->password($security,$temp['user_info']['hash']);
@@ -1718,7 +1719,7 @@ class User_model extends CI_Model{
 			return $data;
 		}
 		$temp['where'] = array('where'=>array('card_no'=>$card_no,'uid'=>$uid));
-		$temp['query'] = $this->c->delete(self::card,$temp['where']);
+		$temp['query'] = $this->c->update(self::card,$temp['where'],array('status'=>0));
 		if($temp['query']){
 			$data['msg'] = '解绑银行卡成功!';
 			$data['status'] = '10000';
@@ -1758,7 +1759,7 @@ class User_model extends CI_Model{
 			$data['msg'] = $temp['authcode_check']['msg'];
 			return $data;
 		}
-		$temp['card_info'] = $this->c->get_row(self::card,array('where'=>array('uid'=>$uid,'card_no'=>$card_no)));
+		$temp['card_info'] = $this->c->get_row(self::card,array('where'=>array('uid'=>$uid,'card_no'=>$card_no,'status'=>1)));
 		if( !$temp['card_info']){
 			$data['msg'] = '卡号信息不存在!';
 			return $data;
@@ -1858,8 +1859,8 @@ class User_model extends CI_Model{
 		$temp = array();
 		$temp['where'] = array(
 				'select' => join_field('card_no,real_name,account,remarks,dateline',self::card).','.join_field('bank_name,code,content',self::bank),
-				'join'=> array('table' => self::bank,'where'=> self::bank.'.bank_id='.self::card.'.bank_id'),
-				'where'  => array(self::card.'.uid' => $uid)
+				'join'=> array('table' => self::bank,'where'=> join_field('bank_id',self::bank).'='.join_field('bank_id',self::card)),
+				'where'  => array(join_field('uid',self::card) => $uid,join_field('status',self::card) => 1)
 		);
 		$temp['user']  = $this->c->get_row(self::card, $temp['where']);
 		if(!empty($temp['user'])){
