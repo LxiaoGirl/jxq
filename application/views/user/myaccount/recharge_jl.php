@@ -86,14 +86,15 @@
                         wsb_alert(rs.msg,2);
                     }else{
                         wsb_alert('充值尚未成功,如确认已充值扣费请稍后查询或联系客服人员!',3);
+
+                        $(".recharge-refresh").unbind('click').bind('click',function(){
+                            $(".recharge-refresh").unbind('click');
+                            refresh_func($(this));
+                        });
                     }
-                    $(".recharge-refresh").bind('click',function(){
-                        $(".recharge-refresh").unbind('click');
-                        refresh_func($(this));
-                    });
                 },'json');
             };
-            $(".recharge-refresh").bind('click',function(){
+            $(".recharge-refresh").unbind('click').bind('click',function(){
                 $(".recharge-refresh").unbind('click');
                 refresh_func($(this));
             });
