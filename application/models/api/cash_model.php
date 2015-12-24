@@ -796,7 +796,8 @@ class Cash_model extends CI_Model{
             'select'   => 'SUM('.join_field('amount', self::payment).') as invest_total,'.join_field('mobile', self::user),
             'where'    => array(
                 join_field('type', self::payment)   => 1,
-                join_field('status', self::payment) => 1
+                join_field('status', self::payment) => 1,
+                join_field('real_name', self::user).' !='=>'沈阳网加互联网金融服务有限公司'
             ),
             'where_in' => array('field'=>join_field('status',self::borrow),'value'=>array(4,7)),
             'join'     => array(
@@ -1992,7 +1993,11 @@ class Cash_model extends CI_Model{
                     break;
                 case '11':
                     $remarks_name = '红包';
-		case '20':
+                    break;
+                case '12':
+                    $remarks_name = '企业认证费用';
+                    break;
+		        case '20':
                     $remarks_name = '活期产品';
                     break;
             }
