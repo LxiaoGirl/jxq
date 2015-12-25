@@ -131,7 +131,7 @@
             var mobile='',authcode='',authcode_msg='',password='',password1=false;
             //step-1
             var mobile_check = function(flag){
-                if(mobile)return;
+                if(mobile  && flag)return;
                 if(/^1[345789][0-9]{9}$/.test($("#mobile").val())){
                     $.post('/index.php/login/ajax_is_company_register',{mobile:$("#mobile").val(),type:'company'},function(rs){
                         switch (rs.status){
@@ -140,11 +140,11 @@
                                 mobile = $("#mobile").val();
                                 break;
                             case '10003':
-                                mobile = $("#mobile").val();
-                                authcode = true;
+                                mobile = '';
                                 wsb_alert('你已完成注册内容，请登录完善申请资料!',1,'/index.php/login/index?redirect_url=<?php echo urlencode(site_url('login/company_apply')); ?>');
                                 break;
                             case '10002':
+                                mobile = '';
                                 wsb_alert(rs.msg,1,'/index.php/login');
                                 break;
                             default:
@@ -153,6 +153,7 @@
                         }
                     },'json');
                 }else{
+                    mobile = '';
                     if(flag)$(".mobile-tip").text('请输入正确格式的手机号码!');
                 }
             };
@@ -185,7 +186,7 @@
             });
             //step-2
             var password_check = function(flag){
-                if(password)return;
+                if(password  && flag)return;
                 if(/^[a-zA-Z_0-9]{6,20}$/.test($("#password").val())){
                     $(".password-tip").text('ok!');
                     password = $("#password").val();
@@ -195,7 +196,7 @@
                 }
             };
             var password1_check = function(flag){
-                if(password1)return;
+                if(password1  && flag)return;
                 if(/^[a-zA-Z_0-9]{6,20}$/.test($("#password1").val())){
                     if(password == $("#password1").val()){
                         $(".password1-tip").text('ok!');

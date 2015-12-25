@@ -9,6 +9,7 @@ class Login extends MY_Controller{
 	//用到的数据库表
 	const user     = 'user'; 		// 会员表
 	const authcode = 'authcode'; 	// 授权验证
+	const recharge = 'user_recharge'; 	// 授权验证
 
 	const remember_hour = 24;//登录信息的记住我的保存cookie时间 小时
 
@@ -312,7 +313,7 @@ class Login extends MY_Controller{
 			exit(json_encode($data));
 		}
 		if($this->session->userdata('uid') > 0){
-			if(profile('clientkind') == '-2'){
+			if(profile('clientkind') == '-2' || profile('clientkind') == '-3'){
 				redirect('login/company_apply');
 			}else{
 				redirect('home');
@@ -323,17 +324,36 @@ class Login extends MY_Controller{
 
 	public function company_apply(){
 		if($this->input->is_ajax_request() == TRUE){
-			$data = '';
+			$data_info = array(
+				'company_name'=>$this->input->post('company_name',true),
+				'company_code'=>$this->input->post('company_code',true),
+				'company_bank_name'=>$this->input->post('company_bank_name',true),
+				'company_bank_account'=>$this->input->post('company_bank_account',true),
+			);
+			$data = $this->user->company_apply($this->session->userdata('uid'),$data_info);
+			if($data['status'] == '10000'){
+				$this->session->set_userdata(array('balance'=>$data['data'],'clientkind'=>'-4'));
+			}
 			exit(json_encode($data));
 		}
 		if($this->session->userdata('uid') > 0){
-			if(profile('clientkind') != '-2')redirect('home');
+			if(profile('clientkind') != '-2' && profile('clientkind') != '-3')redirect('home');
 		}else{
 			redirect('login');
 		}
-		$data['info'] = '';
+		$data['info'] = $this->user->get_user_extend_info($this->session->userdata('uid'),10);
+		if($data['info']['status'] == '10000' && $data['info']['data']){
+			$data['info'] = $data['info']['data'];
+		}else{
+			$data['info'] = array();
+		}
 
-		$this->load->view('passport/company_apply');
+		$this->load->model('api/cash_model', 'cash');
+		$data['balance'] = $this->cash->get_user_balance($this->session->userdata('uid'));
+		if($data['balance']['status'] == '10000')$data['balance'] = $data['balance']['data']['balance'];
+		$data['recharge_no'] = urlencode(authcode($this->c->transaction_no(self::recharge, 'recharge_no')));
+
+		$this->load->view('passport/company_apply',$data);
 	}
 
 	/**
@@ -346,22 +366,46 @@ class Login extends MY_Controller{
 		}
 	}
 
-	public function company_register(){
-		$dir = 'company_user/18725677969/';
-		$file_name = $this->input->post('file_name',true);
-		$temp = $this->c->upload($dir,$file_name,'*',$file_name);
-		if($temp['query']){
-
-			$data = array(
-				'status'=>'10000',
-				'msg'=>'上传成功!'
-			);
-		}else{
+	/**
+	 * 公司注册附件上传ajax
+	 */
+	public function ajax_company_attachment_upload(){
+		if( !$this->session->userdata('uid')){
 			$data = array(
 				'status'=>'10001',
-				'msg'=>'上传失败:'.$temp['info']
+				'msg'=>'请先登录!'
 			);
+		}else{
+			$dir = 'company_user_attachment/'.$this->session->userdata('uid').'/';
+			$file_name = $this->input->post('file_name',true);
+			$temp = $this->c->upload($dir,$file_name,'jpg|png|gif|jpeg',$file_name);
+			if($temp['query']){
+
+				//保存上传信息
+				$temp['query'] = false;
+				if($temp['data'] && $temp['data']['file_name'] && $temp['data']['file_path']){
+					$temp['query'] = $this->user->set_user_extend_info($this->session->userdata('uid'),10,array($file_name=>$temp['data']['file_path'].$temp['data']['file_name']));
+				}
+				if($temp['query']){
+					$data = array(
+						'status'=>'10000',
+						'msg'=>'上传成功!'
+					);
+				}else{
+					$data = array(
+						'status'=>'10001',
+						'msg'=>'上传失败:信息保存失败'
+					);
+				}
+
+			}else{
+				$data = array(
+					'status'=>'10001',
+					'msg'=>'上传失败:'.$temp['info']
+				);
+			}
 		}
+
 		exit(json_encode($data));
 	}
 

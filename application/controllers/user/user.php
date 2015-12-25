@@ -668,7 +668,12 @@ class User extends Login_Controller{
 	 * 实名认证
 	 */
 	public function real_name(){
-		$data = $this->user->real_name($this->input->post('real_name',true),$this->input->post('nric',true),$this->session->userdata('uid'));
+		//公司验证标识type
+		$type = $this->input->post('type',true);
+		$type = $type=='company'?true:false;
+
+		$data = $this->user->real_name($this->input->post('real_name',true),$this->input->post('nric',true),$this->session->userdata('uid'),$type);
+
 		if($data['status'] == '10000'){
 			$this->session->set_userdata($data['data']);
 		}

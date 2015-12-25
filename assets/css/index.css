@@ -173,6 +173,50 @@ a.ls{
 a.ls:hover{
     color: #ff7700;
 }
+a.green{
+    -webkit-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    -ms-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: background-color;
+    -o-transition-property: background-color;
+    -ms-transition-property: background-color;
+    -moz-transition-property: background-color;
+    transition-property: background-color;
+    border:none;
+    cursor: pointer;
+    outline: 0;
+    background:#72c572;
+    color: #fff;
+    width:94px;
+    height: 36px;
+    line-height: 36px;
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    text-indent:22px;
+    margin-left: 5px;
+    margin-top: 4px;
+}
+a.green input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer;
+    line-height: 36px;
+    text-indent: 20px;
+}
+a.green:hover{
+    background: #3eb53e;
+    color: #fff;
+}
 /*a end*/
 /*button start*/
 button{
@@ -2012,6 +2056,42 @@ a:hover{ color:#3cb5ec;}
     line-height: 40px;
     margin-bottom: 20px;
 }
+.gs_zc1 form p span.z3 i{
+    width: 80px;
+    height: 4px;
+    border-radius: 2px;
+    display: inline-block;
+    *display:inline;
+    background: #fff;
+    overflow: hidden;
+    position: relative;
+    top: -18px;
+}
+.gs_zc1 form p span.z3 i i{
+    width: 0;
+    height: 4px;
+    border-radius: 2px;
+    display: inline-block;
+    *display:inline;
+    background: #72c572;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.gs_zc1 form p span.z3 em{
+    width: 20px;
+    height: 20px;
+    position: relative;
+    display: inline-block;
+    *display: inline;
+    top: -10px;
+}
+.gs_zc1 form p span.z3 em.cg{
+    background: url(../images/passport/qyzc_y.jpg) center no-repeat;
+}
+.gs_zc1 form p span.z3 em.sb{
+    background: url(../images/passport/qyzc_x.jpg) center no-repeat;
+}
     /*公司注册*/
 /*登录 注册 找回密码 end*/
 /*投资列表 start*/
@@ -3126,7 +3206,7 @@ a:hover{ color:#3cb5ec;}
     top:50%;
     margin-left: -170px;
     margin-top: -240px;
-    z-index: 500;
+    z-index: 850;
 }
 .invest_zjmm_pop_body{
     width:340px;

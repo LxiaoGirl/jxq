@@ -15,6 +15,7 @@ class User_model extends CI_Model{
 	const recharge = 'user_recharge'; // 充值
 	const user_renzheng = 'user_renzheng'; // 用户实名认证是否认证表
 	const bank = 'bank';
+	const user_info = 'user_info';
 
 
 
@@ -245,9 +246,10 @@ class User_model extends CI_Model{
 	 * @param string $real_name
 	 * @param string $nric
 	 * @param int $uid
+	 * @param boolean $type false 个人实名 clientkind 1  true 公司个人实名开户 clientkind
 	 * @return array
 	 */
-	public function real_name($real_name='',$nric='',$uid=0){
+	public function real_name($real_name='',$nric='',$uid=0,$type=false){
 		$temp = array();
 		$data = array('name'=>'实名认证','status' => '10001', 'msg' => '你提交的数据有误,请重试！', 'data' => array());
 
@@ -262,8 +264,13 @@ class User_model extends CI_Model{
 			$data['msg'] = '用户uid无效!';
 			return $data;
 		}
-		if($user_info['clientkind'] == 1){
-			$data['msg'] = '该用户已实名认证过!';
+		if($type && $user_info['clientkind'] != '-2'){
+			$data['msg'] = '该用户已企业开户认证!';
+			$data['status'] = '10000';
+			return $data;
+		}
+		if( !$type && $user_info['clientkind'] != '-1'){
+			$data['msg'] = '该用户已实名认证!';
 			return $data;
 		}
 
@@ -365,7 +372,7 @@ class User_model extends CI_Model{
 						if( ! empty($ceshi['FundAcc']['VaccId'])){//if( ! empty($ceshi['data']['sex']))// if( ! empty($ceshi['FundAcc']['VaccId']))
 							$temp['data'] = array(
 									'gender' => $gender,
-									'user_name' => $real_name,
+//									'user_name' => $real_name,
 									'real_name' => $real_name,
 									'nric'      => $nric,
 									'firmid' 	=> $ceshi['FundAcc']['FirmId'],
@@ -374,14 +381,14 @@ class User_model extends CI_Model{
 									'certdate'  => $ceshi['Client']['CertDate'],
 									'bankacc'   => $ceshi['BankAcc']['BankAcc'],
 //								'platserial' => $ceshi['BankAcc']['PlatSerial'],
-									'clientkind'=> "1",
+									'clientkind'=> ($type?'-3':'1'),
 							);
 							$temp['where'] = array('where' => array('uid' => $uid));
 							$query = $this->c->update(self::user, $temp['where'], $temp['data']);
 
 							if( ! empty($query)){
 								$this->_add_user_log('profile', '更新个人资料！');
-								if($temp['data']['clientkind'] == "-1" || $temp['data']['clientkind']=="1"){
+								if($temp['data']['clientkind'] == "-3" || $temp['data']['clientkind']=="1"){
 									$data['msg']   = '你的认证资料已经提交!';
 									$data['status']   = '10000';
 									$data['data'] = $temp['data'];
@@ -743,9 +750,13 @@ class User_model extends CI_Model{
 		return $result;
 	}
 
+	/**
+	 * 验证个企业注册手机
+	 * @param string $mobile
+	 * @return array
+	 */
 	public function is_company_register($mobile=''){
 		$temp = array();
-
 		$data = array('name'=>'企业注册手机验证','status'=>'10001','msg'=>'手机不能为空!','data'=>array());
 
 		if($mobile){
@@ -763,11 +774,19 @@ class User_model extends CI_Model{
 						break;
 					case '-2':
 						$data['status'] = '10003';
-						$data['msg'] = '该手机已是企业用户请完善企业用户申请资料!';
+						$data['msg'] = '该手机已注册企业用户请登录完善企业用户申请资料!';
 						break;
 					case '2':
 						$data['status'] = '10002';
 						$data['msg'] = '该手机已是企业用户无需再申请';
+						break;
+					case '-3':
+						$data['status'] = '10003';
+						$data['msg'] = '该手机已注册企业用户请登录完善企业用户申请资料!';
+						break;
+					case '-4':
+						$data['status'] = '10001';
+						$data['msg'] = '该手机已提交了企业用户申请请等待审核';
 						break;
 					default:
 						$data['status'] = '10000';
@@ -782,6 +801,211 @@ class User_model extends CI_Model{
 
 		return $data;
 	}
+
+	/**
+	 * 企业账户申请
+	 * @param int $uid 用户id
+	 * @param array $attachment 相关资料附件
+	 * @return array
+	 */
+	public function company_apply($uid=0,$attachment=array()){
+		$temp = array();
+		$data = array('name'=>'企业账户申请','status'=>'10001','msg'=>'服务器繁忙请稍后重试!','data'=>array());
+
+		if( !$uid){
+			$data['msg'] = '用户uid为空!';
+			return $data;
+		}
+		$temp['user_info'] = $this->c->get_row(self::user,array('where'=>array('uid'=>$uid)));
+		if( !$temp['user_info']){
+			$data['msg'] = '用户不存在!';
+			return $data;
+		}
+		if($temp['user_info']['clientkind'] != '-3'){
+			$data['msg'] = '该用户当前状态不能进行企业认证资料提交!';
+			return $data;
+		}
+		if( !$attachment){
+			$data['msg'] = '提交的资料信息为空!';
+			return $data;
+		}
+		if( !isset($attachment['company_name']) || $attachment['company_name']==''){
+			$data['msg'] = '公司名称不能为空!!';
+			return $data;
+		}
+		if( !isset($attachment['company_code']) || $attachment['company_code']==''){
+			$data['msg'] = '公司注册码不能为空!!';
+			return $data;
+		}
+		if( !isset($attachment['company_bank_name']) || $attachment['company_bank_name']==''){
+			$data['msg'] = '公司开户银行不能为空!!';
+			return $data;
+		}
+		if( !isset($attachment['company_bank_account']) || $attachment['company_bank_account']==''){
+			$data['msg'] = '公司开户银行账号不能为空!!';
+			return $data;
+		}
+		$temp['balance'] = $this->_get_user_balance($uid);
+		if($temp['balance'] < 300){
+			$data['msg'] = '你的余额不够认证费用请充值后重试!';
+			return $data;
+		}
+		//处理银行账号信息
+		/*$temp['card'] = array();
+		if(isset($attachment['company_bank_name'])){
+			$temp['card']['company_bank_name'] = $attachment['company_bank_name'];
+			unset($attachment['company_bank_name']);
+		}
+		if(isset($attachment['company_bank_account'])){
+			$temp['card']['company_bank_account'] = $attachment['company_bank_account'];
+			unset($attachment['company_bank_account']);
+		}
+		if($temp['card']){
+			$this->Add_bank_card($uid,$temp['card']['company_bank_account']);
+		}*/
+		$temp['attachment_save'] = $this->set_user_extend_info($uid,10,$attachment);
+		if($temp['attachment_save']['status'] != '10000'){
+			$data['msg'] = $temp['attachment_save']['msg'];
+			return $data;
+		}
+		//冻结申请金额
+		$this->db->trans_start();
+		$temp['query'] = $this->c->update(self::user,array('where'=>array('uid'=>$uid)),array('clientkind'=>'-4'));
+		if($temp['query']){
+			$this->_add_cash_flow($uid,300,'','企业账号申请费用');
+			$temp['data'] = array(
+				'uid'      => $uid,
+				'type'     => 12,
+				'amount'   => 300,
+				'balance'  => round($temp['balance']-300, 2),
+				'source'   => '-',
+				'remarks'  => '企业账号申请费用',
+				'dateline' => time(),
+			);
+
+			$temp['query'] = $this->c->insert(self::flow, $temp['data']);
+		}
+
+		$this->db->trans_complete();
+		$query = $this->db->trans_status();
+
+		if($query){
+			$data['status'] = '10000';
+			$data['msg'] = 'ok';
+			$data['data'] = $temp['data']['balance'];
+		}
+
+		unset($temp);
+		return $data;
+	}
+
+	/**
+	 * 设置用户扩展信息
+	 * @param int $uid 用户id
+	 * @param string $type 类型
+	 * @param array $attachment 信息数组 一维
+	 * @return array
+	 */
+	public function set_user_extend_info($uid=0,$type='',$attachment=array()){
+		$temp = array();
+		$data = array('name'=>'设置用户扩展信息','status'=>'10001','msg'=>'服务器繁忙请稍后重试!','data'=>array());
+		if( !$uid){
+			$data['msg'] = '用户uid为空!';
+			return $data;
+		}
+		$temp['user_info'] = $this->c->get_row(self::user,array('where'=>array('uid'=>$uid)));
+		if( !$temp['user_info']){
+			$data['msg'] = '用户不存在!';
+			return $data;
+		}
+		if( !$attachment){
+			$data['msg'] = '提交的资料信息为空!';
+			return $data;
+		}
+		if( !$type){
+			$data['msg'] = '请输入存储类型!';
+			return $data;
+		}
+		$temp['insert_data'] = $temp['update_data'] = array();
+		foreach($attachment as $k=>$v){
+			$temp['info_id'] = $this->c->get_one(self::user_info,array('select'=>'id','where'=>array('uid'=>$uid,'type'=>$type,'key'=>$k)));
+			if($temp['info_id'] > 0){
+				$temp['update_data'][] = array(
+					'id'=>$temp['info_id'],
+					'uid'=>$uid,
+					'type'=>$type,
+					'key'=>$k,
+					'value'=>$v,
+					'required'=>1
+				);
+			}else{
+				$temp['insert_data'][] = array(
+					'uid'=>$uid,
+					'type'=>$type,
+					'key'=>$k,
+					'value'=>$v,
+					'required'=>1
+				);
+			}
+		}
+		$this->db->trans_start();
+		if($temp['insert_data']){
+			$this->c->insert(self::user_info,$temp['insert_data']);
+		}
+		if($temp['update_data']){
+			$this->c->update(self::user_info,array('where'=>array('uid'=>$uid,'type'=>$type)),$temp['update_data'],'id');
+		}
+		$this->db->trans_complete();
+		$query = $this->db->trans_status();
+		if($query){
+			$data['status'] = '10000';
+			$data['msg'] = 'ok';
+		}else{
+			$data['msg'] = '附件信息操作失败!';
+		}
+
+		unset($temp);
+		return $data;
+	}
+
+	/**
+	 * 获取用户扩展信息
+	 * @param int $uid 用户id
+	 * @param string $type 类型
+	 * @return array 一维数组
+	 */
+	public function get_user_extend_info($uid=0,$type=''){
+		$temp = array();
+		$data = array('name'=>'获取用户扩展信息','status'=>'10001','msg'=>'服务器繁忙请稍后重试!','data'=>array());
+		if( !$uid){
+			$data['msg'] = '用户uid为空!';
+			return $data;
+		}
+		$temp['user_info'] = $this->c->get_row(self::user,array('where'=>array('uid'=>$uid)));
+		if( !$temp['user_info']){
+			$data['msg'] = '用户不存在!';
+			return $data;
+		}
+		if( !$type){
+			$data['msg'] = '请输入存储类型!';
+			return $data;
+		}
+		$temp['data'] = $this->c->get_all(self::user_info,array('where'=>array('uid'=>$uid,'type'=>$type)));
+		if($temp['data']){
+			foreach($temp['data'] as $k=>$v){
+				$data['data'][$v['key']] = $v['value'];
+			}
+			$data['status'] = '10000';
+			$data['msg'] = 'ok!';
+		}else{
+			$data['status'] = '10000';
+			$data['msg'] = '没有想过信息!';
+		}
+
+		unset($temp);
+		return $data;
+	}
+
 
 	/**
 	 * 忘记登录密码（图形）
