@@ -22,7 +22,7 @@
                 <div class="hy fl">
                     <ul>
                         <li>
-                            <span class='yi'><?php echo jbb_word(@$_GET['type_code'])?></span>
+                            <span class='<?php echo jbb_icon(@$_GET['type_code'])?>'><?php echo jbb_word(@$_GET['type_code'])?></span>
                         </li>
                         <li>
                             <p class='tl'>年化收益率</p>

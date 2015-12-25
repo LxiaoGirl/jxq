@@ -414,9 +414,12 @@ if( ! function_exists('jbb_icon'))
                 $str = 'yi';
                 break;
 			case 'JBB02':
-                $str = 'fu';
+                $str = 'xin';
                 break;
 			case 'JBB03':
+                $str = 'fu';
+                break;
+			case 'JBB04':
                 $str = 'wen';
                 break;
             default:
@@ -452,6 +455,9 @@ if( ! function_exists('jbb_word'))
                 break;
 			case 'JBB03':
                 $str = '富';
+                break;
+			case 'JBB04':
+                $str = '稳';
                 break;
             default:
                 $str = '稳';

@@ -184,8 +184,8 @@
     </div>
     <div class="con2">
         <div class="conn">
-            <p class="p3" style="color:#000;">剩余可投金额：<font style="color:#a41817;"><span class="can-invest-amount">0</span>元</font></p>
-            <div class="p2"><div class="p3 receive-rate" style="width:1%"></div></div>
+            <p class="p3" style="color:#000;">剩余可投金额：<font style="color:#a41817;"><span class="can-invest-amount">123</span>元</font></p>
+            <div class="p2"><div class="p3 receive-rate" style="width:0%"></div></div>
             <button class="p4 invest">马上去投资</button>
         </div>
     </div>
@@ -280,15 +280,16 @@
 <script type="text/javascript" src="/assets/js/jquery/jquery-2.1.1.min.js"></script>
 <script>
     $(function(){
-        var borrow_no = '';
-        $.post('/index.php/invest/ajax_get_project_info',{borrow_no:borrow_no},function(rs){
-            if(rs.status == '10000'){
-                $('.receive-rate').css('width',rs.data.receive_rate+'%');
-                $('.can-invest-amount').text(rs.data.amount-rs.data.receive);
-            }
-        },'json');
+        var borrow_no = 'JBB04';
+        $.post('/index.php/invest/ajax_get_project_info?borrow_no='+borrow_no,{},function(re){
+				re = JSON.parse(re);
+				var receive_rate = re.data.balance/re.data.development_amount;
+                $('.receive-rate').css('width',receive_rate+'%');
+                $('.can-invest-amount').html(re.data.development_amount-re.data.balance);
+            
+        });
         $('.invest').click(function(){
-            window.location.href='/index.php/invest/detail?borrow_no='+borrow_no;
+            window.location.href='/index.php/invest/detail_jbb?type_code='+borrow_no;
         });
     });
 </script>

@@ -72,9 +72,7 @@
 						<?php if($project['status']==10000):foreach($project['data'] as $k=>$v): ?>
                         <div class="product_of_invest_home product_of_invest_home_1">
                             <div class="fl <?php echo jbb_icon($v['type_code'])?> zi">
-                                <span style="
-    background: #c795df;
-"><?php echo jbb_word($v['type_code'])?> </span>
+                                <span><?php echo jbb_word($v['type_code'])?> </span>
                                 <p><?php echo $v['type_name']?></p>
                             </div>
 							

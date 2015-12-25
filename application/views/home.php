@@ -59,22 +59,22 @@
         <div class="main_l product">
             <ul>
                 <li>
-                    <h1>聚保宝<a href="/index.php/invest/index?c=4" class="fr">查看全部产品 > </a></h1>
+                    <h1>聚在元旦趴  超值好标限时抢  iwatch等豪礼疯狂送<a href="/active/yd_2016/index.html" class="fr">查看活动详情 > </a></h1>
                     <div class="product_body">
                         <div class="top">
-                            <div class="icon fl" style = 'background: #c795df;'>富</div>
-                            <div class="title fl" style="color:#3cb5ec; margin-left:80px;">聚富盈</div>
+                            <div class="icon fl" style = 'background: #83bf73;'>稳</div>
+                            <div class="title fl" style="color:#3cb5ec; margin-left:80px;">聚稳盈</div>
                             <div class="baozhi fl" style="min-width:300px">&nbsp;</div>
                         </div>
-                        <p>“聚富盈”是聚雪球网络平台推出的期限固定型投资产品，以聚雪球网络平台提取的部分融资项目作为投资标的，投资人购买本产品后，聚雪球后台系统将收到投资人指令，依照分散投资原则由系统自动进行投标，并在收到用户指令的情况下由系统自动发起债权转让，通过出让持有的债权实现流动性的需求，进而实现分散投资并获取收益的目的。</p>
+                        <p>“聚稳盈”是聚雪球网络平台推出的期限固定型投资产品，以聚雪球网络平台提取的部分融资项目作为投资标的，投资人购买本产品后，聚雪球后台系统将收到投资人指令，依照分散投资原则由系统自动进行投标，并在收到用户指令的情况下由系统自动发起债权转让，通过出让持有的债权实现流动性的需求，进而实现分散投资并获取收益的目的。</p>
                         <ul>
                             <li>
                                 <div class="product_four_num_top tc">年化收益率</div>
-                                <div class="product_four_num_bot tc ft_3cb5ec">12.6<i>%</i></div>
+                                <div class="product_four_num_bot tc ft_3cb5ec">8<i>%</i></div>
                             </li>
                             <li>
                                 <div class="product_four_num_top tc">起投金额(元)</div>
-                                <div class="product_four_num_bot tc">100.00</div>
+                                <div class="product_four_num_bot tc">1000</div>
                             </li>
                             <li>
                                 <div class="product_four_num_top tc">保障方式</div>
@@ -83,10 +83,10 @@
                         </ul>
                         <div class="bot">
                            <div class="fr tc">
-                                <button class="ls button1" onclick="window.location.href='https://www.zgwjjf.com/index.php/invest/detail_jbb?type_code=JBB03'">马上投资</button>
+                                <button class="ls button1" onclick="window.location.href='https://www.zgwjjf.com/index.php/invest/detail_jbb?type_code=JBB04'">马上投资</button>
                             </div>
                         </div>
-<!--                        <div class="corner"></div>-->
+                        <div class="corner"></div>
                     </div>
                 </li>
                 <?php if($category): ?>

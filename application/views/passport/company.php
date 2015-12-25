@@ -109,14 +109,11 @@
     //INPUT框变色
     $('.ifhav').focus(function(){
         $(this).addClass('hav');
+    }).blur(function(){
+        if($.trim($(this).val())=='') $(this).removeClass('hav');
     });
-    $('.ifhav').blur(function(){
-        if($.trim($(this).val())==''){
-            $(this).removeClass('hav');
-        }
-    });
-    //INPUT框变色
-    //切换页面内容
+
+    //切换页面内容 num= 页面数字id 放在全局用于html内可调用
     var goto_page = function(num){
         num = parseInt(num) || 1;
         $('.step').hide();
@@ -124,10 +121,12 @@
     };
     seajs.use(['jquery','sys','wsb_sys'],function(){
         $(function(){
+            //弹窗的关闭
             $('.pop').find('.close').click(function(){
                 $('.pop').fadeOut();
                 $('.popbj').fadeOut();
             });
+            //定义部分变量
             var mobile='',authcode='',authcode_msg='',password='',password1=false;
             //step-1
             var mobile_check = function(flag){
@@ -153,8 +152,8 @@
                         }
                     },'json');
                 }else{
+                    if(flag || mobile)$(".mobile-tip").text('请输入正确格式的手机号码!');//已经正确过或者是焦点离开才提示 正在按键输入时不提示
                     mobile = '';
-                    if(flag || $(".mobile-tip").text()=='可以注册!')$(".mobile-tip").text('请输入正确格式的手机号码!');
                 }
             };
             $("#mobile").keyup(function(){mobile_check();}).blur(function(){mobile_check(1);});
@@ -189,6 +188,9 @@
                         $("#captcha").focus();
                         $(".captcha-tip").text('请输入正确格式的图片验证码!');
                     }
+                }else{
+                    mobile_check(1);
+                    $("#mobile").focus();
                 }
             });
             //step-2

@@ -206,9 +206,10 @@ class Invest extends MY_Controller{
 	 * ajax 获取项目详情 活动页用
 	 */
 	public function ajax_get_project_info(){
-		$data = $this->project->get_project_info($this->input->post('borrow_no',TRUE));
+		$data = $this->project->jbb_list($this->input->get('borrow_no',TRUE));
 		exit(json_encode($data));
 	}
+
 
 	/**
 	 * 投资榜详细榜单

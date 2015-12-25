@@ -2480,7 +2480,7 @@ a:hover{ color:#3cb5ec;}
     background:#83bf73;
 }
 .product_of_invest_home_1 .fu span{
-    background:#e1b480;
+    background:#c795df;
 }
 .product_of_invest_home_1 .lv{
     color:#3cb5ec;
@@ -2607,6 +2607,12 @@ a:hover{ color:#3cb5ec;}
     line-height:74px;
 }
 .invest_detail .invest_body_bdxx.invest_body_bdxx_1 .fl ul li span.yi{
+    background:#c795df;
+}
+.invest_detail .invest_body_bdxx.invest_body_bdxx_1 .fl ul li span.wen{
+    background:#83bf73;
+}
+.invest_detail .invest_body_bdxx.invest_body_bdxx_1 .fl ul li span.fu{
     background:#c795df;
 }
 .invest_detail .invest_body_bdxx.invest_body_bdxx_1 .fl ul li p.qdcn.col_333 {
