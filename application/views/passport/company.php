@@ -39,7 +39,7 @@
             </p>
             <p>
                 <span class="z1"></span>
-                <span class="z2"><input type="checkbox" checked>我同意<a href="" class="ls">《聚雪球企业用户注册协议》</a></span>
+                <span class="z2"><input type="checkbox" checked>我同意<a href="/index.php/about/register_agreement" class="ls">《聚雪球企业用户注册协议》</a></span>
                 <span class="z3"></span>
             </p>
             <p>
@@ -77,7 +77,7 @@
         </p>
         <p>
             <span class="z1">密码</span>
-            <span class="z2 sj"><input type="password" name="password" id="password" class="ifhav" placeholder="请输入密码" /></span>
+            <span class="z2 sj"><input type="password" name="password" id="password" class="ifhav reg_sj" placeholder="请输入密码" /></span>
             <span class="z3"></span>
         </p>
         <p>
@@ -87,7 +87,7 @@
         </p>
         <p>
             <span class="z1">确认密码</span>
-            <span class="z2 sj"><input type="password" name="password1" id="password1" class="ifhav" placeholder="请输入确认密码" /></span>
+            <span class="z2 sj"><input type="password" name="password1" id="password1" class="ifhav reg_sj" placeholder="请输入确认密码" /></span>
             <span class="z3"></span>
         </p>
         <p>
@@ -97,7 +97,7 @@
         </p>
         <p>
             <span class="z1"></span>
-            <span class="z2 sbut"><button type="button" class="hs" onclick="goto_page(1);">上一步</button><button type="button" id="step-2-submit" class="ls">下一步</button></span>
+            <span class="z2 sbut"><button type="button" class="hs" onclick="goto_page(1);">上一步</button><button type="button" id="step-2-submit" class="ls ajax-submit-button" data-loading-msg="注册中...">下一步</button></span>
             <span class="z3"></span>
         </p>
     </form>
@@ -154,13 +154,18 @@
                     },'json');
                 }else{
                     mobile = '';
-                    if(flag)$(".mobile-tip").text('请输入正确格式的手机号码!');
+                    if(flag || $(".mobile-tip").text()=='可以注册!')$(".mobile-tip").text('请输入正确格式的手机号码!');
                 }
             };
             $("#mobile").keyup(function(){mobile_check();}).blur(function(){mobile_check(1);});
+            $("#captcha").keyup(function(){$(".captcha-tip").text('');});
             $('#step-1-submit').click(function(){
                 if(mobile){
                     if(/^[0-9]{5,}$/.test($("#captcha").val())){
+                        if( ! $('input[type="checkbox"]').prop('checked')){
+                            wsb_alert('请先阅读并同意注册协议!',2);
+                            return false;
+                        }
                         $.post('/index.php/send/ajax_check_captcha',{captcha:$("#captcha").val()},function(rs){
                             if(rs.status == '10000'){
                                 $(".captcha-tip").text('验证码正确!');
@@ -177,9 +182,11 @@
                                 });
                             }else{
                                 $(".captcha-tip").text(rs.msg);
+                                $("#captcha").focus();
                             }
                         },'json');
                     }else{
+                        $("#captcha").focus();
                         $(".captcha-tip").text('请输入正确格式的图片验证码!');
                     }
                 }
@@ -192,7 +199,7 @@
                     password = $("#password").val();
                 }else{
                     password = '';
-                    if(flag)$(".password-tip").text('请输入6-20位数字字母下划线组成的密码!');
+                    if(flag || $(".password-tip").text() == 'ok!')$(".password-tip").text('请输入6-20位数字字母下划线组成的密码!');
                 }
             };
             var password1_check = function(flag){
@@ -202,18 +209,21 @@
                         $(".password1-tip").text('ok!');
                         password1 = true;
                     }else{
-                        if(flag)$(".password1-tip").text('两次密码不一致!');
+                        if(flag || $(".password1-tip").text() == 'ok!')$(".password1-tip").text('两次密码不一致!');
                         password1 = false;
                     }
                 }else{
                     password1 = false;
-                    if(flag)$(".password1-tip").text('请输入确认密码!');
+                    if(flag || $(".password1-tip").text() == 'ok!')$(".password1-tip").text('请输入与密码相同的确认密码!');
                 }
             };
             $("#password").keyup(function(){password_check();}).blur(function(){password_check(1);});
             $("#password1").keyup(function(){password1_check();}).blur(function(){password1_check(1);});
+            $("#authcode").keyup(function(){$(".authcode-tip").text('');});
             $('#step-2-submit').click(function(){
-                if(mobile && password && password1){
+                if(mobile){
+                    if( !password){ password_check(1);return false;}
+                    if( !password1){ password1_check(1);return false;}
                     if(/^[0-9]{6}$/.test($("#authcode").val())){
                         $.post('/index.php/login/company',{mobile:mobile,authcode:$("#authcode").val(),password:password},function(rs){
                             if(rs.status == '10000'){

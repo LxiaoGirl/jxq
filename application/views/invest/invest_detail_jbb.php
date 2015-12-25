@@ -65,9 +65,9 @@
                             <input type="button" class="ls"   id="invest-button" value="马上加入" >
                             <span class="but_pop_tip msg" style="display: none; top:42px;"></span>
                             <?php elseif($jbb_list['data']['type']==2):?>
-                            <input type="button"  class="bs" class="ymbbut" value="已售罄" >
+                            <button   class="hs" type="button"  >已售罄</button>
                             <?php else:?>
-                            <input type="button" class="ls_1" value="即将开始" >
+                            <button  class="ls_1" type="button" >即将开始</button>
                             <?php endif;?>
                         </p>
                         <div class="invest_zjmm_pop">

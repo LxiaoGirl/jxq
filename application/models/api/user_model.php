@@ -176,9 +176,9 @@ class User_model extends CI_Model{
 			return $data;
 		}
 
-		$temp['is_check'] = $this->common->validation_authcode($mobile, $authcode, 1, 0);//验证是否过期
+		$temp['is_check'] = $this->common->validation_authcode($mobile, $authcode, 'register', 0);//验证是否过期
 
-		if( ! empty($temp['is_check'])){
+		if($temp['is_check']['status'] == '10000'){
 			if($company_code){
 				$temp['company'] = $this->check_company_invitation_code($company_code);
 				if($temp['company']['status'] != '10000'){
@@ -764,7 +764,7 @@ class User_model extends CI_Model{
 
 			$temp['where'] = array('where' => array('mobile' => $mobile),'select'=>'password,uid,mobile,clientkind');
 			$temp['info'] = $this->c->get_row(self::user, $temp['where']);
-			if($temp['info']){
+			if($temp['info'] && $temp['info']['password']){
 				switch($temp['info']['clientkind']){
 					case '-1':
 						$data['msg'] = '该手机已进行了个人注册不能用作企业用户申请!';
@@ -789,8 +789,7 @@ class User_model extends CI_Model{
 						$data['msg'] = '该手机已提交了企业用户申请请等待审核';
 						break;
 					default:
-						$data['status'] = '10000';
-						$data['msg'] = '手机号码可以使用！';
+						$data['msg'] = '该手机已进行了个人注册不能用作企业用户申请!';
 				}
 			}else{
 				$data['status'] = '10000';

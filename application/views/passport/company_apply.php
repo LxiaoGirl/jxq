@@ -60,7 +60,7 @@
         </p>
         <p class="tip">
             <span class="z1"></span>
-            <span class="z2 company-user-name-tip">需与下一步提交的证照信息一致，信息审核成功后，此项不可修改。</span>
+            <span class="z2 company-user-name-tip">需与下一步提交的证照信息一致，点击下一步会保存此项信息，保存后不可修改。</span>
             <span class="z3"></span>
         </p>
         <p>
@@ -70,12 +70,12 @@
         </p>
         <p class="tip">
             <span class="z1"></span>
-            <span class="z2 company-user-nric-tip">需与下一步提交的证照信息一致，信息审核成功后，此项不可修改。</span>
+            <span class="z2 company-user-nric-tip">需与下一步提交的证照信息一致，点击下一步会保存此项信息，保存后不可修改。</span>
             <span class="z3"></span>
         </p>
         <p>
             <span class="z1"></span>
-            <span class="z2 sbut"><button type="button" class="ls ajax_submit-button" id="step-3-submit">下一步</button></span>
+            <span class="z2 sbut"><button type="button" class="ls ajax_submit-button" id="step-3-submit" data-loading-msg="提交中...">下一步</button></span>
             <span class="z3"></span>
         </p>
     </form>
@@ -166,7 +166,7 @@
             <p>开户银行：<font class="company-bank-name-show"></font></p>
             <p>开户银行账号：<font class="company-bank-account-show"></font></p>
             <p class="red">认证费用：300元</p>
-            <p><button type="button" class="ls ajax-submit-button" id="recharge-confirm-submit">提交</button></p>
+            <p><button type="button" class="ls ajax-submit-button" id="recharge-confirm-submit" data-loading-msg="申请提交中...">提交</button></p>
         </div>
     </div>
 </div>
