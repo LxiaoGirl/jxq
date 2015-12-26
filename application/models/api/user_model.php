@@ -182,7 +182,7 @@ class User_model extends CI_Model{
 			if($company_code){
 				$temp['company'] = $this->check_company_invitation_code($company_code);
 				if($temp['company']['status'] != '10000'){
-					$data['msg'] = '公司邀请码错误!';
+					$data['msg'] = '邀请码错误!';
 					return $data;
 				}else{
 					//有data说明company code  是居间人code 交换一下两个值
@@ -207,7 +207,8 @@ class User_model extends CI_Model{
 					'reg_date'    => time(),
 					'reg_ip'      => $_SERVER["REMOTE_ADDR"],
 					'last_date'   => 0,
-					'last_ip'     => ''
+					'last_ip'     => '',
+					'clientkind'  =>'-1'
 			);
 			if($type)$temp['data']['clientkind'] = '-2';
 			if($company_code){
@@ -269,8 +270,8 @@ class User_model extends CI_Model{
 			$data['status'] = '10000';
 			return $data;
 		}
-		if( !$type && $user_info['clientkind'] != '-1'){
-			$data['msg'] = '该用户已实名认证!';
+		if( !$type && in_array($user_info['clientkind'],array('1','2','-2','-3','-4','-5'))){
+			$data['msg'] = '该用户已实名认证或其他类型的认证了!';
 			return $data;
 		}
 
@@ -2677,7 +2678,8 @@ class User_model extends CI_Model{
 		$inviter_uid = 0;
 
 		if($inviter_code != ''){
-			$inviter_uid = (int)$this->c->get_one(self::user,array('select'=>'uid','where'=>array('inviter_no'=>$inviter_code)));
+			$field = $this->_is_mobile($inviter_code)?'mobile':'inviter_no';
+			$inviter_uid = (int)$this->c->get_one(self::user,array('select'=>'uid','where'=>array($field=>$inviter_code)));
 		}
 
 		return $inviter_uid;
