@@ -157,7 +157,7 @@
 <!--footer-->
 <!--userjs start-->
 <script type="text/javascript">
-    seajs.use(['jquery','sys','validator'],function(){
+    seajs.use(['jquery','sys','validator','wsb_sys'],function(){
         $('.ifhav').focus(function(){
             $(this).addClass('hav');
         });

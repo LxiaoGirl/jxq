@@ -32,7 +32,7 @@
     <?php $this->load->view('common/footer'); ?>
 <!--footer-->
 <script type="text/javascript">
-seajs.use(['jquery','sys','jqform','validator'],function(){
+seajs.use(['jquery','sys','jqform','validator','wsb_sys'],function(){
     //INPUT框变色
         $('.inp').find('input').focus(function(){
             $(this).siblings('img.ls').show();

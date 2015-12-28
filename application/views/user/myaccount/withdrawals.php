@@ -83,7 +83,7 @@
 
 <!--userjs start-->
 <script type="text/javascript">
-    seajs.use(['jquery','sys','jqform','validator'],function(){
+    seajs.use(['jquery','sys','jqform','validator','wsb_sys'],function(){
         //INPUT框变色
         $('.ifhav').focus(function(){
             $(this).addClass('hav');

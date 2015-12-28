@@ -492,7 +492,7 @@
 <!--footer-->
 <!--userjs start-->
 <script type="text/javascript">
-    seajs.use(['jquery','sys'],function(){
+    seajs.use(['jquery','sys','wsb_sys'],function(){
         //INPUT框变色
         $('.ifhav').focus(function(){
             $(this).addClass('hav');
