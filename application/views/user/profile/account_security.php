@@ -27,7 +27,7 @@
             </ul>
             <ul class="tab_con">
                 <li class="zhxx active">
-                    <p><font>实名认证</font><font class="zj real_name_flag"><?php echo profile('clientkind') == '1'?'已认证':'未认证'; ?></font><font class="yc"><?php echo profile('clientkind') == '1'?profile('real_name'):'<i class="smrz real_name_button">去认证</i>'; ?></font></p>
+                    <p><font>实名认证</font><font class="zj real_name_flag"><?php echo in_array(profile('clientkind'),array('1','2','-3','-4','-5'))?'已认证':'未认证'; ?></font><font class="yc"><?php echo in_array(profile('clientkind'),array('1','2','-3','-4','-5'))?profile('real_name'):'<i class="smrz real_name_button">去认证</i>'; ?></font></p>
                         <!--实名认证_1-->
                         <div class="user_data_pop smrz_1">
                             <div class="title">

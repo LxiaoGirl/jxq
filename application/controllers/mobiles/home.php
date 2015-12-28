@@ -277,6 +277,9 @@ class Home extends MY_Controller{
                 if($temp['password'] != $temp['security']){
                     throw new Exception('对不起，您输入的资金密码不正确!');
                 }
+                if($this->session->userdata('clientkind') != '1' && $this->session->userdata('clientkind') != '2'){
+                    throw new Exception('对不起，您先进行实名相关认证!');
+                }
 
                 $temp['balance'] = $this->borrow->get_user_balance(); // 当前账户可用余额
                 $temp['detail']  = $this->borrow->get_borrow_detail($temp['amount'], $temp['borrow_no']);
@@ -745,7 +748,7 @@ class Home extends MY_Controller{
             exit(json_encode($data));
         }
 
-        $this->_check_realname();
+        $this->_check_realname(true);
         //查询 余额 和 绑定的银行卡信息
         $data = array(
             'balance' => (float)$this->user->get_user_balance(),
@@ -905,7 +908,7 @@ class Home extends MY_Controller{
      *我的银行卡
      */
     public function my_card(){
-        $this->_check_realname();
+        $this->_check_realname(true);
         $data['account'] = $this->account->get_card_list();
         $this->load->view(self::dir.'my_card',$data);
     }
@@ -1449,9 +1452,26 @@ class Home extends MY_Controller{
      * 实名验证
      * @return bool
      */
-    protected function _check_realname(){
-        if($this->session->userdata('clientkind') != 1){
-            redirect(self::dir.'home/real_name','location');
+    protected function _check_realname($type=false){
+        if( !$this->session->userdata('uid'))redirect(self::dir.'home/real_name','location');
+
+        //加入企业认证后的实名验证
+        if($type){ //type=true 标识 严格检查 必须所有认证通过 =1|2
+            if($this->session->userdata('clientkind') !='1' && $this->session->userdata('clientkind') != '2'){
+                if(!$this->session->userdata('clientkind') || $this->session->userdata('clientkind') == '-1'){
+                    redirect(self::dir.'home/real_name','location');
+                }else{
+                    exit('<h2>请进入PC版进行企业认证资料提交!</h2>');
+                }
+            }
+        }else{ //非严格认证 =1|2|-3|-4|-5 都进行了实名认证 但企业认证是部分资料不完整
+            if( !in_array($this->session->userdata('clientkind'),array('1','2','-3','-4','-5'))){
+                if($this->session->userdata('clientkind') == '-2'){
+                    exit('<h2>请进入PC版进行企业认证资料提交!</h2>');
+                }else{
+                    redirect(self::dir.'home/real_name','location');
+                }
+            }
         }
     }
 

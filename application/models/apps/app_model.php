@@ -563,7 +563,7 @@ class App_model extends CI_Model{
      * @return bool
      */
     private function _is_enterprise(){
-        if($this->session->userdata('clientkind') == 0){
+        if($this->session->userdata('clientkind') == 2){
             return TRUE;
         }
         return false;
@@ -585,7 +585,7 @@ class App_model extends CI_Model{
      * @return bool
      */
     private function _is_realname(){
-        if($this->session->userdata('clientkind') == 0 || $this->session->userdata('clientkind') == 1){
+        if($this->session->userdata('clientkind') == 2 || $this->session->userdata('clientkind') == 1){
             return true;
         }
         return false;

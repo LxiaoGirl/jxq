@@ -20,7 +20,7 @@
                     <span>vip<font>0</font></span></p>
                 <p class="str_img">
                     <a href="<?php echo site_url('user/user/account_information') ;?>"><img src="../../../assets/images/common/user_left_2_ok.png" title="手机绑定"></a>
-                    <a href="<?php echo site_url('user/user/account_security') ;?>"><img id="real_name_image" src="<?php if(profile('clientkind') == '1'): ?>/assets/images/common/user_left_1_ok.png<?php else: ?>/assets/images/common/user_left_1.png<?php endif; ?>" title="实名认证"></a>
+                    <a href="<?php echo site_url('user/user/account_security') ;?>"><img id="real_name_image" src="<?php if(in_array(profile('clientkind'),array('1','2','-3','-4','-5'))): ?>/assets/images/common/user_left_1_ok.png<?php else: ?>/assets/images/common/user_left_1.png<?php endif; ?>" title="实名认证"></a>
                     <a href="<?php echo site_url('user/user/account_information') ;?>"><img src="<?php if(profile('email')): ?>/assets/images/common/user_left_3_ok.png<?php else: ?>/assets/images/common/user_left_3.png<?php endif; ?>" title="邮箱绑定"></a>
                 </p>
                 <p>安全等级<a href="<?php echo site_url('user/user/account_information');?>">去提升</a><font class="fr"><?php echo safety();?></font></p>

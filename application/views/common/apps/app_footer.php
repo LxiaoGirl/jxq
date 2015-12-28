@@ -30,7 +30,7 @@
             window.location.reload();
         }else{
             var isRealName = '<?php echo profile('clientkind'); ?>';
-            if(typeof flag != "undefined" && flag==true && (isRealName != 1)){
+            if(typeof flag != "undefined" && flag==true && (isRealName != 1 && isRealName != 2)){
                 window.location.href='/index.php/apps/home/real_name';
             }else{
                 if(typeof url != "undefined" &&  url != '')window.location.href=url;
@@ -62,7 +62,7 @@
         }else{
             var isRealName = '<?php echo profile('clientkind'); ?>';
             var u = navigator.userAgent;
-            if(typeof flag != "undefined" && flag==true && (isRealName != 1)){
+            if(typeof flag != "undefined" && flag==true && (isRealName != 1 && isRealName != 2)){
                 if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
                     to_app_view('<?php echo site_url('apps/home/real_name'); ?>');
                 }else{

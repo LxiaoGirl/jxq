@@ -50,7 +50,7 @@
         <!--            </table>-->
         <!--        </a>-->
 
-        <a href="<?php if (profile('clientkind') == 1 && (profile('real_name') != '' || profile('nric') != '')):echo 'javascript:void(0);';
+        <a href="<?php if (in_array(profile('clientkind'),array('1','2','-3','-4','-5')) && (profile('real_name') != '' || profile('nric') != '')):echo 'javascript:void(0);';
         else:echo site_url('mobiles/home/real_name');endif; ?>" style="display:block;">
             <table width="100%" class="borderb" border="0" cellspacing="0" cellpadding="0">
                 <tbody>
@@ -59,7 +59,7 @@
                         <span class="c_666">实名认证</span>
                     </td>
                     <td align="right">
-                        <?php if (profile('clientkind') == 1 && (profile('real_name') != '' || profile('nric') != '')): ?>
+                        <?php if (in_array(profile('clientkind'),array('1','2','-3','-4','-5')) && (profile('real_name') != '' || profile('nric') != '')): ?>
                             <span class="c_blue"><?php echo profile('real_name'); ?></span>
                         <?php else: ?>
                             <span class="c_blue">未认证</span>
