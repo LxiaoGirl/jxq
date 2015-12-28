@@ -786,8 +786,12 @@ class User_model extends CI_Model{
 						$data['msg'] = '该手机已注册企业用户请登录完善企业用户申请资料!';
 						break;
 					case '-4':
-						$data['status'] = '10001';
+						$data['status'] = '10003';
 						$data['msg'] = '该手机已提交了企业用户申请请等待审核';
+						break;
+					case '-5':
+						$data['status'] = '10003';
+						$data['msg'] = '审核未通过可重新提交申请资料';
 						break;
 					default:
 						$data['msg'] = '该手机已进行了个人注册不能用作企业用户申请!';
@@ -821,7 +825,7 @@ class User_model extends CI_Model{
 			$data['msg'] = '用户不存在!';
 			return $data;
 		}
-		if($temp['user_info']['clientkind'] != '-3'){
+		if($temp['user_info']['clientkind'] != '-3' && $temp['user_info']['clientkind'] != '-5'){
 			$data['msg'] = '该用户当前状态不能进行企业认证资料提交!';
 			return $data;
 		}

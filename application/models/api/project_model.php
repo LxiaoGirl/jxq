@@ -578,8 +578,12 @@ class Project_model extends CI_Model{
 		}
 
 		//验证实名
-		if($temp['userinfo']['clientkind'] != 1){
-			$data['msg'] 	= '对不起，请先进行实名认证!';
+		if($temp['userinfo']['clientkind'] != 1 && $temp['userinfo']['clientkind'] != 2){
+			if(in_array($temp['userinfo']['clientkind'],array('-2','-3','-4','-5',))){
+				$data['msg'] 	= '对不起，请先进行企业申请认证审核!';
+			}else{
+				$data['msg'] 	= '对不起，请先进行实名认证!';
+			}
 			$data['status'] = '10005';
 			return $data;
 		}
@@ -836,7 +840,7 @@ class Project_model extends CI_Model{
 			return $data;
 		}
 		//公司借款的时候验证是否又公司认证
-		if($type == 2  && $temp['userinfo']['clientkind'] != 0){
+		if($type == 2  && $temp['userinfo']['clientkind'] != 2){
 			$data['msg'] = '尚未进行公司认证不能公司借款!';
 			return $data;
 		}
@@ -1183,7 +1187,7 @@ class Project_model extends CI_Model{
 			);
 			$temp['data'] = $this->c->get_row(self::jbb_dtl, $temp['where']);
 		}else{
-			$sql = 'select temp.* from (select * from `cdb_borrow_jbb_dtl` order by `start_day` desc ,`start_time` desc ) `temp`  group by type_code order by `type_code`';
+			$sql = 'select temp.* from (select * from `cdb_borrow_jbb_dtl` order by `start_day` desc ,`start_time` desc ) `temp`  group by type_code order by `type_code` desc';
 			$query =$this->db->query($sql);
 			$temp['data'] = json_decode(json_encode($query->result()),true);
 		}
@@ -1479,10 +1483,16 @@ class Project_model extends CI_Model{
 		}
 
 		//验证实名
-		if($temp['userinfo']['clientkind'] != 1){
-			$data['msg'] 	= '对不起，请先进行实名认证!';
+		if($temp['userinfo']['clientkind'] != 1 && $temp['userinfo']['clientkind'] != 2){
+			if(in_array($temp['userinfo']['clientkind'],array('-2','-3','-4','-5',))){
+				$data['msg'] 	= '对不起，请先进行企业申请认证审核!';
+				$data['url'] = site_url('login/company_apply');
+			}else{
+				$data['msg'] 	= '对不起，请先进行实名认证!';
+				$data['url'] = site_url('user/user/account_security');
+			}
 			$data['status'] = '10005';
-			$data['url'] = site_url('user/user/account_security'); 
+			 
 			return $data;
 		}
 

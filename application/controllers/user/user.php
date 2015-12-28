@@ -96,6 +96,15 @@ class User extends Login_Controller{
 	 * 提现
 	 */
 	public function withdrawals(){
+		//验证实名
+		if($this->session->userdata('clientkind') != "1" && $this->session->userdata('clientkind') != "2"){
+			if(in_array($this->session->userdata('clientkind'),array('-2','-3','-4','-5'))){
+				redirect('login/company_apply', 'refresh');
+			}else{
+				redirect('user/user/account_security?type=real_name', 'refresh');
+			}
+		}
+
 		$data = array();
 		$uid=$this->session->userdata('uid');
 
@@ -142,8 +151,12 @@ class User extends Login_Controller{
 	public function recharge(){
 
 		//验证实名
-		if($this->session->userdata('clientkind') != "1"){
-			redirect('user/user/account_security?type=real_name', 'refresh');
+		if( !in_array($this->session->userdata('clientkind'),array('1','2','-3','-4','-5'))){
+			if($this->session->userdata('clientkind') == '-2'){
+				redirect('login/company_apply', 'refresh');
+			}else{
+				redirect('user/user/account_security?type=real_name', 'refresh');
+			}
 		}
 		$data['balance'] = $this->cash->get_user_balance($this->session->userdata('uid'));
 		if($data['balance']['status'] == '10000')$data['balance'] = $data['balance']['data']['balance'];
@@ -688,6 +701,14 @@ class User extends Login_Controller{
 			$data = $this->user->Add_bank_card($this->session->userdata('uid'),$this->input->post('account',true),$this->input->post('bank_id',true));
 			exit(json_encode($data));
 		}else{
+			//验证实名
+			if($this->session->userdata('clientkind') != "1" && $this->session->userdata('clientkind') != "2"){
+				if(in_array($this->session->userdata('clientkind'),array('-2','-3','-4','-5'))){
+					redirect('login/company_apply', 'refresh');
+				}else{
+					redirect('user/user/account_security?type=real_name', 'refresh');
+				}
+			}
 			$data = array();
 			$uid = $this->session->userdata('uid');
 			$data['bank'] = $this->user->user_bank($uid);

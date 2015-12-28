@@ -3,6 +3,19 @@
 <head>
     <title>聚雪球_网加金服_P2P理财首选互联网金融P2P网贷平台_100元即可投资!</title>
     <?php $this->load->view('common/head_file'); ?>
+    <style type="text/css">
+        .recharge-button{
+            color: #3cb5ec;
+            font-size: 12px;
+            font-family: '宋体';
+            background: none;
+            padding: 0 10px;
+            vertical-align: middle;
+        }
+        .recharge-button:hover{
+            color: #ff7700;
+        }
+    </style>
 </head>
 <body>
 <!--	加载头部文件-->
@@ -14,7 +27,7 @@
         <h2>企业信息</h2>
         <p>
             <span class="z1">企业名称</span>
-            <span class="z2"><input type="text" class="ifhav" name="company_name" id="company-name" placeholder="请输入企业名称" maxlength="50" value="<?php echo isset($info['company_name'])?$info['company_name']:''; ?>" <?php if($info['company_name']): ?>readonly disabled<?php endif; ?>></span>
+            <span class="z2"><input type="text" class="ifhav" name="company_name" id="company-name" placeholder="请输入企业名称" maxlength="50" value="<?php echo isset($info['company_name'])?$info['company_name']:''; ?>" <?php if($info['company_name']  && profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?>></span>
             <span class="z3"></span>
         </p>
         <p class="tip">
@@ -24,7 +37,7 @@
         </p>
         <p>
             <span class="z1">营业执照注册号</span>
-            <span class="z2"><input type="text" class="ifhav" name="company_code" id="company-code" placeholder="请输入营业执照注册号" maxlength="25" value="<?php echo isset($info['company_code'])?$info['company_code']:''; ?>" <?php if($info['company_code']): ?>readonly disabled<?php endif; ?> /></span>
+            <span class="z2"><input type="text" class="ifhav" name="company_code" id="company-code" placeholder="请输入营业执照注册号" maxlength="25" value="<?php echo isset($info['company_code'])?$info['company_code']:''; ?>" <?php if($info['company_code']  && profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?> /></span>
             <span class="z3"></span>
         </p>
         <p class="tip">
@@ -34,7 +47,7 @@
         </p>
         <p>
             <span class="z1">企业开户银行</span>
-            <span class="z2"><input type="text" class="ifhav" name="company_bank_name" id="company-bank-name" placeholder="请输入企业开户银行" maxlength="20" value="<?php echo isset($info['company_bank_name'])?$info['company_bank_name']:''; ?>" <?php if($info['company_bank_name']): ?>readonly disabled<?php endif; ?>/></span>
+            <span class="z2"><input type="text" class="ifhav" name="company_bank_name" id="company-bank-name" placeholder="请输入企业开户银行" maxlength="20" value="<?php echo isset($info['company_bank_name'])?$info['company_bank_name']:''; ?>" <?php if($info['company_bank_name']  && profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?>/></span>
             <span class="z3"></span>
         </p>
         <p class="tip">
@@ -44,7 +57,7 @@
         </p>
         <p>
             <span class="z1">银行账号</span>
-            <span class="z2"><input type="text" class="ifhav" name="company_bank_account" id="company-bank-account" placeholder="请输入企业开户银行账号" value="<?php echo isset($info['company_bank_account'])?$info['company_bank_account']:''; ?>" <?php if($info['company_bank_account']): ?>readonly disabled<?php endif; ?> /></span>
+            <span class="z2"><input type="text" class="ifhav" name="company_bank_account" id="company-bank-account" placeholder="请输入企业开户银行账号" value="<?php echo isset($info['company_bank_account'])?$info['company_bank_account']:''; ?>" <?php if($info['company_bank_account']  && profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?> /></span>
             <span class="z3"></span>
         </p>
         <p class="tip">
@@ -55,22 +68,22 @@
         <h2>企业联系人资料</h2>
         <p>
             <span class="z1">联系人姓名</span>
-            <span class="z2"><input type="text" class="ifhav" name="company_user_name" id="company-user-name" placeholder="请输入企业联系人姓名" maxlength="10" value="<?php echo profile('real_name')?profile('real_name'):''; ?>" <?php if(profile('real_name')): ?>readonly disabled<?php endif; ?> /></span>
+            <span class="z2"><input type="text" class="ifhav" name="company_user_name" id="company-user-name" placeholder="请输入企业联系人姓名" maxlength="10" value="<?php echo profile('real_name')?profile('real_name'):''; ?>" <?php if(profile('real_name')  && profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?> /></span>
             <span class="z3"></span>
         </p>
         <p class="tip">
             <span class="z1"></span>
-            <span class="z2 company-user-name-tip">需与下一步提交的证照信息一致，点击下一步会保存此项信息，保存后不可修改。</span>
+            <span class="z2 company-user-name-tip">需与下一步提交的证照信息一致，点击下一步会保存此项信息，成功后不可修改。</span>
             <span class="z3"></span>
         </p>
         <p>
             <span class="z1">联系人身份证号码</span>
-            <span class="z2"><input type="text" class="ifhav" name="company_user_nric" id="company-user-nric" placeholder="请输入企业联系人身份证号码" maxlength="18" value="<?php echo profile('nric')?profile('nric'):''; ?>"  <?php if(profile('nric')): ?>readonly disabled<?php endif; ?> /></span>
+            <span class="z2"><input type="text" class="ifhav" name="company_user_nric" id="company-user-nric" placeholder="请输入企业联系人身份证号码" maxlength="18" value="<?php echo profile('nric')?profile('nric'):''; ?>"  <?php if(profile('nric')  && profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?> /></span>
             <span class="z3"></span>
         </p>
         <p class="tip">
             <span class="z1"></span>
-            <span class="z2 company-user-nric-tip">需与下一步提交的证照信息一致，点击下一步会保存此项信息，保存后不可修改。</span>
+            <span class="z2 company-user-nric-tip">需与下一步提交的证照信息一致，点击下一步会保存此项信息，成功后不可修改。</span>
             <span class="z3"></span>
         </p>
         <p>
@@ -93,7 +106,10 @@
             </span>
             <span class="z3 business-license-tips">
             <a href="javascript:void(0);" class="green" style="">
-            <input type="file" name="business_license" id="business-license" class="file-upload"/>选择文件
+                <?php if(profile('clientkind')=='-4'): ?>等待审核
+                <?php else: ?>
+                <input type="file" name="business_license" id="business-license" class="file-upload"/>选择文件
+                <?php endif; ?>
             </a>
             <i><i class="percent"></i></i>
             <em class="result"></em>
@@ -108,7 +124,10 @@
             </span>
             <span class="z3 account-permit-tips">
             <a href="javascript:;" class="green" style="">
-            <input type="file" name="account_permit" id="account-permit" class="file-upload" />选择文件
+                <?php if(profile('clientkind')=='-4'): ?>等待审核
+                <?php else: ?>
+                <input type="file" name="account_permit" id="account-permit" class="file-upload" />选择文件
+                <?php endif; ?>
             </a>
             <i><i class="percent"></i></i>
             <em class="result"></em>
@@ -123,7 +142,10 @@
             </span>
             <span class="z3 nric-copy-tips">
             <a href="javascript:;" class="green" style="">
-            <input type="file" name="nric_copy" id="nric-copy" class="file-upload" />选择文件
+                <?php if(profile('clientkind')=='-4'): ?>等待审核
+                <?php else: ?>
+                <input type="file" name="nric_copy" id="nric-copy" class="file-upload" />选择文件
+                <?php endif; ?>
             </a>
             <i><i class="percent"></i></i>
             <em class="result"></em>
@@ -145,26 +167,26 @@
         <div class="fl">
             <p class="p1">以下为您提交的注册信息</p>
             <div>
-                <p>企业名称：<font class="company-name-show"></font></p>
-                <p>营业执照号码：<font class="company-code-show"></font></p>
-                <p>企业开户银行：<font class="company-bank-name-show"></font></p>
-                <p>企业银行账号：<font class="company-bank-account-show"></font></p>
+                <p>企业名称：<font class="company-name-show"><?php echo $info['company_name']; ?></font></p>
+                <p>营业执照号码：<font class="company-code-show"><?php echo $info['company_code']; ?></font></p>
+                <p>企业开户银行：<font class="company-bank-name-show"><?php echo $info['company_bank_name']; ?></font></p>
+                <p>企业银行账号：<font class="company-bank-account-show"><?php echo $info['company_bank_account']; ?></font></p>
             </div>
         </div>
         <div class="fr">
-            <p class="p1">当前账户余额：<span id="balance"><?php echo isset($balance)?$balance:'0.00'; ?></span>元 <button class="recharge-button" type="button" onclick="window.location.href='/index.php/pay/pay/index?amount=300&recharge_no=<?php echo $recharge_no; ?>'">充值</button><button type="button" class="recharge-refresh">刷新余额</button></p>
+            <p class="p1">当前账户余额：<span id="balance"><?php echo isset($balance)?$balance:'0.00'; ?></span>元 <a class="recharge-button" type="button" href="/index.php/pay/pay/index?amount=300&recharge_no=<?php echo $recharge_no; ?>" target="_blank">充值</a><button type="button" class="recharge-refresh ajax-submit-button" data-loading-msg="刷新中...">刷新余额</button></p>
             <p class="p2">企业信息审核由第三方公司负责审核，需要收取审核费300元。如果由于您提供的资料错误导致审核失败，再次提交审核时需再次缴纳300元审核费。</p>
         </div>
     </div>
 
-    <p class="tc"><button class="hs" type="button" onclick="goto_page(4);">上一步</button><button class="ls" type="button" id="step-5-submit">提交审核</button></p>
+    <p class="tc"><button class="hs" type="button" onclick="goto_page(4);">上一步</button><button class="ls" type="button" <?php if(profile('clientkind') != '-4'): ?> id="step-5-submit" <?php endif; ?>><?php if(profile('clientkind') == '-4'): ?>等待审核<?php else: ?>提交审核<?php endif; ?></button></p>
     <div class="popbj recharge-confirm" style="display: none;"></div>
     <div class="pop recharge-confirm" style="display: none;">
         <div class="popnr">
             <p class="title">申请提示<font class="fr close">×</font></p>
             <p>请再次确认您的银行账号信息，一旦提交后，您将无法修改您的开户银行和开户银行账号。</p>
-            <p>开户银行：<font class="company-bank-name-show"></font></p>
-            <p>开户银行账号：<font class="company-bank-account-show"></font></p>
+            <p>开户银行：<font class="company-bank-name-show"><?php echo $info['company_bank_name']; ?></font></p>
+            <p>开户银行账号：<font class="company-bank-account-show"><?php echo $info['company_bank_account']; ?></font></p>
             <p class="red">认证费用：300元</p>
             <p><button type="button" class="ls ajax-submit-button" id="recharge-confirm-submit" data-loading-msg="申请提交中...">提交</button></p>
         </div>
@@ -175,10 +197,10 @@
     <h1>企业用户注册</h1>
     <img src="../../../../assets/images/passport/step_5.jpg" alt="">
     <h2>您已成功完成企业注册申请！</h2>
-    <p class="ti411">企业名称：<font class="company-name-show"></font></p>
-    <p class="ti411">营业执照号码：<font class="company-code-show"></font></p>
-    <p class="ti411">企业开户银行：<font class="company-bank-name-show"></font></p>
-    <p class="ti411">企业银行账号：<font class="company-bank-account-show"></font></p>
+    <p class="ti411">企业名称：<font class="company-name-show"><?php echo $info['company_name']; ?></font></p>
+    <p class="ti411">营业执照号码：<font class="company-code-show"><?php echo $info['company_code']; ?></font></p>
+    <p class="ti411">企业开户银行：<font class="company-bank-name-show"><?php echo $info['company_bank_name']; ?></font></p>
+    <p class="ti411">企业银行账号：<font class="company-bank-account-show"><?php echo $info['company_bank_account']; ?></font></p>
     <p class="tc"><button style="width:250px;" class="ls" type="button" onclick="window.location.href='/index.php/user/user/account_home'">进入个人中心</button></p>
 </div>
 </body>
@@ -417,7 +439,9 @@
                 });
 
                 //充值刷新
-                var refresh_func = function(obj){
+                var is_auto = true;
+                var refresh_func = function(){
+                    is_auto = false;
                     $.post('/index.php/user/user/ajax_recharge_auto_refresh',{'recharge_no':'<?php echo $recharge_no; ?>'},function(rs){
                         if(rs.status == '10000'){
                             $("#balance").text(rs.data);
@@ -429,7 +453,7 @@
                             wsb_alert('充值尚未成功,如确认已充值扣费请稍后查询或联系客服人员!',3);
                             $(".recharge-refresh").unbind('click').bind('click',function(){
                                 $(".recharge-refresh").unbind('click');
-                                refresh_func($(this));
+                                refresh_func();
                             });
                         }
                     },'json');
@@ -437,17 +461,25 @@
                 var recharge_auto_refresh = function(recharge_no){
                     var recharge_fresh_time = 0;
                     var refresh_recharge = function(){
-                        $('.cz_pop_msg').text('正在查询订单充值结果,请稍后...').show();
+                        if( !is_auto){
+                            clearTimeout(recharge_fresh_time);
+                            return;
+                        }
+                        $(".recharge-refresh").unbind('click').text('刷新中...').css('color','#CCC');
                         $.post('<?php echo site_url('user/user/ajax_recharge_auto_refresh'); ?>',{'recharge_no':'<?php echo $recharge_no; ?>'},function(rs){
                             if(rs.status == '10000'){
                                 $('#balance').html(rs.data);
                                 balance = rs.data;
                                 clearTimeout(recharge_fresh_time);
                             } else if(rs.status == '10001'){
-                                recharge_fresh_time = setTimeout(function(){refresh_recharge();},1000);
+                                recharge_fresh_time = setTimeout(function(){refresh_recharge();},5000);
                             }else{
                                 //什么也不做了
                             }
+                            $(".recharge-refresh").unbind('click').bind('click',function(){
+                                $(".recharge-refresh").unbind('click');
+                                refresh_func();
+                            }).text('刷新余额').css('color','#3cb5ec');
                         },'json');
                     };
                     //5秒后开始执行刷新
@@ -456,7 +488,7 @@
                 $('.recharge-button').click(function(){
                     $(".recharge-refresh").unbind('click').bind('click',function(){
                         $(".recharge-refresh").unbind('click');
-                        refresh_func($(this));
+                        refresh_func();
                     });
                     recharge_auto_refresh();
                 });

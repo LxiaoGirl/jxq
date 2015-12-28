@@ -140,7 +140,7 @@
                                 break;
                             case '10003':
                                 mobile = '';
-                                wsb_alert('你已完成注册内容，请登录完善申请资料!',1,'/index.php/login/index?redirect_url=<?php echo urlencode(site_url('login/company_apply')); ?>');
+                                wsb_alert(rs.msg,1,'/index.php/login/index?redirect_url=<?php echo urlencode(site_url('login/company_apply')); ?>');
                                 break;
                             case '10002':
                                 mobile = '';

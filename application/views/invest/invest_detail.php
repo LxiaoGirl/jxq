@@ -218,8 +218,8 @@
                         $(".msg").show().find('p').html('您还没有设置资金密码哦<a href="<?php echo site_url('user/user/account_security'); ?>">设置资金密码</a>');
                         return false;
                     }
-                    if ( is_real_name != '1') {
-                        $(".msg").show().find('p').html('您还没有进行实名认证哦<a href="<?php echo site_url('user/user/account_security'); ?>">实名认证</a>');
+                    if ( is_real_name != '1' && is_real_name != '2' ) {
+                        $(".msg").show().find('p').html('您还没有进行实名认证哦<a href="<?php echo profile('clientkind')=='-2'?site_url('login/company_apply'):site_url('user/user/account_security'); ?>">实名认证</a>');
                         return false;
                     }
                     var money = $(".invest-amount").val();

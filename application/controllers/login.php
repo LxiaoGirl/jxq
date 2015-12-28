@@ -324,10 +324,11 @@ class Login extends MY_Controller{
 		// 如果已登录 验证登录信息的个人类型【clicentkind】
 		//=-2 表示已经进行了公司注册但未进行资料提交和申请 跳转到资料提交页面
 		//=-3 标识 已经注册 并填写了身份证 单未提交申请。。跳转到资料提交页面 但部分资料已被锁定修改
+		//=-4 标识 已经提交了申请
 		//=-5标识审核未通过 可以修改资料重新提交
 		//其他则跳转到主页
 		if($this->session->userdata('uid') > 0){
-			if(profile('clientkind') == '-2' || profile('clientkind') == '-3'  || profile('clientkind') == '-5'){
+			if(in_array(profile('clientkind'),array('-2','-3','-4','-5'))){
 				redirect('login/company_apply');
 			}else{
 				redirect('home');
@@ -362,7 +363,7 @@ class Login extends MY_Controller{
 		//如果登录用户类型 不是-2【已企业注册但未填资料和提交文件实名开户等】 -3【已实名开户但未提交资料和申请】 -5【后台审核未通过 重新提交】跳转走回主页
 		//未登录则跳到登录登录后返回
 		if($this->session->userdata('uid') > 0){
-			if(profile('clientkind') != '-2' && profile('clientkind') != '-3'  && profile('clientkind') != '-5')redirect('home');
+			if( !in_array(profile('clientkind'),array('-2','-3','-4','-5')))redirect('home');
 		}else{
 			redirect('login');
 		}
