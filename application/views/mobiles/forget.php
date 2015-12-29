@@ -16,8 +16,7 @@
 
             <p>短信验证码：</p>
             <input id="hy_pwd" type="text" value=""/>
-            <input id="dx" class="harf" type="text" value="发送短信验证码" readonly><input id="yy" class="harf" type="text"
-                                                                                    value="收听语音验证码" readonly/>
+            <input id="dx" class="harf" type="text" value="发送短信验证码" readonly><input id="yy" class="harf" type="text"value="收听语音验证码" readonly/>
             <input id="login_btn" type="submit" value="下一步"/>
         </form>
     </div>
@@ -127,16 +126,17 @@
             }
             $("#login_btn").prop("disabled", true).val('验证中...');
             $.ajax({
-                url: '/index.php/mobiles/home/ajax_forget_check',
+                url: '/index.php/send/validate_authcode',
                 dataType: 'json',
                 type: 'post',
                 data: {
                     'mobile': $("#hy_tel").val(),
-                    'authcode': $("#hy_pwd").val()
+                    'authcode': $("#hy_pwd").val(),
+                    'action': 'forget'
                 },
                 success: function (resut) {
                     $("#login_btn").prop("disabled", false).val('下一步');
-                    if (resut.status == 0) {
+                    if (resut.status == '10000') {
                         my_mobile = $("#hy_tel").val(), authcode = $("#hy_pwd").val();
                         $("#page-one").hide();
                         $("#page-two").show();
@@ -169,13 +169,11 @@
                 },
                 success: function (resut) {
                     $("#new_btn").prop("disabled", false).val('提交修改');
-                    if (resut.status == 0) {
-                        my_alert(resut.msg);
+                    my_alert(resut.msg);
+                    if (resut.status == '10000') {
                         var tt = setTimeout(function () {
-                            window.location.replace('<?php echo site_url('mobiles/home/login') ; ?>');
-                        }, 2000);
-                    } else {
-                        my_alert(resut.msg);
+                            window.location.replace('/index.php/mobiles/home/login');
+                        }, 1000);
                     }
                 }
             });

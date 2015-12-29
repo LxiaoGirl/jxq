@@ -10,7 +10,7 @@
  * @version     1.0.0
  */
 
-class User_model extends CI_Model
+class User1_model extends CI_Model
 {
     const user        = 'user'; // 会员表
     const borrow      = 'borrow'; // 借款

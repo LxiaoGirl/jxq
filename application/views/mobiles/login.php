@@ -56,13 +56,11 @@
                     'password': $(":input[name='password']").val()
                 },
                 success: function (resut) {
-                    if (resut.status == 0) {
-                        my_alert(resut.msg);
+                    my_alert(resut.msg);
+                    if (resut.status == '10000') {
                         var tt = setTimeout(function () {
-                            window.location.replace('<?php echo $_SERVER['HTTP_REFERER'] ; ?>');
+                            window.location.replace(resut.url);
                         }, 1000);
-                    } else {
-                        my_alert(resut.msg);
                     }
                 }
             });

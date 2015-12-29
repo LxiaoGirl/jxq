@@ -48,26 +48,54 @@ class Home extends MY_Controller{
         }
 
         //加载必要model
-        $this->load->model('web_1/user_model','user');                         //用户
+        $this->load->model('web_1/user1_model','user');                         //用户
         $this->load->model('web_1/borrow_model', 'borrow');                   //借款
         $this->load->model('web_1/user/transaction_model', 'transaction'); //交易 充值提现
         $this->load->model(self::dir.'app_model', 'app');               //app model
         $this->load->model('web_1/send_model', 'send');                       //发送短信
         $this->load->model('web_1/user/account_model','account');           //会员银行帐户
+
+
+
+        $this->load->model('api/user_model','user_api');       //2.0版用户相关model
+        $this->load->model('api/cash_model','cash_api');       //2.0版资金相关model
     }
 
 /************************************---注册---***********************************************/
     /**
-     * 注册
-     *
+     * 注册的显示和ajax处理
      */
     public function register(){
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->app->register();
+            $data = $this->user_api->register(
+                $this->input->post('mobile',true),
+                $this->input->post('password',true),
+                $this->input->post('authcode',true),'',
+                $this->input->post('invite_code',true)
+            );
+            if($data['status'] == '10000'){
+                $this->session->set_userdata($data['data']);
+            }
             exit(json_encode($data));
         }
+
         $this->load->view(self::dir.'register');
     }
+
+    /**
+     * 注册协议
+     */
+    public function register_agreement(){
+        $this->load->view(self::dir.'register_agreement');
+    }
+
+    /**
+     *注册成功提示页
+     */
+    public function register_success(){
+        $this->load->view(self::dir.'register_success');
+    }
+
 
     /**
      * 验证手机号码是否注册
@@ -106,20 +134,6 @@ class Home extends MY_Controller{
     public function is_mobile($mobile = ''){
         return (preg_match('/^1[345789](\d){9}$/', $mobile)) ? TRUE : FALSE;
     }
-
-    /**
-     * 注册协议
-     */
-    public function register_agreement(){
-        $this->load->view(self::dir.'register_agreement');
-    }
-
-    /**
-     *注册成功提示页
-     */
-    public function register_success(){
-        $this->load->view(self::dir.'register_success');
-    }
 /************************************---注册---***********************************************/
 
 
@@ -128,7 +142,11 @@ class Home extends MY_Controller{
      *主页
      */
     public function index(){
-        $this->load->view(self::dir.'home');
+        $temp['total'] = $this->cash_api->get_cash_total();
+        if($temp['total']['status'] == '10000'){
+            $data['total'] = $temp['total']['data'];
+        }
+        $this->load->view(self::dir.'home',$data);
     }
 
     /**

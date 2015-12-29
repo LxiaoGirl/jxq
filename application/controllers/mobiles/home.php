@@ -12,24 +12,26 @@
  */
 class Home extends MY_Controller{
     const dir       = 'mobiles/';          //当前控制器controller model view目录
-
     //数据表 常量
-    const user        = 'user';               // 会员
-    const bank        = 'bank';               //银行
-    const card        = 'user_card';          //会员 银行卡
-    const cash        = 'cash_flow';          //资金记录
+    const user        = 'user';             // 会员
+    const bank        = 'bank';             //银行
+    const card        = 'user_card';        //会员之银行卡表
+    const cash        = 'cash_flow';        //资金流动【收支】记录表
     const cate        = 'product_category'; //项目分类表
-    const borrow      = 'borrow';             //借款表
-    const recharge    = 'user_recharge';      // 充值记录
-    const flow        = 'cash_flow';         // 现金记录
-    const payment     = 'borrow_payment';         // 现金记录
-    const snowballdtl = 'cdb_snowballdtl';   //活动表
-    const redbag      = 'cdb_redbag';   //活动表
-    const transfer    = 'user_transaction';   //活动表
+    const borrow      = 'borrow';           //借款【项目】表
+    const recharge    = 'user_recharge';    // 充值记录
+    const flow        = 'cash_flow';        // 现金记录
+    const payment     = 'borrow_payment';   // 投资还款记录表
+    const snowballdtl = 'cdb_snowballdtl';  //活动表
+    const redbag      = 'cdb_redbag';       //红包表
+    const transfer    = 'user_transaction'; //提现表
 
-    protected $_llpay_config = array();
+    protected $_llpay_config = array();    //连连支付需要的配置
+
+
     /**
      *构造函数
+     * 初始化部分内容和model
      */
     public function __construct(){
         parent::__construct();
@@ -47,74 +49,72 @@ class Home extends MY_Controller{
         }
 
         //加载必要model
-        $this->load->model('web_1/user_model','user');                         //用户
-        $this->load->model('web_1/borrow_model', 'borrow');                   //借款
-        $this->load->model('web_1/user/transaction_model', 'transaction'); //交易 充值提现
-        $this->load->model(self::dir.'app_model', 'app');               //app model
-        $this->load->model('web_1/send_model', 'send');                       //发送短信
-        $this->load->model('web_1/user/account_model','account');           //会员银行帐户
+        $this->load->model('web_1/user1_model','user');                         //用户
+        $this->load->model('web_1/borrow_model', 'borrow');                    //借款
+        $this->load->model('web_1/user/transaction_model', 'transaction');     //交易 充值提现
+        $this->load->model(self::dir.'app_model', 'app');                     //app model
+        $this->load->model('web_1/send_model', 'send');                        //发送短信
+        $this->load->model('web_1/user/account_model','account');              //会员银行帐户
+
+
+
+        $this->load->model('api/user_model','user_api');       //2.0版user相关model
+        $this->load->model('api/project_model','project_api'); //2.0版项目相关model
+        $this->load->model('api/cash_model','cash_api');       //2.0版资金相关model
+
     }
 
+
+/************************************---登录-注册---***********************************************/
+
+    /**
+     * 登录的显示和ajax处理
+     */
     public function login(){
+        //ajax部分
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->app->sign_in();
+            $data = $this->user_api->login($this->input->post('mobile',true),$this->input->post('password',true));
+            if($data['status'] == '10000'){
+                $this->session->set_userdata($data['data']);
+                //处理登录成功后的跳转
+                if($this->session->userdata('login_redirect_url')){
+                    $data['url'] = $this->session->userdata('login_redirect_url');
+                    $this->session->set_userdata(array('login_redirect_url'=>false));
+                }else{
+                    $data['url'] = site_url('mobiles');
+                }
+            }
             exit(json_encode($data));
         }
-        if($this->session->userdata('uid') > 0){
-            redirect(self::dir.'home/index','location');
+
+        //页面显示部分
+        $this->_is_login();
+        //js跳转携带返回链接 则保存
+        if(isset($_GET['redirect_url'])){
+            $this->session->set_userdata(array('login_redirect_url'=>$this->input->get('redirect_url',true)));
         }
         $this->load->view(self::dir.'login');
     }
 
-/************************************---注册---***********************************************/
     /**
-     * 注册
+     * 注册的显示部分和ajax处理
      *
      */
     public function register(){
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->app->register();
+            $data = $this->user_api->register(
+                $this->input->post('mobile',true),
+                $this->input->post('password',true),
+                $this->input->post('authcode',true),'',
+                $this->input->post('invite_code',true)
+            );
+            if($data['status'] == '10000'){
+                $this->session->set_userdata($data['data']);
+            }
             exit(json_encode($data));
         }
+
         $this->load->view(self::dir.'register');
-    }
-
-    /**
-     * 验证手机号码是否注册
-     *
-     * @access public
-     * @param  string  $mobile 手机号码
-     * @return object
-     */
-    public function is_registered(){
-        $data           = $temp = array();
-        
-        $data           = array('code' => 1, 'msg' => '您输入的号码已注册!');
-        
-        $temp['mobile'] = $this->input->post('mobile', TRUE);
-
-        if($this->is_mobile( $temp['mobile'] )){
-            $temp['where'] = array('where' => array('mobile' =>  $temp['mobile'] ));
-            $temp['count'] = $this->c->count(self::user, $temp['where']);
-
-            if($temp['count'] == 0){
-                $data = array('code' => 0, 'msg' => '您输入的号码可以注册!');
-            }
-        }
-
-        unset($temp);
-        exit(json_encode($data));
-    }
-
-    /**
-     * 验证用户手机号码格式
-     *
-     * @access public
-     * @param  string  $mobile 手机号码
-     * @return boolean
-     */
-    public function is_mobile($mobile = ''){
-        return (preg_match('/^1[345789](\d){9}$/', $mobile)) ? TRUE : FALSE;
     }
 
     /**
@@ -130,7 +130,28 @@ class Home extends MY_Controller{
     public function register_success(){
         $this->load->view(self::dir.'register_success');
     }
-/************************************---注册---***********************************************/
+
+    /**
+     * 忘记密码的显示和ajax处理
+     */
+    public function forget(){
+        if($this->input->is_ajax_request() == TRUE){
+            $data = $this->user_api->Forget_login_password(
+                $this->input->post('mobile',true),
+                $this->input->post('authcode',true),
+                $this->input->post('new_password',true),
+                $this->input->post('new_password',true)
+            );
+            exit(json_encode($data));
+        }
+        $this->load->view(self::dir.'forget');
+    }
+
+/************************************---登录-注册---***********************************************/
+
+
+
+
 
 
 /************************************--主页和项目相关--***********************************************/
@@ -138,7 +159,12 @@ class Home extends MY_Controller{
      *主页
      */
     public function index(){
-        $this->load->view(self::dir.'home');
+        //资金统计
+        $temp['total'] = $this->cash_api->get_cash_total();
+        if($temp['total']['status'] == '10000'){
+            $data['total'] = $temp['total']['data'];
+        }
+        $this->load->view(self::dir.'home',$data);
     }
 
     /**
@@ -370,24 +396,24 @@ class Home extends MY_Controller{
      *个人详情
      */
     public function profile(){
+        $this->_check_to_login();
         $this->load->view(self::dir.'profile');
     }
 
     /**
-     *实名认证
+     *实名认证的显示和ajax处理
      */
     public function real_name(){
         if($this->input->is_ajax_request() == TRUE){
-            $this->load->model('web_1/user/authentication_model','authentication');
-            $data        = $this->authentication->real_name();
-            $data['url'] =site_url(self::dir.'home/real_name_success');
+            $data        = $this->user_api->real_name($this->input->post('real_name',true),$this->input->post('nric',true));
+            if($data['status'] == '10000'){
+                $this->session->set_userdata($data['data']);
+            }
             exit(json_encode($data));
         }
-        $data = array(
-            'real_name'=>$this->session->userdata('real_name'),
-            'nric'=>$this->session->userdata('nric')
-        );
-        $this->load->view(self::dir.'real_name',$data);
+
+        $this->_check_to_login();
+        $this->load->view(self::dir.'real_name');
     }
 
     /**
@@ -1408,23 +1434,7 @@ class Home extends MY_Controller{
 
 	
 
-    /**
-     * 忘记密码
-     */
-    public function forget(){
-        if($this->input->is_ajax_request() == TRUE){
-            $data = $this->app->forget_password();
-            exit(json_encode($data));
-        }
-        $this->load->view(self::dir.'forget');
-    }
 
-    public function ajax_forget_check(){
-        if($this->input->is_ajax_request() == TRUE){
-            $data = $this->app->ajax_forget_check();
-            exit(json_encode($data));
-        }
-    }
 /************************************--设置--***********************************************/
 
     /**
@@ -1639,5 +1649,23 @@ public function ajax_get_redbagdata(){
     public function logout(){
         $this->session->sess_destroy();
         redirect('mobiles/home/index','location');
+    }
+
+    /**
+     * 已经登录的验证
+     */
+    protected function _is_login(){
+        if($this->session->userdata('uid') > 0){
+            redirect(self::dir.'home/index','location');
+        }
+    }
+
+    /**
+     * 验证是否登录 未登录跳转到登录
+     */
+    protected function _check_to_login(){
+        if( !$this->session->userdata('uid')){
+            redirect(self::dir.'home/login','location');
+        }
     }
 }

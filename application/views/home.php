@@ -51,6 +51,7 @@
             <li>累计注册人数：<font><?php echo rate_format(price_format($total['user_total'],2,false)); ?></font>人</li>
             <li class="sec">累计投资总额：<font><?php echo rate_format(price_format($total['invest_total'],2,false)); ?></font>元</li>
             <li class="thr">累计运行天数：<font><?php echo rate_format(price_format($total['days_total'],2,false)); ?></font>天</li>
+            <li class="four">风险保证金：<font><?php echo rate_format(price_format($total['risk_total'],2,false)); ?></font>元</li>
         </ul>
     </div>
     <!--平台数据-->
@@ -59,7 +60,7 @@
         <div class="main_l product">
             <ul>
                 <li>
-                    <h1>聚在元旦趴  超值好标限时抢  iwatch等豪礼疯狂送<a href="/active/yd_2016/index.html" class="fr">查看活动详情 > </a></h1>
+                    <h1>聚在元旦趴  超值好标限时抢  APPLE watch等豪礼疯狂送<a href="/active/yd_2016/index.html" class="fr">查看活动详情 > </a></h1>
                     <div class="product_body">
                         <div class="top">
                             <div class="icon fl" style = 'background: #83bf73;'>稳</div>
@@ -70,7 +71,7 @@
                         <ul>
                             <li>
                                 <div class="product_four_num_top tc">年化收益率</div>
-                                <div class="product_four_num_bot tc ft_3cb5ec">8<i>%</i></div>
+                                <div class="product_four_num_bot tc ft_3cb5ec">9.6<i>%</i></div>
                             </li>
                             <li>
                                 <div class="product_four_num_top tc">起投金额(元)</div>
