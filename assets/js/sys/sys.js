@@ -861,8 +861,8 @@ var wsb_alert = function(msg, flag, url){
  * @param mode 类型
  */
 var calculator = function (amount, rate, months, mode) {
-    amount = parseFloat(amount)| 0;
-    rate = parseFloat(rate)| 0;
+    amount = parseFloat(amount)|| 0;
+    rate = parseFloat(rate)|| 0;
     months = parseFloat(months);
     mode = parseInt(mode);
     var interest = 0;
