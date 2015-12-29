@@ -51,7 +51,7 @@
             <li>累计注册人数：<font><?php echo rate_format(price_format($total['user_total'],2,false)); ?></font>人</li>
             <li class="sec">累计投资总额：<font><?php echo rate_format(price_format($total['invest_total'],2,false)); ?></font>元</li>
             <li class="thr">累计运行天数：<font><?php echo rate_format(price_format($total['days_total'],2,false)); ?></font>天</li>
-            <li class="four">风险保证金：<font><?php echo rate_format(price_format($total['risk_total'],2,false)); ?></font>元</li>
+            <li class="four">风险备用金：<font><?php echo rate_format(price_format($total['risk_total'],2,false)); ?></font>元</li>
         </ul>
     </div>
     <!--平台数据-->

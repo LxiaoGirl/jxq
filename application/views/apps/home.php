@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="row" style="font-size:1.6rem; color:#333; line-height:4rem; text-align:center; margin-bottom:1rem; background:#fff;">
-        <?php echo rate_format(price_format($total['risk_total'],2,false)); ?>元风险停留金保障您的资金安全
+        <?php echo rate_format(price_format($total['risk_total'],2,false)); ?>元风险备用金保障您的资金安全
     </div>
     <!-- 选项卡标题 -->
     <div class="row">
