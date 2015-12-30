@@ -74,7 +74,7 @@ class Project_model extends CI_Model{
         $temp['where'] = array(
             'select'=>join_field('borrow_no,subject,mode,rate,months,type,amount,receive,add_time,buy_time,due_date,status,summary,repayment,content,lowest,active',self::borrow)
 					.','.join_field('category,cat_id',self::category)
-					.','.join_field('company_name',self::guarantee),
+					.','.join_field('company_short_name',self::guarantee).' as company_name',
 //                .',user_a.user_name,user_a.mobile,user_a.nric,user_a.real_name,user_b.user_name as last_invester_name,',
             'join'=>array(
 //                array('table'=>self::user.' as user_a','where'=>join_field('uid',self::borrow).'= user_a.uid'),
@@ -311,7 +311,7 @@ class Project_model extends CI_Model{
             $temp['where'] = array(
                 'select'=>join_field('borrow_no,subject,mode,rate,months,type,amount,receive,add_time,buy_time,due_date,status,summary,repayment,content,lowest,max',self::borrow)
 						.','.join_field('category',self::category)
-						.','.join_field('company_name',self::guarantee),
+						.','.join_field('company_short_name',self::guarantee).' as company_name',
 //                    .',user_a.user_name,user_a.mobile,user_a.nric,user_a.real_name,user_b.user_name as last_invester_name,',
                 'join'=>array(
 //                    array('table'=>self::user.' as user_a','where'=>join_field('uid',self::borrow).'= user_a.uid'),

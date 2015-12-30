@@ -36,7 +36,7 @@
    <div style="padding-left:20px;">
     <dl class="contact_dl">
    <dt>获取关于聚雪球的最新信息与资讯</dt>
-   <dd><img src="../../../../assets/images/about/contact/con_ico4.jpg">新浪微博：<a href="http://weibo.com/zgwjjf">http://weibo.com/zgwjjf</a></dd>
+   <dd><img src="../../../../assets/images/about/contact/con_ico4.jpg">新浪微博：<a href="http://weibo.com/juxueqiu">http://weibo.com/juxueqiu</a></dd>
    <dd><img src="../../../../assets/images/about/contact/con_ico5.jpg">微信公众号：</dd>
   </dl>
   <div style="position:relative; height:160px; border-bottom:2px solid #246b8f;">
