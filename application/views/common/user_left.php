@@ -38,7 +38,7 @@
 				<a href="<?php echo site_url('user/user/jbb');?>" <?php if(in_array($this->router->fetch_method(),array('jbb','jbb_line','jbb_history'))): ?>class="selected"<?php endif; ?>><li>聚保宝管理<font class="fr">></font></li></a>
                 <a href="<?php echo site_url('user/user/transaction_note');?>" <?php if($this->router->fetch_method() == 'transaction_note'): ?>class="selected"<?php endif; ?>><li>投资记录<font class="fr">></font></li></a>
                 <a href="<?php echo site_url('user/user/transaction_details');?>" <?php if($this->router->fetch_method() == 'transaction_details'): ?>class="selected"<?php endif; ?>><li>交易明细<font class="fr">></font></li></a>
-                <!--<a href="<?php echo site_url('user/user/auto');?>" <?php if($this->router->fetch_method() == 'auto'): ?>class="selected"<?php endif; ?>><li>自动投标<font class="fr">></font></li></a>-->
+                <a href="<?php echo site_url('user/user/auto');?>" <?php if($this->router->fetch_method() == 'auto'): ?>class="selected"<?php endif; ?>><li>自动投标<font class="fr">></font></li></a>
                 <!--<a href="" class="leaders" href=""><li class="leaders"><img src="../../../assets/images/common/user_left_icon_3.png">我的借贷</li></a>
                 <a href="<?php echo site_url('user/user/recharge');?>"><li>我的借款<font class="fr">></font></li></a>
                 <a href="<?php echo site_url('user/user/recharge');?>"><li>申请借款<font class="fr">></font></li></a>-->

@@ -163,7 +163,7 @@
                                 <span>修改邮箱</span><font class="fr close">×</font>
                             </div>
                             <div class="popbody tc">
-                                <div class="p xgyx_p">
+                                <div class="p xgyx_p" style=" height:180px">
                                     <div class="fl tr">
                                         <img src="<?php echo base_url('assets/images/user/xrt.png')?>">
                                     </div>
