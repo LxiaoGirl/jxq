@@ -171,7 +171,7 @@ class Login extends MY_Controller{
 			redirect('login/register','location');
 		}
 		//验证是否已经注册 再返回或者直接访问
-		$data = $this->user->Registered_mobile($this->session->userdata('register_mobile'));
+		$data = $this->user->is_registered($this->session->userdata('register_mobile'));
 		if($data['status'] != '10000'){
 			redirect('','location');
 		}
@@ -201,7 +201,7 @@ class Login extends MY_Controller{
 	 */
 	public function ajax_is_register(){
 		if($this->input->is_ajax_request() == TRUE){
-			$data = $this->user->Registered_mobile($this->input->post('mobile',true));
+			$data = $this->user->is_registered($this->input->post('mobile',true));
 			exit(json_encode($data));
 		}
 	}
@@ -271,7 +271,7 @@ class Login extends MY_Controller{
 		//ajax部分
 		if($this->input->is_ajax_request() == TRUE){
 			//执行密码重置
-			$data = $this->user->Forget_login_password($this->session->userdata('forget_mobile'),$this->session->userdata('forget_authcode'),$this->input->post('password',true),$this->input->post('password',true));
+			$data = $this->user->forget($this->session->userdata('forget_mobile'),$this->session->userdata('forget_authcode'),$this->input->post('password',true));
 			if($data['status'] == '10000'){
 				$this->session->set_userdata(array('forget_s2'=>1));
 			}
@@ -386,16 +386,6 @@ class Login extends MY_Controller{
 	}
 
 	/**
-	 * 是否可以公司注册的ajax验证
-	 */
-	public function ajax_is_company_register(){
-		if($this->input->is_ajax_request() == TRUE){
-			$data = $this->user->is_company_register($this->input->post('mobile',true));
-			exit(json_encode($data));
-		}
-	}
-
-	/**
 	 * 公司注册附件上传ajax
 	 */
 	public function ajax_company_attachment_upload(){
@@ -437,13 +427,13 @@ class Login extends MY_Controller{
 		exit(json_encode($data));
 	}
 
-
+/******************************************************公司注册************************************************************************/
 
 	/**
 	 * 退出登录 处理方法
 	 */
 	public function logout(){
-		$this->user->_add_user_log('logout', '注销登录');
+		$this->user->_add_user_log('logout', '注销登录',$this->session->userdata('uid'),$this->session->userdata('user_name'));
 		$this->session->sess_destroy();
 
 		redirect('', 'refresh');

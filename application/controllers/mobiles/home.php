@@ -73,7 +73,7 @@ class Home extends MY_Controller{
     public function login(){
         //ajax部分
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->user_api->login($this->input->post('mobile',true),$this->input->post('password',true));
+            $data = $this->user_api->login($this->input->post('mobile',true),$this->input->post('password',true),'wap');
             if($data['status'] == '10000'){
                 $this->session->set_userdata($data['data']);
                 //处理登录成功后的跳转
@@ -136,10 +136,9 @@ class Home extends MY_Controller{
      */
     public function forget(){
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->user_api->Forget_login_password(
+            $data = $this->user_api->forget(
                 $this->input->post('mobile',true),
                 $this->input->post('authcode',true),
-                $this->input->post('new_password',true),
                 $this->input->post('new_password',true)
             );
             exit(json_encode($data));
@@ -405,7 +404,7 @@ class Home extends MY_Controller{
      */
     public function real_name(){
         if($this->input->is_ajax_request() == TRUE){
-            $data        = $this->user_api->real_name($this->input->post('real_name',true),$this->input->post('nric',true));
+            $data        = $this->user_api->real_name($this->input->post('real_name',true),$this->input->post('nric',true),$this->session->userdata('uid'));
             if($data['status'] == '10000'){
                 $this->session->set_userdata($data['data']);
             }

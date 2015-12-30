@@ -437,10 +437,43 @@ class User extends Login_Controller{
 	 * 自动投资
 	 */
 	public function auto(){
-		$data = $this->cash->get_user_balance($this->session->userdata('uid'));
+		$uid=$this->session->userdata('uid');
+		$data['auto'] =$this->user->automatic_info($uid);
+		$data['project'] =$this->project->get_project_category();
+		$data['balance'] = $this->cash->get_user_balance($uid);
 		$this->load->view('user/myinvestment/auto',$data);
 	}
 
+
+
+	/**
+	 * 自动投资开启
+	 */
+	public function auto_sub(){
+		$mode = $this->input->get('mode',true);
+		$start_time = $this->input->get('start_time',true);
+		$end_time = $this->input->get('end_time',true);
+		$sy_min = $this->input->get('sy_min',true);
+		$jk_max = $this->input->get('jk_max',true);
+		$type = $this->input->get('type',true);
+		$max_amount = $this->input->get('max_amount',true);
+		$uid=$this->session->userdata('uid');
+		$data['sub'] = $this->user->automatic_update(0,$uid,$mode,$type,$sy_min,$jk_max,$start_time,$end_time,$max_amount);
+		exit(json_encode($data['sub']));
+		
+	}
+
+
+
+	/**
+	 * 自动投资关闭
+	 */
+	public function auto_out(){
+		$uid=$this->session->userdata('uid');
+		$data = $this->user->automatic_update(1,$uid);
+		exit(json_encode($data));
+		
+	}
 
 
 	/**
@@ -476,7 +509,7 @@ class User extends Login_Controller{
 	 * 公司邀请码
 	 */
 	public function company_invite_code(){
-		$data = $this->user->company_invite_code($this->session->userdata('uid'),$this->input->post('code',true));
+		$data = $this->user->company_invitation_code_bind($this->session->userdata('uid'),$this->input->post('code',true));
 		exit(json_encode($data));
 	}
 
@@ -484,7 +517,7 @@ class User extends Login_Controller{
 	 * 理财师邀请码
 	 */
 	public function lcs_invite_code(){
-		$data = $this->user->lcs_invite_code($this->session->userdata('uid'),$this->input->post('code',true));
+		$data = $this->user->intermediary_invitation_code_bind($this->session->userdata('uid'),$this->input->post('code',true));
 		exit(json_encode($data));
 	}
 

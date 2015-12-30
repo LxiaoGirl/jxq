@@ -132,19 +132,15 @@
             var mobile_check = function(flag){
                 if(mobile  && flag)return;
                 if(/^1[345789][0-9]{9}$/.test($("#mobile").val())){
-                    $.post('/index.php/login/ajax_is_company_register',{mobile:$("#mobile").val(),type:'company'},function(rs){
+                    $.post('/index.php/login/ajax_is_register',{mobile:$("#mobile").val(),type:'company'},function(rs){
                         switch (rs.status){
                             case '10000':
                                 $(".mobile-tip").text('可以注册!');
                                 mobile = $("#mobile").val();
                                 break;
-                            case '10003':
-                                mobile = '';
-                                wsb_alert(rs.msg,1,'/index.php/login/index?redirect_url=<?php echo urlencode(site_url('login/company_apply')); ?>');
-                                break;
                             case '10002':
                                 mobile = '';
-                                wsb_alert(rs.msg,1,'/index.php/login');
+                                wsb_alert(rs.msg,1,'/index.php/login/index?redirect_url=<?php echo urlencode(site_url('login/company_apply')); ?>');
                                 break;
                             default:
                                 mobile = '';
