@@ -621,6 +621,7 @@ class User extends Login_Controller{
 		$authcode = $this->input->get('code',true);//验证码
 		$password = $this->input->get('password',true);//验证码
 		$data = $this->user->Fund_password($uid,$mobile,$security,$authcode,$password);
+		if($data['status'] == '10000')$this->session->set_userdata($data['data']);
 		exit(json_encode($data));
 	}
 	/**
@@ -635,6 +636,7 @@ class User extends Login_Controller{
 		$authcode = $this->input->get('code',true);//验证码
 		$password = $this->input->get('password',true);//登录密码
 		$data = $this->user->update_fund_password($uid,$mobile,$password,$security,$security_new,$authcode);
+		if($data['status'] == '10000')$this->session->set_userdata($data['data']);
 		exit(json_encode($data));
 	}
 
