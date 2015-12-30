@@ -22,7 +22,7 @@ class User extends Login_Controller{
 
 
 	/**
-	 * 资金总览
+	 * 个人中心主页
 	 */
 	public function account_home(){
 		$data = $temp = array();
@@ -48,6 +48,9 @@ class User extends Login_Controller{
 		$this->load->view('user/myaccount/account_home',$data);
 	}
 
+	/**
+	 * 获取最近6个月投资收益的ajax方法
+	 */
 	public function ajax_get_6month_data(){
 		if( ! $this->input->cookie('account_home_6m_data_'.$this->session->userdata('uid'),true)){
 			$data = $this->cash->get_user_month_invest_interest($this->session->userdata('uid'));
@@ -70,30 +73,8 @@ class User extends Login_Controller{
 		exit(json_encode($data));
 	}
 
-
 	/**
-	 * 提现列表
-	 */
-	public function withdrawals_jl(){
-		$uid=$this->session->userdata('uid');
-		$time_limit=(!empty($_GET['limit_time']))?$this->input->get('limit_time',true):0;
-		$start=(!empty($_GET['start']))?strtotime($this->input->get('start',true)):0;
-		$end=(!empty($_GET['end']))?strtotime($this->input->get('end',true)):0;
-		$data = $this->cash->get_user_transfer_list($uid,'',$start,$end,$time_limit);
-		$temp['page_id'] 	= $this->c->get_page_id(7);
-		if($data['status']=='10000' && $data['data']){
-			$data['links'] 	= $this->c->get_links($data['data']['total'],$temp['page_id'],7);
-		}else{
-			$data['links'] = '';
-		}
-		$data['balance'] = $this->cash->get_user_balance($uid);
-		$this->load->view('user/myaccount/withdrawals_jl',$data);
-	}
-
-
-
-	/**
-	 * 提现
+	 * 提现的页面显示
 	 */
 	public function withdrawals(){
 		//验证实名
@@ -123,25 +104,64 @@ class User extends Login_Controller{
 	 */
 	public function user_transfer(){
 		//验证短信
-		$sms_check = $this->commons->validation_authcode($this->session->userdata('mobile'),$this->input->post('authcode',true),'transfer',$this->session->userdata('uid'));
+		$sms_check = $this->commons->validation_authcode(
+			$this->session->userdata('mobile'),
+			$this->input->post('authcode',true),
+			'transfer',
+			$this->session->userdata('uid')
+		);
 		if($sms_check['status'] != '10000'){
-			$data = array('status'=>'10001','msg'=>$sms_check['msg'],'data'=>array());
-			exit(json_encode($data));
+			exit(json_encode($sms_check));
 		}
-		//查询今天的提现情况 处理手续费
-		$today_transfer = $this->cash->get_user_transfer_list($this->session->userdata('uid'),0,strtotime(date('Y-m-d').' 00:00:00'),time());
-		if($today_transfer['status'] == '10000' && $today_transfer['data'] && (isset($today_transfer['data']['data']) && count($today_transfer['data']['data'])>0)){
-			$charge = 2;
-		}else{
-			$charge = 0;
-		}
+
 		//执行体现处理
-		$data = $this->cash->user_transfer($this->session->userdata('uid'),$this->input->post('amount',true),$this->input->post('card_no',true),$this->input->post('security',true),$charge);
+		$data = $this->cash->user_transaction(
+			$this->session->userdata('uid'),
+			$this->input->post('amount',true),
+			$this->input->post('card_no',true),
+			$this->input->post('security',true)
+		);
 		//操作成功 处理余额session
 		if($data['status'] == '10000'){
 			$this->session->set_userdata(array('balance'=>$data['data']['balance']));
 		}
 		exit(json_encode($data));
+	}
+
+	/**
+	 * 提现列表
+	 */
+	public function withdrawals_jl(){
+		$uid=$this->session->userdata('uid');
+		$time_limit=(!empty($_GET['limit_time']))?$this->input->get('limit_time',true):0;
+		switch ($time_limit) {
+			case '1':
+				$start = strtotime(date('Y-m-01',time()));
+				break;
+			case '2':
+				$start = strtotime(date('Y-(m-2)-01',time()));
+				break;
+			case '3':
+				$start = strtotime(date('Y-(m-5)-01',time()));
+				break;
+			case '4':
+				$start = strtotime(date('Y-01-01',time()));
+				break;
+			default:
+				$start = '';
+				break;
+		}
+		$start=(!empty($_GET['start']))?strtotime($this->input->get('start',true)):$start;
+		$end=(!empty($_GET['end']))?strtotime($this->input->get('end',true)):0;
+		$temp['page_id'] 	= $this->c->get_page_id(7);
+		$data = $this->cash->get_user_transfer_list($uid,'',$start,$end,$temp['page_id'],7);
+		if($data['status']=='10000' && $data['data']){
+			$data['links'] 	= $this->c->get_links($data['data']['total'],$temp['page_id'],7);
+		}else{
+			$data['links'] = '';
+		}
+		$data['balance'] = $this->cash->get_user_balance($uid);
+		$this->load->view('user/myaccount/withdrawals_jl',$data);
 	}
 
 
@@ -166,27 +186,27 @@ class User extends Login_Controller{
 		$this->load->view('user/myaccount/recharge',$data);
 	}
 
+	/**
+	 * 充值记录刷新的ajax
+	 */
 	public function ajax_recharge_auto_refresh(){
 		$data = $this->user->recharge_refresh($this->input->post('recharge_no',true),$this->session->userdata('uid'));
 		exit(json_encode($data));
 	}
 
+	/**
+	 * 这个。。。。
+	 */
 	public function url_recharge_auto_refresh(){
 		$data = $this->user->recharge_refresh($this->input->post('recharge_no',true),$this->session->userdata('uid'));
 		redirect('user/user/recharge_jl', 'refresh');
-	}
-	
-	public function invest_agreement(){
-		echo '123';
 	}
 
 	/**
 	 * 充值列表
 	 */
 	public function recharge_jl(){
-		$data = array();
 		$uid=$this->session->userdata('uid');
-		$page_id = $this->input->get('page_id',true);
 		$time_limit=(!empty($_GET['time_limit']))?$this->input->get('time_limit',true):0;
 
 		//验证时间段
@@ -212,18 +232,17 @@ class User extends Login_Controller{
 		$start=(!empty($_GET['start']))?strtotime($this->input->get('start',true)):$temp['start_time'];
 		$end=(!empty($_GET['end']))?strtotime($this->input->get('end',true)):$temp['end_time'];
 
-		$data = $this->cash->get_user_recharge_list($uid,'',$start,$end);
 		$temp['page_id'] 	= $this->c->get_page_id(7);
+		$data = $this->cash->get_user_recharge_list($uid,'',$start,$end,$temp['page_id'],7);
+
 		if($data['status']=='10000'&& $data['data']){
-				$data['links'] 	= $this->c->get_links($data['data']['total'],$temp['page_id'],7);
+			$data['links'] 	= $this->c->get_links($data['data']['total'],$temp['page_id'],7);
 		}else{
-				$data['links'] = '';
-			}
+			$data['links'] = '';
+		}
 		$data['balance'] = $this->cash->get_user_balance($uid);
 		$this->load->view('user/myaccount/recharge_jl',$data);
 	}
-
-
 
 	/**
 	 * 交易明细
@@ -293,10 +312,6 @@ class User extends Login_Controller{
 		unset($temp);
 		$this->load->view('user/myinvestment/transaction_details',$data);
 	}
-
-
-
-
 
 
 
