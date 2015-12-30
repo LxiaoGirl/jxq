@@ -1,23 +1,23 @@
 <?php
 /**
- * ÓïÒô ´¦ÀíÀà
+ * è¯­éŸ³ å¤„ç†ç±»
  * Class CI_Voice
  */
 class CI_Voice {
-	private $AccountSid   = 'aaf98f894ee35d30014ef2d4438f1085'; //Ö÷ÕÊºÅid
-	private $AccountToken = 'aeb654fe8acb41028addca0edfd5ef02'; //Ö÷ÕÊºÅToken
-	private $AppId        ='aaf98f894ee35d30014ef2d78650108f';  //Ó¦ÓÃId
+	private $AccountSid   = 'aaf98f894ee35d30014ef2d4438f1085'; //ä¸»å¸å·id
+	private $AccountToken = 'aeb654fe8acb41028addca0edfd5ef02'; //ä¸»å¸å·Token
+	private $AppId        ='aaf98f894ee35d30014ef2d78650108f';  //åº”ç”¨Id
 	private $SubAccountSid;
 	private $SubAccountToken;
 	private $VoIPAccount;
 	private $VoIPPassword;
-	private $ServerIP     ='app.cloopen.com';                   //ÇëÇóµØÖ·£¬¸ñÊ½ÈçÏÂ£¬²»ĞèÒªĞ´https://
-	private $ServerPort   ='8883';                              //ÇëÇó¶Ë¿Ú
-	private $SoftVersion  ='2013-12-26';                        //REST°æ±¾ºÅ
-	private $Batch;                                             //Ê±¼ä´Á
-	private $BodyType     = "xml";                              //°üÌå¸ñÊ½£¬¿ÉÌîÖµ£ºjson ¡¢xml
-	private $enabeLog     = true;                               //ÈÕÖ¾¿ª¹Ø¡£¿ÉÌîÖµ£ºtrue¡¢
-	private $Filename     ="../log.txt";                        //ÈÕÖ¾ÎÄ¼ş
+	private $ServerIP     ='app.cloopen.com';                   //è¯·æ±‚åœ°å€ï¼Œæ ¼å¼å¦‚ä¸‹ï¼Œä¸éœ€è¦å†™https://
+	private $ServerPort   ='8883';                              //è¯·æ±‚ç«¯å£
+	private $SoftVersion  ='2013-12-26';                        //RESTç‰ˆæœ¬å·
+	private $Batch;                                             //æ—¶é—´æˆ³
+	private $BodyType     = "xml";                              //åŒ…ä½“æ ¼å¼ï¼Œå¯å¡«å€¼ï¼šjson ã€xml
+	private $enabeLog     = true;                               //æ—¥å¿—å¼€å…³ã€‚å¯å¡«å€¼ï¼štrueã€
+	private $Filename     ="../log.txt";                        //æ—¥å¿—æ–‡ä»¶
 	private $Handle;
 
 	function __construct($param =array()){
@@ -29,10 +29,10 @@ class CI_Voice {
 	}
 
 	/**
-	 * ÉèÖÃÖ÷ÕÊºÅ
+	 * è®¾ç½®ä¸»å¸å·
 	 *
-	 * @param AccountSid Ö÷ÕÊºÅ
-	 * @param AccountToken Ö÷ÕÊºÅToken
+	 * @param AccountSid ä¸»å¸å·
+	 * @param AccountToken ä¸»å¸å·Token
 	 */
 	function setAccount($AccountSid,$AccountToken){
 		$this->AccountSid = $AccountSid;
@@ -40,12 +40,12 @@ class CI_Voice {
 	}
 
 	/**
-	 * ÉèÖÃ×ÓÕÊºÅ
+	 * è®¾ç½®å­å¸å·
 	 *
-	 * @param SubAccountSid ×ÓÕÊºÅ
-	 * @param SubAccountToken ×ÓÕÊºÅToken
-	 * @param VoIPAccount VoIPÕÊºÅ
-	 * @param VoIPPassword VoIPÃÜÂë
+	 * @param SubAccountSid å­å¸å·
+	 * @param SubAccountToken å­å¸å·Token
+	 * @param VoIPAccount VoIPå¸å·
+	 * @param VoIPPassword VoIPå¯†ç 
 	 */
 	function setSubAccount($SubAccountSid,$SubAccountToken,$VoIPAccount,$VoIPPassword){
 		$this->SubAccountSid = $SubAccountSid;
@@ -55,18 +55,18 @@ class CI_Voice {
 	}
 
 	/**
-	 * ÉèÖÃÓ¦ÓÃID
+	 * è®¾ç½®åº”ç”¨ID
 	 *
-	 * @param AppId Ó¦ÓÃID
+	 * @param AppId åº”ç”¨ID
 	 */
 	function setAppId($AppId){
 		$this->AppId = $AppId;
 	}
 
 	/**
-	 * ´òÓ¡ÈÕÖ¾
+	 * æ‰“å°æ—¥å¿—
 	 *
-	 * @param log ÈÕÖ¾ÄÚÈİ
+	 * @param log æ—¥å¿—å†…å®¹
 	 */
 	function showlog($log){
 		if($this->enabeLog){
@@ -75,13 +75,13 @@ class CI_Voice {
 	}
 
 	/**
-	 * ·¢ÆğHTTPSÇëÇó
+	 * å‘èµ·HTTPSè¯·æ±‚
 	 */
 	function curl_post($url,$data,$header,$post=1)
 	{
-		//³õÊ¼»¯curl
+		//åˆå§‹åŒ–curl
 		$ch = curl_init();
-		//²ÎÊıÉèÖÃ
+		//å‚æ•°è®¾ç½®
 		$res= curl_setopt ($ch, CURLOPT_URL,$url);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -92,12 +92,12 @@ class CI_Voice {
 		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch,CURLOPT_HTTPHEADER,$header);
 		$result = curl_exec ($ch);
-		//Á¬½ÓÊ§°Ü
+		//è¿æ¥å¤±è´¥
 		if($result == FALSE){
 			if($this->BodyType=='json'){
-				$result = "{\"statusCode\":\"172001\",\"statusMsg\":\"ÍøÂç´íÎó\"}";
+				$result = "{\"statusCode\":\"172001\",\"statusMsg\":\"ç½‘ç»œé”™è¯¯\"}";
 			} else {
-				$result = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Response><statusCode>172001</statusCode><statusMsg>ÍøÂç´íÎó</statusMsg></Response>";
+				$result = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Response><statusCode>172001</statusCode><statusMsg>ç½‘ç»œé”™è¯¯</statusMsg></Response>";
 			}
 		}
 
@@ -106,17 +106,17 @@ class CI_Voice {
 	}
 
 	/**
-	 * ´´½¨×ÓÕÊºÅ
-	 * @param friendlyName ×ÓÕÊºÅÃû³Æ
+	 * åˆ›å»ºå­å¸å·
+	 * @param friendlyName å­å¸å·åç§°
 	 */
 	function createSubAccount($friendlyName)
 	{
-		//Ö÷ÕÊºÅ¼øÈ¨ĞÅÏ¢ÑéÖ¤£¬¶Ô±ØÑ¡²ÎÊı½øĞĞÅĞ¿Õ¡£
+		//ä¸»å¸å·é‰´æƒä¿¡æ¯éªŒè¯ï¼Œå¯¹å¿…é€‰å‚æ•°è¿›è¡Œåˆ¤ç©ºã€‚
 		$auth=$this->accAuth();
 		if($auth!=""){
 			return $auth;
 		}
-		// Æ´½ÓÇëÇó°üÌå
+		// æ‹¼æ¥è¯·æ±‚åŒ…ä½“
 		if($this->BodyType=="json"){
 			$body= "{'appId':'$this->AppId','friendlyName':'$friendlyName'}";
 		}else{
@@ -126,44 +126,44 @@ class CI_Voice {
                   </SubAccount>";
 		}
 		$this->showlog("request body = ".$body);
-		// ´óĞ´µÄsig²ÎÊı
+		// å¤§å†™çš„sigå‚æ•°
 		$sig =  strtoupper(md5($this->AccountSid . $this->AccountToken . $this->Batch));
-		// Éú³ÉÇëÇóURL
+		// ç”Ÿæˆè¯·æ±‚URL
 		$url="https://$this->ServerIP:$this->ServerPort/$this->SoftVersion/Accounts/$this->AccountSid/SubAccounts?sig=$sig";
 		$this->showlog("request url = ".$url);
-		// Éú³ÉÊÚÈ¨£ºÖ÷ÕÊºÅId + Ó¢ÎÄÃ°ºÅ + Ê±¼ä´Á
+		// ç”Ÿæˆæˆæƒï¼šä¸»å¸å·Id + è‹±æ–‡å†’å· + æ—¶é—´æˆ³
 		$authen = base64_encode($this->AccountSid . ":" . $this->Batch);
-		// Éú³É°üÍ·
+		// ç”ŸæˆåŒ…å¤´
 		$header = array("Accept:application/$this->BodyType","Content-Type:application/$this->BodyType;charset=utf-8","Authorization:$authen");
-		// ·¢ÇëÇó
+		// å‘è¯·æ±‚
 		$result = $this->curl_post($url,$body,$header);
 		$this->showlog("response body = ".$result);
-		if($this->BodyType=="json"){//JSON¸ñÊ½
+		if($this->BodyType=="json"){//JSONæ ¼å¼
 			$datas=json_decode($result);
-		}else{ //xml¸ñÊ½
+		}else{ //xmlæ ¼å¼
 			$datas = simplexml_load_string(trim($result," \t\n\r"));
 		}
 		//  if($datas == FALSE){
 		//            $datas = new stdClass();
 		//            $datas->statusCode = '172003';
-		//            $datas->statusMsg = '·µ»Ø°üÌå´íÎó';
+		//            $datas->statusMsg = 'è¿”å›åŒ…ä½“é”™è¯¯';
 		//        }
 		return $datas;
 	}
 
 	/**
-	 * »ñÈ¡×ÓÕÊºÅ
-	 * @param startNo ¿ªÊ¼µÄĞòºÅ£¬Ä¬ÈÏ´Ó0¿ªÊ¼
-	 * @param offset Ò»´Î²éÑ¯µÄ×î´óÌõÊı£¬×îĞ¡ÊÇ1Ìõ£¬×î´óÊÇ100Ìõ
+	 * è·å–å­å¸å·
+	 * @param startNo å¼€å§‹çš„åºå·ï¼Œé»˜è®¤ä»0å¼€å§‹
+	 * @param offset ä¸€æ¬¡æŸ¥è¯¢çš„æœ€å¤§æ¡æ•°ï¼Œæœ€å°æ˜¯1æ¡ï¼Œæœ€å¤§æ˜¯100æ¡
 	 */
 	function getSubAccounts($startNo,$offset)
 	{
-		//Ö÷ÕÊºÅ¼øÈ¨ĞÅÏ¢ÑéÖ¤£¬¶Ô±ØÑ¡²ÎÊı½øĞĞÅĞ¿Õ¡£
+		//ä¸»å¸å·é‰´æƒä¿¡æ¯éªŒè¯ï¼Œå¯¹å¿…é€‰å‚æ•°è¿›è¡Œåˆ¤ç©ºã€‚
 		$auth=$this->accAuth();
 		if($auth!=""){
 			return $auth;
 		}
-		// Æ´½ÓÇëÇó°üÌå
+		// æ‹¼æ¥è¯·æ±‚åŒ…ä½“
 		$body="
             <SubAccount>
               <appId>$this->AppId</appId>
@@ -181,43 +181,43 @@ class CI_Voice {
             </SubAccount>";
 		}
 		$this->showlog("request body = ".$body);
-		// ´óĞ´µÄsig²ÎÊı
+		// å¤§å†™çš„sigå‚æ•°
 		$sig =  strtoupper(md5($this->AccountSid . $this->AccountToken . $this->Batch));
-		// Éú³ÉÇëÇóURL
+		// ç”Ÿæˆè¯·æ±‚URL
 		$url="https://$this->ServerIP:$this->ServerPort/$this->SoftVersion/Accounts/$this->AccountSid/GetSubAccounts?sig=$sig";
 		$this->showlog("request url = ".$url);
-		// Éú³ÉÊÚÈ¨£ºÖ÷ÕÊ»§Id + Ó¢ÎÄÃ°ºÅ + Ê±¼ä´Á¡£
+		// ç”Ÿæˆæˆæƒï¼šä¸»å¸æˆ·Id + è‹±æ–‡å†’å· + æ—¶é—´æˆ³ã€‚
 		$authen = base64_encode($this->AccountSid . ":" . $this->Batch);
-		// Éú³É°üÍ·
+		// ç”ŸæˆåŒ…å¤´
 		$header = array("Accept:application/$this->BodyType","Content-Type:application/$this->BodyType;charset=utf-8","Authorization:$authen");
-		// ·¢ËÍÇëÇó
+		// å‘é€è¯·æ±‚
 		$result = $this->curl_post($url,$body,$header);
 		$this->showlog("response body = ".$result);
-		if($this->BodyType=="json"){//JSON¸ñÊ½
+		if($this->BodyType=="json"){//JSONæ ¼å¼
 			$datas=json_decode($result);
-		}else{ //xml¸ñÊ½
+		}else{ //xmlæ ¼å¼
 			$datas = simplexml_load_string(trim($result," \t\n\r"));
 		}
 		//  if($datas == FALSE){
 		//            $datas = new stdClass();
 		//            $datas->statusCode = '172003';
-		//            $datas->statusMsg = '·µ»Ø°üÌå´íÎó';
+		//            $datas->statusMsg = 'è¿”å›åŒ…ä½“é”™è¯¯';
 		//        }
 		return $datas;
 	}
 
 	/**
-	 * ×ÓÕÊºÅĞÅÏ¢²éÑ¯
-	 * @param friendlyName ×ÓÕÊºÅÃû³Æ
+	 * å­å¸å·ä¿¡æ¯æŸ¥è¯¢
+	 * @param friendlyName å­å¸å·åç§°
 	 */
 	function querySubAccount($friendlyName)
 	{
-		//Ö÷ÕÊºÅ¼øÈ¨ĞÅÏ¢ÑéÖ¤£¬¶Ô±ØÑ¡²ÎÊı½øĞĞÅĞ¿Õ¡£
+		//ä¸»å¸å·é‰´æƒä¿¡æ¯éªŒè¯ï¼Œå¯¹å¿…é€‰å‚æ•°è¿›è¡Œåˆ¤ç©ºã€‚
 		$auth=$this->accAuth();
 		if($auth!=""){
 			return $auth;
 		}
-		// Æ´½ÓÇëÇó°üÌå
+		// æ‹¼æ¥è¯·æ±‚åŒ…ä½“
 
 		if($this->BodyType=="json"){
 			$body= "{'appId':'$this->AppId','friendlyName':'$friendlyName'}";
@@ -229,44 +229,44 @@ class CI_Voice {
             </SubAccount>";
 		}
 		$this->showlog("request body = ".$body);
-		// ´óĞ´µÄsig²ÎÊı
+		// å¤§å†™çš„sigå‚æ•°
 		$sig =  strtoupper(md5($this->AccountSid . $this->AccountToken . $this->Batch));
-		// Éú³ÉÇëÇóURL
+		// ç”Ÿæˆè¯·æ±‚URL
 		$url="https://$this->ServerIP:$this->ServerPort/$this->SoftVersion/Accounts/$this->AccountSid/QuerySubAccountByName?sig=$sig";
 		$this->showlog("request url = ".$url);
-		// Éú³ÉÊÚÈ¨£ºÖ÷ÕÊ»§Id + Ó¢ÎÄÃ°ºÅ + Ê±¼ä´Á¡£
+		// ç”Ÿæˆæˆæƒï¼šä¸»å¸æˆ·Id + è‹±æ–‡å†’å· + æ—¶é—´æˆ³ã€‚
 		$authen = base64_encode($this->AccountSid . ":" . $this->Batch);
-		// Éú³É°üÍ·
+		// ç”ŸæˆåŒ…å¤´
 		$header = array("Accept:application/$this->BodyType","Content-Type:application/$this->BodyType;charset=utf-8","Authorization:$authen");
-		// ·¢ËÍÇëÇó
+		// å‘é€è¯·æ±‚
 		$result = $this->curl_post($url,$body,$header);
 		$this->showlog("response body = ".$result);
-		if($this->BodyType=="json"){//JSON¸ñÊ½
+		if($this->BodyType=="json"){//JSONæ ¼å¼
 			$datas=json_decode($result);
-		}else{ //xml¸ñÊ½
+		}else{ //xmlæ ¼å¼
 			$datas = simplexml_load_string(trim($result," \t\n\r"));
 		}
 		//  if($datas == FALSE){
 		//            $datas = new stdClass();
 		//            $datas->statusCode = '172003';
-		//            $datas->statusMsg = '·µ»Ø°üÌå´íÎó';
+		//            $datas->statusMsg = 'è¿”å›åŒ…ä½“é”™è¯¯';
 		//        }
 		return $datas;
 	}
 
 	/**
-	 * ·¢ËÍ¶ÌĞÅ
-	 * @param to ¶ÌĞÅ½ÓÊÕ·ÊÖ»úºÅÂë¼¯ºÏ,ÓÃÓ¢ÎÄ¶ººÅ·Ö¿ª
-	 * @param body ¶ÌĞÅÕıÎÄ
+	 * å‘é€çŸ­ä¿¡
+	 * @param to çŸ­ä¿¡æ¥æ”¶å½¿æ‰‹æœºå·ç é›†åˆ,ç”¨è‹±æ–‡é€—å·åˆ†å¼€
+	 * @param body çŸ­ä¿¡æ­£æ–‡
 	 */
 	function sendSMS($to,$smsBody)
 	{
-		//Ö÷ÕÊºÅ¼øÈ¨ĞÅÏ¢ÑéÖ¤£¬¶Ô±ØÑ¡²ÎÊı½øĞĞÅĞ¿Õ¡£
+		//ä¸»å¸å·é‰´æƒä¿¡æ¯éªŒè¯ï¼Œå¯¹å¿…é€‰å‚æ•°è¿›è¡Œåˆ¤ç©ºã€‚
 		$auth=$this->accAuth();
 		if($auth!=""){
 			return $auth;
 		}
-		// Æ´½ÓÇëÇó°üÌå
+		// æ‹¼æ¥è¯·æ±‚åŒ…ä½“
 		if($this->BodyType=="json"){
 			$body= "{'to':'$to','body':'$smsBody','appId':'$this->AppId'}";
 		}else{
@@ -277,45 +277,45 @@ class CI_Voice {
                   </SMSMessage>";
 		}
 		$this->showlog("request body = ".$body);
-		// ´óĞ´µÄsig²ÎÊı
+		// å¤§å†™çš„sigå‚æ•°
 		$sig =  strtoupper(md5($this->AccountSid . $this->AccountToken . $this->Batch));
-		// Éú³ÉÇëÇóURL
+		// ç”Ÿæˆè¯·æ±‚URL
 		$url="https://$this->ServerIP:$this->ServerPort/$this->SoftVersion/Accounts/$this->AccountSid/SMS/Messages?sig=$sig";
 		$this->showlog("request url = ".$url);
-		// Éú³ÉÊÚÈ¨£ºÖ÷ÕÊºÅId + Ó¢ÎÄÃ°ºÅ + Ê±¼ä´Á
+		// ç”Ÿæˆæˆæƒï¼šä¸»å¸å·Id + è‹±æ–‡å†’å· + æ—¶é—´æˆ³
 		$authen = base64_encode($this->AccountSid . ":" . $this->Batch);
-		// Éú³É°üÍ·
+		// ç”ŸæˆåŒ…å¤´
 		$header = array("Accept:application/$this->BodyType","Content-Type:application/$this->BodyType;charset=utf-8","Authorization:$authen");
-		// ·¢ÇëÇó
+		// å‘è¯·æ±‚
 		$result = $this->curl_post($url,$body,$header);
 		$this->showlog("response body = ".$result);
-		if($this->BodyType=="json"){//JSON¸ñÊ½
+		if($this->BodyType=="json"){//JSONæ ¼å¼
 			$datas=json_decode($result);
-		}else{ //xml¸ñÊ½
+		}else{ //xmlæ ¼å¼
 			$datas = simplexml_load_string(trim($result," \t\n\r"));
 		}
 		//  if($datas == FALSE){
 		//            $datas = new stdClass();
 		//            $datas->statusCode = '172003';
-		//            $datas->statusMsg = '·µ»Ø°üÌå´íÎó';
+		//            $datas->statusMsg = 'è¿”å›åŒ…ä½“é”™è¯¯';
 		//        }
 		return $datas;
 	}
 
 	/**
-	 * ·¢ËÍÄ£°å¶ÌĞÅ
-	 * @param to ¶ÌĞÅ½ÓÊÕ·ÊÖ»úºÅÂë¼¯ºÏ,ÓÃÓ¢ÎÄ¶ººÅ·Ö¿ª
-	 * @param datas ÄÚÈİÊı¾İ
-	 * @param $tempId Ä£°åId
+	 * å‘é€æ¨¡æ¿çŸ­ä¿¡
+	 * @param to çŸ­ä¿¡æ¥æ”¶å½¿æ‰‹æœºå·ç é›†åˆ,ç”¨è‹±æ–‡é€—å·åˆ†å¼€
+	 * @param datas å†…å®¹æ•°æ®
+	 * @param $tempId æ¨¡æ¿Id
 	 */
 	function sendTemplateSMS($to,$datas,$tempId)
 	{
-		//Ö÷ÕÊºÅ¼øÈ¨ĞÅÏ¢ÑéÖ¤£¬¶Ô±ØÑ¡²ÎÊı½øĞĞÅĞ¿Õ¡£
+		//ä¸»å¸å·é‰´æƒä¿¡æ¯éªŒè¯ï¼Œå¯¹å¿…é€‰å‚æ•°è¿›è¡Œåˆ¤ç©ºã€‚
 		$auth=$this->accAuth();
 		if($auth!=""){
 			return $auth;
 		}
-		// Æ´½ÓÇëÇó°üÌå
+		// æ‹¼æ¥è¯·æ±‚åŒ…ä½“
 		if($this->BodyType=="json"){
 			$data="";
 			for($i=0;$i<count($datas);$i++){
@@ -335,29 +335,29 @@ class CI_Voice {
                   </TemplateSMS>";
 		}
 		$this->showlog("request body = ".$body);
-		// ´óĞ´µÄsig²ÎÊı
+		// å¤§å†™çš„sigå‚æ•°
 		$sig =  strtoupper(md5($this->AccountSid . $this->AccountToken . $this->Batch));
-		// Éú³ÉÇëÇóURL
+		// ç”Ÿæˆè¯·æ±‚URL
 		$url="https://$this->ServerIP:$this->ServerPort/$this->SoftVersion/Accounts/$this->AccountSid/SMS/TemplateSMS?sig=$sig";
 		$this->showlog("request url = ".$url);
-		// Éú³ÉÊÚÈ¨£ºÖ÷ÕÊ»§Id + Ó¢ÎÄÃ°ºÅ + Ê±¼ä´Á¡£
+		// ç”Ÿæˆæˆæƒï¼šä¸»å¸æˆ·Id + è‹±æ–‡å†’å· + æ—¶é—´æˆ³ã€‚
 		$authen = base64_encode($this->AccountSid . ":" . $this->Batch);
-		// Éú³É°üÍ·
+		// ç”ŸæˆåŒ…å¤´
 		$header = array("Accept:application/$this->BodyType","Content-Type:application/$this->BodyType;charset=utf-8","Authorization:$authen");
-		// ·¢ËÍÇëÇó
+		// å‘é€è¯·æ±‚
 		$result = $this->curl_post($url,$body,$header);
 		$this->showlog("response body = ".$result);
-		if($this->BodyType=="json"){//JSON¸ñÊ½
+		if($this->BodyType=="json"){//JSONæ ¼å¼
 			$datas=json_decode($result);
-		}else{ //xml¸ñÊ½
+		}else{ //xmlæ ¼å¼
 			$datas = simplexml_load_string(trim($result," \t\n\r"));
 		}
 		//  if($datas == FALSE){
 		//            $datas = new stdClass();
 		//            $datas->statusCode = '172003';
-		//            $datas->statusMsg = '·µ»Ø°üÌå´íÎó';
+		//            $datas->statusMsg = 'è¿”å›åŒ…ä½“é”™è¯¯';
 		//        }
-		//ÖØĞÂ×°ÌîÊı¾İ
+		//é‡æ–°è£…å¡«æ•°æ®
 		if($datas->statusCode==0){
 			if($this->BodyType=="json"){
 				$datas->TemplateSMS =$datas->templateSMS;
@@ -369,24 +369,24 @@ class CI_Voice {
 	}
 
 	/**
-	 * Ë«Ïò»Øºô
-	 * @param from Ö÷½Ğµç»°ºÅÂë
-	 * @param to ±»½Ğµç»°ºÅÂë
-	 * @param customerSerNum ±»½Ğ²àÏÔÊ¾µÄ¿Í·şºÅÂë
-	 * @param fromSerNum Ö÷½Ğ²àÏÔÊ¾µÄºÅÂë
-	 * @param promptTone ×Ô¶¨Òå»Ø²¦ÌáÊ¾Òô
-	 * @param userData µÚÈı·½Ë½ÓĞÊı¾İ
-	 * @param maxCallTime ×î´óÍ¨»°Ê±³¤
-	 * @param hangupCdrUrl ÊµÊ±»°µ¥Í¨ÖªµØÖ·
+	 * åŒå‘å›å‘¼
+	 * @param from ä¸»å«ç”µè¯å·ç 
+	 * @param to è¢«å«ç”µè¯å·ç 
+	 * @param customerSerNum è¢«å«ä¾§æ˜¾ç¤ºçš„å®¢æœå·ç 
+	 * @param fromSerNum ä¸»å«ä¾§æ˜¾ç¤ºçš„å·ç 
+	 * @param promptTone è‡ªå®šä¹‰å›æ‹¨æç¤ºéŸ³
+	 * @param userData ç¬¬ä¸‰æ–¹ç§æœ‰æ•°æ®
+	 * @param maxCallTime æœ€å¤§é€šè¯æ—¶é•¿
+	 * @param hangupCdrUrl å®æ—¶è¯å•é€šçŸ¥åœ°å€
 	 */
 	function callBack($from,$to,$customerSerNum,$fromSerNum,$promptTone,$userData,$maxCallTime,$hangupCdrUrl)
 	{
-		//×ÓÕÊºÅ¼øÈ¨ĞÅÏ¢ÑéÖ¤£¬¶Ô±ØÑ¡²ÎÊı½øĞĞÅĞ¿Õ¡£
+		//å­å¸å·é‰´æƒä¿¡æ¯éªŒè¯ï¼Œå¯¹å¿…é€‰å‚æ•°è¿›è¡Œåˆ¤ç©ºã€‚
 		$auth=$this->subAuth();
 		if($auth!=""){
 			return $auth;
 		}
-		// Æ´½ÓÇëÇó°üÌå
+		// æ‹¼æ¥è¯·æ±‚åŒ…ä½“
 		if($this->BodyType=="json"){
 			$body= "{'from':'$from','to':'$to','customerSerNum':'$customerSerNum','fromSerNum':'$fromSerNum','promptTone':'$promptTone','userData':'$userData','maxCallTime':'$maxCallTime','hangupCdrUrl':'$hangupCdrUrl'}";
 		}else{
@@ -402,48 +402,48 @@ class CI_Voice {
                    </CallBack>";
 		}
 		$this->showlog("request body = ".$body);
-		// ´óĞ´µÄsig²ÎÊı
+		// å¤§å†™çš„sigå‚æ•°
 		$sig =  strtoupper(md5($this->SubAccountSid . $this->SubAccountToken . $this->Batch));
-		// Éú³ÉÇëÇóURL
+		// ç”Ÿæˆè¯·æ±‚URL
 		$url="https://$this->ServerIP:$this->ServerPort/$this->SoftVersion/SubAccounts/$this->SubAccountSid/Calls/Callback?sig=$sig";
 		$this->showlog("request url = ".$url);
-		// Éú³ÉÊÚÈ¨£º×ÓÕÊºÅId + Ó¢ÎÄÃ°ºÅ + Ê±¼ä´Á
+		// ç”Ÿæˆæˆæƒï¼šå­å¸å·Id + è‹±æ–‡å†’å· + æ—¶é—´æˆ³
 		$authen=base64_encode($this->SubAccountSid . ":" . $this->Batch);
-		// Éú³É°üÍ·
+		// ç”ŸæˆåŒ…å¤´
 		$header = array("Accept:application/$this->BodyType","Content-Type:application/$this->BodyType;charset=utf-8","Authorization:$authen");
-		// ·¢ÇëÇó
+		// å‘è¯·æ±‚
 		$result = $this->curl_post($url,$body,$header);
 		$this->showlog("response body = ".$result);
-		if($this->BodyType=="json"){//JSON¸ñÊ½
+		if($this->BodyType=="json"){//JSONæ ¼å¼
 			$datas=json_decode($result);
-		}else{ //xml¸ñÊ½
+		}else{ //xmlæ ¼å¼
 			$datas = simplexml_load_string(trim($result," \t\n\r"));
 		}
 		//  if($datas == FALSE){
 		//            $datas = new stdClass();
 		//            $datas->statusCode = '172003';
-		//            $datas->statusMsg = '·µ»Ø°üÌå´íÎó';
+		//            $datas->statusMsg = 'è¿”å›åŒ…ä½“é”™è¯¯';
 		//        }
 		return $datas;
 	}
 
 	/**
-	 * ÍâºôÍ¨Öª
-	 * @param to ±»½ĞºÅÂë
-	 * @param mediaName ÓïÒôÎÄ¼şÃû³Æ£¬¸ñÊ½ wav¡£ÓëmediaTxt²»ÄÜÍ¬Ê±Îª¿Õ¡£µ±²»Îª¿ÕÊ±mediaTxtÊôĞÔÊ§Ğ§¡£
-	 * @param mediaTxt ÎÄ±¾ÄÚÈİ
-	 * @param displayNum ÏÔÊ¾µÄÖ÷½ĞºÅÂë
-	 * @param playTimes Ñ­»·²¥·Å´ÎÊı£¬1£­3´Î£¬Ä¬ÈÏ²¥·Å1´Î¡£
-	 * @param respUrl ÍâºôÍ¨Öª×´Ì¬Í¨Öª»Øµ÷µØÖ·£¬ÔÆÍ¨Ñ¶Æ½Ì¨½«Ïò¸ÃUrlµØÖ··¢ËÍºô½Ğ½á¹ûÍ¨Öª¡£
+	 * å¤–å‘¼é€šçŸ¥
+	 * @param to è¢«å«å·ç 
+	 * @param mediaName è¯­éŸ³æ–‡ä»¶åç§°ï¼Œæ ¼å¼ wavã€‚ä¸mediaTxtä¸èƒ½åŒæ—¶ä¸ºç©ºã€‚å½“ä¸ä¸ºç©ºæ—¶mediaTxtå±æ€§å¤±æ•ˆã€‚
+	 * @param mediaTxt æ–‡æœ¬å†…å®¹
+	 * @param displayNum æ˜¾ç¤ºçš„ä¸»å«å·ç 
+	 * @param playTimes å¾ªç¯æ’­æ”¾æ¬¡æ•°ï¼Œ1ï¼3æ¬¡ï¼Œé»˜è®¤æ’­æ”¾1æ¬¡ã€‚
+	 * @param respUrl å¤–å‘¼é€šçŸ¥çŠ¶æ€é€šçŸ¥å›è°ƒåœ°å€ï¼Œäº‘é€šè®¯å¹³å°å°†å‘è¯¥Urlåœ°å€å‘é€å‘¼å«ç»“æœé€šçŸ¥ã€‚
 	 */
 	function landingCall($to,$mediaName,$mediaTxt,$displayNum,$playTimes,$respUrl)
 	{
-		//Ö÷ÕÊºÅ¼øÈ¨ĞÅÏ¢ÑéÖ¤£¬¶Ô±ØÑ¡²ÎÊı½øĞĞÅĞ¿Õ¡£
+		//ä¸»å¸å·é‰´æƒä¿¡æ¯éªŒè¯ï¼Œå¯¹å¿…é€‰å‚æ•°è¿›è¡Œåˆ¤ç©ºã€‚
 		$auth=$this->accAuth();
 		if($auth!=""){
 			return $auth;
 		}
-		// Æ´½ÓÇëÇó°üÌå
+		// æ‹¼æ¥è¯·æ±‚åŒ…ä½“
 		if($this->BodyType=="json"){
 			$body= "{'playTimes':'$playTimes','mediaTxt':'$mediaTxt','mediaName':'$mediaName','to':'$to','appId':'$this->AppId','displayNum':'$displayNum','respUrl':'$respUrl'}";
 		}else{
@@ -458,47 +458,47 @@ class CI_Voice {
                   </LandingCall>";
 		}
 		$this->showlog("request body = ".$body);
-		// ´óĞ´µÄsig²ÎÊı
+		// å¤§å†™çš„sigå‚æ•°
 		$sig =  strtoupper(md5($this->AccountSid . $this->AccountToken . $this->Batch));
-		// Éú³ÉÇëÇóURL
+		// ç”Ÿæˆè¯·æ±‚URL
 		$url="https://$this->ServerIP:$this->ServerPort/$this->SoftVersion/Accounts/$this->AccountSid/Calls/LandingCalls?sig=$sig";
 		$this->showlog("request url = ".$url);
-		// Éú³ÉÊÚÈ¨£ºÖ÷ÕÊ»§Id + Ó¢ÎÄÃ°ºÅ + Ê±¼ä´Á¡£
+		// ç”Ÿæˆæˆæƒï¼šä¸»å¸æˆ·Id + è‹±æ–‡å†’å· + æ—¶é—´æˆ³ã€‚
 		$authen = base64_encode($this->AccountSid . ":" . $this->Batch);
-		// Éú³É°üÍ·
+		// ç”ŸæˆåŒ…å¤´
 		$header = array("Accept:application/$this->BodyType","Content-Type:application/$this->BodyType;charset=utf-8","Authorization:$authen");
-		// ·¢ËÍÇëÇó
+		// å‘é€è¯·æ±‚
 		$result = $this->curl_post($url,$body,$header);
 		$this->showlog("response body = ".$result);
-		if($this->BodyType=="json"){//JSON¸ñÊ½
+		if($this->BodyType=="json"){//JSONæ ¼å¼
 			$datas=json_decode($result);
-		}else{ //xml¸ñÊ½
+		}else{ //xmlæ ¼å¼
 			$datas = simplexml_load_string(trim($result," \t\n\r"));
 		}
 		//  if($datas == FALSE){
 		//            $datas = new stdClass();
 		//            $datas->statusCode = '172003';
-		//            $datas->statusMsg = '·µ»Ø°üÌå´íÎó';
+		//            $datas->statusMsg = 'è¿”å›åŒ…ä½“é”™è¯¯';
 		//        }
 		return $datas;
 	}
 
 	/**
-	 * ÓïÒôÑéÖ¤Âë
-	 * @param verifyCode ÑéÖ¤ÂëÄÚÈİ£¬ÎªÊı×ÖºÍÓ¢ÎÄ×ÖÄ¸£¬²»Çø·Ö´óĞ¡Ğ´£¬³¤¶È4-8Î»
-	 * @param playTimes ²¥·Å´ÎÊı£¬1£­3´Î
-	 * @param to ½ÓÊÕºÅÂë
-	 * @param displayNum ÏÔÊ¾µÄÖ÷½ĞºÅÂë
-	 * @param respUrl ÓïÒôÑéÖ¤Âë×´Ì¬Í¨Öª»Øµ÷µØÖ·£¬ÔÆÍ¨Ñ¶Æ½Ì¨½«Ïò¸ÃUrlµØÖ··¢ËÍºô½Ğ½á¹ûÍ¨Öª
+	 * è¯­éŸ³éªŒè¯ç 
+	 * @param verifyCode éªŒè¯ç å†…å®¹ï¼Œä¸ºæ•°å­—å’Œè‹±æ–‡å­—æ¯ï¼Œä¸åŒºåˆ†å¤§å°å†™ï¼Œé•¿åº¦4-8ä½
+	 * @param playTimes æ’­æ”¾æ¬¡æ•°ï¼Œ1ï¼3æ¬¡
+	 * @param to æ¥æ”¶å·ç 
+	 * @param displayNum æ˜¾ç¤ºçš„ä¸»å«å·ç 
+	 * @param respUrl è¯­éŸ³éªŒè¯ç çŠ¶æ€é€šçŸ¥å›è°ƒåœ°å€ï¼Œäº‘é€šè®¯å¹³å°å°†å‘è¯¥Urlåœ°å€å‘é€å‘¼å«ç»“æœé€šçŸ¥
 	 */
 	function voiceVerify($verifyCode,$playTimes,$to,$displayNum,$respUrl)
 	{
-		//Ö÷ÕÊºÅ¼øÈ¨ĞÅÏ¢ÑéÖ¤£¬¶Ô±ØÑ¡²ÎÊı½øĞĞÅĞ¿Õ¡£
+		//ä¸»å¸å·é‰´æƒä¿¡æ¯éªŒè¯ï¼Œå¯¹å¿…é€‰å‚æ•°è¿›è¡Œåˆ¤ç©ºã€‚
 		$auth=$this->accAuth();
 		if($auth!=""){
 			return $auth;
 		}
-		// Æ´½ÓÇëÇó°üÌå
+		// æ‹¼æ¥è¯·æ±‚åŒ…ä½“
 		if($this->BodyType=="json"){
 			$body= "{'appId':'$this->AppId','verifyCode':'$verifyCode','playTimes':'$playTimes','to':'$to','respUrl':'$respUrl','displayNum':'$displayNum'}";
 		}else{
@@ -512,84 +512,84 @@ class CI_Voice {
                   </VoiceVerify>";
 		}
 		$this->showlog("request body = ".$body);
-		// ´óĞ´µÄsig²ÎÊı
+		// å¤§å†™çš„sigå‚æ•°
 		$sig =  strtoupper(md5($this->AccountSid . $this->AccountToken . $this->Batch));
-		// Éú³ÉÇëÇóURL
+		// ç”Ÿæˆè¯·æ±‚URL
 		$url="https://$this->ServerIP:$this->ServerPort/$this->SoftVersion/Accounts/$this->AccountSid/Calls/VoiceVerify?sig=$sig";
 		$this->showlog("request url = ".$url);
-		// Éú³ÉÊÚÈ¨£ºÖ÷ÕÊ»§Id + Ó¢ÎÄÃ°ºÅ + Ê±¼ä´Á¡£
+		// ç”Ÿæˆæˆæƒï¼šä¸»å¸æˆ·Id + è‹±æ–‡å†’å· + æ—¶é—´æˆ³ã€‚
 		$authen = base64_encode($this->AccountSid . ":" . $this->Batch);
-		// Éú³É°üÍ·
+		// ç”ŸæˆåŒ…å¤´
 		$header = array("Accept:application/$this->BodyType","Content-Type:application/$this->BodyType;charset=utf-8","Authorization:$authen");
-		// ·¢ËÍÇëÇó
+		// å‘é€è¯·æ±‚
 		$result = $this->curl_post($url,$body,$header);
 		$this->showlog("response body = ".$result);
-		if($this->BodyType=="json"){//JSON¸ñÊ½
+		if($this->BodyType=="json"){//JSONæ ¼å¼
 			$datas=json_decode($result);
-		}else{ //xml¸ñÊ½
+		}else{ //xmlæ ¼å¼
 			$datas = simplexml_load_string(trim($result," \t\n\r"));
 		}
 		//  if($datas == FALSE){
 		//            $datas = new stdClass();
 		//            $datas->statusCode = '172003';
-		//            $datas->statusMsg = '·µ»Ø°üÌå´íÎó';
+		//            $datas->statusMsg = 'è¿”å›åŒ…ä½“é”™è¯¯';
 		//        }
 		return $datas;
 	}
 
 	/**
-	 * IVRÍâºô
-	 * @param number   ´ıºô½ĞºÅÂë£¬ÎªDial½ÚµãµÄÊôĞÔ
-	 * @param userdata ÓÃ»§Êı¾İ£¬ÔÚ<startservice>Í¨ÖªÖĞ·µ»Ø£¬Ö»ÔÊĞíÌîĞ´Êı×Ö×Ö·û£¬ÎªDial½ÚµãµÄÊôĞÔ
-	 * @param record   ÊÇ·ñÂ¼Òô£¬¿ÉÌîÏîÎªtrueºÍfalse£¬Ä¬ÈÏÖµÎªfalse²»Â¼Òô£¬ÎªDial½ÚµãµÄÊôĞÔ
+	 * IVRå¤–å‘¼
+	 * @param number   å¾…å‘¼å«å·ç ï¼Œä¸ºDialèŠ‚ç‚¹çš„å±æ€§
+	 * @param userdata ç”¨æˆ·æ•°æ®ï¼Œåœ¨<startservice>é€šçŸ¥ä¸­è¿”å›ï¼Œåªå…è®¸å¡«å†™æ•°å­—å­—ç¬¦ï¼Œä¸ºDialèŠ‚ç‚¹çš„å±æ€§
+	 * @param record   æ˜¯å¦å½•éŸ³ï¼Œå¯å¡«é¡¹ä¸ºtrueå’Œfalseï¼Œé»˜è®¤å€¼ä¸ºfalseä¸å½•éŸ³ï¼Œä¸ºDialèŠ‚ç‚¹çš„å±æ€§
 	 */
 	function ivrDial($number,$userdata,$record)
 	{
-		//Ö÷ÕÊºÅ¼øÈ¨ĞÅÏ¢ÑéÖ¤£¬¶Ô±ØÑ¡²ÎÊı½øĞĞÅĞ¿Õ¡£
+		//ä¸»å¸å·é‰´æƒä¿¡æ¯éªŒè¯ï¼Œå¯¹å¿…é€‰å‚æ•°è¿›è¡Œåˆ¤ç©ºã€‚
 		$auth=$this->accAuth();
 		if($auth!=""){
 			return $auth;
 		}
-		// Æ´½ÓÇëÇó°üÌå
+		// æ‹¼æ¥è¯·æ±‚åŒ…ä½“
 		$body=" <Request>
                   <Appid>$this->AppId</Appid>
                   <Dial number='$number'  userdata='$userdata' record='$record'></Dial>
                 </Request>";
 		$this->showlog("request body = ".$body);
-		// ´óĞ´µÄsig²ÎÊı
+		// å¤§å†™çš„sigå‚æ•°
 		$sig =  strtoupper(md5($this->AccountSid . $this->AccountToken . $this->Batch));
-		// Éú³ÉÇëÇóURL
+		// ç”Ÿæˆè¯·æ±‚URL
 		$url="https://$this->ServerIP:$this->ServerPort/$this->SoftVersion/Accounts/$this->AccountSid/ivr/dial?sig=$sig";
 		$this->showlog("request url = ".$url);
-		// Éú³ÉÊÚÈ¨£ºÖ÷ÕÊ»§Id + Ó¢ÎÄÃ°ºÅ + Ê±¼ä´Á¡£
+		// ç”Ÿæˆæˆæƒï¼šä¸»å¸æˆ·Id + è‹±æ–‡å†’å· + æ—¶é—´æˆ³ã€‚
 		$authen = base64_encode($this->AccountSid . ":" . $this->Batch);
-		// Éú³É°üÍ·
+		// ç”ŸæˆåŒ…å¤´
 		$header = array("Accept:application/xml","Content-Type:application/xml;charset=utf-8","Authorization:$authen");
-		// ·¢ËÍÇëÇó
+		// å‘é€è¯·æ±‚
 		$result = $this->curl_post($url,$body,$header);
 		$this->showlog("response body = ".$result);
 		$datas = simplexml_load_string(trim($result," \t\n\r"));
 		//  if($datas == FALSE){
 		//            $datas = new stdClass();
 		//            $datas->statusCode = '172003';
-		//            $datas->statusMsg = '·µ»Ø°üÌå´íÎó';
+		//            $datas->statusMsg = 'è¿”å›åŒ…ä½“é”™è¯¯';
 		//        }
 		return $datas;
 	}
 
 	/**
-	 * »°µ¥ÏÂÔØ
-	 * @param date     day ´ú±íÇ°Ò»ÌìµÄÊı¾İ£¨´Ó00:00 ¨C 23:59£©;week´ú±íÇ°Ò»ÖÜµÄÊı¾İ(ÖÜÒ» µ½ÖÜÈÕ)£»month±íÊ¾ÉÏÒ»¸öÔÂµÄÊı¾İ£¨ÉÏ¸öÔÂ±íÊ¾µ±Ç°ÔÂ¼õ1£¬Èç¹û½ñÌìÊÇ4ÔÂ10ºÅ£¬Ôò²éÑ¯½á¹ûÊÇ3ÔÂ·İµÄÊı¾İ£©
-	 * @param keywords   ¿Í»§µÄ²éÑ¯Ìõ¼ş£¬ÓÉ¿Í»§×ÔĞĞ¶¨Òå²¢Ìá¹©¸øÔÆÍ¨Ñ¶Æ½Ì¨¡£Ä¬ÈÏ²»ÌîºöÂÔ´Ë²ÎÊı
+	 * è¯å•ä¸‹è½½
+	 * @param date     day ä»£è¡¨å‰ä¸€å¤©çš„æ•°æ®ï¼ˆä»00:00 â€“ 23:59ï¼‰;weekä»£è¡¨å‰ä¸€å‘¨çš„æ•°æ®(å‘¨ä¸€ åˆ°å‘¨æ—¥)ï¼›monthè¡¨ç¤ºä¸Šä¸€ä¸ªæœˆçš„æ•°æ®ï¼ˆä¸Šä¸ªæœˆè¡¨ç¤ºå½“å‰æœˆå‡1ï¼Œå¦‚æœä»Šå¤©æ˜¯4æœˆ10å·ï¼Œåˆ™æŸ¥è¯¢ç»“æœæ˜¯3æœˆä»½çš„æ•°æ®ï¼‰
+	 * @param keywords   å®¢æˆ·çš„æŸ¥è¯¢æ¡ä»¶ï¼Œç”±å®¢æˆ·è‡ªè¡Œå®šä¹‰å¹¶æä¾›ç»™äº‘é€šè®¯å¹³å°ã€‚é»˜è®¤ä¸å¡«å¿½ç•¥æ­¤å‚æ•°
 	 */
 	function billRecords($date,$keywords)
 	{
-		//Ö÷ÕÊºÅ¼øÈ¨ĞÅÏ¢ÑéÖ¤£¬¶Ô±ØÑ¡²ÎÊı½øĞĞÅĞ¿Õ¡£
+		//ä¸»å¸å·é‰´æƒä¿¡æ¯éªŒè¯ï¼Œå¯¹å¿…é€‰å‚æ•°è¿›è¡Œåˆ¤ç©ºã€‚
 		$auth=$this->accAuth();
 		if($auth!=""){
 			return $auth;
 		}
-		// Æ´½ÓÇëÇó°üÌå
+		// æ‹¼æ¥è¯·æ±‚åŒ…ä½“
 		if($this->BodyType=="json"){
 			$body= "{'appId':'$this->AppId','date':'$date'}";
 		}else{
@@ -600,148 +600,148 @@ class CI_Voice {
                   </BillRecords>";
 		}
 		$this->showlog("request body = ".$body);
-		// ´óĞ´µÄsig²ÎÊı
+		// å¤§å†™çš„sigå‚æ•°
 		$sig =  strtoupper(md5($this->AccountSid . $this->AccountToken . $this->Batch));
-		// Éú³ÉÇëÇóURL
+		// ç”Ÿæˆè¯·æ±‚URL
 		$url="https://$this->ServerIP:$this->ServerPort/$this->SoftVersion/Accounts/$this->AccountSid/BillRecords?sig=$sig";
 		$this->showlog("request url = ".$url);
-		// Éú³ÉÊÚÈ¨£ºÖ÷ÕÊ»§Id + Ó¢ÎÄÃ°ºÅ + Ê±¼ä´Á¡£
+		// ç”Ÿæˆæˆæƒï¼šä¸»å¸æˆ·Id + è‹±æ–‡å†’å· + æ—¶é—´æˆ³ã€‚
 		$authen = base64_encode($this->AccountSid . ":" . $this->Batch);
-		// Éú³É°üÍ·
+		// ç”ŸæˆåŒ…å¤´
 		$header = array("Accept:application/$this->BodyType","Content-Type:application/$this->BodyType;charset=utf-8","Authorization:$authen");
-		// ·¢ËÍÇëÇó
+		// å‘é€è¯·æ±‚
 		$result = $this->curl_post($url,$body,$header);
 		$this->showlog("response body = ".$result);
-		if($this->BodyType=="json"){//JSON¸ñÊ½
+		if($this->BodyType=="json"){//JSONæ ¼å¼
 			$datas=json_decode($result);
-		}else{ //xml¸ñÊ½
+		}else{ //xmlæ ¼å¼
 			$datas = simplexml_load_string(trim($result," \t\n\r"));
 		}
 		//  if($datas == FALSE){
 		//            $datas = new stdClass();
 		//            $datas->statusCode = '172003';
-		//            $datas->statusMsg = '·µ»Ø°üÌå´íÎó';
+		//            $datas->statusMsg = 'è¿”å›åŒ…ä½“é”™è¯¯';
 		//        }
 		return $datas;
 	}
 
 	/**
-	 * Ö÷ÕÊºÅĞÅÏ¢²éÑ¯
+	 * ä¸»å¸å·ä¿¡æ¯æŸ¥è¯¢
 	 */
 	function queryAccountInfo()
 	{
-		//Ö÷ÕÊºÅ¼øÈ¨ĞÅÏ¢ÑéÖ¤£¬¶Ô±ØÑ¡²ÎÊı½øĞĞÅĞ¿Õ¡£
+		//ä¸»å¸å·é‰´æƒä¿¡æ¯éªŒè¯ï¼Œå¯¹å¿…é€‰å‚æ•°è¿›è¡Œåˆ¤ç©ºã€‚
 		$auth=$this->accAuth();
 		if($auth!=""){
 			return $auth;
 		}
-		// ´óĞ´µÄsig²ÎÊı
+		// å¤§å†™çš„sigå‚æ•°
 		$sig =  strtoupper(md5($this->AccountSid . $this->AccountToken . $this->Batch));
-		// Éú³ÉÇëÇóURL
+		// ç”Ÿæˆè¯·æ±‚URL
 		$url="https://$this->ServerIP:$this->ServerPort/$this->SoftVersion/Accounts/$this->AccountSid/AccountInfo?sig=$sig";
 		$this->showlog("request url = ".$url);
-		// Éú³ÉÊÚÈ¨£ºÖ÷ÕÊ»§Id + Ó¢ÎÄÃ°ºÅ + Ê±¼ä´Á¡£
+		// ç”Ÿæˆæˆæƒï¼šä¸»å¸æˆ·Id + è‹±æ–‡å†’å· + æ—¶é—´æˆ³ã€‚
 		$authen = base64_encode($this->AccountSid . ":" . $this->Batch);
-		// Éú³É°üÍ·
+		// ç”ŸæˆåŒ…å¤´
 		$header = array("Accept:application/$this->BodyType","Content-Type:application/$this->BodyType;charset=utf-8","Authorization:$authen");
-		// ·¢ËÍÇëÇó
+		// å‘é€è¯·æ±‚
 		$result = $this->curl_post($url,"",$header,0);
 		$this->showlog("response body = ".$result);
-		if($this->BodyType=="json"){//JSON¸ñÊ½
+		if($this->BodyType=="json"){//JSONæ ¼å¼
 			$datas=json_decode($result);
-		}else{ //xml¸ñÊ½
+		}else{ //xmlæ ¼å¼
 			$datas = simplexml_load_string(trim($result," \t\n\r"));
 		}
 		//  if($datas == FALSE){
 		//            $datas = new stdClass();
 		//            $datas->statusCode = '172003';
-		//            $datas->statusMsg = '·µ»Ø°üÌå´íÎó';
+		//            $datas->statusMsg = 'è¿”å›åŒ…ä½“é”™è¯¯';
 		//        }
 		return $datas;
 	}
 
 	/**
-	 * ×ÓÕÊºÅ¼øÈ¨
+	 * å­å¸å·é‰´æƒ
 	 */
 	function subAuth()
 	{
 		if($this->ServerIP==""){
 			$data = new stdClass();
 			$data->statusCode = '172004';
-			$data->statusMsg = 'IPÎª¿Õ';
+			$data->statusMsg = 'IPä¸ºç©º';
 			return $data;
 		}
 		if($this->ServerPort<=0){
 			$data = new stdClass();
 			$data->statusCode = '172005';
-			$data->statusMsg = '¶Ë¿Ú´íÎó£¨Ğ¡ÓÚµÈÓÚ0£©';
+			$data->statusMsg = 'ç«¯å£é”™è¯¯ï¼ˆå°äºç­‰äº0ï¼‰';
 			return $data;
 		}
 		if($this->SoftVersion==""){
 			$data = new stdClass();
 			$data->statusCode = '172013';
-			$data->statusMsg = '°æ±¾ºÅÎª¿Õ';
+			$data->statusMsg = 'ç‰ˆæœ¬å·ä¸ºç©º';
 			return $data;
 		}
 		if($this->SubAccountSid==""){
 			$data = new stdClass();
 			$data->statusCode = '172008';
-			$data->statusMsg = '×ÓÕÊºÅÎª¿Õ';
+			$data->statusMsg = 'å­å¸å·ä¸ºç©º';
 			return $data;
 		}
 		if($this->SubAccountToken==""){
 			$data = new stdClass();
 			$data->statusCode = '172009';
-			$data->statusMsg = '×ÓÕÊºÅÁîÅÆÎª¿Õ';
+			$data->statusMsg = 'å­å¸å·ä»¤ç‰Œä¸ºç©º';
 			return $data;
 		}
 		if($this->AppId==""){
 			$data = new stdClass();
 			$data->statusCode = '172012';
-			$data->statusMsg = 'Ó¦ÓÃIDÎª¿Õ';
+			$data->statusMsg = 'åº”ç”¨IDä¸ºç©º';
 			return $data;
 		}
 	}
 
 	/**
-	 * Ö÷ÕÊºÅ¼øÈ¨
+	 * ä¸»å¸å·é‰´æƒ
 	 */
 	function accAuth()
 	{
 		if($this->ServerIP==""){
 			$data = new stdClass();
 			$data->statusCode = '172004';
-			$data->statusMsg = 'IPÎª¿Õ';
+			$data->statusMsg = 'IPä¸ºç©º';
 			return $data;
 		}
 		if($this->ServerPort<=0){
 			$data = new stdClass();
 			$data->statusCode = '172005';
-			$data->statusMsg = '¶Ë¿Ú´íÎó£¨Ğ¡ÓÚµÈÓÚ0£©';
+			$data->statusMsg = 'ç«¯å£é”™è¯¯ï¼ˆå°äºç­‰äº0ï¼‰';
 			return $data;
 		}
 		if($this->SoftVersion==""){
 			$data = new stdClass();
 			$data->statusCode = '172013';
-			$data->statusMsg = '°æ±¾ºÅÎª¿Õ';
+			$data->statusMsg = 'ç‰ˆæœ¬å·ä¸ºç©º';
 			return $data;
 		}
 		if($this->AccountSid==""){
 			$data = new stdClass();
 			$data->statusCode = '172006';
-			$data->statusMsg = 'Ö÷ÕÊºÅÎª¿Õ';
+			$data->statusMsg = 'ä¸»å¸å·ä¸ºç©º';
 			return $data;
 		}
 		if($this->AccountToken==""){
 			$data = new stdClass();
 			$data->statusCode = '172007';
-			$data->statusMsg = 'Ö÷ÕÊºÅÁîÅÆÎª¿Õ';
+			$data->statusMsg = 'ä¸»å¸å·ä»¤ç‰Œä¸ºç©º';
 			return $data;
 		}
 		if($this->AppId==""){
 			$data = new stdClass();
 			$data->statusCode = '172012';
-			$data->statusMsg = 'Ó¦ÓÃIDÎª¿Õ';
+			$data->statusMsg = 'åº”ç”¨IDä¸ºç©º';
 			return $data;
 		}
 	}
