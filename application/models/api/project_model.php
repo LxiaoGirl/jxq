@@ -2858,14 +2858,17 @@ class Project_model extends CI_Model{
      * @param int $page_size
      */
     protected function _set_cutpage_params($page_id=0,$page_size=0){
-        if(!is_numeric($page_id) || $page_id<=0){
-            $page_id=1;
-        }
-        if(!$page_size || !is_numeric($page_size)){
-            $page_size = $this->_page_size;
-        }
-        $_GET['limit'] = (int)$page_size;
-        $_GET['per_page'] = (((int)$page_id-1)*(int)$page_size);
+		if(isset($_GET['limit'])){
+			$page_size = (int)$this->input->get('limit');
+		}else{
+			if( !$page_size || !is_numeric($page_size))$page_size = $this->_page_size;
+			$_GET['limit'] = (int)$page_size;
+		}
+
+		if( !isset($_GET['per_page'])){
+			if(!is_numeric($page_id) || $page_id<=0)$page_id=1;
+			$_GET['per_page'] = (((int)$page_id-1)*(int)$page_size);
+		}
     }
 
 	/**

@@ -74,7 +74,7 @@
                 <td class="text-center"><span class="c_333 t16line add_time"></span></td>
                 <td class="text-center"><span class="c_333 amount"></span></td>
                 <td class="text-center">
-                    <span class="c_blue text-nowrap r_status"></span>
+                    <span class="c_blue text-nowrap status"></span>
                 </td>
             </tr>
             <tr id="list-noData">
@@ -153,15 +153,11 @@
             $.post('/index.php/mobiles/home/ajax_get_recharge_list' + condition, {}, function (result) {
                 list_view.set_pageid(page_id);
                 list_view.list(result.data, function (obj, v) {
-                    if (v.status == 1) {
-                        obj.find('.r_status').text('充值成功');
-                    } else if (v.status == 2) {
-                        obj.find('.r_status').text('充值成功');
-                    } else {
-                        if (v.type == 1) {
-                            obj.find('.r_status').removeClass('c_blue').addClass('c_red').text('待审核');
-                        } else {
-                            obj.find('.r_status').removeClass('c_blue').addClass('c_red').html('<a href="<?php echo site_url('mobiles/home/recharge_confirm?recharge_no=');?>' + v.recharge_no + '" title="充值失败" style="color:#FF7100;" target="_self">充值失败</a>')
+                    if(v.status == '充值失败'){
+                        obj.find('.status').removeClass('c_blue').addClass('c_red').css('color','#FF7100');
+                        //重新提交
+                        if(v.type == '3'){
+                            obj.find('.status').html('<a href="/index.php/mobiles/home/recharge_confirm?recharge_no='+v.recharge_no+'" style="color:#FF7100;" target="_self">充值失败</a>');
                         }
                     }
                 });

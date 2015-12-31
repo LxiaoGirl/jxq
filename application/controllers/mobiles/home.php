@@ -65,8 +65,7 @@ class Home extends MY_Controller{
     }
 
 
-/************************************---登录-注册---***********************************************/
-
+    /************************************---登录-注册-忘记密码--*******************************************************/
     /**
      * 登录的显示和ajax处理
      */
@@ -146,14 +145,8 @@ class Home extends MY_Controller{
         $this->load->view(self::dir.'forget');
     }
 
-/************************************---登录-注册---***********************************************/
 
-
-
-
-
-
-/************************************--主页和项目相关--***********************************************/
+    /***********************--主页和项目相关--*************************************************************************/
     /**
      *主页
      */
@@ -350,10 +343,9 @@ class Home extends MY_Controller{
     public function project_invest_success(){
         $this->load->view(self::dir.'project_invest_success');
     }
-/************************************--主页和项目相关--***********************************************/
 
 
-/************************************--我要借款--***********************************************/
+    /******************--我要借款--************************************************************************************/
     /**
      *我要借款(借款类型)
      */
@@ -388,9 +380,9 @@ class Home extends MY_Controller{
     public function borrow_success(){
         $this->load->view(self::dir.'borrow_success');
     }
-/************************************--我要借款--***********************************************/
 
-/************************************--个人详情--***********************************************/
+
+    /************************************--个人详情、实名认证--********************************************************/
     /**
      *个人详情
      */
@@ -422,10 +414,9 @@ class Home extends MY_Controller{
         $this->load->view(self::dir.'real_name_success');
     }
 
-/************************************--个人详情--***********************************************/
 
 
-/************************************--充值提现--***********************************************/
+    /*****************************************--充值提现--*************************************************************/
     /**
      *充值主页面 选择银行卡 或其他银行卡
      */
@@ -801,64 +792,46 @@ class Home extends MY_Controller{
         $this->load->view(self::dir.'transfer_success',$data);
     }
 
-/************************************--充值提现--***********************************************/
 
 
-/************************************--个人中心相关--***********************************************/
-
+    /************************************--个人中心相关--***************************************************************/
+    /**
+     * 个人中心主页
+     */
     public function my_center(){
-        if($this->session->userdata('uid') > 0){
-            $data['my_balance']     = $this->user->get_user_balance();        //可用余额
-            $data['all_income']     =  $this->app->get_receive_principal_interest();
-            $data['all_income']     =  $data['all_income']['receive_interest'];
+        $this->_check_to_login();
+
+        //可用余额和累计收益的统计
+        $total = $this->cash_api->get_user_cash_total($this->session->userdata('uid'));
+        if($total['status'] == '10000'){
+            $data['my_balance'] = $total['data']['balance'];        //可用余额
+            $data['all_income'] =  $total['data']['receive_interest_total'];
         }else{
-            $data['my_balance']     = 0;        //可用余额
-            $data['all_income']     =  0;
+            $data['my_balance'] = 0;        //可用余额
+            $data['all_income'] = 0;
         }
+
         $this->load->view(self::dir.'my_center',$data);
     }
-    /*待收益，改名叫预计收益（统计，2，3，4状态的投资）
-    新：2015-7.30 与寇林沟通后确认
-    1.可用余额   ： cash_flow 的最新一条记录的balance
-    2.总资产       ： 可用余额 + 待收本金+投资中冻结金额+提现中冻结金额+用户已收收益
-    3.冻结金额   ：type=3
-    4.提现中的金额：type=2
-    5.累计收益：TYPE=8
-    6.代收本金：type=5
-    7.已收本金：TYPE=9
-    8.待收利息：需计算
-    9.已收利息：TYPE=8
-
-        2015/08/20
-        1 充值
-        2 提现
-        3提现 冻结的金额
-        4 投资 冻结的金额
-        5 投资的金额（待收本金）
-        6已收本金（无效）
-        7待收利息（无效）
-        8已收利息（无效）
-        9没有
-        10目前是借款人还款扣款
-     */
 
     /**
-     *我的余额信息（可用余额）
+     *我的余额信息【可用余额】的显示和ajax处理
      */
     public function my_balance(){
         if($this->input->is_ajax_request() == TRUE){
-            $data['my_balance']            = $this->user->get_user_balance();        //可用余额
-            $temp['my_principal_interest'] = $this->app->get_receive_principal_interest(); //我的已收本金和利息
-			$temp['jbb_all_amount'] 	   = $this->app->jbb_all_amount(1);
-            $temp['my_invest']             = $this->app->get_user_invest_all();//我的总投资
-            $data['my_wait_principal']     = $temp['my_invest']>0?$temp['my_invest']-$temp['my_principal_interest']['receive_principal']:0;
-			$data['my_wait_principal']     = $data['my_wait_principal']+$temp['jbb_all_amount'];
-            $data['my_invest_freeze']      = $this->app->get_user_invest_freeze();          //投资冻结金额
-            $data['my_transfer_freeze']    = $this->app->get_user_transfer_freeze();         //提现冻结金额
-            $data['my_amount']             = $data['my_balance'] + $data['my_wait_principal'] + $data['my_invest_freeze']+$data['my_transfer_freeze'];
+            $temp['total'] = $this->cash_api->get_user_cash_total($this->session->userdata('uid'));
+
+            $data['my_balance']            = $temp['total']['data']['balance']?$temp['total']['data']['balance']:0;//可用余额
+            $data['my_wait_principal']     = $temp['total']['data']['wait_principal_total']?$temp['total']['data']['wait_principal_total']:0;
+            $data['my_invest_freeze']      = $temp['total']['data']['invest_freeze_total']?$temp['total']['data']['invest_freeze_total']:0;         //投资冻结金额
+            $data['my_transfer_freeze']    = $temp['total']['data']['transfer_freeze_total']?$temp['total']['data']['transfer_freeze_total']:0;         //提现冻结金额
+            $data['my_amount']             = $temp['total']['data']['property_total']?$temp['total']['data']['property_total']:0;
+
             unset($temp);
             exit(json_encode($data));
         }
+
+        $this->_check_to_login();
         $this->load->view(self::dir.'my_balance');
     }
 
@@ -866,9 +839,9 @@ class Home extends MY_Controller{
      * 充值记录的ajax处理方法
      */
     public function ajax_get_recharge_list(){
-        $data = $this->transaction->get_recharge_list();
+        $data = $this->cash_api->get_user_recharge_list($this->session->userdata('uid'));
         if( ! empty($data['data'])){
-            exit(json_encode(array('code'=>0,'msg'=>'ok','data'=>array_merge($data['data']))));
+            exit(json_encode(array('code'=>0,'msg'=>'ok','data'=>$data['data']['data'])));
         }else{
             exit(json_encode(array('code'=>1,'msg'=>'there have no data now','data'=>'')));
         }
@@ -1308,9 +1281,8 @@ class Home extends MY_Controller{
         $this->load->view(self::dir.'my_gold');
     }
 
-/************************************--个人中心相关--***********************************************/
 
-/************************************--设置--***********************************************/
+    /************************************--设置--**********************************************************************/
     /**
      *  解绑手机
      */
@@ -1399,24 +1371,29 @@ class Home extends MY_Controller{
         $this->load->view(self::dir.'password_success');
     }
 
+
+    /************************************--关于我们--******************************************************************/
    /**
      * 关于我们
      */
     public function about_us(){
         $this->load->view(self::dir.'about_us');
     }
+
 	 /**
      * 平台介绍
      */
     public function ptjs(){
         $this->load->view(self::dir.'ptjs');
     }
+
 	 /**
      * 安全保障
      */
     public function aqbz(){
         $this->load->view(self::dir.'aqbz');
     }
+
 	 /**
      * 充值说明
      */

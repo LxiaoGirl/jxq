@@ -815,8 +815,8 @@ var  unixtime_style = function(unixtime,format){
     if(!format)return timestr.getFullYear()+"-"+timestr.getMonth()+1+"-"+timestr.getDate()+" "+timestr.getHours()+":"+timestr.getMinutes()+":"+timestr.getSeconds();
     format=format.replace("Y",timestr.getFullYear());
     format=format.replace("y",timestr.getYear());
-    format=format.replace("m",timestr.getMonth()+1);
-    format=format.replace("d",timestr.getDate());
+    format=format.replace("m",timestr.getMonth()+1<10?'0'+(timestr.getMonth()+1):timestr.getMonth()+1);
+    format=format.replace("d",timestr.getDate()<10?'0'+timestr.getDate():timestr.getDate());
     format=format.replace("w",timestr.getDay()||7);
     format=format.replace("H",timestr.getHours());
     format=format.replace("h",timestr.getHours());
