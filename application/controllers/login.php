@@ -211,7 +211,7 @@ class Login extends MY_Controller{
 	 */
 	public function ajax_check_company_invitation_code(){
 		if($this->input->is_ajax_request() == TRUE){
-			$data = $this->user->check_company_invitation_code($this->input->post('code',true));
+			$data = $this->user->check_invitation_code($this->input->post('code',true));
 			exit(json_encode($data));
 		}
 	}

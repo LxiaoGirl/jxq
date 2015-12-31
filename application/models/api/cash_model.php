@@ -31,6 +31,7 @@ class Cash_model extends CI_Model{
         parent::__construct();
     }
 
+    /****************** 用户余额 **************************************************************************************/
     /**
      * 获取用户余额
      * @param int $uid 用户id 默认0
@@ -64,6 +65,8 @@ class Cash_model extends CI_Model{
         return $data;
     }
 
+
+    /****************** 资金统计相关 **********************************************************************************/
     /**
      * 获取全网 借款总额 投资总额
      * @param int $category 类别id
@@ -219,6 +222,80 @@ class Cash_model extends CI_Model{
         return $data;
     }
 
+    /**
+     * 获取全网利息总额
+     * @param int $category
+     * @return float|int
+     */
+    public function get_project_interest_total($category=0){
+        $temp = array();
+        $data = array('name'=>'项目利息总额','status'=>'10001','msg'=>'服务器繁忙请稍后重试!','sign'=>'','data'=>array());
+
+        $temp['amount'] = 0;
+        $temp['where'] = array('select' => 'amount,months,rate,mode,repay','where'=>array('status >'=>1));
+
+        if( ! empty($category))$temp['where']['where']['productcategory']=$category;
+
+        $temp['data'] = $this->c->get_all(self::borrow, $temp['where']);
+
+        if( ! empty($temp['data'])){
+            foreach($temp['data'] as $k => $v){
+                $temp['amount'] += $this->get_project_interest($v['amount'],$v['rate'],$v['months'],$v['mode']);//计算公式
+            }
+            $data['status']           = '10000';
+            $data['msg']              = 'ok';
+            $data['data']['interest'] =  $temp['amount'];
+        }else{
+            $data['status']           = '10000';
+            $data['msg']              = 'ok';
+            $data['data']['interest'] =  0;
+        }
+
+        unset($temp);
+        return $data;
+    }
+
+    /**
+     * 最近n个月的投资收益记录列表
+     * @param int $uid
+     * @param int $month
+     * @return array
+     */
+    public function get_user_month_invest_interest($uid=0,$month=6){
+        $data = array('name'=>'最近n个月的投资收益记录列表','status'=>'10001','msg'=>'ok','data'=>array('month'=>'', 'invest' => '', 'interest' =>''));
+        $temp = array();
+
+        if($uid > 0){
+            if($month <= 0){
+                $data['msg'] = '月份为空!';
+                return $data;
+            }
+            $temp['6m_data'] = array(
+                'month'=>'',
+                'invest'=>'',
+                'interest'=>''
+            );
+            for($i=5;$i>=0;$i--){
+                $temp['start_time'] = strtotime(date('Y-m-01',strtotime('-'.$i.' month')).' 00:00:00');
+                $temp['end_time'] = strtotime(date('Y-m-t',strtotime('-'.$i.' month')).' 23:59:59');
+                $temp['6m_data']['month'][] = date('Y年m月',$temp['start_time']);
+                $temp['invest'] = $this->get_user_invest_total($uid,0,$temp['start_time'],$temp['end_time']);
+                $temp['6m_data']['invest'][] = $temp['invest'];
+                $temp['interest'] = $this->get_user_receive_principal_interest($uid,$temp['start_time'],$temp['end_time']);
+                $temp['6m_data']['interest'][] = $temp['interest']['receive_interest'];
+            }
+            $data['data'] = $temp['6m_data'];
+            $data['msg'] = 'ok!';
+            $data['status'] = '10000!';
+        }else{
+            $data['msg'] = '用户uid为空!';
+        }
+        unset($temp);
+        return $data;
+    }
+
+
+    /****************** 资金流动记录 **********************************************************************************/
     /**
      * 获取用户资金记录
      * @param int $uid
@@ -378,6 +455,8 @@ class Cash_model extends CI_Model{
         return $data;
     }
 
+
+    /****************** 充值提现相关 **********************************************************************************/
     /**
      * 获取用户充值记录
      * @param int $uid
@@ -824,9 +903,8 @@ class Cash_model extends CI_Model{
         return $charge;
     }
 
-/********************************************************聚保宝***************************************************************************************/
 
-
+    /****************** 聚保宝相关 ************************************************************************************/
     /**
      * 聚保宝累计投资
      * @param string $type_code
@@ -870,7 +948,6 @@ class Cash_model extends CI_Model{
         return $data;
     }
 
-
     /**
      * 聚保宝累计赚取
      * @param string $type_code
@@ -900,8 +977,6 @@ class Cash_model extends CI_Model{
         return $data;
     }
 
-
-
 	/**
 	 * 聚保宝项目
 	 * @param string $type_code
@@ -920,8 +995,6 @@ class Cash_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
-
 
 	/**
 	 * 聚保宝投资详情
@@ -955,9 +1028,6 @@ class Cash_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
-
-
 
 	/**
 	 * 聚保宝加入总金额（元）
@@ -995,8 +1065,6 @@ class Cash_model extends CI_Model{
 		return $data;
 	}
 
-
-
 	/**
 	 * 聚保宝购买笔数
 	 *
@@ -1033,8 +1101,6 @@ class Cash_model extends CI_Model{
 		return $data;
 	}
 
-
-
 	/**
 	 * 聚保宝累计提取收益
 	 *
@@ -1070,8 +1136,6 @@ class Cash_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
-
 
 	/**
 	 * 聚保宝可领取收益
@@ -1146,9 +1210,6 @@ class Cash_model extends CI_Model{
 		return $data;
 	}
 
-
-
-
 	/**
 	 * 聚保宝匹配标数
 	 *
@@ -1194,9 +1255,6 @@ class Cash_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
-
-
 
 	/**
 	 * 聚保宝提取收益
@@ -1331,9 +1389,6 @@ class Cash_model extends CI_Model{
 		return $data;
 	}
 
-
-
-
 	/**
 	 * 聚保宝提取收益
 	 *
@@ -1406,9 +1461,6 @@ class Cash_model extends CI_Model{
 		return $data;
 	}
 
-
-
-
 	/**
 	 * 聚保宝手续费
 	 *
@@ -1468,8 +1520,6 @@ class Cash_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
-
 
 	/**
 	 * 聚保宝取消退出
@@ -1563,81 +1613,10 @@ class Cash_model extends CI_Model{
         unset($temp);
         return $data;
     }
-/********************************************************聚保宝***************************************************************************************/
 
-    /**
-     * 获取全网利息总额
-     * @param int $category
-     * @return float|int
-     */
-    public function get_project_interest_total($category=0){
-        $temp = array();
-        $data = array('name'=>'项目利息总额','status'=>'10001','msg'=>'服务器繁忙请稍后重试!','sign'=>'','data'=>array());
 
-        $temp['amount'] = 0;
-        $temp['where'] = array('select' => 'amount,months,rate,mode,repay','where'=>array('status >'=>1));
 
-        if( ! empty($category))$temp['where']['where']['productcategory']=$category;
-
-        $temp['data'] = $this->c->get_all(self::borrow, $temp['where']);
-
-        if( ! empty($temp['data'])){
-            foreach($temp['data'] as $k => $v){
-                $temp['amount'] += $this->get_project_interest($v['amount'],$v['rate'],$v['months'],$v['mode']);//计算公式
-            }
-            $data['status']           = '10000';
-            $data['msg']              = 'ok';
-            $data['data']['interest'] =  $temp['amount'];
-        }else{
-            $data['status']           = '10000';
-            $data['msg']              = 'ok';
-            $data['data']['interest'] =  0;
-        }
-
-        unset($temp);
-        return $data;
-    }
-
-    /**
-     * 最近n个月的投资收益记录列表
-     * @param int $uid
-     * @param int $month
-     * @return array
-     */
-    public function get_user_month_invest_interest($uid=0,$month=6){
-        $data = array('name'=>'最近n个月的投资收益记录列表','status'=>'10001','msg'=>'ok','data'=>array('month'=>'', 'invest' => '', 'interest' =>''));
-        $temp = array();
-
-        if($uid > 0){
-            if($month <= 0){
-                $data['msg'] = '月份为空!';
-                return $data;
-            }
-            $temp['6m_data'] = array(
-                'month'=>'',
-                'invest'=>'',
-                'interest'=>''
-            );
-            for($i=5;$i>=0;$i--){
-                $temp['start_time'] = strtotime(date('Y-m-01',strtotime('-'.$i.' month')).' 00:00:00');
-                $temp['end_time'] = strtotime(date('Y-m-t',strtotime('-'.$i.' month')).' 23:59:59');
-                $temp['6m_data']['month'][] = date('Y年m月',$temp['start_time']);
-                $temp['invest'] = $this->get_user_invest_total($uid,0,$temp['start_time'],$temp['end_time']);
-                $temp['6m_data']['invest'][] = $temp['invest'];
-                $temp['interest'] = $this->get_user_receive_principal_interest($uid,$temp['start_time'],$temp['end_time']);
-                $temp['6m_data']['interest'][] = $temp['interest']['receive_interest'];
-            }
-            $data['data'] = $temp['6m_data'];
-            $data['msg'] = 'ok!';
-            $data['status'] = '10000!';
-        }else{
-            $data['msg'] = '用户uid为空!';
-        }
-        unset($temp);
-        return $data;
-    }
-
-    /***************************************用户资金统计相关方法 涉及的数据表 borrow payment transfer*********************************************************/
+    /**********************用户资金统计相关方法 涉及的数据表 borrow payment transfer***********************************/
     /**
      * 用户投资总额
      * @param int $uid
@@ -1853,7 +1832,6 @@ class Cash_model extends CI_Model{
         unset($temp);
         return round($interest,2);
     }
-    /**************************************用户资金统计相关方法**********************************************************/
 
 
 
@@ -1924,8 +1902,8 @@ class Cash_model extends CI_Model{
         return round($amount*(($rate/100)/360)*($months*30),2);
     }
 
-    /**************************************资金日志类型相关处理**********************************************************/
 
+    /**************************************资金日志类型相关处理*********************************************************/
     /**
      * 获取 资金记录的收入支出类型
      * @param int $type
@@ -2077,8 +2055,8 @@ class Cash_model extends CI_Model{
         return $status_name;
     }
 
-    /***************************************************************************************************************/
 
+    /********************************私有方法**************************************************************************/
     /**
      * 加密字符串
      * @param int    $string 字符串

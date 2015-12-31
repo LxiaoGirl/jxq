@@ -18,7 +18,7 @@ class Project_model extends CI_Model{
 	const message       = 'message';			//信息表
 	const log           = 'user_log';			//用户日志表
 	const transfer      = 'user_transaction';	//提现表
-	const jbb		    = 'borrow_jbb';			//聚保宝产品表
+	const jbb		     = 'borrow_jbb';		//聚保宝产品表
 	const jbb_dtl       = 'borrow_jbb_dtl';		//聚保宝发标表
 	const payment_jbb   = 'borrow_payment_jbb';	//聚保宝购买表
 	const payment_jbb_dtl  = 'borrow_payment_jbb_dtl';	//聚保宝购买表明细
@@ -1164,9 +1164,9 @@ class Project_model extends CI_Model{
         unset($temp);
         return $data;
     }
+
+
 /********************************************************聚保宝***************************************************************************************/
-
-
 	/**
 	 * 聚保宝项目列表
 	 * @param string $type_code
@@ -1203,8 +1203,6 @@ class Project_model extends CI_Model{
 		return $data;
 	}
 
-
-
 	/**
 	 * 聚保宝项目
 	 * @param string $type_code
@@ -1236,8 +1234,6 @@ class Project_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
-
 
 	/**
 	 * 聚保宝项目标的
@@ -1271,7 +1267,6 @@ class Project_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
 
 	/**
 	 * 聚保宝详情列表
@@ -1312,8 +1307,6 @@ class Project_model extends CI_Model{
 		return $data;
 	}
 
-
-
 	/**
 	 * 聚保宝累计入团人数
 	 * @param string $type_code
@@ -1352,9 +1345,6 @@ class Project_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
-
-
 
 	/**
 	 * 聚保宝分散投资数
@@ -1396,8 +1386,6 @@ class Project_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
-
 
 	/**
 	 * 聚保宝个人中心投资列表(历史)
@@ -1453,12 +1441,6 @@ class Project_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
-
-
-
-
-
 
 	/**
 	 * 聚保宝投资
@@ -1617,10 +1599,6 @@ class Project_model extends CI_Model{
         return $data;
 	}
 
-
-
-/********************************************************聚保宝*******************************************************************************************/
-	
 	/**
 	 * 聚保宝提现排名
 	 * @param string $type_code 产品编号
@@ -1634,8 +1612,6 @@ class Project_model extends CI_Model{
 		$num  = $query->row()->num;
 		return $num;
 	}
-
-
 
 	/**
 	 * 聚保宝项目
@@ -1654,8 +1630,6 @@ class Project_model extends CI_Model{
 		return $data;
 	}
 
-
-
 	/**
 	 * 聚保宝新手标是否投资一次
 	 * @param string $type_code 产品编号
@@ -1672,8 +1646,6 @@ class Project_model extends CI_Model{
 		return $data;
 	}
 
-
-
 	/**
 	 * 聚保宝项目
 	 * @param string $type_code 产品编号
@@ -1689,8 +1661,6 @@ class Project_model extends CI_Model{
 		$all_amount = $this->c->get_one(self::payment_jbb, $temp['where']);
 		return $all_amount;
 	}
-
-
 
 	/**
 	 * 聚保宝投资私有方法 数据库处理
@@ -1811,8 +1781,6 @@ class Project_model extends CI_Model{
 		return $query;
 	}
 
-
-
     /**
      * 更新记录状态
      *
@@ -1834,8 +1802,9 @@ class Project_model extends CI_Model{
         unset($temp);
         return $query;
     }
-/********************************************************项目属性相关*******************************************************************************************/
 
+
+	/******************** 项目属性相关 ********************************************************************************/
 	/**
 	 * 获取项目状态
 	 * @param int $buy_time 购买时间
@@ -1996,8 +1965,8 @@ class Project_model extends CI_Model{
 
 	}
 
-/***************************计息相关**********************************************************/
 
+	/****************** 计息相关 **************************************************************************************/
 	/**
 	 * 获取用户特定项目利息
 	 * @param string $borrow_no
@@ -2100,8 +2069,8 @@ class Project_model extends CI_Model{
 		return $lately_time;
 	}
 
-/*****************************还款计划相关wsb****************************************/
 
+	/******************* 还款计划相关 *********************************************************************************/
 	/**
 	 * 获得已生成的还款计划
 	 * @param $borrow_no
@@ -2462,8 +2431,8 @@ class Project_model extends CI_Model{
 		return $type_name;
 	}
 
-/********************************************************************************************/
 
+	/*********************** 私有方法 *********************************************************************************/
 	/**
 	 * 加密字符串
 	 * @param int    $string 字符串
@@ -2603,8 +2572,7 @@ class Project_model extends CI_Model{
 	}
 
 
-/********************投资时用到**************************************************************************************/
-
+	/********************投资时用到*************************************************************************************/
     /**
      * 发送信息
      *
@@ -2689,7 +2657,8 @@ class Project_model extends CI_Model{
         return $query;
     }
 
-/***************************************用户资金统计相关方法 涉及的数据表 borrow payment transfer*********************************************************/
+
+	/******************** 用户资金统计相关方法 涉及的数据表 borrow payment transfer************************************/
     /**
      * 用户投资总额
      * @param int $uid
@@ -2882,7 +2851,7 @@ class Project_model extends CI_Model{
         return round($interest,2);
     }
 
-/**************************************用户资金统计相关方法**********************************************************/
+
     /**
      * 设置修正分页的参数
      * @param int $page_id
@@ -2899,6 +2868,11 @@ class Project_model extends CI_Model{
         $_GET['per_page'] = (((int)$page_id-1)*(int)$page_size);
     }
 
+	/**
+	 * 项目利率小数点处理
+	 * @param $rate
+	 * @return string
+	 */
 	protected function _project_rate_format($rate){
 		if(strpos($rate,'.') !== FALSE){ //有小数点
 			$new_rate=rtrim($rate,0);
