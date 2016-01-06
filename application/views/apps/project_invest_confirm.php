@@ -177,7 +177,7 @@
                 dataType: 'json',
                 success: function (result) {
                     $("#btn_toubiao").prop('disabled', false).text('投标');
-                    if (result.code == 0) {
+                    if (result.status == '10000') {
                         window.location.replace('<?php echo site_url('apps/home/project_invest_success') ?>');
                     } else {
                         my_alert(result.msg);

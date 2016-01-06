@@ -59,6 +59,7 @@ class Home extends MY_Controller{
 
         $this->load->model('api/user_model','user_api');       //2.0版用户相关model
         $this->load->model('api/cash_model','cash_api');       //2.0版资金相关model
+        $this->load->model('api/project_model','project_api'); //2.0版资金相关model
     }
 
 /************************************---注册---***********************************************/
@@ -258,72 +259,12 @@ class Home extends MY_Controller{
      */
     public function ajax_invest(){
         if($this->input->is_ajax_request() == TRUE){
-            $data = $temp = array();
-            $data = array('code' => 1, 'msg' => '对不起，你提交的参数有误！','targeturl'=>'');
-
-            $temp['uid']       = $this->session->userdata('uid');
-            $temp['mobile']    = $this->session->userdata('mobile');
-            $temp['amount']    = (int)$this->input->post('amount');
-            $temp['password']  = trim($this->input->post('password', TRUE));
-            $temp['borrow_no'] = $this->input->post('borrow_no', TRUE);
-            $data['targeturl'] = '';
-
-            try
-            {
-                if(empty($temp['uid'])){
-                    throw new Exception('对不起，您还没有登录呢');
-                }
-
-                $temp['security'] = $this->session->userdata('security');
-                $temp['hash']     = $this->session->userdata('hash');
-                $temp['password'] = $this->c->password($temp['password'], $temp['hash']);
-
-                if(empty($temp['security'])){
-                    throw new Exception('对不起，您还没有设定资金密码');
-                }
-
-                if($temp['password'] != $temp['security']){
-                    throw new Exception('对不起，您输入的资金密码不正确!');
-                }
-
-                if($this->session->userdata('clientkind') != '1' && $this->session->userdata('clientkind') != '2'){
-                    throw new Exception('对不起，您先进行实名相关认证!');
-                }
-
-                $temp['balance'] = $this->borrow->get_user_balance(); // 当前账户可用余额
-                $temp['detail']  = $this->borrow->get_borrow_detail($temp['amount'], $temp['borrow_no']);
-
-                if($temp['balance'] < $temp['amount']){
-                    throw new Exception('对不起，您的账户余额不足');
-                }
-
-                if($temp['detail']['uid'] == $temp['uid']){
-                    throw new Exception('对不起，您不能投自己的标');
-                }
-
-                if($temp['detail']['surplus'] == 0){
-                    throw new Exception('对不起，该项目已完成融资！');
-                }
-
-                if( ! empty($temp['detail']) && $temp['amount'] >= $temp['detail']['lowest']){
-                    $temp['amount'] = ($temp['detail']['surplus'] > $temp['amount']) ? $temp['amount'] : $temp['detail']['surplus'];
-                    $temp['query']  = $this->borrow->invest($temp['amount'], $temp['borrow_no'], $temp['balance'],3);//3是app
-
-                    if( ! empty($temp['query'])){
-                        $data = array(
-                            'code' => 0,
-                            'msg'  => sprintf('您(尾号为%s)已成功投资【%s】项目，投资金额为:%s元。公司会定期汇报您的收益情况，祝您生活愉快！', substr($temp['mobile'], -4), $temp['detail']['subject'], $temp['amount'])
-                        );
-                        //$this->send->send_sms($temp['mobile'], $data['msg'], 0, $temp['uid']);
-                    }
-                }else{
-                    throw new Exception('对不起，投标金额不能小于'.price_format($temp['detail']['lowest']));
-                }
-            }catch(Exception $e){
-                $data['msg'] = $e->getMessage();
-            }
-
-            unset($temp);
+            $data = $this->project_api->project_invest(
+                $this->session->userdata('mobile'),
+                (float)$this->input->post('amount',TRUE),
+                $this->input->post('password',TRUE),
+                $this->input->post('borrow_no',TRUE)
+            );
             exit(json_encode($data));
         }
     }
