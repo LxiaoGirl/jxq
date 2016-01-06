@@ -18,7 +18,7 @@
 <!--            <a class="hlogo" href="#"><span>聚雪球</span></a>-->
 <!--        </div>-->
         <div class="pic_wrapper">
-        	<img src="https://www.zgwjjf.com/assets/images/jujianren/pic2.jpg" width="100%" alt="申请成功" />
+        	<img src="/assets/images/jujianren/pic2.jpg" width="100%" alt="申请成功" />
         </div>
         <a class="zccg" href="javascript:check_to_index();">进入个人中心</a>
     </div>

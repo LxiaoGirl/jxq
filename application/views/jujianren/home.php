@@ -58,7 +58,7 @@
     <div class="header">
         <h1>设置密码</h1>
     </div>
-    <form id="passform" action="https://www.zgwjjf.com/index.php/jujianren/setmima" method="post">
+    <form id="passform" action="#" method="post" onsubmit="return false;">
         <div class="box">
             <input id="pwd" name="password" class="shuru" type="password" value="" placeholder="请输入密码"/>
 

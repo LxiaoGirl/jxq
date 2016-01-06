@@ -21,8 +21,8 @@
         <p><img src="<?php echo assets('images/app/ptjs/ptjs_4.png'); ?>"><font>微信服务号: juxueqiu</font></p>
 
         <p><img src="<?php echo assets('images/app/ptjs/ptjs_5.png'); ?>"><font>服务邮箱: service@zgwjjf.com</font></p>
-        <a href="http://www.zgwjjf.com" target="_blank"><p><img
-                    src="<?php echo assets('images/app/ptjs/ptjs_6.png'); ?>"><font>公司网址: <em>www.zgwjjf.com</em></font><font
+        <a href="http://www.juxueqiu.com" target="_blank"><p><img
+                    src="<?php echo assets('images/app/ptjs/ptjs_6.png'); ?>"><font>公司网址: <em>www.juxueqiu.com</em></font><font
                     class="fr">></font></p></a>
 
         <p><img src="<?php echo assets('images/app/ptjs/ptjs_7.png'); ?>"><font>沈阳市皇姑区北陵大街32号软件大厦</font></p>

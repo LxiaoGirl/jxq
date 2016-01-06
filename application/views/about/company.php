@@ -52,14 +52,14 @@
 		<dl class="about_dl01 fl">
 			<dt>客户服务</dt>
 			<dd>客服电话：4007-918-333</dd>
-			<dd>在线帮助：<a href="http://www.zgwjjf.com">www.zgwjjf.com</a></dd>
+			<dd>在线帮助：<a href="http://www.juxueqiu.com">www.juxueqiu.com</a></dd>
 			<dd>服务邮箱：<a href="javascript:void(0);">service@zgwjjf.com</a></dd>
 		</dl>
 		<dl class="about_dl02 fl">
 			<dt>媒体报道与采访</dt>
 			<dd>如果你的需要与我们进行媒体合作，或有采访需要，请发送邮件至：</dd>
 			<dd><a href="javascript:void(0);">service@zgwjjf.com</a></dd>
-			<dd>我们会在一个工作日你与你联系</dd>
+			<dd>我们会在一个工作日内与你联系</dd>
 		</dl>
 		<dl class="about_dl03 fr">
 			<dt>商务合作</dt>

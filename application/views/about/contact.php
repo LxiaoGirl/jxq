@@ -27,7 +27,7 @@
   <dl class="contact_dl">
   <dt><img src="../../../../assets/images/about/contact/con_ico1.jpg" >客服电话</dt>
   <dd>客服电话：4007-918-333</dd>
-  <dd>在线帮助：<a href="javascript:void(0);">www.zgwjjf.com</a></dd>
+  <dd>在线帮助：<a href="javascript:void(0);">www.juxueqiu.com</a></dd>
   </dl>
    <dl class="contact_dl">
   <dt><img src="../../../../assets/images/about/contact/con_ico2.jpg" >媒体采访</dt>

@@ -1225,10 +1225,11 @@ class User_model extends CI_Model{
 	/**
 	 * 获取用户银行卡信息
 	 * @param int $uid 用户uid
+	 * @param string $card_no 卡no.
 	 * @param bool $all false【默认】=1条|true=多条
 	 * @return array
 	 */
-	public function get_user_card($uid=0,$all=false){
+	public function get_user_card($uid=0,$card_no='',$all=false){
 		$data = array('name'=>'获取用户银行卡信息','status'=>'10001','msg'=>'没有相关信息!','data'=>array());
 		$temp = array();
 
@@ -1238,6 +1239,7 @@ class User_model extends CI_Model{
 			'join'=> array('table' => self::bank,'where'=> join_field('bank_id',self::bank).'='.join_field('bank_id',self::card)),
 			'where'  => array(join_field('uid',self::card) => $uid,join_field('status',self::card) => 1)
 		);
+		if($card_no)$temp['where']['where'][join_field('card_no',self::card)] = $card_no;
 		$temp['data']  = $all?$this->c->get_all(self::card, $temp['where']):$this->c->get_row(self::card, $temp['where']);
 
 		if( !empty($temp['data'])){

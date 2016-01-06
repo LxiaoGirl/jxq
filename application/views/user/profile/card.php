@@ -34,7 +34,7 @@
                 </li>
 				<?php else:?>
                 <li>
-                    <div class="top"><img src="https://www.zgwjjf.com/assets/images/bank/<?php echo $bank['data']['code']?>.png"></div>
+                    <div class="top"><img src="/assets/images/bank/<?php echo $bank['data']['code']?>.png"></div>
                     <div class="center">
                         <p>开户姓名：<?php echo $bank['data']['real_name']?></p>
                         <p>银行卡号：<span class="account-info"><?php echo secret($bank['data']['account'],11)?></span>

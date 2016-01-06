@@ -23,6 +23,7 @@
     <div id="step-3" class="row gs_zc1 gs_zc2 step">
     <h1>企业用户注册</h1>
     <img src="../../../../assets/images/passport/step_3.jpg" alt="">
+    <?php if(profile('clientkind') == '-5'): ?><h4 style="text-align: center;color: red;">审核未通过:<?php echo profile('registration_status'); ?></h4><?php endif; ?>
     <form action="" onsubmit="return false;">
         <h2>企业信息</h2>
         <p>
@@ -97,6 +98,7 @@
     <div id="step-4" style="display: none;" class="row gs_zc1 gs_zc3 step">
     <h1>企业用户注册</h1>
     <img src="../../../../assets/images/passport/step_4.jpg" alt="">
+    <?php if(profile('clientkind') == '-5'): ?><h4 style="text-align: center;color: red;">审核未通过:<?php echo profile('registration_status'); ?></h4><?php endif; ?>
     <form action="" onsubmit="return false;">
         <p>
             <span class="z1">企业营业执照</span>

@@ -1086,21 +1086,25 @@ class Project_model extends CI_Model{
 			foreach($temp['data']['data'] as $key=>$val){
 				$data['data']['data'][$key]['borrow_no'] 			= $val['borrow_no'];//项目单号
 				$data['data']['data'][$key]['subject'] 				= $val['subject'];//项目名称
+				$data['data']['data'][$key]['category'] 			= $val['category'];//项目类别名称
 				$data['data']['data'][$key]['rate'] 				= $val['rate'];//项目利率
-				$data['data']['data'][$key]['amount'] 				= $val['amount'];//借款金额
+				$data['data']['data'][$key]['amounts'] 				= $val['amounts'];//借款金额
+				$data['data']['data'][$key]['amount'] 				= $val['amount'];//投资金额
+				$data['data']['data'][$key]['months'] 				= $val['months'];//借款月数
 				$data['data']['data'][$key]['invest_time'] 			= $val['dateline'];//借款时间
-				$data['data']['data'][$key]['interest'] 			= $this->get_project_user_interest($val['borrow_no'],$uid,$val['amount'],$val['rate'],$val['months'],$val['mode']);//预计（实收）收益
+				$temp['interest_array'] 							= $this->get_project_user_interest($val['borrow_no'],$uid,$val['amount'],$val['rate'],$val['months'],$val['mode']);//预计（实收）收益
+				$data['data']['data'][$key]['interest'] 			= $temp['interest_array']['interest'];
+				$data['data']['data'][$key]['interest_receive'] 	= $temp['interest_array']['interest_receive'];
 				$data['data']['data'][$key]['interest_start_time'] 	= $this->get_project_interest_start_time($val['status'],$val['due_date'],$val['confirm_time']);//收益计息日
 				$data['data']['data'][$key]['interest_lately_time'] = $this->get_project_lately_repayment_time($val['borrow_no'],$uid);//还款日
 				//项目状态
 				$temp['receive_rate'] 			= $this->_get_project_receive_rate($val['amounts'],$val['receive']);
 				$temp['status_array'] 			= $this->get_project_status($val['buy_time'],$val['due_date'],$temp['receive_rate'],$val['status']);
 				$data['data']['data'][$key]['status'] 	= $temp['status_array']['name'];//项目状态
-//				$data['data']['data'][$key]['new_status'] 	= $temp['status_array']['new_status'];//项目新状态
-
-
+				$data['data']['data'][$key]['new_status'] 	= $temp['status_array']['new_status'];//项目新状态
 //				$temp['data']['data'][$key]['can_invest'] = $temp['status_array']['can_invest'];//项目是否可以投资
-//				$temp['data']['data'][$key]['mode'] = $this->_get_project_mode($val['mode']);//项目mode
+				$data['data']['data'][$key]['mode'] = $this->_get_project_mode($val['mode']);//项目mode
+				$data['data']['data'][$key]['receive_rate'] = $temp['receive_rate'];//项目融资率
 			}
 			$data['data']['total'] = $temp['data']['total'];
 			$data['msg'] = 'ok!';
@@ -1164,6 +1168,55 @@ class Project_model extends CI_Model{
         unset($temp);
         return $data;
     }
+
+	/**
+	 * 获取用户当日收益
+	 * @param int $uid
+	 * @return float|int
+	 */
+	public function get_user_today_interest($uid=0){
+		$data = array(
+			'name' 	 => '获取用户当日收益',
+			'status' => '10001',
+			'msg' 	 => '服务器繁忙请稍后重试!',
+			'data' 	 => array('interest'=>0),
+		);
+		$temp   = array();
+
+		if( !$uid){
+			$data['msg'] = '用户uid为空!';
+			return $data;
+		}
+
+		$temp['where'] = array(
+			'select' => join_field('amount,rate', self::payment),
+			'join'   => array(
+				'table' => self::borrow,
+				'where' => join_field('borrow_no', self::payment) .' = '.join_field('borrow_no', self::borrow)
+			),
+			'where'  => array(
+				join_field('uid', self::payment)   => $uid,
+				join_field('type', self::payment)  => 1,
+				join_field('status', self::borrow) => 4
+			)
+		);
+
+		$temp['data'] = $this->c->get_all(self::payment, $temp['where']);
+
+		$temp['interest'] = 0;
+		if( ! empty($temp['data'])){
+			foreach($temp['data'] as $k => $v){
+				$temp['interest'] += floor($v['amount'] * $v['rate'] / 360)/100;
+
+			}
+		}
+		$data['status'] = '10000';
+		$data['msg'] 	= 'ok';
+		$data['data']['interest'] 	= $temp['interest'];
+
+		unset($temp);
+		return $data;
+	}
 
 
 /********************************************************聚保宝***************************************************************************************/
@@ -1975,22 +2028,31 @@ class Project_model extends CI_Model{
 	 * @param int $rate
 	 * @param int $months
 	 * @param int $mode
-	 * @return float|int
+	 * @return array
 	 */
 	public function get_project_user_interest($borrow_no='',$uid=0,$amount=0,$rate=0,$months=0,$mode=0){
-		$interest = 0;
+		$data = array(
+			'interest'		   => 0,//总利息
+			'interest_receive' => 0//已收利息
+		);
 
 		if($borrow_no && $uid){
 			//查询已还款的利息  如果已收利息大于
 			$repay_interest = $this->c->get_one(self::payment,array('select'=>'SUM(amount)','where'=>array('borrow_no'=>$borrow_no,'type'=>3,'status'=>1,'uid'=>$uid)));
-			if($repay_interest && $repay_interest>$amount){
-				$interest = bcsub($repay_interest,$amount,2);
+			if($repay_interest){
+				if($repay_interest>$amount){
+					$data['interest']         = bcsub($repay_interest,$amount,2);
+					$data['interest_receive'] = $data['interest'];
+				}else{
+					$data['interest_receive'] = $repay_interest;
+					$data['interest']		  = $this->get_project_interest($amount,$rate,$months,$mode);
+				}
 			}else{
-				$interest = $this->get_project_interest($amount,$rate,$months,$mode);
+				$data['interest'] = $this->get_project_interest($amount,$rate,$months,$mode);
 			}
 		}
 
-		return $interest;
+		return $data;
 	}
 
 	/**
@@ -2062,7 +2124,9 @@ class Project_model extends CI_Model{
 			$lately_time = $this->c->get_one(self::payment, $temp['where']);
 			if( ! $lately_time){
 				$temp['repay_plan']	=$this->get_project_repayment_list($borrow_no);
-				$lately_time 		= date('Ymd',$temp['repay_plan']['data'][0]['repay_date']);
+				$lately_time 		= $temp['repay_plan']['data'][0]['repay_date'];
+			}else{
+				$lately_time = strtotime($lately_time);
 			}
 		}
 

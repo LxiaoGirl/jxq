@@ -84,7 +84,7 @@
             </table>
         </a>
 
-        <a href="https://www.zgwjjf.com/index.php/apps/home/redbag" style="display:block;">
+        <a href="/index.php/apps/home/redbag" style="display:block;">
             <table width="100%" class="borderb" border="0" cellspacing="0" cellpadding="0">
                 <tbody>
                 <tr>

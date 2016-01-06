@@ -28,10 +28,10 @@ if( ! function_exists('attachment'))
         switch ($type)
         {
             case 1:
-                $url = sprintf('http://s.zgwjjf.com/%s', $path);
+                $url = sprintf('http://s.juxueqiu.com/%s', $path);
                 break;
             default:
-                $url = sprintf('https://www.zgwjjf.com/%s', $path);
+                $url = sprintf('https://www.juxueqiu.com/%s', $path);
                 break;
         }
 
