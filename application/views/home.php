@@ -36,7 +36,7 @@
             </li>
             <li>
                 <p>安全保障</p>
-                <p>国资担保 本息保障</p>
+                <p>国资担保 保障资金安全</p>
             </li>
             <li>
                 <p>高额收益</p>
@@ -60,7 +60,7 @@
         <div class="main_l product">
             <ul>
                 <li>
-                    <h1>聚在元旦趴  超值好标限时抢  APPLE watch等豪礼疯狂送<a href="/active/yd_2016/index.html" class="fr">查看活动详情 > </a></h1>
+                    <h1>聚保宝<a href="https://www.juxueqiu.com/index.php/invest/index?c=4" class="fr">查看全部项目 > </a></h1>
                     <div class="product_body">
                         <div class="top">
                             <div class="icon fl" style = 'background: #83bf73;'>稳</div>
@@ -79,15 +79,15 @@
                             </li>
                             <li>
                                 <div class="product_four_num_top tc">保障方式</div>
-                                <div class="product_four_num_bot tc ft_14_my">本息保障</div>
+                                <div class="product_four_num_bot tc ft_14_my">保障资金安全</div>
                             </li>
                         </ul>
                         <div class="bot">
                            <div class="fr tc">
-                                <button class="ls button1" onclick="window.location.href='https://www.zgwjjf.com/index.php/invest/detail_jbb?type_code=JBB04'">马上投资</button>
+                                <button class="ls button1" onclick="window.location.href='https://www.juxueqiu.com/index.php/invest/detail_jbb?type_code=JBB04'">马上投资</button>
                             </div>
                         </div>
-                        <div class="corner"></div>
+<!--                        <div class="corner"></div>-->
                     </div>
                 </li>
                 <?php if($category): ?>

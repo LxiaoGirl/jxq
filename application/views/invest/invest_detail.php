@@ -48,7 +48,7 @@
                     <div class="hfzq fl">
                         <div class="hfzq_sp danshu"><font></font>还款方式： <?php echo $project['mode_name']; ?></div>
                         <div class="hfzq_sp"><font></font>发布日期：<?php echo date('Y-m-d',$project['add_time']); ?></div>
-                        <div class="hfzq_sp danshu"><font></font>资金保障：<font class="orgener">100%</font>本息保障</div>
+                        <div class="hfzq_sp danshu"><font></font>资金保障：保障资金安全</div>
                         <div class="hfzq_sp"><font></font>起投金额：<?php echo rate_format($project['lowest']); ?>元</div>
                     </div>
                     <div class="djs fr time-down" data-start-time="<?php echo $project['buy_time']; ?>" data-end-time="<?php echo $project['due_date']; ?>" style="visibility: hidden;">

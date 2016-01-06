@@ -18,6 +18,7 @@ class User extends Login_Controller{
 		$this->load->model('api/cash_model','cash');
 		$this->load->model('api/project_model','project');
 //		$this->_is_login();
+		$this->_check_company_user();
 	}
 
 	/******************************个人中心主页************************************************************************/
@@ -1017,6 +1018,15 @@ class User extends Login_Controller{
 		$method = $this->router->fetch_method();
 		if(in_array($method, array('withdrawals_jl','withdrawals','recharge', 'recharge_jl', 'transaction_details', 'account_home','my_xq','my_redbag','my_redbag_lq','redbag_id','Receive_redbag','information','transaction_note','auto','Change_name','Change_mobile_one','Change_mobile_two','send_mail','email_yes','account_security','Reset_login_password','Change_login_password','Fund_password','update_fund_password','card')) && $this->session->userdata('uid') == ''){
 			redirect('login', 'refresh');
+		}
+	}
+
+	/**
+	 * 验证企业用户注册情况
+	 */
+	protected function _check_company_user(){
+		if(in_array($this->session->userdata('clientkind'),array('-2','-3','-4','-5',))){
+			redirect('login/company_apply');
 		}
 	}
 }

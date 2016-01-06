@@ -31,7 +31,7 @@
                     <img src="../../../../assets/images/user/jbb_pop.png">
                 </div>
             <!--弹出部分-->
-            <p class="jbb_tit">可领取的收益（元）<button class="tq ls">提取</button><button class="qgm ls_1"  onclick="window.location.href='<?php echo site_url('invest/index?c=4');?>'">去购买</button><!--<font>我可以中途撤资吗？</font>--></p>
+            <p class="jbb_tit">可领取的总收益（元）<button class="tq ls">提取</button><button class="qgm ls_1"  onclick="window.location.href='<?php echo site_url('invest/index?c=4');?>'">去购买</button><!--<font>我可以中途撤资吗？</font>--></p>
             <p class="zsy"><?php echo round($jbb_receive['data']['receive'],2)?></p>
             <ul class="ul1">
                 <li>

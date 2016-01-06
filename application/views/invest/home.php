@@ -97,7 +97,7 @@
                                     </div>
                                     <div class="bzfs fl">
                                         <p class="yqb">保障方式</p>
-                                        本息保障
+                                        保障资金安全
                                     </div>
                                 </div>
                             </div>

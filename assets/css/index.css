@@ -173,6 +173,38 @@ a.ls{
 a.ls:hover{
     color: #ff7700;
 }
+a.ls_1{
+    -webkit-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    -ms-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: background-color;
+    -o-transition-property: background-color;
+    -ms-transition-property: background-color;
+    -moz-transition-property: background-color;
+    transition-property: background-color;
+    background: #fff;
+    border: 1px solid #3cb5ec;
+    color: #3cb5ec;
+    line-height: 14px;
+    display: inline-block;
+    border-radius: 4px;
+    padding: 10px;
+}
+a.ls_1 font{
+    background: #3cb5ec;
+    border-radius: 50%;
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    color: #fff;
+    line-height: 11px;
+    text-align: center;
+}
+a.ls_1:hover{
+    background: #d8f0fb;
+}
 a.green{
     -webkit-transition-duration: 0.3s;
     -o-transition-duration: 0.3s;

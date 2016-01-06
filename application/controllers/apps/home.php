@@ -758,6 +758,16 @@ class Home extends MY_Controller{
         if(empty($data['card'])){
             redirect(self::dir.'home/my_card','location');
         }
+        //查询今日是否有提现
+        $data['today_transfer'] = $this->c->count('user_transaction',
+            array(
+                'where'=>array(
+                    'uid'=>$this->session->userdata('uid'),
+                    'add_time >='=>strtotime(date('Y-m-d').' 00:00:00'),
+                    'add_time <='=>time(),
+                )
+            )
+        );
         $this->load->view(self::dir.'transfer',$data);
     }
 

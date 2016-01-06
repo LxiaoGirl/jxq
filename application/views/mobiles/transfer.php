@@ -101,6 +101,7 @@
 
         var balance = '<?php echo $balance; ?>';
         var card_no = '<?php echo $card?$card[0]['card_no']:''; ?>';
+        var charge = '<?php echo $today_transfer?2:0; ?>';
         $("#btn_tj").click(function (event) {
             event.preventDefault();
             if (!card_no) {
@@ -157,7 +158,7 @@
         $('#amount').bind('keyup',function(){
             if(!isNaN($(this).val()) && $(this).val() > 2){
                 $('#jtje-p').css('visibility','visible');
-                $('#jtje').text($(this).val()-2);
+                $('#jtje').text($(this).val()-charge);
             }else{
                 $('#jtje-p').css('visibility','hidden');
                 $('#jtje').text(0);

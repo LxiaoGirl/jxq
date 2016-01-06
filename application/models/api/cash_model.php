@@ -1403,6 +1403,14 @@ class Cash_model extends CI_Model{
 		if($uid == 0 || $id == 0){
 			return $data;
 		}
+		date_default_timezone_set('PRC');
+		$jbb_start_time = strtotime(date('Y-m-d '.$this->config->item('jbb_start_time')));
+		$jbb_end_time = strtotime(date('Y-m-d '.$this->config->item('jbb_end_time')));
+
+		if(time()<$jbb_start_time||time()>$jbb_end_time){
+			$data['msg'] = '允许申请退出的时间是每天9:00-16:00';
+			return $data;
+		}
 		$temp['where'] = array(
                 'select' =>join_field('*',self::payment_jbb).','.join_field('rate',self::jbb_dtl).','.join_field('closeday',self::jbb).','.join_field('allawexit',self::jbb).','.join_field('counter_Fee',self::jbb).','.join_field('service_charge',self::jbb).','.join_field('time_limit',self::jbb),
                 'where'  =>array(
@@ -1441,7 +1449,7 @@ class Cash_model extends CI_Model{
 					'transfer_fee' =>  $counter_Fee,//手续费
 					'service_amount' => $v['service_amount']+$v['service_charge']*$receive,//服务费
 					'expected_amount' => round(jbb_product_amount($day,$rate,$amount),2),//预计收益
-					'real_amount' => round(jbb_product_amount($days,$rate,$amount),2)+$v['gain'],//真实收益
+					'real_amount' => $receive+$v['gain'],//真实收益
 					'interest_amount' =>  $receive+$v['amount']+$v['gain']- $counter_Fee-$v['service_charge']*$v['amount'],//本息收益
 					'status' => 2
 					);

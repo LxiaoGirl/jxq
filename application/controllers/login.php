@@ -95,7 +95,11 @@ class Login extends MY_Controller{
 					$data['url'] = $this->session->userdata('login_redirect_url');
 					$this->session->set_userdata(array('login_redirect_url'=>false));
 				}else{
-					$data['url'] = site_url();
+					if(in_array($data['data']['clientkind'],array('-2','-3','-4','-5'))){
+						$data['url'] = site_url('login/company_apply');
+					}else{
+						$data['url'] = site_url();
+					}
 				}
 			}
 

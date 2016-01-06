@@ -150,9 +150,9 @@ class Invest extends MY_Controller{
 	 */
 	public function ajax_jbb_sub(){
 		if($this->input->is_ajax_request() == TRUE){
-			$amount =  $this->input->get('amount',TRUE);
-			$security =  $this->input->get('security',TRUE);
-			$type_code =  $this->input->get('type_code',TRUE);
+			$amount =  $this->input->post('amount',TRUE);
+			$security =  $this->input->post('security',TRUE);
+			$type_code =  $this->input->post('type_code',TRUE);
 			$data =  $this->project->jbb_invest($type_code,$this->session->userdata('mobile'),$security,$amount);
 			exit(json_encode($data));
 		}
