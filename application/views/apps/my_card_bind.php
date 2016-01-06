@@ -210,7 +210,7 @@
                     'authcode': $("input[name='authcode']").val(),
                     'bankaddr': $("input[name='bankaddr']").val()
                 }, function (rs) {
-                    if (rs.code == 0) {
+                    if (rs.status == '10000') {
                         window.location.href = '/index.php/apps/home/my_card';
                     } else {
                         my_alert(rs.msg);

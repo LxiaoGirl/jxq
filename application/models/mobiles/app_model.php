@@ -869,7 +869,7 @@ class App_model extends CI_Model{
                 if( ! empty($temp['is_check'])){
                     $temp['where'] = array('where'=>array('card_no'=>$temp['card_no']));
                     $temp['no_agree'] = $this->c->get_one(self::card,array('select'=>'remarks','where'=>array('card_no'=>$temp['card_no'])));
-                    $temp['query'] = $this->c->update(self::card,$temp['where'],array('status'=>0));
+                    $temp['query'] = $this->c->update(self::card,$temp['where'],array('status'=>'-1'));
                     if( ! empty($temp['query'])){
                         $data['code'] = 0;
                         $data['msg'] ='解绑成功！';
@@ -931,7 +931,7 @@ class App_model extends CI_Model{
                 'city' => $this->input->post('bankaddr', TRUE),
                 'remarks'   => '',
                 'dateline'  => time(),
-                'status'  => 1
+                'status'  => 0
             );
 
             $temp['data']['account'] = str_replace(' ', '', $temp['data']['account']);

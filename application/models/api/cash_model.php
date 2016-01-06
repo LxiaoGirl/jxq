@@ -624,7 +624,7 @@ class Cash_model extends CI_Model{
         }
 
         //查询提现卡号信息是否存在
-        $temp['card_info'] = $this->_get_card_info($uid);
+        $temp['card_info'] = $this->_get_card_info($uid,$card_no);
         if(!$temp['card_info']){
             $data['msg'] = '银行账户信息不存在!';
             return $data;
@@ -2155,11 +2155,11 @@ class Cash_model extends CI_Model{
      * 获取银行卡信息
      *
      * @access public
-     * @param  string  $card_no 卡号
      * @param int $uid
+     * @param  string  $card_no 卡号
      * @return array
      */
-    private function _get_card_info($uid=0){
+    private function _get_card_info($uid=0,$card_no=''){
         $data = $temp = array();
 
         if( ! empty($uid)){
@@ -2167,7 +2167,8 @@ class Cash_model extends CI_Model{
                 'select' => 'real_name,bank_name,account',
                 'where'  => array(
                     'uid'     => $uid,
-                    'status'=>1
+                    'card_no'     => $card_no,
+                    'status !='=>'-1'
                 )
             );
 

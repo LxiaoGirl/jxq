@@ -143,7 +143,7 @@
                     'authcode': $("#authcode").val()
                 },
                 success: function (resut) {
-                    if (resut.code == 0) {
+                    if (resut.status == '10000') {
                         window.location.replace('<?php echo site_url('apps/home/transfer_success?amount='); ?>' + $("input[name='amount']").val());
                     } else {
                         my_alert(resut.msg);
