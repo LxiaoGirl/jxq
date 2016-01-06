@@ -185,6 +185,7 @@ class User_model extends CI_Model{
 					$data['status']= '10000';
 					$data['msg']= '恭喜你,你的账号已经注册成功！';
 					$data['data']= $temp['data'];
+					$this->_add_user_log('register','注册',$temp['data']['uid'],$temp['data']['user_name']);
 				}
 			}
 		}else{
@@ -696,7 +697,7 @@ class User_model extends CI_Model{
 							$query = $this->c->update(self::user, $temp['where'], $temp['data']);
 
 							if( ! empty($query)){
-								$this->_add_user_log('profile', '更新个人资料！');
+								$this->_add_user_log('profile-real_name', '更新个人资料-实名认证！',$uid,$real_name);
 								if($temp['data']['clientkind'] == "-3" || $temp['data']['clientkind']=="1"){
 									$data['msg']   = '你的认证资料已经提交!';
 									$data['status']   = '10000';
@@ -833,6 +834,7 @@ class User_model extends CI_Model{
 						$data['msg'] = '操作成功!';
 						$data['status'] = '10000';
 						$data['data']['company_code'] = $code;
+						$this->_add_user_log('invitation-company','公司邀请码绑定',$temp['user_info']['uid'],$temp['user_info']['user_name']);
 					}else{
 						$data['msg'] = '服务器繁忙请稍后重试!';
 					}
@@ -910,6 +912,7 @@ class User_model extends CI_Model{
 						$data['msg'] = '操作成功!';
 						$data['status'] = '10000';
 						$data['data']['lcs_code'] = $code;
+						$this->_add_user_log('invitation-intermediary','理财师邀请码绑定',$temp['user_info']['uid'],$temp['user_info']['user_name']);
 					}else{
 						$data['msg'] = '服务器繁忙请稍后重试!';
 					}
@@ -1144,7 +1147,7 @@ class User_model extends CI_Model{
 			return $data;
 		}
 
-		$temp['user_info'] = $this->c->get_row(self::user,array('select'=>'security,hash','where'=>array('uid'=>$uid)));
+		$temp['user_info'] = $this->c->get_row(self::user,array('select'=>'security,hash,uid,user_name','where'=>array('uid'=>$uid)));
 		if( !$temp['user_info']){
 			$data['msg'] = '用户信息不存在是否没登录哦!!';
 			return $data;
@@ -1165,6 +1168,7 @@ class User_model extends CI_Model{
 		if($temp['query']){
 			$data['msg'] = '解绑银行卡成功!';
 			$data['status'] = '10000';
+			$this->_add_user_log('card-unbind','解绑银行卡',$temp['user_info']['uid'],$temp['user_info']['user_name']);
 		}else{
 			$data['msg'] = '服务器繁忙请稍后重试!';
 		}
@@ -1353,6 +1357,7 @@ class User_model extends CI_Model{
 							'status'=>'10000',
 							'msg'=>'重置登陆密码成功!'
 					);
+					$this->_add_user_log('password','重置登录密码',$temp['user']['uid'],$temp['user']['user_name']);
 				}else{
 					$data['msg']='系统繁忙,请一会再试！';
 				}
@@ -1546,6 +1551,7 @@ class User_model extends CI_Model{
 		if( ! empty($query)){
 			$data['msg'] = '修改成功';
 			$data['status'] = '10000';
+			$this->_add_user_log('name','修改用户名',$temp['user_info']['uid'],$temp['user_info']['user_name']);
 		}else{
 			$data['msg'] = '服务器繁忙,请稍后再试！';
 		}
@@ -1739,6 +1745,8 @@ class User_model extends CI_Model{
 					'msg' => '邮箱绑定成功！',
 					'data' => $email
 				);
+				$user_name = $this->c->get_one(self::user,array('select'=>'user_name','where'=>array('uid'=>$uid)));
+				$this->_add_user_log('email','邮箱绑定',$uid,$user_name);
 			}else{
 				$data['msg'] = '服务器繁忙请稍后重试！';
 			}
