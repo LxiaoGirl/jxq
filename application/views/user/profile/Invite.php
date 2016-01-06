@@ -10,7 +10,7 @@
             width: 150,//设置宽高
             height: 150
         });
-        qrcode.makeCode("https://www.zgwjjf.com/index.php/jujianren/jieshao?inviter_no=<?php echo $invite_code;?>");
+        qrcode.makeCode("https://www.juxueqiu.com/index.php/jujianren/jieshao?inviter_no=<?php echo $invite_code;?>");
     }
 </script>
 </head>
