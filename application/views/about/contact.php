@@ -23,7 +23,7 @@
   </div>
   
   <div class="contact1 fl">
-  <div style="font-size:18px; color:javascript:void(0);2b2b2b;">如果您在使用聚雪球(zgwjjf.com)的过程中有任何疑问请您与聚雪球客服人员联系。</div>
+  <div style="font-size:18px; color:#2b2b2b;">如果您在使用聚雪球(juxueqiu.com)的过程中有任何疑问请您与聚雪球客服人员联系。</div>
   <dl class="contact_dl">
   <dt><img src="../../../../assets/images/about/contact/con_ico1.jpg" >客服电话</dt>
   <dd>客服电话：4007-918-333</dd>
@@ -54,7 +54,7 @@
   </dl>
   <dl class="contact_dl">
    <dt>获取关于聚雪球的最新信息与资讯</dt>
-   <dd><img src="../../../../assets/images/about/contact/con_ico4.jpg">新浪微博：<a href="http://weibo.com/zgwjjf">http://weibo.com/zgwjjf</a></dd>
+   <dd><img src="../../../../assets/images/about/contact/con_ico4.jpg">新浪微博：<a href="http://weibo.com/juxueqiu">http://weibo.com/juxueqiu</a></dd>
    <dd><img src="../../../../assets/images/about/contact/con_ico5.jpg">微信公众号：</dd>
   </dl>
   <div style="position:relative; height:215px;">
