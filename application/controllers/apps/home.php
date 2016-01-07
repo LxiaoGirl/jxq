@@ -390,7 +390,6 @@ class Home extends MY_Controller{
         if($card_no){
             $data['card']  = $this->user_api->get_user_card($this->session->userdata('uid'))['data'];
         }else{
-
             $data['bank'] = $this->commons_api->get_bank('100,102,103,104,105,308,302,303,305,310,307,309')['data']; //银行列表
         }
         $this->load->view(self::dir.'recharge_form',$data);
@@ -508,7 +507,7 @@ class Home extends MY_Controller{
             unset($temp);
         }else{
             $temp['recharge_no'] = $this->c->transaction_no(self::recharge, 'recharge_no');
-            $temp['account']     = (int)$this->input->post('account',true);
+            $temp['account']     = $this->input->post('account',true);
             $temp['amount']      = (float)$this->input->post('amount');
             if( ! empty($temp['amount']) &&  ! empty($temp['account'])){
                 $temp['bank_id']     =  (int)$this->input->post('bank_id');
@@ -831,6 +830,8 @@ class Home extends MY_Controller{
         $this->_check_realname(true);
 
         $data['account'][] = $this->user_api->get_user_card($this->session->userdata('uid'))['data'];
+
+        if(empty($data['account'][0]))$data['account'] = array();
 
         $this->load->view(self::dir.'my_card',$data);
     }

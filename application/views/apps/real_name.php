@@ -32,8 +32,8 @@
             <div class="container">
                 <div class="row mt20 mb20">
                     <button id="submit" type="submit" class="btn btn-lg btn-danger btn-block ajax-submit-button"
-                        <?php if (!empty($this->session->userdata('real_name')) && !empty($this->session->userdata('nric'))):echo 'disabled';endif; ?>>
-                        <?php if (!empty($this->session->userdata('real_name')) && !empty($this->session->userdata('nric'))):?>
+                        <?php if ($this->session->userdata('real_name') && $this->session->userdata('nric')):?> disabled <?php endif;?>>
+                        <?php if ($this->session->userdata('real_name') && $this->session->userdata('nric')):?>
                             已认证
                         <?php else: ?>
                             提交认证

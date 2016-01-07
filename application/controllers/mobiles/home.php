@@ -61,6 +61,7 @@ class Home extends MY_Controller{
         $this->load->model('api/user_model','user_api');       //2.0版user相关model
         $this->load->model('api/project_model','project_api'); //2.0版项目相关model
         $this->load->model('api/cash_model','cash_api');       //2.0版资金相关model
+        $this->load->model('api/commons_model','commons_api'); //2.0版资金相关model
 
     }
 
@@ -268,71 +269,12 @@ class Home extends MY_Controller{
      */
     public function ajax_invest(){
         if($this->input->is_ajax_request() == TRUE){
-            $data = $temp = array();
-            $data = array('code' => 1, 'msg' => '对不起，你提交的参数有误！','targeturl'=>'');
-
-            $temp['uid']       = $this->session->userdata('uid');
-            $temp['mobile']    = $this->session->userdata('mobile');
-            $temp['amount']    = (int)$this->input->post('amount');
-            $temp['password']  = trim($this->input->post('password', TRUE));
-            $temp['borrow_no'] = $this->input->post('borrow_no', TRUE);
-            $data['targeturl'] = '';
-
-            try
-            {
-                if(empty($temp['uid'])){
-                    throw new Exception('对不起，您还没有登录呢');
-                }
-
-                $temp['security'] = $this->session->userdata('security');
-                $temp['hash']     = $this->session->userdata('hash');
-                $temp['password'] = $this->c->password($temp['password'], $temp['hash']);
-
-                if(empty($temp['security'])){
-                    throw new Exception('对不起，您还没有设定资金密码');
-                }
-
-                if($temp['password'] != $temp['security']){
-                    throw new Exception('对不起，您输入的资金密码不正确!');
-                }
-                if($this->session->userdata('clientkind') != '1' && $this->session->userdata('clientkind') != '2'){
-                    throw new Exception('对不起，您先进行实名相关认证!');
-                }
-
-                $temp['balance'] = $this->borrow->get_user_balance(); // 当前账户可用余额
-                $temp['detail']  = $this->borrow->get_borrow_detail($temp['amount'], $temp['borrow_no']);
-
-                if($temp['balance'] < $temp['amount']){
-                    throw new Exception('对不起，您的账户余额不足');
-                }
-
-                if($temp['detail']['uid'] == $temp['uid']){
-                    throw new Exception('对不起，您不能投自己的标');
-                }
-
-                if($temp['detail']['surplus'] == 0){
-                    throw new Exception('对不起，该项目已完成融资！');
-                }
-
-                if( ! empty($temp['detail']) && $temp['amount'] >= $temp['detail']['lowest']){
-                    $temp['amount'] = ($temp['detail']['surplus'] > $temp['amount']) ? $temp['amount'] : $temp['detail']['surplus'];
-                    $temp['query']  = $this->borrow->invest($temp['amount'], $temp['borrow_no'], $temp['balance'],4);//m版
-
-                    if( ! empty($temp['query'])){
-                        $data = array(
-                            'code' => 0,
-                            'msg'  => sprintf('您(尾号为%s)已成功投资【%s】项目，投资金额为:%s元。公司会定期汇报您的收益情况，祝您生活愉快！', substr($temp['mobile'], -4), $temp['detail']['subject'], $temp['amount'])
-                        );
-                        //$this->send->send_sms($temp['mobile'], $data['msg'], 0, $temp['uid']);
-                    }
-                }else{
-                    throw new Exception('对不起，投标金额不能小于'.price_format($temp['detail']['lowest']));
-                }
-            }catch(Exception $e){
-                $data['msg'] = $e->getMessage();
-            }
-
-            unset($temp);
+            $data = $this->project_api->project_invest(
+                $this->session->userdata('mobile'),
+                (float)$this->input->post('amount',TRUE),
+                $this->input->post('password',TRUE),
+                $this->input->post('borrow_no',TRUE)
+            );
             exit(json_encode($data));
         }
     }
@@ -424,7 +366,7 @@ class Home extends MY_Controller{
 
         $this->_check_realname();
         //查询用户 已有的银行卡
-        $data['card'] = $this->account->get_card_list();
+        $data['card'][] = $this->user_api->get_user_card($this->session->userdata('uid'))['data'];
         $this->load->view(self::dir.'recharge',$data);
     }
 
@@ -452,33 +394,10 @@ class Home extends MY_Controller{
         //获取card_no  有card_no就是绑定银行卡的充值  没有则是其他银行卡的充值
         $card_no = $this->input->get('card_no',true);
         if($card_no){
-            $temp['uid']   = $this->session->userdata('uid');
-            $temp['where'] = array(
-                'select' => join_field('id,card_no,real_name,account,bank_id,remarks',self::card).','.join_field('code,bank_name',self::bank),
-                'where'  => array(
-                    join_field('card_no',self::card) => $card_no,
-                    join_field('uid',self::card)     => $temp['uid'],
-                    join_field('status',self::card)  => 1
-                ),
-                'join'   =>array(
-                    'table'=>self::bank,
-                    'where'=>join_field('bank_id',self::card).'='.join_field('bank_id',self::bank)
-                )
-            );
-            $data['card']  = $this->c->get_row(self::card, $temp['where']);
+            $data['card']  = $this->user_api->get_user_card($this->session->userdata('uid'))['data'];
         }else{
-            $temp['where'] = array(
-                'select' => 'bank_id,bank_name,code',
-                'where'  => array('status' => 1)
-                /*'where_in'=>array(
-                    'field'=>'bank_id',
-                    'value'=>array(100,102,103,104,105,308,302,303,305,310,307,309) //304 华夏 306广发
-				
-                )
-				*/
-            );
 
-            $data['bank'] = $this->c->get_all(self::bank, $temp['where']); //银行列表
+            $data['bank'] = $this->commons_api->get_bank('100,102,103,104,105,308,302,303,305,310,307,309')['data']; //银行列表
         }
         $this->load->view(self::dir.'recharge_form',$data);
     }
@@ -597,7 +516,7 @@ class Home extends MY_Controller{
             unset($temp);
         }else{
             $temp['recharge_no'] = $this->c->transaction_no(self::recharge, 'recharge_no');
-            $temp['account'] = (int)$this->input->post('account',true);
+            $temp['account'] = $this->input->post('account',true);
             $temp['amount'] = (float)$this->input->post('amount');
             if( ! empty($temp['amount']) &&  ! empty($temp['account'])){
                 $temp['bank_id'] =  (int)$this->input->post('bank_id');
@@ -605,8 +524,9 @@ class Home extends MY_Controller{
                 $temp['card_id'] =  $this->input->post('card_id',true);
                 $temp['no_agree'] =  ''; //签约号
                 if(empty($temp['card_id'])){ //账户no。为空 则新曾银行账户
-                    $temp['is_bind'] = $this->c->count(self::card,array('where'=>array('account'=>$temp['account'],'uid'=>$this->session->userdata('uid'),'status'=>1)));
-                    if($temp['is_bind'] == 0){ //不存在 则新增
+//                    $temp['is_bind'] = $this->c->count(self::card,array('where'=>array('account'=>$temp['account'],'uid'=>$this->session->userdata('uid'),'status'=>1)));
+                    $temp['is_bind'] = $this->user_api->get_user_card($this->session->userdata('uid'),$temp['account'])['data'];
+                    if(empty($temp['is_bind'])){ //不存在 则新增
                         $temp['new_card_data'] = array(
                             'card_no'   => $this->c->transaction_no(self::card, 'card_no'),
                             'uid'       => $this->session->userdata('uid'),
@@ -619,7 +539,7 @@ class Home extends MY_Controller{
                             'city'      => '默认地址',
                             'remarks'   => '',
                             'dateline'  => time(),
-                            'status'  => 1
+                            'status'  => 0
                         );
                         $query = $this->c->insert(self::card, $temp['new_card_data']);
                         $temp['card_id'] = $query;
@@ -760,28 +680,50 @@ class Home extends MY_Controller{
      */
     public function transfer(){
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->transaction->transfer();
+            //验证短信
+            $sms_check = $this->commons_api->validation_authcode(
+                $this->session->userdata('mobile'),
+                $this->input->post('authcode',true),
+                'transfer',
+                $this->session->userdata('uid')
+            );
+            if($sms_check['status'] != '10000'){
+                exit(json_encode($sms_check));
+            }
+
+            //执行体现处理
+            $data = $this->cash_api->user_transaction(
+                $this->session->userdata('uid'),
+                $this->input->post('amount',true),
+                $this->input->post('card_no',true),
+                $this->input->post('security',true)
+            );
+            //操作成功 处理余额session
+            if($data['status'] == '10000'){
+                $this->session->set_userdata(array('balance'=>$data['data']['balance']));
+            }
             exit(json_encode($data));
         }
 
         $this->_check_realname(true);
         //查询 余额 和 绑定的银行卡信息
-        $data = array(
-            'balance' => (float)$this->user->get_user_balance(),
-            'card'    => $this->transaction->get_user_card()
-        );
+        $data['balance'] = (float)$this->cash_api->get_user_balance($this->session->userdata('uid'))['data']['balance'];
+        $data['card'][]  = $this->user_api->get_user_card($this->session->userdata('uid'))['data'];
         //没有绑定银行卡 则跳转到我的银行卡进行绑定
         if(empty($data['card'])){
             redirect(self::dir.'home/my_card','location');
         }
+        //查询今日是否有提现
+        $data['today_transfer'] = $this->c->count('user_transaction',
+            array(
+                'where'=>array(
+                    'uid'=>$this->session->userdata('uid'),
+                    'add_time >='=>strtotime(date('Y-m-d').' 00:00:00'),
+                    'add_time <='=>time(),
+                )
+            )
+        );
         $this->load->view(self::dir.'transfer',$data);
-    }
-
-    /**
-     * 提现确认 暂无用
-     */
-    public function transfer_confirm(){
-        $this->load->view(self::dir.'transfer_confirm');
     }
 
     /**
@@ -906,8 +848,12 @@ class Home extends MY_Controller{
      *我的银行卡
      */
     public function my_card(){
+        $this->_check_to_login();
         $this->_check_realname(true);
-        $data['account'] = $this->account->get_card_list();
+
+        $data['account'][] = $this->user_api->get_user_card($this->session->userdata('uid'))['data'];
+        if(empty($data['account'][0]))$data['account'] = array();
+
         $this->load->view(self::dir.'my_card',$data);
     }
 
@@ -916,27 +862,33 @@ class Home extends MY_Controller{
      */
     public function my_card_bind(){
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->app->bind_card();
+            //验证短信
+            $sms_check = $this->commons_api->validation_authcode(
+                $this->session->userdata('mobile'),
+                $this->input->post('authcode',true),
+                'card_bind',
+                $this->session->userdata('uid')
+            );
+            if($sms_check['status'] != '10000'){
+                exit(json_encode($sms_check));
+            }
+
+            $data = $this->user_api->card_bind(
+                $this->session->userdata('uid'),
+                $this->input->post('amount',true),
+                $this->input->post('bank_id',true),
+                $this->input->post('bankaddr',true)
+            );
             exit(json_encode($data));
         }
 
         //银行列表
-        $temp['where'] = array(
-            'select' => 'bank_id,bank_name',
-            'where'  => array('status' => 1),
-            'where_in'=>array(
-                'field'=>'bank_id',
-                'value'=>array(100,102,103,104,105,308,302,303,305,310,307,309) //304 华夏 306广发
-            )
-        );
-        $data['bank'] = $this->c->get_all(self::bank, $temp['where']);
+        $data['bank'] = $this->commons_api->get_bank('100,102,103,104,105,308,302,303,305,310,307,309')['data'];
 
         //地址处理
-        $data['province']  = $this->borrow->get_region_list();
-        $_GET['region_id'] = 2;
-        $data['city']      = $this->borrow->get_region_list();
-        $_GET['region_id'] = 52;
-        $data['distic']    = $this->borrow->get_region_list();
+        $data['province']  = $this->commons_api->get_region(1)['data'];
+        $data['city']      = $this->commons_api->get_region(2)['data'];
+        $data['distic']    = $this->commons_api->get_region(52)['data'];
 
         $this->load->view(self::dir.'my_card_bind',$data);
     }
@@ -946,15 +898,13 @@ class Home extends MY_Controller{
      */
     public function ajax_get_region_list(){
         $temp = $data = array();
-        $temp['city'] = $this->borrow->get_region_list();
+
+        $data['city'] = $this->commons_api->get_region((int)$this->input->get('region_id'))['data'];
         $temp['type'] = $this->input->get('type');
         if( !empty($temp['city']) && $temp['type'] == 'city'){ //获取城市和地区
-            $data['city']      = $temp['city'];
-            unset($temp);
-            $_GET['region_id'] = $data['city'][0]['region_id'];
-            $data['district']  = $this->borrow->get_region_list();
+            $data['district']  = $this->borrow->get_region_list($data['city'][0]['region_id'])['data'];
         }else{ //值获取地区
-            $data = $temp['city'];
+            $data = $data['city'];
         }
         exit(json_encode($data));
     }
@@ -964,26 +914,22 @@ class Home extends MY_Controller{
      */
     public function my_card_unbind(){
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->app->unbind_card();
+            $data = $this->user_api->card_unbind(
+                $this->session->userdata('uid'),
+                $this->input->post('card_no',true),
+                $this->input->post('security',true)
+            );
             exit(json_encode($data));
         }
 
-        $temp =array();
-        $temp['card_no'] = $this->input->get('card_no',true);
-        $temp['uid'] = $this->session->userdata('uid');
+        $card_no = $this->input->get('card_no',true);
 
         //查询解绑的银行卡信息
-        if( ! empty($temp['card_no'])){
-            $temp['where'] = array(
-                'select' => join_field('card_no,real_name,account,remarks,dateline',self::card).','.join_field('bank_name,code',self::bank),
-                'join'   => array('table' => self::bank,'where'=> self::bank.'.bank_id='.self::card.'.bank_id'),
-                'where'  => array(self::card.'.uid' => $temp['uid'],self::card.'.card_no'=>$temp['card_no'],self::card.'.status'=>1)
-            );
-            $data = $this->c->get_row(self::card, $temp['where']);
+        if( ! empty($card_no)){
+            $data = $this->user_api->get_user_card($this->session->userdata('uid'),$card_no)['data'];
         }else{
             redirect(self::dir.'home/my_card','refresh');
         }
-        unset($temp);
 
         $this->load->view(self::dir.'my_card_unbind',$data);
     }
