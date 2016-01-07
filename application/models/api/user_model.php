@@ -1239,7 +1239,7 @@ class User_model extends CI_Model{
 
 		if( !$uid)return $data;
 		$temp['where'] = array(
-			'select' => join_field('card_no,real_name,account,remarks,dateline',self::card).','.join_field('bank_name,code,content',self::bank),
+			'select' => join_field('id,card_no,real_name,account,remarks,dateline',self::card).','.join_field('bank_name,code,content,bank_id',self::bank),
 			'join'=> array('table' => self::bank,'where'=> join_field('bank_id',self::bank).'='.join_field('bank_id',self::card)),
 			'where'  => array(join_field('uid',self::card) => $uid,join_field('status',self::card).' !=' => '-1')
 		);

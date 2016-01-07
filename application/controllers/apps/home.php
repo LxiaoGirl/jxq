@@ -517,7 +517,7 @@ class Home extends MY_Controller{
                 $temp['no_agree']    =  ''; //签约号
                 if(empty($temp['card_id'])){ //账户no。为空 则新曾银行账户
 //                    $temp['is_bind'] = $this->c->count(self::card,array('where'=>array('account'=>$temp['account'],'uid'=>$this->session->userdata('uid'),'status'=>1)));
-                    $temp['is_bind'] = $this->user_api->get_userd_card($this->session->userdata('uid'),$temp['account'])['data'];
+                    $temp['is_bind'] = $this->user_api->get_user_card($this->session->userdata('uid'),$temp['account'])['data'];
                     if(empty($temp['is_bind'])){ //不存在 则新增
                         $temp['new_card_data'] = array(
                             'card_no'   => $this->c->transaction_no(self::card, 'card_no'),
@@ -666,7 +666,7 @@ class Home extends MY_Controller{
     public function transfer(){
         if($this->input->is_ajax_request() == TRUE){
             //验证短信
-            $sms_check = $this->commons->validation_authcode(
+            $sms_check = $this->commons_api->validation_authcode(
                 $this->session->userdata('mobile'),
                 $this->input->post('authcode',true),
                 'transfer',
@@ -677,7 +677,7 @@ class Home extends MY_Controller{
             }
 
             //执行体现处理
-            $data = $this->cash->user_transaction(
+            $data = $this->cash_api->user_transaction(
                 $this->session->userdata('uid'),
                 $this->input->post('amount',true),
                 $this->input->post('card_no',true),
@@ -841,7 +841,7 @@ class Home extends MY_Controller{
     public function my_card_bind(){
         if($this->input->is_ajax_request() == TRUE){
             //验证短信
-            $sms_check = $this->commons->validation_authcode(
+            $sms_check = $this->commons_api->validation_authcode(
                 $this->session->userdata('mobile'),
                 $this->input->post('authcode',true),
                 'card_bind',
