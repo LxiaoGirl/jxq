@@ -69,7 +69,7 @@
             'showLoading': true,
             'funcDeal': {
                 'dateline': function (time) {
-                    return unixtime_style(time, 'Y-m-d')
+                    return unixtime_style(time, 'Y-m-d H:i:s')
                 }
             }
         });

@@ -361,6 +361,7 @@ class Home extends MY_Controller{
         $this->_check_realname();
         //查询用户 已有的银行卡
         $data['card'][] = $this->user_api->get_user_card($this->session->userdata('uid'))['data'];
+        if( !$data['card'][0])$data['card'] = array();
         $this->load->view(self::dir.'recharge',$data);
     }
 
@@ -694,7 +695,7 @@ class Home extends MY_Controller{
         $data['balance'] = (float)$this->cash_api->get_user_balance($this->session->userdata('uid'))['data']['balance'];
         $data['card'][]  = $this->user_api->get_user_card($this->session->userdata('uid'))['data'];
         //没有绑定银行卡 则跳转到我的银行卡进行绑定
-        if(empty($data['card'])){
+        if(empty($data['card'][0])){
             redirect(self::dir.'home/my_card','location');
         }
         //查询今日是否有提现
