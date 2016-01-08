@@ -2185,7 +2185,7 @@ class Cash_model extends CI_Model{
      * @param int $page_size
      */
     protected function _set_cutpage_params($page_id=0,$page_size=0){
-        if(isset($_GET['limit'])){
+        if(isset($_GET['limit']) && !$page_size){
             $page_size = (int)$this->input->get('limit');
         }else{
             if( !$page_size || !is_numeric($page_size))$page_size = $this->_page_size;
