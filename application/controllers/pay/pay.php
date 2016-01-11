@@ -37,8 +37,12 @@ class Pay extends Login_Controller
      public function index(){
         $data = $temp = array();
         //防止 直接访问
-        if($this->session->userdata('clientkind') != '1'){
-            $this->_redirect('user/user/account_security',3,'请先进行实名认证!');
+        if(!$this->session->userdata('clientkind') || in_array($this->session->userdata('clientkind'),array('-1','-2'))){
+            if($this->session->userdata('clientkind') == '-2'){
+                $this->_redirect('login/company_apply',3,'请先进行实名认证!');
+            }else{
+                $this->_redirect('user/user/account_security',3,'请先进行实名认证!');
+            }
         }
 
          if((int)date('Hi') >= 2330 || (int)date('Hi') <= 30){

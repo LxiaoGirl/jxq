@@ -13,20 +13,20 @@
     <div class="pd10 bg_red row navbar-fixed-top" style="  top: 50px;">
         <div style="padding-left:10px; padding-right:10px;">
             <div id="title" class="btn-group btn-group-justified">
-                <span class="tab_ts btn btn-default current" m="0">全部</span>
-                <span class="tab_ts btn btn-default" m="1">收入</span>
-                <span class="tab_ts btn btn-default" m="2">支出</span>
-                <span class="tab_ts btn btn-default" m="3">投资冻结</span>
-                <span class="tab_ts btn btn-default" m="4">提现冻结</span>
+                <span class="tab_ts btn btn-default current" data-status="0">全部</span>
+                <span class="tab_ts btn btn-default" data-status="1">收入</span>
+                <span class="tab_ts btn btn-default" data-status="2">支出</span>
+                <span class="tab_ts btn btn-default" data-status="3">投资冻结</span>
+                <span class="tab_ts btn btn-default" data-status="4">提现冻结</span>
             </div>
         </div>
     </div>
     <!-- 顶部导航  end-->
 
-    <p class="total total-0 total-1" style="margin-top: 70px; text-align:center;">
-    <span>收入合计：<span><?php echo $income_total; ?></span>元</span>
-    <span>支出合计：<span><?php echo $pay_total; ?></span>元</span>
-    <span>冻结合计：<span><?php echo $frozen_total; ?></span>元</span>
+    <p class="total total-0 total-1" id="total" style="margin-top: 70px; text-align:center;">
+    <span>收入合计：<span class="income_total list-value">0</span>元</span>
+    <span>支出合计：<span class="pay_total list-value">0</span>元</span>
+    <span>冻结合计：<span class="frozen_total list-value">0</span>元</span>
     </p>
     
     <div class="mb20">
@@ -62,82 +62,65 @@
 </body>
 <?php $this->load->view('common/mobiles/app_footer') ?>
 <script>
-    var g_m = '', page_id = 1, page_size = 12;
     $(function () {
-        var list_view = new wb_listview({
-            'id': 'list',
-            'showLoading': true,
-            'funcDeal': {
-                'dateline': function (time) {
-                    return unixtime_style(time, 'Y-m-d')
-                }
-            }
+        $("#total").list_data({
+            data:'/index.php/mobiles/home/ajax_get_cash_log_total',
+            list_one:true,
+            btn : true,
+            show_loading:true
         });
-        var get_data = function () {
-            var condition = '';
-            if (g_m != '') {
-                condition += '?status=' + g_m;
-            }
-            condition += (condition ? '&' : '?') + 'per_page=' + ((page_id - 1) * page_size) + '&limit=' + page_size;
-            $(window).unbind('scroll');
-            $.post('/index.php/mobiles/home/my_cash_log' + condition, {}, function (result) {
-                list_view.set_pageid(page_id);
-                list_view.list(result.data, function (obj, v) {
-                    if (v.type == 1 || v.type == 7) {
-                        obj.find('.amount').removeClass('c_blue').addClass('c_green').prepend('<span>+</span>');
-                        obj.find('.log-type').html('收入');
-                    } else {
-                        obj.find('.amount').prepend('<span>-</span>');
-                    }
+        $("#list").list_data({
+            data : '/index.php/mobiles/home/my_cash_log',
+            show_loading : 'img-msg',
+            btn : true,
+            page_size : 12,
+            event_type : 'scroll',
+            value_func : {
+                'dateline': function (time) {return unixtime_style(time, 'Y-m-d H:i:s')}
+            },
+            list_func : function (obj, v) {
+                if (v.type == 1 || v.type == 7) {
+                    obj.find('.amount').removeClass('c_blue').addClass('c_green').prepend('<span>+</span>');
+                    obj.find('.log-type').html('收入');
+                } else {
+                    obj.find('.amount').prepend('<span>-</span>');
+                }
 
-                    if (v.remarks == '') {
-                        var ramarks = '';
-                        switch (v.type) {
-                            case '1':
-                                ramarks = '充值';
-                                break;
-                            case '2':
-                                ramarks = '提现';
-                                break;
-                            case '3':
-                                ramarks = '提现冻结';
-                                break;
-                            case '4':
-                                ramarks = '投资冻结';
-                                break;
-                            case '5':
-                                ramarks = '投资';
-                                break;
-                            case '7':
-                                ramarks = '收益';
-                                break;
-                            case '10':
-                                ramarks = '还款扣款';
-                                break;
-                        }
-                        obj.find('.remarks').html(ramarks);
+                if (v.remarks == '') {
+                    var ramarks = '';
+                    switch (v.type) {
+                        case '1':
+                            ramarks = '充值';
+                            break;
+                        case '2':
+                            ramarks = '提现';
+                            break;
+                        case '3':
+                            ramarks = '提现冻结';
+                            break;
+                        case '4':
+                            ramarks = '投资冻结';
+                            break;
+                        case '5':
+                            ramarks = '投资';
+                            break;
+                        case '7':
+                            ramarks = '收益';
+                            break;
+                        case '10':
+                            ramarks = '还款扣款';
+                            break;
                     }
-                });
-                if (result.data) {
-                    page_id++;
-                    $(window).bind('scroll', function () {
-                        scroll_fun(function () {
-                            get_data();
-                        });
-                    });
+                    obj.find('.remarks').html(ramarks);
                 }
-            }, 'json');
-        };
-        $("#title span").on('tap', function () {
-            $("#title span").removeClass('current');
-            $(this).addClass('current');
-            if (g_m != $(this).attr('m')) {
-                g_m = $(this).attr('m');
-                page_id = 1;
-                get_data();
             }
+        },function(ls_func){
+            $("#title span").on('tap', function () {
+                $("#title span").removeClass('current');
+                $(this).addClass('current');
+                ls_func('/index.php/mobiles/home/my_cash_log?status='+$(this).data('status'));
+            });
         });
-        get_data();
     });
 </script>
 </html>

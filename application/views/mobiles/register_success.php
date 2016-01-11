@@ -12,7 +12,7 @@
     <p class="text-center cartoon android">
         <img width="80%" src="/assets/images/app/cartoon_ok.png" alt="下载APP登陆赚钱更方便"/>
     </p>
-    <p class="text-center android"><a style="font-size: 14px;text-decoration: underline;color: #2E9CE3;" href="https://www.zgwjjf.com/snowballapp.apk">下载APP登陆赚钱更方便</a></p>
+    <p class="text-center android"><a style="font-size: 14px;text-decoration: underline;color: #2E9CE3;" href="https://www.juxueqiu.com/snowballapp.apk">下载APP登陆赚钱更方便</a></p>
 
     <p class="text-center cartoon ios" style="display:none;">
         <img width="80%" src="/assets/images/app/app.png" alt="按住二维码识别图片下载APP"/>

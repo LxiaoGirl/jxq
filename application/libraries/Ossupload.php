@@ -184,7 +184,7 @@ class CI_Ossupload {
             {
                 $rs=$this->_do_upload($field);
                 if( ! empty($rs)){
-                    $this->data=$this->data();
+                    $this->data=$this->_data();
                 }else{
                     $this->errdata=$this->error_msg;
                 }

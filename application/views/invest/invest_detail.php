@@ -8,9 +8,6 @@
 
 <?php $this->load->view('common/head'); ?>
 
-<!---->
-<p class="hidden"><font class="syktje">1006000</font></p>
-<!---->
     <div class="invest_detail row">
         <!--面包屑导航-->
         <p class="invest_nav"><a href="<?php echo site_url(); ?>"> 首页 </a>> <a href="<?php echo site_url('invest/index'); ?>"> 我要投资 </a>> <a href=""> 投资详情 </a></p>
@@ -51,7 +48,7 @@
                     <div class="hfzq fl">
                         <div class="hfzq_sp danshu"><font></font>还款方式： <?php echo $project['mode_name']; ?></div>
                         <div class="hfzq_sp"><font></font>发布日期：<?php echo date('Y-m-d',$project['add_time']); ?></div>
-                        <div class="hfzq_sp danshu"><font></font>资金保障：<font class="orgener">100%</font>本息保障</div>
+                        <div class="hfzq_sp danshu"><font></font>资金保障：保障资金安全</div>
                         <div class="hfzq_sp"><font></font>起投金额：<?php echo rate_format($project['lowest']); ?>元</div>
                     </div>
                     <div class="djs fr time-down" data-start-time="<?php echo $project['buy_time']; ?>" data-end-time="<?php echo $project['due_date']; ?>" style="visibility: hidden;">
@@ -63,8 +60,8 @@
                 </div>
                 <div class="hy fr">
 
-                    <p class="dlye login-flag-tag" <?php if($this->session->userdata('uid')): ?> style="display: none;" <?php endif; ?>>登陆后可以投资 <span class="fr"><button type="button" onclick="window.location.href='<?php echo site_url('login/index?redirect_url='.urlencode($this->c->show_url())); ?>'">登录</button></span></p>
-                    <p class="dlye recharge-flag-tag" <?php if( ! $this->session->userdata('uid')): ?> style="display: none;" <?php endif; ?>>账户余额 <span class="fr"><?php echo isset($balance)?$balance:0; ?>元<button type="button" onclick="window.location.href='/index.php/user/user/recharge'">充值</button></span></p>
+                    <p class="dlye login-flag-tag" <?php if($this->session->userdata('uid')): ?> style="display: none;" <?php endif; ?>>登陆后可以投资 <span class="fr"><button class="ls_1" type="button" onclick="window.location.href='<?php echo site_url('login/index?redirect_url='.urlencode($this->c->show_url())); ?>'">登录</button></span></p>
+                    <p class="dlye recharge-flag-tag" <?php if( ! $this->session->userdata('uid')): ?> style="display: none;" <?php endif; ?>>账户余额 <span class="fr"><?php echo isset($balance)?$balance:0; ?>元<button class="ls_1" type="button" onclick="window.location.href='/index.php/user/user/recharge'">充值</button></span></p>
 
                     <p class="ktje">可投金额</p>
                     <p class="ktjes"><span id="enable_invest_max"><?php echo $project['new_status'] == 1?0:price_format($project['amount']-$project['receive'],2,false); ?></span><font>元</font></p>
@@ -74,7 +71,7 @@
                     <form action="" method="" accept-charset="utf-8">
                         <div class="inpandbut">
                             <?php  if($project['new_status'] == 1 || $project['new_status'] == 2): ?>
-                            <input class="invest-amount" type="text" maxlength="10" value="" placeholder="输入投资金额" <?php  if($project['new_status'] == 1): ?>style="display: none;" <?php endif; ?>><button id="invest-all" type="button" <?php  if($project['new_status'] == 1): ?>style="display: none;" <?php endif; ?>>全投</button>
+                            <input class="invest-amount ifhav" type="text" maxlength="10" value="" placeholder="输入投资金额" <?php  if($project['new_status'] == 1): ?>style="display: none;" <?php endif; ?>><button class="green" id="invest-all" type="button" <?php  if($project['new_status'] == 1): ?>style="display: none;" <?php endif; ?>>全投</button>
                             <?php endif; ?>
                         </div>
                         <div class="tip"></div>
@@ -82,16 +79,16 @@
                             <?php switch($project['new_status']){
                                 case '1':
                                     echo '<p class="yjsy tc settime1" data-start-time="'.$project['buy_time'].'" data-end-time="'.$project['due_date'].'">距开标还剩<span class="d">00</span>天<span class="h">00</span>小时<span class="m">00</span>分<span class="s">00</span>秒</p>';
-                                    echo '<button type="button" id="invest-button" class="jjksbut" data-status="1">即将开始</button>';
+                                    echo '<button type="button" id="invest-button" class="jjksbut ls_1" data-status="1">即将开始</button>';
                                     break;
                                 case '2':
-                                    echo '<button type="button"  id="invest-button" data-status="2">马上投标</button>';
+                                    echo '<button class="ls" type="button"  id="invest-button" data-status="2">马上投标</button>';
                                     break;
                                 case '3':
-                                    echo '<button type="button" class="ymbbut">复审中</button>';
+                                    echo '<button type="button" class="ymbbut hs">复审中</button>';
                                     break;
                                 case '4':
-                                    echo '<button type="button" class="ymbbut">回款中</button>';
+                                    echo '<button type="button" class="ymbbut hs">回款中</button>';
                                     break;
                                 case '5':
                                     echo '<div class="hkwc"> <div class="hkwc_top"></div> <div class="hkwc_bot"></div> <div class="pos-a-a"><a href="">回款完成</a></div> </div>';
@@ -109,10 +106,10 @@
                                 <span>输入资金密码</span><font class="fr close">×</font>
                             </div>
                             <div class="popbody tc">
-                                <input type="password" value="" class="security" placeholder="请输入资金密码"/>
+                                <input type="password" value="" class="security ifhav" placeholder="请输入资金密码"/>
                                 <div class="fr tl tip_pop">
                                 </div>
-                                <button type="button" id="invest-submit" class="ajax-submit-button" data-loading-msg="投资中..." >提交</button>
+                                <button type="button" id="invest-submit" class="ajax-submit-button ls" data-loading-msg="投资中..." >提交</button>
                                 <a href="<?php echo site_url('user/user/account_security'); ?>">不记得资金密码？点此找回</a>
                             </div>
                             </div>
@@ -166,6 +163,16 @@
 <script type="text/javascript">
     seajs.use(['jquery','sys','wsb_sys'],function(){
         tab($(".invest_detail_tab"));
+        //INPUT框变色
+        $('.ifhav').focus(function(){
+            $(this).addClass('hav');
+        });
+        $('.ifhav').blur(function(){
+            if($.trim($(this).val())==''){
+                $(this).removeClass('hav');
+            }
+        });
+        //INPUT框变色
 	    $(function(){
             //必要数据
             var can_invest_amount = parseFloat('<?php echo $project['amount']-$project['receive']; ?>'),
@@ -211,8 +218,8 @@
                         $(".msg").show().find('p').html('您还没有设置资金密码哦<a href="<?php echo site_url('user/user/account_security'); ?>">设置资金密码</a>');
                         return false;
                     }
-                    if ( is_real_name != '1') {
-                        $(".msg").show().find('p').html('您还没有进行实名认证哦<a href="<?php echo site_url('user/user/account_security'); ?>">实名认证</a>');
+                    if ( is_real_name != '1' && is_real_name != '2' ) {
+                        $(".msg").show().find('p').html('您还没有进行实名认证哦<a href="<?php echo profile('clientkind')=='-2'?site_url('login/company_apply'):site_url('user/user/account_security'); ?>">实名认证</a>');
                         return false;
                     }
                     var money = $(".invest-amount").val();

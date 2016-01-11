@@ -19,7 +19,7 @@
             <p class="cg">已经注册成功啦～！</p>
             <p class="wz"><span><?php echo secret($mobiles,4); ?></span>，<font>98%</font>的用户选择了去提升自己的安全等级。</p>
             <p class="but">
-	            <button type="button" onclick="window.location.href='<?php echo site_url('user/user/account_information'); ?>';">现在去提升<i></i></button>
+	            <button class="ls" type="button" onclick="window.location.href='<?php echo site_url('user/user/account_information'); ?>';">现在去提升<i></i></button>
 	            <a href="<?php echo site_url(); ?>">稍后再去</a>
             </p>
         </div>

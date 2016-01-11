@@ -5,7 +5,8 @@
     <?php $this->load->view('common/mobiles/app_head') ?>
 </head>
 <body>
-
+<!-- 公共头部导航-->
+<?php $this->load->view('common/mobiles/app_common_head') ?>
 <div class="container-fluid">
     <!--    <div class="row">-->
     <!--        <table width="100%" border="0" cellspacing="0" cellpadding="0">-->
@@ -95,7 +96,7 @@
     //                    'card_no':'<?php //echo $card_no; ?>//',
     //                    'authcode':$("input[name='authcode']").val()
     //                },function(rs){
-    //                    if(rs.code == 0){
+    //                    if(rs.status == '10000'){
     //                        window.location.replace('/index.php/mobiles/home/my_card/success');
     //                    }else{
     //                        my_alert(rs.msg);

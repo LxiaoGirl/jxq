@@ -44,8 +44,7 @@
 
             <div id="yanzheng">
                 <div class="box2" style="margin-bottom:24px;height: 71px;">
-                    <input id="yuyin" name="authcode" maxlength="6" type="text"/><input type="button" id="send-sms"value="获取语音验证码"/>
-
+                    <input id="yuyin" name = "authcode" maxlength="6" type="text"  style="width:30%;"/><input  style="width:30%;" type="button" id="send-sms" value="语音验证码"/><input  style=" margin-right:4%; width:30%; height: 39px;background: #fe7000;color: #FFF;border: none;float: right;display: inline-block;" type="button" id="send-sms-1" value="短信验证码"/>
                     <div class="clear" id="chkvoice" style="  padding-top: 16px;"></div>
                 </div>
                 <div class="box2">
@@ -59,7 +58,7 @@
     <div class="header">
         <h1>设置密码</h1>
     </div>
-    <form id="passform" action="https://www.zgwjjf.com/index.php/jujianren/setmima" method="post">
+    <form id="passform" action="#" method="post" onsubmit="return false;">
         <div class="box">
             <input id="pwd" name="password" class="shuru" type="password" value="" placeholder="请输入密码"/>
 
@@ -78,10 +77,6 @@
 <script type="text/javascript" src="/assets/js/jquery/jquery-2.1.1.min.js"></script>
 <script type="text/javascript">
     var mobile = '',authcode='';
-    function istel(str){
-        var ret = /^1[3|4|5|7|8|9][0-9]\d{4,8}$/
-        return ret.test(str);
-    }
     $(document).ready(function() {
         //$("#tanchu").hide()
         var maskheight = $(window).height();
@@ -98,72 +93,80 @@
         var chkusername = false;
         var chkcode = false;
         var chkvoice = false;
-        $("#username").keyup(function(){
-            if($(this).val()==""){
+        var username_check = function(flag){ //flag=true时用于blur事件 false 用于keyup事件
+            if(flag && chkusername)return false;//blur时 如果已验证就不验证了
+            if($("#username").val()==""){
                 $(".tishi").show().addClass("error").html("请输入手机号码!");
                 chkusername = false;
-            }else if(!istel($(this).val())){
-                $(".tishi").show().addClass("error").html("请输入正确的手机号码!")
-                chkusername = false
             }else{
-                //手机号验证开始
-                //验证手机号是否注册
-                $.ajax({
-                    type: 'POST',
-                    url: '/index.php/login/ajax_is_register',
-                    data: {mobile:$('input[name="mobile"]').val()},
-                    dataType:'json',
-                    success: function(result){
-                        if(result.status == '10000' ){
-                            $(".tishi").show().removeClass("error").addClass("success").html("这个号码可以使用!");
-                            chkusername = true;
-                            if(chkusername==true&&chkcode==true){
-                                $("#tijiao").removeAttr("disabled").css({
-                                    background:"#da251c",
-                                    cursor:"pointer",
-                                    color:"#fff"
-                                });
+                if(/^1[345789][0-9]{9}$/.test($("#username").val())){
+                    //手机号验证开始
+                    $.ajax({
+                        type: 'POST',
+                        url: '/index.php/login/ajax_is_register',
+                        data: {mobile:$('input[name="mobile"]').val()},
+                        dataType:'json',
+                        success: function(result){
+                            if(result.status == '10000' ){
+                                $(".tishi").show().removeClass("error").addClass("success").html("这个号码可以使用!");
+                                chkusername = true;
+                                if(chkusername==true&&chkcode==true){
+                                    $("#tijiao").removeAttr("disabled").css({
+                                        background:"#da251c",
+                                        cursor:"pointer",
+                                        color:"#fff"
+                                    });
+                                }
+                            }else{
+                                $(".tishi").show().removeClass("success").addClass("error").html(result.msg);
+                                chkusername = false;
                             }
-                        }else{
-                            $(".tishi").show().removeClass("success").addClass("error").html("手机号码重复不能注册！");
-                            chkusername = false;
                         }
-                    }
-                });
-                //手机号验证结束
+                    });
+                    //手机号验证结束
+                }else{
+                    $(".tishi").show().addClass("error").html("请输入正确格式的手机号码!");
+                    chkusername = false
+                }
             }
-        });
+        }
+        $("#username").keyup(function(){username_check();}).blur(function(){username_check(true);});
         //用户名验证结束
         $("#code").keyup(function(){
             if($(this).val()==""){
                 $("#chkcode").show().addClass("error").html("请输入验证码!");
                 chkcode = false;
             }else{
-                //验证码AJAX开始
-                $.ajax({
-                    type: 'POST',
-                    url: '/index.php/send/ajax_check_captcha',
-                    data: {captcha:$('input[name="captcha"]').val()},
-                    dataType:'json',
-                    success: function(result){
-                        if(result.status == '10000' ){
-                            $("#chkcode").show().removeClass("error").addClass("success").html("验证码正确！");
-                            chkcode = true
-                            if(chkusername==true&&chkcode==true){
-                                $("#tijiao").removeAttr("disabled").css({
-                                    background:"#da251c",
-                                    cursor:"pointer",
-                                    color:"#fff"
-                                });
+                if(/^[0-9]{5,}$/.test($(this).val())){
+                    //验证码AJAX开始
+                    $.ajax({
+                        type: 'POST',
+                        url: '/index.php/send/ajax_check_captcha',
+                        data: {captcha:$('input[name="captcha"]').val()},
+                        dataType:'json',
+                        success: function(result){
+                            if(result.status == '10000' ){
+                                $("#chkcode").show().removeClass("error").addClass("success").html("验证码正确！");
+                                chkcode = true
+                                if(chkusername==true&&chkcode==true){
+                                    $("#tijiao").removeAttr("disabled").css({
+                                        background:"#da251c",
+                                        cursor:"pointer",
+                                        color:"#fff"
+                                    });
+                                }
+                            }else{
+                                $("#chkcode").show().removeClass("success").addClass("error").html("验证码错误！");
+                                $("#tijiao").css("background","#CCC").attr("disabled",true);
+                                chkcode = false
                             }
-                        }else{
-                            $("#chkcode").show().removeClass("success").addClass("error").html("验证码错误！");
-                            $("#tijiao").css("background","#CCC").attr("disabled",true);
-                            chkcode = false
                         }
-                    }
-                });
-                //验证码AJAX结束
+                    });
+                    //验证码AJAX结束
+                }else{
+                    $("#chkcode").show().addClass("error").html("请输入正确格式的验证码!");
+                    chkcode = false;
+                }
 
             }
         });
@@ -266,11 +269,11 @@
                 $("#tijiao2").css("background","#CCC").attr("disabled",true);
                 chkvoice =false
             }else if($(this).val().length != 6){
-                $("#chkvoice").html("验证码错误！");
+                $("#chkvoice").html("验证码格式错误！");
                 $("#tijiao2").css("background","#CCC").attr("disabled",true);
                 chkvoice =false
             }else{
-                $("#chkvoice").html("输入正确！");
+                $("#chkvoice").html("ok！");
                 $("#tijiao2").css("background","#fe7000").removeAttr("disabled");
                 chkvoice = true
             }
@@ -343,7 +346,7 @@
                     dataType:'json',
                     data:{mobile:mobile,password:$("#pwd").val(),inviter_no:inviter_no,authcode:authcode},
                     error:function(a,b,c){
-                        alert(a+b+c)
+                        $("#chkcpwd").html('服务器繁忙,请稍后重试！').addClass("error").show();
                         $("#pass_btn").removeAttr("disabled").html('注册').css({
                             background:"#da251c",
                             cursor:"pointer"

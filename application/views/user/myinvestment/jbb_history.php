@@ -10,7 +10,7 @@
     <!--head end-->
     <!--user start-->
     <div class="user_nav row">
-        <a href="/index.php">首页</a>&nbsp;>&nbsp;<a href="/index.php/user/user/jbb">我的投资</a>&nbsp;>&nbsp;<a href="javascript:void(0);">聚保宝-历史预约</a>
+        <a href="/index.php">首页</a>&nbsp;>&nbsp;<a href="/index.php/user/user/jbb">我的投资</a>&nbsp;>&nbsp;<a href="javascript:void(0);">聚保宝-历史退出</a>
     </div>
     <div class="row user">
         <!--左侧通用-->
@@ -25,13 +25,13 @@
                     <p>您将提取<span id="amount">0</span>元的收益</p>
 					<p>服务费：<span id="service_out">0元</span></p>
                     <p class="blu">提取收益后复利天数重新开始计算</p>
-                    <p class="but"><button class="qd" value="">确定</button><button class="qx close">取消</button></p>
+                    <p class="but"><button class="qd ls" value="">确定</button><button class="qx ls_1 close">取消</button></p>
                 </div>
                 <div class="pop_3">
                     <img src="../../../../assets/images/user/jbb_pop.png">
                 </div>
             <!--弹出部分-->
-            <p class="jbb_tit">可领取的收益（元）<button class="tq">提取</button><a href="<?php echo site_url('invest/index?c=4');?>"><button class="qgm">去购买</button></a><!--<font>我可以中途撤资吗？</font>--></p>
+            <p class="jbb_tit">可领取的总收益（元）<button class="tq ls">提取</button><button class="qgm ls_1"  onclick="window.location.href='<?php echo site_url('invest/index?c=4');?>'">去购买</button><!--<font>我可以中途撤资吗？</font>--></p>
             <p class="zsy"><?php echo round($jbb_receive['data']['receive'],2)?></p>
             <ul class="ul1">
                 <li>
@@ -54,7 +54,7 @@
             <ul class="ul2">
                 <a href="<?php echo site_url('user/user/jbb');?>"><li><font>聚保宝活期理财</a></li></font>
                 <a href="<?php echo site_url('user/user/jbb_line');?>"><li><font>排队信息</a></li></font>
-                <a href=""><li class="active"><font>历史预约</a></li></font>
+                <a href=""><li class="active"><font>历史退出</a></li></font>
             </ul>
             <ul class="ul3">
 			<?php if($jbb_list['status']=='10000'):?>

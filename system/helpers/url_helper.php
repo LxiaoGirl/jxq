@@ -535,7 +535,7 @@ if ( ! function_exists('redirect'))
 			/*********************web 2.0 2015-11-05 wsb add 登录跳转的跳回 ****************************/
 
 			//是跳转到登录页面 保存路径 否则清空
-			if($uri == 'login' || $uri == 'login/index'){
+			if($uri == 'login' || $uri == 'login/index' || $uri == 'mobiles/home/login'){
 				$CI =& get_instance();
 
 				//获取当前路径

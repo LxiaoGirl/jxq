@@ -18,11 +18,12 @@ class User extends Login_Controller{
 		$this->load->model('api/cash_model','cash');
 		$this->load->model('api/project_model','project');
 //		$this->_is_login();
+		$this->_check_company_user();
 	}
 
-
+	/******************************个人中心主页************************************************************************/
 	/**
-	 * 资金总览
+	 * 个人中心主页
 	 */
 	public function account_home(){
 		$data = $temp = array();
@@ -48,6 +49,9 @@ class User extends Login_Controller{
 		$this->load->view('user/myaccount/account_home',$data);
 	}
 
+	/**
+	 * 获取最近6个月投资收益的ajax方法
+	 */
 	public function ajax_get_6month_data(){
 		if( ! $this->input->cookie('account_home_6m_data_'.$this->session->userdata('uid'),true)){
 			$data = $this->cash->get_user_month_invest_interest($this->session->userdata('uid'));
@@ -71,79 +75,19 @@ class User extends Login_Controller{
 	}
 
 
-	/**
-	 * 提现列表
-	 */
-	public function withdrawals_jl(){
-		$uid=$this->session->userdata('uid');
-		$time_limit=(!empty($_GET['limit_time']))?$this->input->get('limit_time',true):0;
-		$start=(!empty($_GET['start']))?strtotime($this->input->get('start',true)):0;
-		$end=(!empty($_GET['end']))?strtotime($this->input->get('end',true)):0;
-		$data = $this->cash->get_user_transfer_list($uid,'',$start,$end,$time_limit);
-		$temp['page_id'] 	= $this->c->get_page_id(7);
-		if($data['status']=='10000' && $data['data']){
-			$data['links'] 	= $this->c->get_links($data['data']['total'],$temp['page_id'],7);
-		}else{
-			$data['links'] = '';
-		}
-		$data['balance'] = $this->cash->get_user_balance($uid);
-		$this->load->view('user/myaccount/withdrawals_jl',$data);
-	}
-
-
-
-	/**
-	 * 提现
-	 */
-	public function withdrawals(){
-		$data = array();
-		$uid=$this->session->userdata('uid');
-
-		$data['bank'] = $this->user->user_bank($uid);
-		if($data['bank']['status'] != '10000'){
-			redirect('user/user/card', 'refresh');
-		}
-
-		$data['balance'] = $this->cash->get_user_balance($uid);
-
-		$this->load->view('user/myaccount/withdrawals',$data);
-	}
-
-	/**
-	 *提现操作
-	 */
-	public function user_transfer(){
-		//验证短信
-		$sms_check = $this->commons->validation_authcode($this->session->userdata('mobile'),$this->input->post('authcode',true),'transfer',$this->session->userdata('uid'));
-		if($sms_check['status'] != '10000'){
-			$data = array('status'=>'10001','msg'=>$sms_check['msg'],'data'=>array());
-			exit(json_encode($data));
-		}
-		//查询今天的提现情况 处理手续费
-		$today_transfer = $this->cash->get_user_transfer_list($this->session->userdata('uid'),0,strtotime(date('Y-m-d').' 00:00:00'),time());
-		if($today_transfer['status'] == '10000' && $today_transfer['data'] && (isset($today_transfer['data']['data']) && count($today_transfer['data']['data'])>0)){
-			$charge = 2;
-		}else{
-			$charge = 0;
-		}
-		//执行体现处理
-		$data = $this->cash->user_transfer($this->session->userdata('uid'),$this->input->post('amount',true),$this->input->post('card_no',true),$this->input->post('security',true),$charge);
-		//操作成功 处理余额session
-		if($data['status'] == '10000'){
-			$this->session->set_userdata(array('balance'=>$data['data']['balance']));
-		}
-		exit(json_encode($data));
-	}
-
-
+	/******************************充值、提现、资金流动记录相关********************************************************/
 	/**
 	 * 充值
 	 */
 	public function recharge(){
 
 		//验证实名
-		if($this->session->userdata('clientkind') != "1"){
-			redirect('user/user/account_security?type=real_name', 'refresh');
+		if( !in_array($this->session->userdata('clientkind'),array('1','2','-3','-4','-5'))){
+			if($this->session->userdata('clientkind') == '-2'){
+				redirect('login/company_apply', 'refresh');
+			}else{
+				redirect('user/user/account_security?type=real_name', 'refresh');
+			}
 		}
 		$data['balance'] = $this->cash->get_user_balance($this->session->userdata('uid'));
 		if($data['balance']['status'] == '10000')$data['balance'] = $data['balance']['data']['balance'];
@@ -153,27 +97,27 @@ class User extends Login_Controller{
 		$this->load->view('user/myaccount/recharge',$data);
 	}
 
+	/**
+	 * 充值记录刷新的ajax
+	 */
 	public function ajax_recharge_auto_refresh(){
 		$data = $this->user->recharge_refresh($this->input->post('recharge_no',true),$this->session->userdata('uid'));
 		exit(json_encode($data));
 	}
 
+	/**
+	 * 这个。。。。
+	 */
 	public function url_recharge_auto_refresh(){
 		$data = $this->user->recharge_refresh($this->input->post('recharge_no',true),$this->session->userdata('uid'));
 		redirect('user/user/recharge_jl', 'refresh');
-	}
-	
-	public function invest_agreement(){
-		echo '123';
 	}
 
 	/**
 	 * 充值列表
 	 */
 	public function recharge_jl(){
-		$data = array();
 		$uid=$this->session->userdata('uid');
-		$page_id = $this->input->get('page_id',true);
 		$time_limit=(!empty($_GET['time_limit']))?$this->input->get('time_limit',true):0;
 
 		//验证时间段
@@ -199,18 +143,108 @@ class User extends Login_Controller{
 		$start=(!empty($_GET['start']))?strtotime($this->input->get('start',true)):$temp['start_time'];
 		$end=(!empty($_GET['end']))?strtotime($this->input->get('end',true)):$temp['end_time'];
 
-		$data = $this->cash->get_user_recharge_list($uid,'',$start,$end);
 		$temp['page_id'] 	= $this->c->get_page_id(7);
+		$data = $this->cash->get_user_recharge_list($uid,'',$start,$end,$temp['page_id'],7);
+
 		if($data['status']=='10000'&& $data['data']){
-				$data['links'] 	= $this->c->get_links($data['data']['total'],$temp['page_id'],7);
+			$data['links'] 	= $this->c->get_links($data['data']['total'],$temp['page_id'],7);
 		}else{
-				$data['links'] = '';
-			}
+			$data['links'] = '';
+		}
 		$data['balance'] = $this->cash->get_user_balance($uid);
 		$this->load->view('user/myaccount/recharge_jl',$data);
 	}
 
+	/**
+	 * 提现的页面显示
+	 */
+	public function withdrawals(){
+		//验证实名
+		if($this->session->userdata('clientkind') != "1" && $this->session->userdata('clientkind') != "2"){
+			if(in_array($this->session->userdata('clientkind'),array('-2','-3','-4','-5'))){
+				redirect('login/company_apply', 'refresh');
+			}else{
+				redirect('user/user/account_security?type=real_name', 'refresh');
+			}
+		}
 
+		$data = array();
+		$uid=$this->session->userdata('uid');
+
+		$data['bank'] = $this->user->get_user_card($uid);
+		if($data['bank']['status'] != '10000'){
+			redirect('user/user/card', 'refresh');
+		}
+
+		$data['balance'] = $this->cash->get_user_balance($uid);
+
+		$this->load->view('user/myaccount/withdrawals',$data);
+	}
+
+	/**
+	 *提现操作
+	 */
+	public function user_transfer(){
+		//验证短信
+		$sms_check = $this->commons->validation_authcode(
+			$this->session->userdata('mobile'),
+			$this->input->post('authcode',true),
+			'transfer',
+			$this->session->userdata('uid')
+		);
+		if($sms_check['status'] != '10000'){
+			exit(json_encode($sms_check));
+		}
+
+		//执行体现处理
+		$data = $this->cash->user_transaction(
+			$this->session->userdata('uid'),
+			$this->input->post('amount',true),
+			$this->input->post('card_no',true),
+			$this->input->post('security',true)
+		);
+		//操作成功 处理余额session
+		if($data['status'] == '10000'){
+			$this->session->set_userdata(array('balance'=>$data['data']['balance']));
+		}
+		exit(json_encode($data));
+	}
+
+	/**
+	 * 提现列表
+	 */
+	public function withdrawals_jl(){
+		$uid=$this->session->userdata('uid');
+		$time_limit=(!empty($_GET['limit_time']))?$this->input->get('limit_time',true):0;
+		switch ($time_limit) {
+			case '1':
+				$start = strtotime(date('Y-m-01',time()));
+				break;
+			case '2':
+				$start = strtotime(date('Y-(m-2)-01',time()));
+				break;
+			case '3':
+				$start = strtotime(date('Y-(m-5)-01',time()));
+				break;
+			case '4':
+				$start = strtotime(date('Y-01-01',time()));
+				break;
+			default:
+				$start = '';
+				break;
+		}
+		$start=(!empty($_GET['start']))?strtotime($this->input->get('start',true)):$start;
+		$end=(!empty($_GET['end']))?strtotime($this->input->get('end',true)):0;
+		$temp['page_id'] 	= $this->c->get_page_id(7);
+		$data = $this->cash->get_user_transfer_list($uid,'',$start,$end,$temp['page_id'],7);
+		if($data['status']=='10000' && $data['data']){
+			$data['links'] 	= $this->c->get_links($data['data']['total'],$temp['page_id'],7);
+		}else{
+			$data['links'] = '';
+		}
+		$data['balance'] = $this->cash->get_user_balance($uid);
+		$this->load->view('user/myaccount/withdrawals_jl',$data);
+	}
 
 	/**
 	 * 交易明细
@@ -282,11 +316,7 @@ class User extends Login_Controller{
 	}
 
 
-
-
-
-
-
+	/******************************我的雪球相关************************************************************************/
 	/**
 	 * 我的雪球
 	 */
@@ -304,7 +334,7 @@ class User extends Login_Controller{
 	}
 
 
-
+	/******************************我的红包相关************************************************************************/
 	/**
 	 * 我的红包(未领取)
 	 */
@@ -319,6 +349,7 @@ class User extends Login_Controller{
 		}
 		$this->load->view('user/myaccount/my_redbag',$data);
 	}
+
 	/**
 	 * 我的红包（已领取）
 	 */
@@ -333,6 +364,7 @@ class User extends Login_Controller{
 		}
 		$this->load->view('user/myaccount/my_redbag_lq',$data);
 	}
+
 	/**
 	 * 我的红包（已过期）
 	 */
@@ -348,7 +380,6 @@ class User extends Login_Controller{
 		$this->load->view('user/myaccount/my_redbag_gq',$data);
 	}
 
-
 	/**
 	 * 获得单个红包
 	 */
@@ -359,8 +390,6 @@ class User extends Login_Controller{
 		$data = $this->activity->My_redbag_list(0,$uid,$id);
 		exit(json_encode(array($data)));
 	}
-
-
 
 	/**
 	 * 领取红包
@@ -374,7 +403,7 @@ class User extends Login_Controller{
 	}
 
 
-
+	/******************************消息相关****************************************************************************/
 	/**
 	 * 消息中心
 	 */
@@ -393,7 +422,7 @@ class User extends Login_Controller{
 	}
 
 
-
+	/******************************投资记录相关************************************************************************/
 	/**
 	 * 投资记录
 	 */
@@ -418,18 +447,47 @@ class User extends Login_Controller{
 	}
 
 
-
-
+	/******************************自动投配置相关**********************************************************************/
 	/**
 	 * 自动投资
 	 */
 	public function auto(){
-		$data = $this->cash->get_user_balance($this->session->userdata('uid'));
+		$uid=$this->session->userdata('uid');
+		$data['auto'] =$this->user->automatic_info($uid);
+		$data['project'] =$this->project->get_project_category();
+		$data['balance'] = $this->cash->get_user_balance($uid);
 		$this->load->view('user/myinvestment/auto',$data);
 	}
 
+	/**
+	 * 自动投资开启
+	 */
+	public function auto_sub(){
+		$mode = $this->input->get('mode',true);
+		$start_time = $this->input->get('start_time',true);
+		$end_time = $this->input->get('end_time',true);
+		$sy_min = $this->input->get('sy_min',true);
+		$jk_max = $this->input->get('jk_max',true);
+		$type = $this->input->get('type',true);
+		$max_amount = $this->input->get('max_amount',true);
+		$uid=$this->session->userdata('uid');
+		$data['sub'] = $this->user->automatic_update(0,$uid,$mode,$type,$sy_min,$jk_max,$start_time,$end_time,$max_amount);
+		exit(json_encode($data['sub']));
+		
+	}
+
+	/**
+	 * 自动投资关闭
+	 */
+	public function auto_out(){
+		$uid=$this->session->userdata('uid');
+		$data = $this->user->automatic_update(1,$uid);
+		exit(json_encode($data));
+		
+	}
 
 
+	/******************************个人资料相关【个人信息、头像上传、账户安全】****************************************/
 	/**
 	 * 个人资料（账户信息）
 	 */
@@ -443,7 +501,6 @@ class User extends Login_Controller{
 
 		$this->load->view('user/profile/account_information',$data);
 	}
-
 
 	/**
 	 * 修改姓名
@@ -463,7 +520,7 @@ class User extends Login_Controller{
 	 * 公司邀请码
 	 */
 	public function company_invite_code(){
-		$data = $this->user->company_invite_code($this->session->userdata('uid'),$this->input->post('code',true));
+		$data = $this->user->company_invitation_code_bind($this->session->userdata('uid'),$this->input->post('code',true));
 		exit(json_encode($data));
 	}
 
@@ -471,10 +528,9 @@ class User extends Login_Controller{
 	 * 理财师邀请码
 	 */
 	public function lcs_invite_code(){
-		$data = $this->user->lcs_invite_code($this->session->userdata('uid'),$this->input->post('code',true));
+		$data = $this->user->intermediary_invitation_code_bind($this->session->userdata('uid'),$this->input->post('code',true));
 		exit(json_encode($data));
 	}
-
 
 	/**
 	 * 修改手机号第一步
@@ -489,6 +545,7 @@ class User extends Login_Controller{
 		}
 		exit(json_encode($data));
 	}
+
 	/**
 	 * 修改手机号第二步
 	 */
@@ -501,6 +558,7 @@ class User extends Login_Controller{
 		$data = $this->user->Change_mobile_two($mobile,$authcode,$new_authcode,$old_mobile);
 		exit(json_encode($data));
 	}
+
 	/**
 	 * 发送邮箱
 	 */
@@ -511,6 +569,7 @@ class User extends Login_Controller{
 		$data = $this->email->send_email($uid,$email,'',site_url('user/user/email_yes'));//邮箱验证
 		exit(json_encode($data));
 	}
+
 	/**
 	 * 验证成功
 	 */
@@ -528,6 +587,7 @@ class User extends Login_Controller{
 		}
 		$this->load->view('user/profile/mailbox',$data);
 	}
+
 	/**
 	 * 个人资料（账户安全）
 	 */
@@ -553,6 +613,7 @@ class User extends Login_Controller{
 		$data = $this->user->Reset_login_password($uid,$password,$code);
 		exit(json_encode($data));
 	}
+
 	/**
 	 * 修改登录密码
 	 */
@@ -564,6 +625,7 @@ class User extends Login_Controller{
 		$data = $this->user->Change_login_password($uid,$password,$new_password);
 		exit(json_encode($data));
 	}
+
 	/**
 	 * 资金密码(设置资金密码,重置资金密码)
 	 */
@@ -575,8 +637,10 @@ class User extends Login_Controller{
 		$authcode = $this->input->get('code',true);//验证码
 		$password = $this->input->get('password',true);//验证码
 		$data = $this->user->Fund_password($uid,$mobile,$security,$authcode,$password);
+		if($data['status'] == '10000')$this->session->set_userdata($data['data']);
 		exit(json_encode($data));
 	}
+
 	/**
 	 * 修改资金密码
 	 */
@@ -589,10 +653,9 @@ class User extends Login_Controller{
 		$authcode = $this->input->get('code',true);//验证码
 		$password = $this->input->get('password',true);//登录密码
 		$data = $this->user->update_fund_password($uid,$mobile,$password,$security,$security_new,$authcode);
+		if($data['status'] == '10000')$this->session->set_userdata($data['data']);
 		exit(json_encode($data));
 	}
-
-
 
 	/**
 	 * 个人资料（上传头像）
@@ -668,37 +731,80 @@ class User extends Login_Controller{
 	 * 实名认证
 	 */
 	public function real_name(){
-		$data = $this->user->real_name($this->input->post('real_name',true),$this->input->post('nric',true),$this->session->userdata('uid'));
+		//公司验证标识type
+		$type = $this->input->post('type',true);
+		$type = $type=='company'?true:false;
+
+		$data = $this->user->real_name($this->input->post('real_name',true),$this->input->post('nric',true),$this->session->userdata('uid'),$type);
+
 		if($data['status'] == '10000'){
 			$this->session->set_userdata($data['data']);
 		}
 		exit(json_encode($data));
 	}
 
+
+	/******************************银行卡相关**************************************************************************/
 	/**
 	 * 银行卡管理
 	 */
 	public function card(){
 		if($this->input->is_ajax_request() == TRUE){
-			$data = $this->user->Add_bank_card($this->session->userdata('uid'),$this->input->post('account',true),$this->input->post('bank_id',true));
+			$data = $this->user->card_bind($this->session->userdata('uid'),$this->input->post('account',true),$this->input->post('bank_id',true));
 			exit(json_encode($data));
-		}else{
-			$data = array();
-			$uid = $this->session->userdata('uid');
-			$data['bank'] = $this->user->user_bank($uid);
-			$data['all_bank'] =$this->user->bank_card_list();
-			$this->load->view('user/profile/card',$data);
 		}
+
+		//验证实名
+		if($this->session->userdata('clientkind') != "1" && $this->session->userdata('clientkind') != "2"){
+			if(in_array($this->session->userdata('clientkind'),array('-2','-3','-4','-5'))){
+				redirect('login/company_apply', 'refresh');
+			}else{
+				redirect('user/user/account_security?type=real_name', 'refresh');
+			}
+		}
+
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$data['bank'] = $this->user->get_user_card($uid);
+		$data['all_bank'] =$this->commons->get_bank();
+		$this->load->view('user/profile/card',$data);
 	}
 
 	/**
-	 * 银行卡判断
+	 * 银行卡bin信息验证的aja
 	 */
 	public function ajax_check_card_bin(){
 		$account = $this->input->post('account',true);
 		$data = $this->commons->get_bankcard_bin($account);
 		exit(json_encode($data));
 	}
+
+	/**
+	 * 是否可自行解绑的ajax验证
+	 */
+	public function ajax_check_card_unbind_enable(){
+		$data = $this->user->check_card_unbind_enable($this->session->userdata('uid'),$this->input->post('card_no',true));
+		exit(json_encode($data));
+	}
+
+	/**
+	 * 银行卡解绑的ajax
+	 */
+	public function ajax_card_unbind(){
+		$data = $this->user->card_unbind($this->session->userdata('uid'),$this->input->post('card_no',true),$this->input->post('security',true));
+		exit(json_encode($data));
+	}
+
+	/**
+	 * 显示银行卡号的ajax
+	 */
+	public function ajax_card_show_account(){
+		$data = $this->user->card_show_account($this->session->userdata('uid'),$this->input->post('card_no',true),$this->input->post('authcode',true));
+		exit(json_encode($data));
+	}
+
+
+	/******************************邀请好友相关************************************************************************/
 	/**
 	 * 邀请好友
 	 */
@@ -714,6 +820,7 @@ class User extends Login_Controller{
 		}
 		$this->load->view('user/profile/invite',$data);
 	}
+
 	/**
 	 * 结算部分 按结算时间 的用户投资列表
 	 */
@@ -723,6 +830,7 @@ class User extends Login_Controller{
 		$data = $this->activity->get_settle_invest_list($real_month,$uid);
 		exit(json_encode($data));
 	}
+
 	/**
 	 * 邀请好友客户列表
 	 */
@@ -739,8 +847,6 @@ class User extends Login_Controller{
 		$this->load->view('user/profile/invite1',$data);
 	}
 
-
-
 	/**
 	 * 邀请好友客户投资列表
 	 */
@@ -751,7 +857,7 @@ class User extends Login_Controller{
 	}
 
 
-
+	/******************************聚保宝相关**************************************************************************/
 
 	/**
 	 * 聚保宝
@@ -773,8 +879,6 @@ class User extends Login_Controller{
 		$this->load->view('user/myinvestment/jbb',$data);
 	}
 
-
-
 	/**
 	 * 聚保宝排队
 	 */
@@ -793,8 +897,6 @@ class User extends Login_Controller{
 		}
 		$this->load->view('user/myinvestment/jbb_line',$data);
 	}
-
-
 
 	/**
 	 * 聚保宝历史
@@ -815,8 +917,6 @@ class User extends Login_Controller{
 		$this->load->view('user/myinvestment/jbb_history',$data);
 	}
 
-
-
 	/**
 	 * 聚保宝产生利息
 	 */
@@ -828,8 +928,6 @@ class User extends Login_Controller{
 		exit(json_encode($data));
 	}
 
-
-
 	/**
 	 * 聚保宝查看投资详情
 	 */
@@ -839,8 +937,6 @@ class User extends Login_Controller{
 		$data = $this->cash->jbb_jbb_details($type_code);
 		exit(json_encode($data));
 	}
-
-
 
 	/**
 	 * 聚保宝提取利息
@@ -853,8 +949,6 @@ class User extends Login_Controller{
 		exit(json_encode($data));
 	}
 
-
-
 	/**
 	 * 聚保宝申请退出
 	 */
@@ -865,8 +959,6 @@ class User extends Login_Controller{
 		$data = $this->cash->jbb_out($uid,$id);
 		exit(json_encode($data));
 	}
-
-
 
 	/**
 	 * 聚保宝取消退出
@@ -879,9 +971,6 @@ class User extends Login_Controller{
 		exit(json_encode($data));
 	}
 
-
-
-
 	/**
 	 * 聚保宝申请退出手续费
 	 */
@@ -892,6 +981,8 @@ class User extends Login_Controller{
 		$data = $this->cash->jbb_poundage($uid,$id);
 		exit(json_encode($data));
 	}
+
+
 	/******************************************通用************************/
 	/**
 	 * 发送短信
@@ -904,6 +995,7 @@ class User extends Login_Controller{
 		$data = $this->send->send_sms($mobile,$action,$uid);
 		exit(json_encode($data));
 	}
+
 	/**
 	 * 发送语音
 	 */
@@ -915,6 +1007,7 @@ class User extends Login_Controller{
 		$data = $this->send->send_voice($mobile,$action,$uid);
 		exit(json_encode($data));
 	}
+
 	/**
 	 * 判断用户是否已经登录
 	 *
@@ -925,6 +1018,15 @@ class User extends Login_Controller{
 		$method = $this->router->fetch_method();
 		if(in_array($method, array('withdrawals_jl','withdrawals','recharge', 'recharge_jl', 'transaction_details', 'account_home','my_xq','my_redbag','my_redbag_lq','redbag_id','Receive_redbag','information','transaction_note','auto','Change_name','Change_mobile_one','Change_mobile_two','send_mail','email_yes','account_security','Reset_login_password','Change_login_password','Fund_password','update_fund_password','card')) && $this->session->userdata('uid') == ''){
 			redirect('login', 'refresh');
+		}
+	}
+
+	/**
+	 * 验证企业用户注册情况
+	 */
+	protected function _check_company_user(){
+		if(in_array($this->session->userdata('clientkind'),array('-2','-3','-4','-5',))){
+			redirect('login/company_apply');
 		}
 	}
 }

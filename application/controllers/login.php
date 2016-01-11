@@ -9,6 +9,7 @@ class Login extends MY_Controller{
 	//用到的数据库表
 	const user     = 'user'; 		// 会员表
 	const authcode = 'authcode'; 	// 授权验证
+	const recharge = 'user_recharge'; 	// 授权验证
 
 	const remember_hour = 24;//登录信息的记住我的保存cookie时间 小时
 
@@ -94,7 +95,11 @@ class Login extends MY_Controller{
 					$data['url'] = $this->session->userdata('login_redirect_url');
 					$this->session->set_userdata(array('login_redirect_url'=>false));
 				}else{
-					$data['url'] = site_url();
+					if(in_array($data['data']['clientkind'],array('-2','-3','-4','-5'))){
+						$data['url'] = site_url('login/company_apply');
+					}else{
+						$data['url'] = site_url();
+					}
 				}
 			}
 
@@ -170,7 +175,7 @@ class Login extends MY_Controller{
 			redirect('login/register','location');
 		}
 		//验证是否已经注册 再返回或者直接访问
-		$data = $this->user->Registered_mobile($this->session->userdata('register_mobile'));
+		$data = $this->user->is_registered($this->session->userdata('register_mobile'));
 		if($data['status'] != '10000'){
 			redirect('','location');
 		}
@@ -200,7 +205,7 @@ class Login extends MY_Controller{
 	 */
 	public function ajax_is_register(){
 		if($this->input->is_ajax_request() == TRUE){
-			$data = $this->user->Registered_mobile($this->input->post('mobile',true));
+			$data = $this->user->is_registered($this->input->post('mobile',true));
 			exit(json_encode($data));
 		}
 	}
@@ -210,7 +215,7 @@ class Login extends MY_Controller{
 	 */
 	public function ajax_check_company_invitation_code(){
 		if($this->input->is_ajax_request() == TRUE){
-			$data = $this->user->check_company_invitation_code($this->input->post('code',true));
+			$data = $this->user->check_invitation_code($this->input->post('code',true));
 			exit(json_encode($data));
 		}
 	}
@@ -270,7 +275,7 @@ class Login extends MY_Controller{
 		//ajax部分
 		if($this->input->is_ajax_request() == TRUE){
 			//执行密码重置
-			$data = $this->user->Forget_login_password($this->session->userdata('forget_mobile'),$this->session->userdata('forget_authcode'),$this->input->post('password',true),$this->input->post('password',true));
+			$data = $this->user->forget($this->session->userdata('forget_mobile'),$this->session->userdata('forget_authcode'),$this->input->post('password',true));
 			if($data['status'] == '10000'){
 				$this->session->set_userdata(array('forget_s2'=>1));
 			}
@@ -301,11 +306,138 @@ class Login extends MY_Controller{
 		$this->load->view('passport/find_pw_cg');
 	}
 
+
+/******************************************************公司注册************************************************************************/
+	/**
+	 * 企业账号申请【注册、身份证认证开户、文件提交、公司信息提交、申请提交】
+	 * 公司注册 入口方法 此方法只处理到注册部分
+	 */
+	public function company(){
+		//公司注册 ajax处理
+		if($this->input->is_ajax_request() == TRUE){
+			//和个人注册相比 多了个参数 true
+			$data = $this->user->register($this->input->post('mobile',true),$this->input->post('password',true),$this->input->post('authcode',true),'','',true);
+			if($data['status'] == '10000'){
+				//注册成功保存session信息 免登录
+				$this->session->set_userdata($data['data']);
+			}
+			exit(json_encode($data));
+		}
+
+		//页面访问的数据处理
+		// 如果已登录 验证登录信息的个人类型【clicentkind】
+		//=-2 表示已经进行了公司注册但未进行资料提交和申请 跳转到资料提交页面
+		//=-3 标识 已经注册 并填写了身份证 单未提交申请。。跳转到资料提交页面 但部分资料已被锁定修改
+		//=-4 标识 已经提交了申请
+		//=-5标识审核未通过 可以修改资料重新提交
+		//其他则跳转到主页
+		if($this->session->userdata('uid') > 0){
+			if(in_array(profile('clientkind'),array('-2','-3','-4','-5'))){
+				redirect('login/company_apply');
+			}else{
+				redirect('home');
+			}
+		}
+		$this->load->view('passport/company');
+	}
+
+	/**
+	 * 企业账号申请【注册、身份证认证开户、文件提交、公司信息提交、申请提交】
+	 * 企业账号申请的资料填写 实名开户 文件提交和申请提交【实名开户、文件提交由页面ajax已处理】
+	 * 此步ajax处理公司信息和申请提交的处理
+	 */
+	public function company_apply(){
+		//ajax处理部分
+		if($this->input->is_ajax_request() == TRUE){
+			$data_info = array(
+				'company_name'=>$this->input->post('company_name',true),
+				'company_code'=>$this->input->post('company_code',true),
+				'company_bank_name'=>$this->input->post('company_bank_name',true),
+				'company_bank_account'=>$this->input->post('company_bank_account',true),
+			);
+			$data = $this->user->company_apply($this->session->userdata('uid'),$data_info);
+			if($data['status'] == '10000'){
+				$this->session->set_userdata(array('balance'=>$data['data'],'clientkind'=>'-4'));
+			}
+			exit(json_encode($data));
+		}
+
+		//页面部分
+		//验证登录情况 此步需登录后操作 如果是上一步跳转而来则已登录 如果是后来的访问则要重新登录
+		//如果登录用户类型 不是-2【已企业注册但未填资料和提交文件实名开户等】 -3【已实名开户但未提交资料和申请】 -5【后台审核未通过 重新提交】跳转走回主页
+		//未登录则跳到登录登录后返回
+		if($this->session->userdata('uid') > 0){
+			if( !in_array(profile('clientkind'),array('-2','-3','-4','-5')))redirect('home');
+		}else{
+			redirect('login');
+		}
+		//查询用户已提交的部分资料信息
+		$data['info'] = $this->user->get_user_extend_info($this->session->userdata('uid'),10);
+		if($data['info']['status'] == '10000' && $data['info']['data']){
+			$data['info'] = $data['info']['data'];
+		}else{
+			$data['info'] = array();
+		}
+
+		//获取余额信息
+		$this->load->model('api/cash_model', 'cash');
+		$data['balance'] = $this->cash->get_user_balance($this->session->userdata('uid'));
+		if($data['balance']['status'] == '10000')$data['balance'] = $data['balance']['data']['balance'];
+		//生成充值单号 页面里面有充值的链接要用到
+		$data['recharge_no'] = urlencode(authcode($this->c->transaction_no(self::recharge, 'recharge_no')));
+
+		$this->load->view('passport/company_apply',$data);
+	}
+
+	/**
+	 * 公司注册附件上传ajax
+	 */
+	public function ajax_company_attachment_upload(){
+		if( !$this->session->userdata('uid')){
+			$data = array(
+				'status'=>'10001',
+				'msg'=>'请先登录!'
+			);
+		}else{
+			$dir = 'company_user_attachment/'.$this->session->userdata('uid').'/'; //文件保存路径
+			$file_name = $this->input->post('file_name',true);//file文件名 也是文件保存用到的key值
+			$temp = $this->c->upload($dir,$file_name,'jpg|png|gif|jpeg',$file_name);//执行上传 根据上传配置传到服务器目录或oss目录
+			if($temp['query']){
+				//保存上传信息
+				$temp['query'] = false;
+				if($temp['data'] && $temp['data']['file_name'] && $temp['data']['file_path']){
+					$temp['query'] = $this->user->set_user_extend_info($this->session->userdata('uid'),10,array($file_name=>$temp['data']['file_path'].$temp['data']['file_name']));
+				}
+				if($temp['query']){
+					$data = array(
+						'status'=>'10000',
+						'msg'=>'上传成功!'
+					);
+				}else{
+					$data = array(
+						'status'=>'10001',
+						'msg'=>'上传失败:信息保存失败'
+					);
+				}
+
+			}else{
+				$data = array(
+					'status'=>'10001',
+					'msg'=>'上传失败:'.$temp['info']
+				);
+			}
+		}
+
+		exit(json_encode($data));
+	}
+
+/******************************************************公司注册************************************************************************/
+
 	/**
 	 * 退出登录 处理方法
 	 */
 	public function logout(){
-		$this->user->_add_user_log('logout', '注销登录');
+		$this->user->_add_user_log('logout', '注销登录',$this->session->userdata('uid'),$this->session->userdata('user_name'));
 		$this->session->sess_destroy();
 
 		redirect('', 'refresh');

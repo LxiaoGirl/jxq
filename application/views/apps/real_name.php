@@ -14,24 +14,30 @@
                 </p>
 
                 <div class="bg_white">
-                    <input placeholder="请输入您的姓名" name="real_name" value="<?php echo $real_name; ?>" type="text"
-                           class="input-group-lg form-control">
+                    <input placeholder="请输入您的姓名" name="real_name" type="text" class="input-group-lg form-control"
+                           value="<?php echo $this->session->userdata('real_name')?$this->session->userdata('real_name'):''; ?>"
+                           <?php if($this->session->userdata('real_name')):  ?>readonly<?php endif; ?> />
                 </div>
                 <p class="ml10 mt10">
                     身份证号码：
                 </p>
 
                 <div class="bg_white">
-                    <input placeholder="请输入您的身份证号码" name="nric" value="<?php echo $nric; ?>" maxlength="18" type="text"
-                           class="input-group-lg form-control">
+                    <input placeholder="请输入您的身份证号码" name="nric" type="text" class="input-group-lg form-control"
+                           value="<?php echo $this->session->userdata('nric')?$this->session->userdata('nric'):''; ?>" maxlength="18"
+                           <?php if($this->session->userdata('nric')):  ?>readonly<?php endif; ?> />
                 </div>
             </div>
 
             <div class="container">
                 <div class="row mt20 mb20">
-                    <button id="submit" type="submit"
-                            class="btn btn-lg btn-danger btn-block ajax-submit-button" <?php if (!empty($real_name) && !empty($nric)):echo 'disabled';endif; ?>>
-                        提交认证
+                    <button id="submit" type="submit" class="btn btn-lg btn-danger btn-block ajax-submit-button"
+                        <?php if ($this->session->userdata('real_name') && $this->session->userdata('nric')):?> disabled <?php endif;?>>
+                        <?php if ($this->session->userdata('real_name') && $this->session->userdata('nric')):?>
+                            已认证
+                        <?php else: ?>
+                            提交认证
+                        <?php endif;  ?>
                     </button>
                 </div>
             </div>
@@ -127,8 +133,8 @@
                     'nric': $(":input[name='nric']").val()
                 },
                 success: function (resut) {
-                    if (resut.code == 0) {
-                        if (resut.url != '')window.location.replace(resut.url);
+                    if (resut.status == '10000') {
+                        window.location.replace('/index.php/apps/home/real_name_success');
                     } else {
                         my_alert(resut.msg);
                     }

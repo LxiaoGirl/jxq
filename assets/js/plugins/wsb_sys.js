@@ -79,7 +79,7 @@ define(function (require, exports, module) {
         return this;
     };
 
-    $.fn.send_sms = function(type,mobile,action){
+    $.fn.send_sms = function(type,mobile,action,sms_callback){
         var wait = 60,last_send_time_go = '',tag_default_msg = '',is_input = false;
         if(typeof g_sms_apace_time != 'undefined'){
             wait = g_sms_apace_time;
@@ -167,6 +167,7 @@ define(function (require, exports, module) {
                     }else{
                         wsb_alert(result.msg ,2);
                     }
+                    if(typeof  sms_callback == "function")sms_callback(result);
                 }
             });
         };

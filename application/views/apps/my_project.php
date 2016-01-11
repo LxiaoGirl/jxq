@@ -130,7 +130,7 @@
                     obj.find('.sy-span').css('width','100%');
                 }else{
                     // obj.find('.agree-a').attr('href', '<?php echo site_url("apps/home/terms?borrow_no=") ?>' + v.borrow_no);
-                    obj.find('.agree-a').attr('href', 'https://www.zgwjjf.com/index.php/terms?borrow_no=' + v.borrow_no+'&money='+v.amounts);
+                    obj.find('.agree-a').attr('href', '/index.php/terms?borrow_no=' + v.borrow_no+'&money='+v.amounts);
                 }
                 obj.find('project-info-a').attr('href', '<?php echo site_url("apps/home/project_detail?borrow_no=") ?>' + v.borrow_no);
             }, function () { $("canvas").remove();bfbFun();});

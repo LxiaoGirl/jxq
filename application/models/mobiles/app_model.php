@@ -308,7 +308,7 @@ class App_model extends CI_Model{
             'where'    => array(join_field('show_time',self::borrow).' <=' => time(),join_field('status',self::borrow).' > ' => 1),
             'order_by' => join_field('active',self::borrow).' DESC,'
 //                .join_field('sort_order',self::borrow).' DESC,'
-                .join_field('productcategory',self::borrow).' ASC,'
+//                .join_field('productcategory',self::borrow).' ASC,'
                 .join_field('status',self::borrow).' ASC,'
                 .join_field('receive',self::borrow).' / '.join_field('amount',self::borrow).' DESC,'
                 .join_field($temp['sort'],self::borrow).' '.$temp['order'],
@@ -346,8 +346,12 @@ class App_model extends CI_Model{
                 $string="/^[0-9]/";
                 //if(preg_match($string,$temp['months_arr'][0])||preg_match($string,$temp['months_arr'][1])){
                 //}else{
-                $temp['where']['where'][join_field('months',self::borrow).' >=']=$temp['months_arr'][0];
-                $temp['where']['where'][join_field('months',self::borrow).' <=']=$temp['months_arr'][1];
+                if($temp['months_arr'][0] == $temp['months_arr'][1]){
+                    $temp['where']['where'][join_field('months',self::borrow)]=$temp['months_arr'][0];
+                }else{
+                    $temp['where']['where'][join_field('months',self::borrow).' >']=$temp['months_arr'][0];
+                    $temp['where']['where'][join_field('months',self::borrow).' <=']=$temp['months_arr'][1];
+                }
                 //}
             }
         }
@@ -812,7 +816,7 @@ class App_model extends CI_Model{
      * @return bool
      */
     private function _is_enterprise(){
-        if($this->session->userdata('clientkind') == 0){
+        if($this->session->userdata('clientkind') == 2){
             return TRUE;
         }
         return false;
@@ -834,7 +838,7 @@ class App_model extends CI_Model{
      * @return bool
      */
     private function _is_realname(){
-        if($this->session->userdata('clientkind') == 0 || $this->session->userdata('clientkind') == 1){
+        if($this->session->userdata('clientkind') == 2 || $this->session->userdata('clientkind') == 1){
             return true;
         }
         return false;
@@ -865,7 +869,7 @@ class App_model extends CI_Model{
                 if( ! empty($temp['is_check'])){
                     $temp['where'] = array('where'=>array('card_no'=>$temp['card_no']));
                     $temp['no_agree'] = $this->c->get_one(self::card,array('select'=>'remarks','where'=>array('card_no'=>$temp['card_no'])));
-                    $temp['query'] = $this->c->delete(self::card,$temp['where']);
+                    $temp['query'] = $this->c->update(self::card,$temp['where'],array('status'=>'-1'));
                     if( ! empty($temp['query'])){
                         $data['code'] = 0;
                         $data['msg'] ='解绑成功！';
@@ -927,6 +931,7 @@ class App_model extends CI_Model{
                 'city' => $this->input->post('bankaddr', TRUE),
                 'remarks'   => '',
                 'dateline'  => time(),
+                'status'  => 0
             );
 
             $temp['data']['account'] = str_replace(' ', '', $temp['data']['account']);

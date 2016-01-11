@@ -18,7 +18,7 @@ class Project_model extends CI_Model{
 	const message       = 'message';			//信息表
 	const log           = 'user_log';			//用户日志表
 	const transfer      = 'user_transaction';	//提现表
-	const jbb		    = 'borrow_jbb';			//聚保宝产品表
+	const jbb		     = 'borrow_jbb';		//聚保宝产品表
 	const jbb_dtl       = 'borrow_jbb_dtl';		//聚保宝发标表
 	const payment_jbb   = 'borrow_payment_jbb';	//聚保宝购买表
 	const payment_jbb_dtl  = 'borrow_payment_jbb_dtl';	//聚保宝购买表明细
@@ -74,7 +74,7 @@ class Project_model extends CI_Model{
         $temp['where'] = array(
             'select'=>join_field('borrow_no,subject,mode,rate,months,type,amount,receive,add_time,buy_time,due_date,status,summary,repayment,content,lowest,active',self::borrow)
 					.','.join_field('category,cat_id',self::category)
-					.','.join_field('company_name',self::guarantee),
+					.','.join_field('company_short_name',self::guarantee).' as company_name',
 //                .',user_a.user_name,user_a.mobile,user_a.nric,user_a.real_name,user_b.user_name as last_invester_name,',
             'join'=>array(
 //                array('table'=>self::user.' as user_a','where'=>join_field('uid',self::borrow).'= user_a.uid'),
@@ -194,7 +194,7 @@ class Project_model extends CI_Model{
 	                $data['data']['data'][$key]['receive_rate'] = $this->_get_project_receive_rate($val['amount'],$val['receive'],$val['buy_time']);
 
 					$temp['status_array'] 						= $this->get_project_status($val['buy_time'],$val['due_date'],$data['data']['data'][$key]['receive_rate'],$val['status']);
-                    $data['data']['data'][$key]['status'] 		= $temp['status_array']['name'];//项目状态
+                    $data['data']['data'][$key]['status_name'] 		= $temp['status_array']['name'];//项目状态
                     $data['data']['data'][$key]['can_invest'] 	= $temp['status_array']['can_invest'];//项目状态
                     $data['data']['data'][$key]['new_status'] 	= $temp['status_array']['new_status'];//项目新状态
                     $data['data']['data'][$key]['mode'] 		= $this->_get_project_mode($val['mode']);//项目mode
@@ -309,13 +309,13 @@ class Project_model extends CI_Model{
             $data['msg'] = '项目id为空';
         }else{
             $temp['where'] = array(
-                'select'=>join_field('borrow_no,subject,mode,rate,months,type,amount,receive,add_time,buy_time,due_date,status,summary,repayment,content,lowest,max',self::borrow)
+                'select'=>join_field('borrow_no,subject,mode,rate,months,type,amount,receive,add_time,buy_time,due_date,status,summary,repayment,content,lowest,max,uid',self::borrow)
 						.','.join_field('category',self::category)
-						.','.join_field('company_name',self::guarantee),
-//                    .',user_a.user_name,user_a.mobile,user_a.nric,user_a.real_name,user_b.user_name as last_invester_name,',
+						.','.join_field('company_short_name',self::guarantee).' as company_name'
+                    .',user_a.user_name,user_a.mobile,user_a.nric,user_a.real_name,user_b.user_name as last_invester_name,',
                 'join'=>array(
-//                    array('table'=>self::user.' as user_a','where'=>join_field('uid',self::borrow).'= user_a.uid'),
-//                    array('table'=>self::user.' as user_b','where'=>join_field('last_investor',self::borrow).'= user_b.uid'),
+                    array('table'=>self::user.' as user_a','where'=>join_field('uid',self::borrow).'= user_a.uid'),
+                    array('table'=>self::user.' as user_b','where'=>join_field('last_investor',self::borrow).'= user_b.uid'),
                     array('table'=>self::category,'where'=>join_field('productcategory',self::borrow).'= '.join_field('cat_id',self::category)),
                     array('table'=>self::guarantee,'where'=>join_field('guarantee_id',self::borrow).'= '.join_field('id',self::guarantee))
                 ),
@@ -333,7 +333,7 @@ class Project_model extends CI_Model{
 				$data['data']['receive_rate'] = $this->_get_project_receive_rate($data['data']['amount'],$data['data']['receive'],$data['data']['buy_time']);
 
 				$temp['status_array'] 		= $this->get_project_status($data['data']['buy_time'],$data['data']['due_date'],$data['data']['receive_rate'],$data['data']['status']);
-                $data['data']['status'] 	= $temp['status_array']['name'];//状态
+                $data['data']['status_name'] 	= $temp['status_array']['name'];//状态
                 $data['data']['can_invest'] = $temp['status_array']['can_invest'];//是否克投资
                 $data['data']['new_status'] = $temp['status_array']['new_status'];//新状态
 
@@ -348,7 +348,7 @@ class Project_model extends CI_Model{
 
 	            //加密必要信息
 //	            $data['data']['mobile'] 	= $this->secret($data['data']['mobile'],5);
-//	            $data['data']['real_name'] 	= $this->secret($data['data']['real_name'],mb_strlen($data['data']['real_name'])-1);
+	            $data['data']['real_name'] 	= $this->secret($data['data']['real_name'],mb_strlen($data['data']['real_name'])-1);
 //	            $data['data']['nric'] 		= $this->secret($data['data']['nric'],10);
             }
         }
@@ -578,8 +578,12 @@ class Project_model extends CI_Model{
 		}
 
 		//验证实名
-		if($temp['userinfo']['clientkind'] != 1){
-			$data['msg'] 	= '对不起，请先进行实名认证!';
+		if($temp['userinfo']['clientkind'] != 1 && $temp['userinfo']['clientkind'] != 2){
+			if(in_array($temp['userinfo']['clientkind'],array('-2','-3','-4','-5',))){
+				$data['msg'] 	= '对不起，请先进行企业申请认证审核!';
+			}else{
+				$data['msg'] 	= '对不起，请先进行实名认证!';
+			}
 			$data['status'] = '10005';
 			return $data;
 		}
@@ -836,7 +840,7 @@ class Project_model extends CI_Model{
 			return $data;
 		}
 		//公司借款的时候验证是否又公司认证
-		if($type == 2  && $temp['userinfo']['clientkind'] != 0){
+		if($type == 2  && $temp['userinfo']['clientkind'] != 2){
 			$data['msg'] = '尚未进行公司认证不能公司借款!';
 			return $data;
 		}
@@ -1082,21 +1086,25 @@ class Project_model extends CI_Model{
 			foreach($temp['data']['data'] as $key=>$val){
 				$data['data']['data'][$key]['borrow_no'] 			= $val['borrow_no'];//项目单号
 				$data['data']['data'][$key]['subject'] 				= $val['subject'];//项目名称
+				$data['data']['data'][$key]['category'] 			= $val['category'];//项目类别名称
 				$data['data']['data'][$key]['rate'] 				= $val['rate'];//项目利率
-				$data['data']['data'][$key]['amount'] 				= $val['amount'];//借款金额
+				$data['data']['data'][$key]['amounts'] 				= $val['amounts'];//借款金额
+				$data['data']['data'][$key]['amount'] 				= $val['amount'];//投资金额
+				$data['data']['data'][$key]['months'] 				= $val['months'];//借款月数
 				$data['data']['data'][$key]['invest_time'] 			= $val['dateline'];//借款时间
-				$data['data']['data'][$key]['interest'] 			= $this->get_project_user_interest($val['borrow_no'],$uid,$val['amount'],$val['rate'],$val['months'],$val['mode']);//预计（实收）收益
+				$temp['interest_array'] 							= $this->get_project_user_interest($val['borrow_no'],$uid,$val['amount'],$val['rate'],$val['months'],$val['mode']);//预计（实收）收益
+				$data['data']['data'][$key]['interest'] 			= $temp['interest_array']['interest'];
+				$data['data']['data'][$key]['interest_receive'] 	= $temp['interest_array']['interest_receive'];
 				$data['data']['data'][$key]['interest_start_time'] 	= $this->get_project_interest_start_time($val['status'],$val['due_date'],$val['confirm_time']);//收益计息日
 				$data['data']['data'][$key]['interest_lately_time'] = $this->get_project_lately_repayment_time($val['borrow_no'],$uid);//还款日
 				//项目状态
 				$temp['receive_rate'] 			= $this->_get_project_receive_rate($val['amounts'],$val['receive']);
 				$temp['status_array'] 			= $this->get_project_status($val['buy_time'],$val['due_date'],$temp['receive_rate'],$val['status']);
 				$data['data']['data'][$key]['status'] 	= $temp['status_array']['name'];//项目状态
-//				$data['data']['data'][$key]['new_status'] 	= $temp['status_array']['new_status'];//项目新状态
-
-
+				$data['data']['data'][$key]['new_status'] 	= $temp['status_array']['new_status'];//项目新状态
 //				$temp['data']['data'][$key]['can_invest'] = $temp['status_array']['can_invest'];//项目是否可以投资
-//				$temp['data']['data'][$key]['mode'] = $this->_get_project_mode($val['mode']);//项目mode
+				$data['data']['data'][$key]['mode'] = $this->_get_project_mode($val['mode']);//项目mode
+				$data['data']['data'][$key]['receive_rate'] = $temp['receive_rate'];//项目融资率
 			}
 			$data['data']['total'] = $temp['data']['total'];
 			$data['msg'] = 'ok!';
@@ -1160,9 +1168,58 @@ class Project_model extends CI_Model{
         unset($temp);
         return $data;
     }
+
+	/**
+	 * 获取用户当日收益
+	 * @param int $uid
+	 * @return float|int
+	 */
+	public function get_user_today_interest($uid=0){
+		$data = array(
+			'name' 	 => '获取用户当日收益',
+			'status' => '10001',
+			'msg' 	 => '服务器繁忙请稍后重试!',
+			'data' 	 => array('interest'=>0),
+		);
+		$temp   = array();
+
+		if( !$uid){
+			$data['msg'] = '用户uid为空!';
+			return $data;
+		}
+
+		$temp['where'] = array(
+			'select' => join_field('amount,rate', self::payment),
+			'join'   => array(
+				'table' => self::borrow,
+				'where' => join_field('borrow_no', self::payment) .' = '.join_field('borrow_no', self::borrow)
+			),
+			'where'  => array(
+				join_field('uid', self::payment)   => $uid,
+				join_field('type', self::payment)  => 1,
+				join_field('status', self::borrow) => 4
+			)
+		);
+
+		$temp['data'] = $this->c->get_all(self::payment, $temp['where']);
+
+		$temp['interest'] = 0;
+		if( ! empty($temp['data'])){
+			foreach($temp['data'] as $k => $v){
+				$temp['interest'] += floor($v['amount'] * $v['rate'] / 360)/100;
+
+			}
+		}
+		$data['status'] = '10000';
+		$data['msg'] 	= 'ok';
+		$data['data']['interest'] 	= $temp['interest'];
+
+		unset($temp);
+		return $data;
+	}
+
+
 /********************************************************聚保宝***************************************************************************************/
-
-
 	/**
 	 * 聚保宝项目列表
 	 * @param string $type_code
@@ -1183,7 +1240,7 @@ class Project_model extends CI_Model{
 			);
 			$temp['data'] = $this->c->get_row(self::jbb_dtl, $temp['where']);
 		}else{
-			$sql = 'select temp.* from (select * from `cdb_borrow_jbb_dtl` order by `start_day` desc ,`start_time` desc ) `temp`  group by type_code order by `type_code`';
+			$sql = 'select temp.* from (select * from `cdb_borrow_jbb_dtl` order by `start_day` desc ,`start_time` desc ) `temp`  group by type_code order by `type_code` desc';
 			$query =$this->db->query($sql);
 			$temp['data'] = json_decode(json_encode($query->result()),true);
 		}
@@ -1198,8 +1255,6 @@ class Project_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
-
 
 	/**
 	 * 聚保宝项目
@@ -1233,8 +1288,6 @@ class Project_model extends CI_Model{
 		return $data;
 	}
 
-
-
 	/**
 	 * 聚保宝项目标的
 	 * @param string $type_code
@@ -1267,7 +1320,6 @@ class Project_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
 
 	/**
 	 * 聚保宝详情列表
@@ -1308,8 +1360,6 @@ class Project_model extends CI_Model{
 		return $data;
 	}
 
-
-
 	/**
 	 * 聚保宝累计入团人数
 	 * @param string $type_code
@@ -1348,9 +1398,6 @@ class Project_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
-
-
 
 	/**
 	 * 聚保宝分散投资数
@@ -1392,8 +1439,6 @@ class Project_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
-
 
 	/**
 	 * 聚保宝个人中心投资列表(历史)
@@ -1450,12 +1495,6 @@ class Project_model extends CI_Model{
 		return $data;
 	}
 
-
-
-
-
-
-
 	/**
 	 * 聚保宝投资
 	 * @param string $type_code 产品编号
@@ -1479,10 +1518,16 @@ class Project_model extends CI_Model{
 		}
 
 		//验证实名
-		if($temp['userinfo']['clientkind'] != 1){
-			$data['msg'] 	= '对不起，请先进行实名认证!';
+		if($temp['userinfo']['clientkind'] != 1 && $temp['userinfo']['clientkind'] != 2){
+			if(in_array($temp['userinfo']['clientkind'],array('-2','-3','-4','-5',))){
+				$data['msg'] 	= '对不起，请先进行企业申请认证审核!';
+				$data['url'] = site_url('login/company_apply');
+			}else{
+				$data['msg'] 	= '对不起，请先进行实名认证!';
+				$data['url'] = site_url('user/user/account_security');
+			}
 			$data['status'] = '10005';
-			$data['url'] = site_url('user/user/account_security'); 
+			 
 			return $data;
 		}
 
@@ -1607,10 +1652,6 @@ class Project_model extends CI_Model{
         return $data;
 	}
 
-
-
-/********************************************************聚保宝*******************************************************************************************/
-	
 	/**
 	 * 聚保宝提现排名
 	 * @param string $type_code 产品编号
@@ -1624,8 +1665,6 @@ class Project_model extends CI_Model{
 		$num  = $query->row()->num;
 		return $num;
 	}
-
-
 
 	/**
 	 * 聚保宝项目
@@ -1644,8 +1683,6 @@ class Project_model extends CI_Model{
 		return $data;
 	}
 
-
-
 	/**
 	 * 聚保宝新手标是否投资一次
 	 * @param string $type_code 产品编号
@@ -1662,8 +1699,6 @@ class Project_model extends CI_Model{
 		return $data;
 	}
 
-
-
 	/**
 	 * 聚保宝项目
 	 * @param string $type_code 产品编号
@@ -1679,8 +1714,6 @@ class Project_model extends CI_Model{
 		$all_amount = $this->c->get_one(self::payment_jbb, $temp['where']);
 		return $all_amount;
 	}
-
-
 
 	/**
 	 * 聚保宝投资私有方法 数据库处理
@@ -1801,8 +1834,6 @@ class Project_model extends CI_Model{
 		return $query;
 	}
 
-
-
     /**
      * 更新记录状态
      *
@@ -1824,8 +1855,9 @@ class Project_model extends CI_Model{
         unset($temp);
         return $query;
     }
-/********************************************************项目属性相关*******************************************************************************************/
 
+
+	/******************** 项目属性相关 ********************************************************************************/
 	/**
 	 * 获取项目状态
 	 * @param int $buy_time 购买时间
@@ -1986,8 +2018,8 @@ class Project_model extends CI_Model{
 
 	}
 
-/***************************计息相关**********************************************************/
 
+	/****************** 计息相关 **************************************************************************************/
 	/**
 	 * 获取用户特定项目利息
 	 * @param string $borrow_no
@@ -1996,22 +2028,31 @@ class Project_model extends CI_Model{
 	 * @param int $rate
 	 * @param int $months
 	 * @param int $mode
-	 * @return float|int
+	 * @return array
 	 */
 	public function get_project_user_interest($borrow_no='',$uid=0,$amount=0,$rate=0,$months=0,$mode=0){
-		$interest = 0;
+		$data = array(
+			'interest'		   => 0,//总利息
+			'interest_receive' => 0//已收利息
+		);
 
 		if($borrow_no && $uid){
 			//查询已还款的利息  如果已收利息大于
 			$repay_interest = $this->c->get_one(self::payment,array('select'=>'SUM(amount)','where'=>array('borrow_no'=>$borrow_no,'type'=>3,'status'=>1,'uid'=>$uid)));
-			if($repay_interest && $repay_interest>$amount){
-				$interest = bcsub($repay_interest,$amount,2);
+			if($repay_interest){
+				if($repay_interest>$amount){
+					$data['interest']         = bcsub($repay_interest,$amount,2);
+					$data['interest_receive'] = $data['interest'];
+				}else{
+					$data['interest_receive'] = $repay_interest;
+					$data['interest']		  = $this->get_project_interest($amount,$rate,$months,$mode);
+				}
 			}else{
-				$interest = $this->get_project_interest($amount,$rate,$months,$mode);
+				$data['interest'] = $this->get_project_interest($amount,$rate,$months,$mode);
 			}
 		}
 
-		return $interest;
+		return $data;
 	}
 
 	/**
@@ -2083,15 +2124,17 @@ class Project_model extends CI_Model{
 			$lately_time = $this->c->get_one(self::payment, $temp['where']);
 			if( ! $lately_time){
 				$temp['repay_plan']	=$this->get_project_repayment_list($borrow_no);
-				$lately_time 		= date('Ymd',$temp['repay_plan']['data'][0]['repay_date']);
+				$lately_time 		= $temp['repay_plan']['data'][0]['repay_date'];
+			}else{
+				$lately_time = strtotime($lately_time);
 			}
 		}
 
 		return $lately_time;
 	}
 
-/*****************************还款计划相关wsb****************************************/
 
+	/******************* 还款计划相关 *********************************************************************************/
 	/**
 	 * 获得已生成的还款计划
 	 * @param $borrow_no
@@ -2452,8 +2495,8 @@ class Project_model extends CI_Model{
 		return $type_name;
 	}
 
-/********************************************************************************************/
 
+	/*********************** 私有方法 *********************************************************************************/
 	/**
 	 * 加密字符串
 	 * @param int    $string 字符串
@@ -2593,8 +2636,7 @@ class Project_model extends CI_Model{
 	}
 
 
-/********************投资时用到**************************************************************************************/
-
+	/********************投资时用到*************************************************************************************/
     /**
      * 发送信息
      *
@@ -2679,7 +2721,8 @@ class Project_model extends CI_Model{
         return $query;
     }
 
-/***************************************用户资金统计相关方法 涉及的数据表 borrow payment transfer*********************************************************/
+
+	/******************** 用户资金统计相关方法 涉及的数据表 borrow payment transfer************************************/
     /**
      * 用户投资总额
      * @param int $uid
@@ -2872,23 +2915,31 @@ class Project_model extends CI_Model{
         return round($interest,2);
     }
 
-/**************************************用户资金统计相关方法**********************************************************/
+
     /**
      * 设置修正分页的参数
      * @param int $page_id
      * @param int $page_size
      */
     protected function _set_cutpage_params($page_id=0,$page_size=0){
-        if(!is_numeric($page_id) || $page_id<=0){
-            $page_id=1;
-        }
-        if(!$page_size || !is_numeric($page_size)){
-            $page_size = $this->_page_size;
-        }
-        $_GET['limit'] = (int)$page_size;
-        $_GET['per_page'] = (((int)$page_id-1)*(int)$page_size);
+		if(isset($_GET['limit']) && !$page_size){
+			$page_size = (int)$this->input->get('limit');
+		}else{
+			if( !$page_size || !is_numeric($page_size))$page_size = $this->_page_size;
+			$_GET['limit'] = (int)$page_size;
+		}
+
+		if( !isset($_GET['per_page'])){
+			if(!is_numeric($page_id) || $page_id<=0)$page_id=1;
+			$_GET['per_page'] = (((int)$page_id-1)*(int)$page_size);
+		}
     }
 
+	/**
+	 * 项目利率小数点处理
+	 * @param $rate
+	 * @return string
+	 */
 	protected function _project_rate_format($rate){
 		if(strpos($rate,'.') !== FALSE){ //有小数点
 			$new_rate=rtrim($rate,0);

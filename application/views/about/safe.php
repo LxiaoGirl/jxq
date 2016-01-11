@@ -43,7 +43,7 @@
             </div>
             <div class="history_right">
                <p class="history_R safe_right1">
-               <span class="safe_h1">本金保障</span><br>
+               <span class="safe_h1">保障资金安全</span><br>
                  <span class="safe_p1"> <br>本息安全：借款人还款方式多样，四种方式任选，按时付息。如急需收回资金可将债权转出，匹配成功，即可收回本金；
 资金安全：用户资金由第三方支付托管，银行全程监管，对投资人的资金全程跟踪，监督资金动向；</span>
                 </p>

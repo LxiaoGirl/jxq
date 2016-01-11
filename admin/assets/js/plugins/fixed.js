@@ -1,3 +1,0 @@
-seajs.use('jquery', function () {
-
-});

@@ -16,14 +16,14 @@
         <div class="inp_pit">
             <div class="inp">
                 <input class="js_sjyzm" type="text" name="tpyzm" value="" placeholder="输入验证码" maxlength="6" />
-                <input class="fsyzm" type="button" value="发送验证码"
+                <input class="fsyzm ls" type="button" value="发送验证码"
                        data-wait-time="<?php echo item("sms_space_time")?item("sms_space_time"):60; ?>"
                        data-last-time="<?php echo profile("sms_last_send_time")?profile("sms_last_send_time"):0; ?>"/>
             </div>
             <div class="pit"></div>
         </div>
         <div class="but">
-            <button  type="submit" id="reg_xyb" class="ajax-submit-button" data-load-msg="验证中...">下一步</button>
+            <button  type="submit" id="reg_xyb" class="ajax-submit-button ls" data-load-msg="验证中...">下一步</button>
         </div>
         </form>
     </div>
@@ -32,15 +32,15 @@
     <?php $this->load->view('common/footer'); ?>
 <!--footer-->
 <script type="text/javascript">
-seajs.use(['jquery','sys','jqform','validator'],function(){
+seajs.use(['jquery','sys','jqform','validator','wsb_sys'],function(){
     //INPUT框变色
         $('.inp').find('input').focus(function(){
-            $(this).siblings('.ls').show();
+            $(this).siblings('img.ls').show();
             $(this).addClass('hav');
         });
         $('.inp').find('input').blur(function(){
             if($.trim($(this).val())==''){
-                $(this).siblings('.ls').hide();
+                $(this).siblings('img.ls').hide();
                 $(this).removeClass('hav');
             }
         });

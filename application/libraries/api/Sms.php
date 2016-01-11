@@ -1,19 +1,19 @@
 <?php
 
 /**
- * ·¢ËÍ¶ÌĞÅ
+ * å‘é€çŸ­ä¿¡
  * Class CI_Sms
  */
 class CI_Sms {
-	//¶ÌĞÅ Í¨µÀÅäÖÃ
+	//çŸ­ä¿¡ é€šé“é…ç½®
 	protected $_sms_config       = array(
-		'username'        =>'cqdx008',                            //ÓÃ»§Ãû
-		'password'        =>'cq008',                              //ÃÜÂë
+		'username'        =>'cqdx008',                            //ç”¨æˆ·å
+		'password'        =>'ty111',                              //å¯†ç 
 		'receive_number'  =>'',
-		'message_content' =>'',                                   //ÃÜÂë
-		'wsdl_url'        =>'http://61.156.157.209:8889/api.php', //webserver ¶ÌĞÅÍ¨µÀµØÖ·
-		'signature_pre'   =>'',                                   //Ç©Ãû£¨Ç°£©
-		'signature_suff'  =>''                                    //Ç©Ãû£¨ºó£©
+		'message_content' =>'',                                   //å¯†ç 
+		'wsdl_url'        =>'http://61.156.157.209:8889/api.php', //webserver çŸ­ä¿¡é€šé“åœ°å€
+		'signature_pre'   =>'',                                   //ç­¾åï¼ˆå‰ï¼‰
+		'signature_suff'  =>''                                    //ç­¾åï¼ˆåï¼‰
 	);
 
 	public function __construct($params=array()){
@@ -21,7 +21,7 @@ class CI_Sms {
 	}
 
 	/**
-	 * ·¢ËÍÊÖ»ú¶ÌĞÅ
+	 * å‘é€æ‰‹æœºçŸ­ä¿¡
 	 * @param string $mobile
 	 * @param string $content
 	 *
@@ -50,7 +50,7 @@ class CI_Sms {
 		//$temp  = array();
 		// if( ! empty($mobile) && ! empty($code) && ! empty($content))
 		// {
-		/***2015.5.5 ĞŞ¸Ä****/
+		/***2015.5.5 ä¿®æ”¹****/
 		/*
 			$temp['args'] = array(
 				'userCode' => 'yitou',
@@ -73,16 +73,16 @@ class CI_Sms {
 				 'arg8'=>8888
 			 );
 
-			$temp['soap'] = new SoapClient($this->config->item('wsdl_url'));//Ô­£º'http://121.199.48.186:1210/Services/MsgSend.asmx?WSDL'
-			$temp['data'] = $temp['soap']->__soapCall('sendSMS',array('parameters' => $temp['args']));//Ô­£ºSendMsg
+			$temp['soap'] = new SoapClient($this->config->item('wsdl_url'));//åŸï¼š'http://121.199.48.186:1210/Services/MsgSend.asmx?WSDL'
+			$temp['data'] = $temp['soap']->__soapCall('sendSMS',array('parameters' => $temp['args']));//åŸï¼šSendMsg
 
 
 			 if( ! empty($temp['data']))
 			 {
-				 $query = ($temp['data']->return == 0 && $temp['data']->return != NULL) ? TRUE : FALSE;// Ô­£º  $query = ($temp['data']->SendMsgResult > 0) ? TRUE : FALSE;
+				 $query = ($temp['data']->return == 0 && $temp['data']->return != NULL) ? TRUE : FALSE;// åŸï¼š  $query = ($temp['data']->SendMsgResult > 0) ? TRUE : FALSE;
 			 }
 		*/
-		/***2015.5.5 ĞŞ¸Ä****/
+		/***2015.5.5 ä¿®æ”¹****/
 		// }
 
 		unset($temp);
@@ -90,9 +90,9 @@ class CI_Sms {
 	}
 
 	/**
-	 * »ñÈ¡wsdlµØÖ·ÄÚÈİ
-	 * @param string $url  wsdlµØÖ·
-	 * @param array  $post postÊı×é
+	 * è·å–wsdlåœ°å€å†…å®¹
+	 * @param string $url  wsdlåœ°å€
+	 * @param array  $post postæ•°ç»„
 	 *
 	 * @return string
 	 */
@@ -117,7 +117,7 @@ class CI_Sms {
 	}
 
 	/**
-	 * »ñÈ¡¶ÌĞÅÓà¶î
+	 * è·å–çŸ­ä¿¡ä½™é¢
 	 *
 	 * @access public
 	 * @return float

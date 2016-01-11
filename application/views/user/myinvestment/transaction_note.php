@@ -31,9 +31,9 @@
                     <li <?php if($type == '2'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=2&start_time='.$start_time.'&end_time='.$end_time); ?>'">热售中<font class="fr">|</font></li>
                     <li <?php if($type == '3'): ?> class="active" <?php endif; ?> onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type=3&start_time='.$start_time.'&end_time='.$end_time); ?>'">复审中</li>
                         <div class="section">                            
-                            <font style="margin-left:30px;">选择日期：</font><input type="text" id="start-time" class="date_picker_1" value="<?php echo $start_time?date('Y-m-d',$start_time):date('Y-m-d',strtotime('-60 day')); ?>">
-                            <font>至&nbsp;&nbsp;</font><input type="text" id="end-time" class="date_picker_2" value="<?php echo $end_time?date('Y-m-d',$end_time):''; ?>">
-                            <button onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type='.$type); ?>'+'&start_time='+document.getElementById('start-time').value+'&end_time='+document.getElementById('end-time').value">查询</button>
+                            <font style="margin-left:30px;">选择日期：</font><input type="text" id="start-time" class="date_picker_1 ifhav" value="<?php echo $start_time?date('Y-m-d',$start_time):date('Y-m-d',strtotime('-60 day')); ?>">
+                            <font>至&nbsp;&nbsp;</font><input type="text" id="end-time" class="date_picker_2 ifhav" value="<?php echo $end_time?date('Y-m-d',$end_time):''; ?>">
+                            <button class="ls" onclick="window.location.href='<?php echo site_url('user/user/transaction_note?type='.$type); ?>'+'&start_time='+document.getElementById('start-time').value+'&end_time='+document.getElementById('end-time').value">查询</button>
                         </div>
                 </ul>
                 <ul class="tab_con">
@@ -46,7 +46,7 @@
                                 <span class="wid20"><font><?php echo $v['amount']; ?></font></br><?php if($v['status'] == '还款完成'): ?> 已<?php else: ?>预计<?php endif; ?>收益：<?php echo $v['interest']; ?></span>
                                 <span><?php echo date('Y-m-d',$v['invest_time']); ?></span>
                                 <span><?php echo date('Y-m-d',$v['interest_start_time']); ?></span>
-								<span><?php echo date('Y-m-d',strtotime($v['interest_lately_time'])); ?></span>
+								<span><?php echo date('Y-m-d',$v['interest_lately_time']); ?></span>
 								<span><?php echo $v['status']; ?></span>
                                 <span style="width: 60px;text-decoration: underline;"><a href="<?php echo site_url('terms/index?borrow_no='.$v['borrow_no']); ?>" target="_blank">查看</a> </span>
                             </p>
@@ -69,6 +69,15 @@
 <script type="text/javascript" src="<?php echo base_url('assets/js/plugins/jquery.date_input.pack.js')?>"></script> 
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){
+        //INPUT框变色
+        $('.ifhav').focus(function(){
+            $(this).addClass('hav');
+        });
+        $('.ifhav').blur(function(){
+            if($.trim($(this).val())==''){
+                $(this).removeClass('hav');
+            }
+        });
         tab($('.tra_note'));
     });
     $('.date_picker_1').date_input();

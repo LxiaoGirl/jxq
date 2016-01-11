@@ -15,20 +15,23 @@ class Cash_model extends CI_Model{
     const recharge      = 'user_recharge';      //充值记录表
     const card          = 'user_card';          //用户银行卡记录表
 	const payment_jbb = 'borrow_payment_jbb';   //用户银行卡记录表
-	const jbb           = 'borrow_jbb';		    //用户银行卡记录表
+	const jbb           = 'borrow_jbb';		     //聚保宝项目表
 	const jbb_dtl       = 'borrow_jbb_dtl';     // 聚保宝发标表
 	const recharge_jbb  = 'user_recharge_jbb';  //聚保宝提取收益审核表
-	const risk          = 'risk_money';          //风险保证金
+	const risk          = 'risk_money';         //风险保证金
 
+    const run_date           = '2015-06-12';    //网站运行时间
+    private $_transfer_min   = '50';            //提现最低金额
+    private $_page_size      = '10';            //分页每页记录数
 
-    const RUN_DATE           = '2015-06-12';         //网站运行时间
-    private $_transfer_min   = '50';                 //提现最低金额
-    private $_page_size      = '10';                 //分页每页记录数
-
+    /**
+     * Cash_model constructor.
+     */
     public function __construct(){
         parent::__construct();
     }
 
+    /****************** 用户余额 **************************************************************************************/
     /**
      * 获取用户余额
      * @param int $uid 用户id 默认0
@@ -62,6 +65,8 @@ class Cash_model extends CI_Model{
         return $data;
     }
 
+
+    /****************** 资金统计相关 **********************************************************************************/
     /**
      * 获取全网 借款总额 投资总额
      * @param int $category 类别id
@@ -99,7 +104,7 @@ class Cash_model extends CI_Model{
         }
 
         $data['data']['user_total'] = $this->c->count(self::user);
-        $data['data']['days_total'] = ceil((time()-strtotime(self::RUN_DATE))/3600/24);
+        $data['data']['days_total'] = ceil((time()-strtotime(self::run_date))/3600/24);
         $data['data']['risk_total'] = $this->c->get_one(self::risk,array('where'=>array('id'=>1),'select'=>'money'));
 
         $data['status'] = '10000';
@@ -218,6 +223,80 @@ class Cash_model extends CI_Model{
     }
 
     /**
+     * 获取全网利息总额
+     * @param int $category
+     * @return float|int
+     */
+    public function get_project_interest_total($category=0){
+        $temp = array();
+        $data = array('name'=>'项目利息总额','status'=>'10001','msg'=>'服务器繁忙请稍后重试!','sign'=>'','data'=>array());
+
+        $temp['amount'] = 0;
+        $temp['where'] = array('select' => 'amount,months,rate,mode,repay','where'=>array('status >'=>1));
+
+        if( ! empty($category))$temp['where']['where']['productcategory']=$category;
+
+        $temp['data'] = $this->c->get_all(self::borrow, $temp['where']);
+
+        if( ! empty($temp['data'])){
+            foreach($temp['data'] as $k => $v){
+                $temp['amount'] += $this->get_project_interest($v['amount'],$v['rate'],$v['months'],$v['mode']);//计算公式
+            }
+            $data['status']           = '10000';
+            $data['msg']              = 'ok';
+            $data['data']['interest'] =  $temp['amount'];
+        }else{
+            $data['status']           = '10000';
+            $data['msg']              = 'ok';
+            $data['data']['interest'] =  0;
+        }
+
+        unset($temp);
+        return $data;
+    }
+
+    /**
+     * 最近n个月的投资收益记录列表
+     * @param int $uid
+     * @param int $month
+     * @return array
+     */
+    public function get_user_month_invest_interest($uid=0,$month=6){
+        $data = array('name'=>'最近n个月的投资收益记录列表','status'=>'10001','msg'=>'ok','data'=>array('month'=>'', 'invest' => '', 'interest' =>''));
+        $temp = array();
+
+        if($uid > 0){
+            if($month <= 0){
+                $data['msg'] = '月份为空!';
+                return $data;
+            }
+            $temp['6m_data'] = array(
+                'month'=>'',
+                'invest'=>'',
+                'interest'=>''
+            );
+            for($i=5;$i>=0;$i--){
+                $temp['start_time'] = strtotime(date('Y-m-01',strtotime('-'.$i.' month')).' 00:00:00');
+                $temp['end_time'] = strtotime(date('Y-m-t',strtotime('-'.$i.' month')).' 23:59:59');
+                $temp['6m_data']['month'][] = date('Y年m月',$temp['start_time']);
+                $temp['invest'] = $this->get_user_invest_total($uid,0,$temp['start_time'],$temp['end_time']);
+                $temp['6m_data']['invest'][] = $temp['invest'];
+                $temp['interest'] = $this->get_user_receive_principal_interest($uid,$temp['start_time'],$temp['end_time']);
+                $temp['6m_data']['interest'][] = $temp['interest']['receive_interest'];
+            }
+            $data['data'] = $temp['6m_data'];
+            $data['msg'] = 'ok!';
+            $data['status'] = '10000!';
+        }else{
+            $data['msg'] = '用户uid为空!';
+        }
+        unset($temp);
+        return $data;
+    }
+
+
+    /****************** 资金流动记录 **********************************************************************************/
+    /**
      * 获取用户资金记录
      * @param int $uid
      * @param string $type_str
@@ -326,6 +405,13 @@ class Cash_model extends CI_Model{
         return $data;
     }
 
+    /**
+     * 用户特定时间段资金记录收支统计
+     * @param int $uid
+     * @param string $start_time
+     * @param string $end_time
+     * @return array
+     */
     public function get_user_limit_time_cash_total($uid=0,$start_time='',$end_time=''){
         $data = array(
             'name'   =>'用户特定时间段资金记录收支统计',
@@ -369,6 +455,8 @@ class Cash_model extends CI_Model{
         return $data;
     }
 
+
+    /****************** 充值提现相关 **********************************************************************************/
     /**
      * 获取用户充值记录
      * @param int $uid
@@ -377,7 +465,6 @@ class Cash_model extends CI_Model{
      * @param int $end_time
      * @param int $page_id
      * @param int $page_size
-	 * @param int $time_limit  //季度条件  0 全部 1 当月 2 季度 3 半年 4 今年
      * @return array
      * 'recharge_no' => string 'R15070154801269' (length=15)
      *  'amount' => string '5000.00' (length=7)
@@ -385,7 +472,7 @@ class Cash_model extends CI_Model{
      *  'add_time' => string '1435730918' (length=10)
      *  'status' => string '充值失败' (length=12)
      */
-    public function get_user_recharge_list($uid=0,$type='',$start_time=0,$end_time=0,$time_limit = 0){
+    public function get_user_recharge_list($uid=0,$type='',$start_time=0,$end_time=0,$page_id=1,$page_size=0){
         $data = array(
             'name'   =>'用户充值记录',
             'status' =>'10001',
@@ -396,7 +483,7 @@ class Cash_model extends CI_Model{
         $temp    = array();
 
         //处理show_page的分页数据
-        //$this->_set_cutpage_params($page_id,$page_size);
+        $this->_set_cutpage_params($page_id,$page_size);
 
         if($uid > 0){
             $temp['where'] = array(
@@ -409,28 +496,6 @@ class Cash_model extends CI_Model{
             if($type){
                 $temp['where']['where']['type']=$type;
             }
-
-			switch ($time_limit) {
-            case '1':
-                $time = strtotime(date('Y-m-01',time()));
-                break;
-			case '2':
-                $time = strtotime(date('Y-(m-2)-01',time()));
-                break;
-			case '3':
-                $time = strtotime(date('Y-(m-5)-01',time()));
-                break;
-			case '4':
-                $time = strtotime(date('Y-01-01',time()));
-                break;
-            default:
-                $time = '';
-                break;
-			 }
-			 if($time!=''){
-				$temp['where']['where']['add_time >=']=$time;
-				$temp['where']['where']['add_time <=']=time();
-			 }
             //验证起始时间
             if($start_time){
                 $temp['where']['where']['add_time >=']=$start_time;
@@ -440,7 +505,7 @@ class Cash_model extends CI_Model{
                 $temp['where']['where']['add_time <=']=$end_time;
             }
 
-            $temp['data'] = $this->c->show_page(self::recharge,$temp['where'],"",0,7);
+            $temp['data'] = $this->c->show_page(self::recharge,$temp['where']);
             unset($temp['data']['links']);
 
             if($temp['data']['data']){
@@ -512,18 +577,17 @@ class Cash_model extends CI_Model{
      * @param int $amount
      * @param string $card_no
      * @param string $security
-     * @param int $charge
      * @return array
      *  balance=>0
      */
-    public function user_transfer($uid=0,$amount=0,$card_no='',$security='',$charge=2){
+    public function user_transaction($uid=0,$amount=0,$card_no='',$security=''){
         $data = array(
             'name'   =>'提现',
             'status' =>'10001',
             'msg'    =>'您提交的数据有误,请重试!',
-            'sign'   =>'',
             'data'   =>array('balance'=>0)
         );
+
         if(!$uid){
             $data['msg']    = '用户未登陆!';
             $data['status'] = '10002';
@@ -560,7 +624,7 @@ class Cash_model extends CI_Model{
         }
 
         //查询提现卡号信息是否存在
-        $temp['card_info'] = $this->_get_card_info($uid);
+        $temp['card_info'] = $this->_get_card_info($uid,$card_no);
         if(!$temp['card_info']){
             $data['msg'] = '银行账户信息不存在!';
             return $data;
@@ -583,6 +647,7 @@ class Cash_model extends CI_Model{
             return $data;
         }
 
+        $charge = $this->_get_transaction_charge($uid);
         //开启事务
         $this->db->trans_start();
 
@@ -642,7 +707,7 @@ class Cash_model extends CI_Model{
      *  'add_time' => string '1439459394' (length=10)
      *  'status' => string '提现成功' (length=12)
      */
-    public function get_user_transfer_list($uid=0,$type='',$start_time=0,$end_time=0,$time_limit = 0){
+    public function get_user_transfer_list($uid=0,$type='',$start_time=0,$end_time=0,$page_id=0,$page_size=0){
         $data = array(
             'name'   =>'用户提现记录',
             'status' =>'10001',
@@ -651,28 +716,9 @@ class Cash_model extends CI_Model{
             'data'   =>array()
         );
         $temp    = array();
-		
-		switch ($time_limit) {
-            case '1':
-                $time = strtotime(date('Y-m-01',time()));
-                break;
-			case '2':
-                $time = strtotime(date('Y-(m-2)-01',time()));
-                break;
-			case '3':
-                $time = strtotime(date('Y-(m-5)-01',time()));
-                break;
-			case '4':
-                $time = strtotime(date('Y-01-01',time()));
-                break;
-            default:
-                $time = '';
-                break;
-			 }
-			 
 
         //处理show_page的分页数据
-       // $this->_set_cutpage_params($page_id,$page_size);
+        $this->_set_cutpage_params($page_id,$page_size);
 
         if($uid > 0){
             $temp['where'] = array(
@@ -680,11 +726,6 @@ class Cash_model extends CI_Model{
                 'where'  =>array('uid'=>$uid),
                 'order_by'=>'add_time DESC'
             );
-			//时间类型
-			if($time!=''){
-				$temp['where']['where']['add_time >=']=$time;
-				$temp['where']['where']['add_time <=']=time();
-			 }
             //验证type
             if($type !== ''){
                 $temp['where']['where']['status']=$type;
@@ -698,7 +739,7 @@ class Cash_model extends CI_Model{
                 $temp['where']['where']['add_time <=']=$end_time;
             }
 
-            $temp['data'] = $this->c->show_page(self::transfer,$temp['where'],"",0,7);
+            $temp['data'] = $this->c->show_page(self::transfer,$temp['where']);
             unset($temp['data']['links']);
 
             if($temp['data']['data']){
@@ -796,7 +837,8 @@ class Cash_model extends CI_Model{
             'select'   => 'SUM('.join_field('amount', self::payment).') as invest_total,'.join_field('mobile', self::user),
             'where'    => array(
                 join_field('type', self::payment)   => 1,
-                join_field('status', self::payment) => 1
+                join_field('status', self::payment) => 1,
+                join_field('real_name', self::user).' !='=>'沈阳网加互联网金融服务有限公司'
             ),
             'where_in' => array('field'=>join_field('status',self::borrow),'value'=>array(4,7)),
             'join'     => array(
@@ -839,9 +881,30 @@ class Cash_model extends CI_Model{
         return $data;
     }
 
-/********************************************************聚保宝***************************************************************************************/
+    /**
+     * 获取提现手续费【当天第一笔免收费】
+     * @param int $uid
+     * @return int
+     */
+    protected function _get_transaction_charge($uid=0){
+        $charge = 2;
+        if($uid > 0){
+            //查询今天的提现情况 处理手续费
+            $today_transaction_count = $this->c->count(self::transfer,array(
+                'where' => array(
+                    'uid' => $uid,
+                    'add_time >=' => strtotime(date('Y-m-d').' 00:00:00'),
+                    'add_time <=' => time()
+                )
+            ));
+            if($today_transaction_count == 0)$charge = 0;
+        }
+
+        return $charge;
+    }
 
 
+    /****************** 聚保宝相关 ************************************************************************************/
     /**
      * 聚保宝累计投资
      * @param string $type_code
@@ -885,7 +948,6 @@ class Cash_model extends CI_Model{
         return $data;
     }
 
-
     /**
      * 聚保宝累计赚取
      * @param string $type_code
@@ -915,8 +977,6 @@ class Cash_model extends CI_Model{
         return $data;
     }
 
-
-
 	/**
 	 * 聚保宝项目
 	 * @param string $type_code
@@ -935,8 +995,6 @@ class Cash_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
-
 
 	/**
 	 * 聚保宝投资详情
@@ -970,9 +1028,6 @@ class Cash_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
-
-
 
 	/**
 	 * 聚保宝加入总金额（元）
@@ -1010,8 +1065,6 @@ class Cash_model extends CI_Model{
 		return $data;
 	}
 
-
-
 	/**
 	 * 聚保宝购买笔数
 	 *
@@ -1048,8 +1101,6 @@ class Cash_model extends CI_Model{
 		return $data;
 	}
 
-
-
 	/**
 	 * 聚保宝累计提取收益
 	 *
@@ -1085,8 +1136,6 @@ class Cash_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
-
 
 	/**
 	 * 聚保宝可领取收益
@@ -1161,9 +1210,6 @@ class Cash_model extends CI_Model{
 		return $data;
 	}
 
-
-
-
 	/**
 	 * 聚保宝匹配标数
 	 *
@@ -1209,9 +1255,6 @@ class Cash_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
-
-
 
 	/**
 	 * 聚保宝提取收益
@@ -1346,9 +1389,6 @@ class Cash_model extends CI_Model{
 		return $data;
 	}
 
-
-
-
 	/**
 	 * 聚保宝提取收益
 	 *
@@ -1361,6 +1401,14 @@ class Cash_model extends CI_Model{
 		$data = array('status'=>'10001','msg'=>'数据有误，请稍候尝试!');
         $temp = array();
 		if($uid == 0 || $id == 0){
+			return $data;
+		}
+		date_default_timezone_set('PRC');
+		$jbb_start_time = strtotime(date('Y-m-d '.$this->config->item('jbb_start_time')));
+		$jbb_end_time = strtotime(date('Y-m-d '.$this->config->item('jbb_end_time')));
+
+		if(time()<$jbb_start_time||time()>$jbb_end_time){
+			$data['msg'] = '允许申请退出的时间是每天9:00-16:00';
 			return $data;
 		}
 		$temp['where'] = array(
@@ -1401,7 +1449,7 @@ class Cash_model extends CI_Model{
 					'transfer_fee' =>  $counter_Fee,//手续费
 					'service_amount' => $v['service_amount']+$v['service_charge']*$receive,//服务费
 					'expected_amount' => round(jbb_product_amount($day,$rate,$amount),2),//预计收益
-					'real_amount' => round(jbb_product_amount($days,$rate,$amount),2)+$v['gain'],//真实收益
+					'real_amount' => $receive+$v['gain'],//真实收益
 					'interest_amount' =>  $receive+$v['amount']+$v['gain']- $counter_Fee-$v['service_charge']*$v['amount'],//本息收益
 					'status' => 2
 					);
@@ -1420,9 +1468,6 @@ class Cash_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
-
-
 
 	/**
 	 * 聚保宝手续费
@@ -1483,8 +1528,6 @@ class Cash_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-
-
 
 	/**
 	 * 聚保宝取消退出
@@ -1553,78 +1596,35 @@ class Cash_model extends CI_Model{
 		unset($temp);
 		return $data;
 	}
-/********************************************************聚保宝***************************************************************************************/
 
-    /***************************************全网资金统计相关*********************************************************/
     /**
-     * 获取全网利息总额
-     * @param int $category
+     * 聚保宝投资
+     * @param int $uid
      * @return float|int
      */
-    public function get_project_interest_total($category=0){
-        $temp = array();
-        $data = array('name'=>'项目利息总额','status'=>'10001','msg'=>'服务器繁忙请稍后重试!','sign'=>'','data'=>array());
-
-        $temp['amount'] = 0;
-        $temp['where'] = array('select' => 'amount,months,rate,mode,repay','where'=>array('status >'=>1));
-
-        if( ! empty($category))$temp['where']['where']['productcategory']=$category;
-
-        $temp['data'] = $this->c->get_all(self::borrow, $temp['where']);
-
-        if( ! empty($temp['data'])){
-            foreach($temp['data'] as $k => $v){
-                $temp['amount'] += $this->get_project_interest($v['amount'],$v['rate'],$v['months'],$v['mode']);//计算公式
-            }
-            $data['status']           = '10000';
-            $data['msg']              = 'ok';
-            $data['data']['interest'] =  $temp['amount'];
-        }else{
-            $data['status']           = '10000';
-            $data['msg']              = 'ok';
-            $data['data']['interest'] =  0;
-        }
-
-        unset($temp);
-        return $data;
-    }
-    /***************************************全网资金统计相关*********************************************************/
-
-
-    public function get_user_month_invest_interest($uid=0,$month=6){
-        $data = array('name'=>'最近n个月的投资收益记录列表','status'=>'10001','msg'=>'ok','data'=>array('month'=>'', 'invest' => '', 'interest' =>''));
+    protected function jbb_all_amount($uid=0,$status = 0){
+        $data = 0;
         $temp = array();
 
         if($uid > 0){
-            if($month <= 0){
-                $data['msg'] = '月份为空!';
-                return $data;
-            }
-            $temp['6m_data'] = array(
-                'month'=>'',
-                'invest'=>'',
-                'interest'=>''
+            $temp['where'] = array(
+                'select'   => 'sum(amount)',
+                'where'    => array(
+                    'uid' =>$uid,
+                    'status' => $status
+                )
             );
-            for($i=5;$i>=0;$i--){
-                $temp['start_time'] = strtotime(date('Y-m-01',strtotime('-'.$i.' month')).' 00:00:00');
-                $temp['end_time'] = strtotime(date('Y-m-t',strtotime('-'.$i.' month')).' 23:59:59');
-                $temp['6m_data']['month'][] = date('Y年m月',$temp['start_time']);
-                $temp['invest'] = $this->get_user_invest_total($uid,0,$temp['start_time'],$temp['end_time']);
-                $temp['6m_data']['invest'][] = $temp['invest'];
-                $temp['interest'] = $this->get_user_receive_principal_interest($uid,$temp['start_time'],$temp['end_time']);
-                $temp['6m_data']['interest'][] = $temp['interest']['receive_interest'];
-            }
-            $data['data'] = $temp['6m_data'];
-            $data['msg'] = 'ok!';
-            $data['status'] = '10000!';
-        }else{
-            $data['msg'] = '用户uid为空!';
+
+            $data = (float)$this->c->get_one(self::payment_jbb, $temp['where']);
         }
+
         unset($temp);
         return $data;
     }
 
-    /***************************************用户资金统计相关方法 涉及的数据表 borrow payment transfer*********************************************************/
+
+
+    /**********************用户资金统计相关方法 涉及的数据表 borrow payment transfer***********************************/
     /**
      * 用户投资总额
      * @param int $uid
@@ -1769,36 +1769,6 @@ class Cash_model extends CI_Model{
         return $data;
     }
 
-
-
-    /**
-     * 聚保宝投资
-     * @param int $uid
-     * @return float|int
-     */
-    protected function jbb_all_amount($uid=0,$status = 0){
-        $data = 0;
-        $temp = array();
-
-        if($uid > 0){
-            $temp['where'] = array(
-                'select'   => 'sum(amount)',
-				'where'    => array(
-					'uid' =>$uid,
-					'status' => $status
-				)
-            );
-
-            $data = (float)$this->c->get_one(self::payment_jbb, $temp['where']);
-        }
-
-        unset($temp);
-        return $data;
-    }
-
-
-
-
     /**
      * 用户全部项目总收益（预计和已收）
      * @param int $uid
@@ -1870,7 +1840,8 @@ class Cash_model extends CI_Model{
         unset($temp);
         return round($interest,2);
     }
-    /**************************************用户资金统计相关方法**********************************************************/
+
+
 
     /**************************************利息计算**********************************************************/
     /**
@@ -1939,8 +1910,8 @@ class Cash_model extends CI_Model{
         return round($amount*(($rate/100)/360)*($months*30),2);
     }
 
-    /**************************************资金日志类型相关处理**********************************************************/
 
+    /**************************************资金日志类型相关处理*********************************************************/
     /**
      * 获取 资金记录的收入支出类型
      * @param int $type
@@ -1992,7 +1963,11 @@ class Cash_model extends CI_Model{
                     break;
                 case '11':
                     $remarks_name = '红包';
-		case '20':
+                    break;
+                case '12':
+                    $remarks_name = '企业认证费用';
+                    break;
+		        case '20':
                     $remarks_name = '活期产品';
                     break;
             }
@@ -2088,8 +2063,8 @@ class Cash_model extends CI_Model{
         return $status_name;
     }
 
-    /***************************************************************************************************************/
 
+    /********************************私有方法**************************************************************************/
     /**
      * 加密字符串
      * @param int    $string 字符串
@@ -2180,18 +2155,20 @@ class Cash_model extends CI_Model{
      * 获取银行卡信息
      *
      * @access public
-     * @param  string  $card_no 卡号
      * @param int $uid
+     * @param  string  $card_no 卡号
      * @return array
      */
-    private function _get_card_info($uid=0){
+    private function _get_card_info($uid=0,$card_no=''){
         $data = $temp = array();
 
         if( ! empty($uid)){
             $temp['where'] = array(
                 'select' => 'real_name,bank_name,account',
                 'where'  => array(
-                    'uid'     => $uid
+                    'uid'     => $uid,
+                    'card_no'     => $card_no,
+                    'status !='=>'-1'
                 )
             );
 
@@ -2202,20 +2179,22 @@ class Cash_model extends CI_Model{
         return $data;
     }
 
-
     /**
      * 设置修正分页的参数
      * @param int $page_id
      * @param int $page_size
      */
     protected function _set_cutpage_params($page_id=0,$page_size=0){
-        if(!is_numeric($page_id) || $page_id<=0){
-            $page_id=1;
+        if(isset($_GET['limit']) && !$page_size){
+            $page_size = (int)$this->input->get('limit');
+        }else{
+            if( !$page_size || !is_numeric($page_size))$page_size = $this->_page_size;
+            $_GET['limit'] = (int)$page_size;
         }
-        if(!$page_size || !is_numeric($page_size)){
-            $page_size = $this->_page_size;
+
+        if( !isset($_GET['per_page'])){
+            if(!is_numeric($page_id) || $page_id<=0)$page_id=1;
+            $_GET['per_page'] = (((int)$page_id-1)*(int)$page_size);
         }
-        $_GET['limit']    = (int)$page_size;
-        $_GET['per_page'] = (((int)$page_id-1)*(int)$page_size);
     }
 }

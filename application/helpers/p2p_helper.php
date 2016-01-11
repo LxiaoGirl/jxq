@@ -28,10 +28,10 @@ if( ! function_exists('attachment'))
         switch ($type)
         {
             case 1:
-                $url = sprintf('http://s.zgwjjf.com/%s', $path);
+                $url = sprintf('http://s.juxueqiu.com/%s', $path);
                 break;
             default:
-                $url = sprintf('https://www.zgwjjf.com/%s', $path);
+                $url = sprintf('https://www.juxueqiu.com/%s', $path);
                 break;
         }
 
@@ -414,9 +414,12 @@ if( ! function_exists('jbb_icon'))
                 $str = 'yi';
                 break;
 			case 'JBB02':
-                $str = 'fu';
+                $str = 'xin';
                 break;
 			case 'JBB03':
+                $str = 'fu';
+                break;
+			case 'JBB04':
                 $str = 'wen';
                 break;
             default:
@@ -452,6 +455,9 @@ if( ! function_exists('jbb_word'))
                 break;
 			case 'JBB03':
                 $str = '富';
+                break;
+			case 'JBB04':
+                $str = '稳';
                 break;
             default:
                 $str = '稳';

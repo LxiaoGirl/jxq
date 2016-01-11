@@ -28,10 +28,10 @@
     </div>
     <div class="self_con">
         <p onclick="check_to_login('<?php echo site_url('mobiles/home/my_balance'); ?>');"><a
-                href="javascript:void(0);">可用余额<font>></font><font><?php echo (float)$my_balance; ?>元</font></a></p>
+                href="javascript:void(0);">可用余额<font>></font><font class="my_balance list-value">0元</font></a></p>
 
         <p onclick="check_to_login('<?php echo site_url('mobiles/home/my_income'); ?>');"><a
-                href="javascript:void(0); ?>');">累计收益<font>></font><font><?php echo (float)$all_income; ?>元</font></a>
+                href="javascript:void(0); ?>');">累计收益<font>></font><font class="all_income list-value">0元</font></a>
         </p>
 
         <p onclick="check_to_login('<?php echo site_url('mobiles/home/my_card'); ?>',true);"><a
@@ -52,10 +52,25 @@
         <p onclick="check_to_login('<?php echo site_url('mobiles/home/my_integral'); ?>');"><a
                 href="javascript:void(0);">我的雪球<font>></font></a></p>
                 
-        <p onclick="check_to_login('https://www.zgwjjf.com/index.php/mobiles/home/redbag');"><a
+        <p onclick="check_to_login('/index.php/mobiles/home/redbag');"><a
                 href="javascript:void(0);">我的红包<font>></font></a></p>
     </div>
 </div>
+
 </body>
 <?php $this->load->view('common/mobiles/app_footer') ?>
+<script>
+    $(function(){
+        $('.self_con').list_data({
+            list_one:true,
+            data:'/index.php/mobiles/home/my_center',
+            show_loading:true,
+            btn:true,
+            value_func:{
+                'my_balance':function(v){return v+'元';},
+                'all_income':function(v){return v+'元';}
+            }
+        });
+    });
+</script>
 </html>

@@ -49,7 +49,7 @@
                 <button id="btn_tj" type="button" class="btn btn-lg btn-danger btn-block">确认提现</button>
             </div>
         </div>
-        <p style="text-align:center;">每笔提现将扣除2元手续费</p>
+        <p style="text-align:center;">每笔提现将扣除2元手续费,每日首笔提现减免手续费</p>
     </div>
 </div>
 
@@ -101,6 +101,7 @@
 
         var balance = '<?php echo $balance; ?>';
         var card_no = '<?php echo $card?$card[0]['card_no']:''; ?>';
+        var charge = '<?php echo $today_transfer?2:0; ?>';
         $("#btn_tj").click(function (event) {
             event.preventDefault();
             if (!card_no) {
@@ -145,7 +146,7 @@
                     'authcode': $("#authcode").val()
                 },
                 success: function (resut) {
-                    if (resut.code == 0) {
+                    if (resut.status == '10000') {
                         window.location.replace('<?php echo site_url('mobiles/home/transfer_success?amount='); ?>' + $("input[name='amount']").val());
                     } else {
                         my_alert(resut.msg);
@@ -157,7 +158,7 @@
         $('#amount').bind('keyup',function(){
             if(!isNaN($(this).val()) && $(this).val() > 2){
                 $('#jtje-p').css('visibility','visible');
-                $('#jtje').text($(this).val()-2);
+                $('#jtje').text($(this).val()-charge);
             }else{
                 $('#jtje-p').css('visibility','hidden');
                 $('#jtje').text(0);

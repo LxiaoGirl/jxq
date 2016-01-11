@@ -10,7 +10,7 @@
             width: 150,//设置宽高
             height: 150
         });
-        qrcode.makeCode("https://www.zgwjjf.com/index.php/jujianren/jieshao?inviter_no=<?php echo $invite_code;?>");
+        qrcode.makeCode("https://www.juxueqiu.com/index.php/jujianren/jieshao?inviter_no=<?php echo $invite_code;?>");
     }
 </script>
 </head>
@@ -54,7 +54,7 @@
                                     <p>结算状态：<font class="ywc"><?php if($v['status'] == 1):echo '已结算';elseif($v['status'] == 2):echo '已失效';else:echo '未结算';endif;?></font></p>
                                 </div>
                                 <div class="fr">
-                                    <button class="invite_ckxq" id="<?php echo  $v['real_month'];?>">查看详情<em><em></em></em></button>
+                                    <button class="invite_ckxq ls" id="<?php echo  $v['real_month'];?>">查看详情<em><em></em></em></button>
                                 </div>
                             </div>
                             <div class="month_lie_pop">

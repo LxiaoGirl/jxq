@@ -233,7 +233,7 @@ define(function (require, exports, module) {
                             setTimeout(function() {window.location.href=result.url;},2000);
                         }else{
                            sys.alert(result.msg);
-                           setTimeout(function() {window.location.href="https://www.zgwjjf.com/index.php/user";},2000);
+                           setTimeout(function() {window.location.href="https://www.juxueqiu.com/index.php/user";},2000);
                         }
                     } else {
                         sys.alert(result.msg, 'z-error');

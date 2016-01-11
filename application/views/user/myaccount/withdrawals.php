@@ -33,7 +33,7 @@
 					
                         <div class="zysx">
 						<?php if($balance['status']!='10001'): ?>
-                            <p>温馨提示：16点前申请提现款项，提现金额T+1个工作日到帐，16点后申请的提现款项T+2个工作日到帐，每笔提现扣除银行转账费2块。如有疑问请联系客服，客服电话4007-918-333。
+                            <p>温馨提示：16点前申请提现款项，提现金额T+1个工作日到帐，16点后申请的提现款项T+2个工作日到帐，每笔提现扣除银行转账费2块,每日首笔提现减免手续费。如有疑问请联系客服，客服电话4007-918-333。
                             </p>
 						<?php else:?>
 							<p><?php echo $msg?></p>
@@ -47,26 +47,26 @@
                         <div class="qx_inp">
                             <div class="left">请输入提现金额：</div>
                             <div class="right">
-                                <input class="txje" type="text" placeholder="输入提现金额" />
+                                <input class="txje ifhav" type="text" placeholder="输入提现金额" />
                                 <div class="tip_qx"></div>
                             </div>
                         </div>
                         <div class="qx_inp">
                             <div class="left">输入验证码：</div>
                             <div class="right">
-                                <input class="tx_yzm" type="text" placeholder="输入验证码" / >
-                                <input class="hqyzm sms" type="button" value="短信验证码" />
+                                <input class="tx_yzm ifhav" type="text" placeholder="输入验证码" / >
+                                <input class="hqyzm sms ls" type="button" value="短信验证码" />
                                 <div class="tip_qx_1"></div>
                             </div>
                         </div>
                         <div class="qx_inp">
                             <div class="left">输入资金密码：</div>
                             <div class="right">
-                                <input class="tx_zjmm" type="password" / placeholder="输入资金密码">
+                                <input class="tx_zjmm ifhav" type="password" / placeholder="输入资金密码">
                                 <div class="tip_qx_2"></div>
                             </div>
                         </div>
-                        <p class="but_qx"><button class="but_qx_but ajax-submit-button" data-loading-msg="提交中..." type="button" id="sub">确认提现<i></i></button></p>
+                        <p class="but_qx"><button class="but_qx_but ajax-submit-button ls" data-loading-msg="提交中..." type="button" id="sub">确认提现<i></i></button></p>
                         <div class="pop"><img src="<?php echo base_url('assets/images/user/txcg.png')?>" height="135" width="165"></div><!--不可以用图片做-->
 						<input type="hidden" value="<?php echo (profile('mobile'))?profile('mobile'):''?>" id="mobile"/>
 						</div>
@@ -83,7 +83,16 @@
 
 <!--userjs start-->
 <script type="text/javascript">
-    seajs.use(['jquery','sys','jqform','validator'],function(){
+    seajs.use(['jquery','sys','jqform','validator','wsb_sys'],function(){
+        //INPUT框变色
+        $('.ifhav').focus(function(){
+            $(this).addClass('hav');
+        });
+        $('.ifhav').blur(function(){
+            if($.trim($(this).val())==''){
+                $(this).removeClass('hav');
+            }
+        });
         $('.sms').click(function () {
             // body...
 			dxdjs($(this));

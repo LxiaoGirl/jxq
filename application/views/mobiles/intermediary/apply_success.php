@@ -28,7 +28,7 @@
             <a class="hlogo" href="#"><span>聚雪球</span></a>
         </div>
         <div class="pic_wrapper" id="img">
-            <img src="https://www.zgwjjf.com/assets/images/jujianren/pic2.jpg" width="100%" alt="申请成功" />
+            <img src="/assets/images/jujianren/pic2.jpg" width="100%" alt="申请成功" />
         </div>
         <div class="pic_wrapper" style="display:none;width:80%;margin:0 auto;" id="download-image">
             <img src="/assets/images/app/app.png" width="100%" alt="下载APP登陆赚钱更方便" />
@@ -37,7 +37,7 @@
         <p><a class="zccg" href="javascript:window.location.replace('<?php echo site_url('mobiles/home/my_center'); ?>')"><img src="../../../assets/images/app/jrgrzx.png" width="100%"></a></p>
 
 
-        <p id="android-download-link"><a style="font-size: 14px;text-decoration: underline;color: #2E9CE3;" href="https://www.zgwjjf.com/snowballapp.apk">下载APP登陆赚钱更方便</a></p>
+        <p id="android-download-link"><a style="font-size: 14px;text-decoration: underline;color: #2E9CE3;" href="https://www.juxueqiu.com/snowballapp.apk">下载APP登陆赚钱更方便</a></p>
     </div>
 </body>
 <script type="text/javascript" src="/assets/js/jquery/jquery-2.1.1.min.js"></script>

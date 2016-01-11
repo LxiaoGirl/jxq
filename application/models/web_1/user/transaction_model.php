@@ -190,7 +190,7 @@ class Transaction_model extends CI_Model
 
                 $temp['amount'] = (int)$this->input->post('amount', TRUE);
 				//提现手续费处理
-                $temp['charge'] = 2;
+                $temp['charge'] = $this->_check_today_transfer()?2:0;
 
                 $temp['transaction_no'] = $this->c->transaction_no(self::transaction, 'transaction_no');
 
@@ -258,6 +258,13 @@ class Transaction_model extends CI_Model
 
         unset($temp);
         return $data;
+    }
+
+    protected function _check_today_transfer(){
+        $data = $this->c->get_row(self::transaction,array(
+            'where'=>array('uid'=>$this->session->userdata('uid'),'add_time >='=>strtotime(date('Y-m-d').' 00:00:00'),'add_time <='=>time()))
+        );
+        return $data?true:false;
     }
 
     /**
@@ -691,7 +698,7 @@ class Transaction_model extends CI_Model
 
         $temp['where'] = array(
                             'select'   => join_field('card_no,account', self::card).','.join_field('bank_name,code', self::bank),
-                            'where'    => array(self::card.'.uid' => $temp['uid']),
+                            'where'    => array(self::card.'.uid' => $temp['uid'],self::card.'.status' => 1),
                             'join'      => array(
                                             'table' => self::bank,
                                             'where' => join_field('bank_id', self::card).' = '.join_field('bank_id', self::bank),
@@ -725,7 +732,8 @@ class Transaction_model extends CI_Model
                                 'select' => 'real_name,bank_name,account',
                                 'where' => array(
                                                 'card_no' => $card_no,
-                                                'uid'     => $temp['uid']
+                                                'uid'     => $temp['uid'],
+                                                'status'  => 1
                                             )
                             );
 

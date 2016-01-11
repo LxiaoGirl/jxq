@@ -34,13 +34,15 @@
                 </li>
 				<?php else:?>
                 <li>
-                    <div class="top"><img src="https://www.zgwjjf.com/assets/images/bank/<?php echo $bank['data']['code']?>.png"></div>
+                    <div class="top"><img src="/assets/images/bank/<?php echo $bank['data']['code']?>.png"></div>
                     <div class="center">
                         <p>开户姓名：<?php echo $bank['data']['real_name']?></p>
-                        <p>银行卡号：<?php echo secret($bank['data']['account'],11)?></p>
+                        <p>银行卡号：<span class="account-info"><?php echo secret($bank['data']['account'],11)?></span>
+                            <a href="javascript:void (0);" style="float: right;margin-right: 10px;" class="card-show" data-card-no="<?php echo $bank['data']['card_no']; ?>">显示卡号</a>
+                        </p>
                     </div>            
                     <div class="bottom">
-                        <font class="fr card-unbind">解除绑定</font>
+                        <font class="fr card-unbind ajax-submit-button" data-card-no="<?php echo $bank['data']['card_no']; ?>" data-loading-msg="信息检查中...">解除绑定</font>
                     </div>
                 </li>
 				<?php endif;?>
@@ -106,6 +108,46 @@
                 </div>
             </div>
             <!--成功弹出-->
+
+            <!--    解绑银行卡弹出     -->
+            <div class="user_data_pop unbind-modal">
+                <div class="title">
+                    <span>解绑银行卡</span><font class="fr close">×</font>
+                </div>
+                <div class="popbody tc">
+                    <div class="p smrz_p">
+                        <div class="yhk_left fl" style=" width:20%;line-height:45px;">
+                            资金密码：
+                        </div>
+                        <div class="yhk_right fl" style=" width:68%;line-height:45px;">
+                            <input class="unbind-zjmm ifhav" style=" width:95%; height:36px; text-indent:10px;" type="password" name="zjmm" value="" placeholder="请输入资金密码"/>
+                        </div>
+                    </div>
+                    <button type="button" class="unbind-do ajax-submit-button ls" style="width: 120px;height: 40px;margin: 10px;" data-loading-msg="解绑中..." >解除绑定</button>
+                </div>
+            </div>
+
+            <!--    显示银行卡弹出     -->
+            <div class="user_data_pop card-show-modal">
+                <div class="title">
+                    <span>显示银行卡号</span><font class="fr close">×</font>
+                </div>
+                <div class="popbody tc">
+                    <div class="p smrz_p">
+                        <div class="yhk_left fl" style=" width:20%;line-height:45px;">
+                            验证码：
+                        </div>
+                        <div class="yhk_right fl" style=" width:68%;line-height:45px;">
+                            <input class="card-show-authcode ifhav" style=" width:95%; height:36px; text-indent:10px;" type="text" name="authcode" value="" placeholder="请输入验证码"/>
+                        </div>
+                    </div>
+                    <div class="p smrz_p" style="margin-top:10px;">
+                        <button class="send-sms green" style="width: 120px;height: 40px;margin: 0 10px;">发生短信</button>
+                        <button class="send-voice ls" style="width: 120px;height: 40px;margin: 0 10px;">发生语音</button>
+                    </div>
+                    <button type="button" style="width: 120px;height: 40px;margin: 10px;" class="card-show-do ajax-submit-button ls" data-loading-msg="查询中..." >显示</button>
+                </div>
+            </div>
         </div>
         <!--右侧-->
     </div>
@@ -115,7 +157,15 @@
 <!--footer-->
 <!--userjs start-->
 <script type="text/javascript">
-    seajs.use(['jquery','sys','validator'],function(){
+    seajs.use(['jquery','sys','validator','wsb_sys'],function(){
+        $('.ifhav').focus(function(){
+            $(this).addClass('hav');
+        });
+        $('.ifhav').blur(function(){
+            if($.trim($(this).val())==''){
+                $(this).removeClass('hav');
+            }
+        });
         yhkxz_tab($('.yhkxz_right'),$('.yhks'));
         pop($('.addcard'),$('.yhk_pop'),$('.yhk_pop').find('.close'));
         var card_bind = function(bankId,account){
@@ -129,17 +179,23 @@
                         $(".black_bg").fadeIn();
                         $('.bdyhk_cg').fadeIn();
                     });
-                    pop_sub($('.yhk_pop').find('.but'),$('.bdyhk_cg'),$('.bdyhk_cg').find('.close'));
-                    $('.yhk').html('<li><div class="top"><i class="zhaoshang"></i>' +
+                    //pop_sub($('.yhk_pop').find('.but'),$('.bdyhk_cg'),$('.bdyhk_cg').find('.close'));
+                    $('.bdyhk_cg'),$('.bdyhk_cg').find('.close').click(function(){
+                        $(".black_bg").fadeOut();
+                        $('.bdyhk_cg').fadeOut('normal',function(){
+                            window.location.reload();
+                        });
+                    });
+                    /*$('.yhk').html('<li><div class="top"><i class="zhaoshang"></i>' +
                         '<span>'+result.data.bank_name+'</span>' +
 //                        '<font>'+result.data.content+'</font>' +
                         '</div><div class="center">' +
                         '<p>开户姓名：'+result.data.real_name+'</p>'+
                         '<p>银行卡号：'+result.data.account+'</p>'+
-                        '</div><div class="bottom"><font class="fr card-unbind">解除绑定</font></div></li>');
+                        '</div><div class="bottom"><font class="fr card-unbind" data-card-no="'+result.data.card_no+'">解除绑定</font></div></li>');
                     $(".card-unbind").bind('click',function(){
                         wsb_alert('请致电客服中心申请银行卡解绑!',3);
-                    });
+                    });*/
                 }else{
                     wsb_alert(result.msg,3);
                 }
@@ -187,9 +243,67 @@
 			}
 		});
         $(".card-unbind").bind('click',function(){
-            wsb_alert('请致电客服中心申请银行卡解绑!',3);
+            var card_no = $(this).data('cardNo');
+            $.post('/index.php/user/user/ajax_check_card_unbind_enable',{card_no:card_no},function(rs){
+                switch (rs.status){
+                    case '10000':
+                        $(".black_bg").fadeIn();
+                        $('.unbind-modal').fadeIn().find('.close').click(function(){
+                            $(".black_bg").fadeOut();
+                            $('.unbind-modal').fadeOut();
+                        });
+                        $('.unbind-do').click(function(){
+                            if($('.unbind-zjmm').val() != ''){
+                                $.post('/index.php/user/user/ajax_card_unbind',{card_no:card_no,security:$('.unbind-zjmm').val()},function(rs){
+                                    if(rs.status == '10000'){
+                                        wsb_alert('解绑成功!',1);
+                                        setTimeout(function(){
+                                            window.location.reload();
+                                        },1000);
+                                    }else{
+                                        wsb_alert(rs.msg,2)
+                                    }
+                                },'json');
+                            }else{
+                                wsb_alert('请输入资金密码!',2)
+                            }
+                        });
+                        break;
+                    case '10001':
+                        wsb_alert('出错了,'+rs.msg,2);
+                        break;
+                    case '10002':
+                        wsb_alert('请致电客服中心申请银行卡解绑!',3);
+                        break;
+                    default:
+                }
+            },'json');
         });
-			
+        $('.card-show').click(function(){
+            $(".black_bg").fadeIn();
+            $('.card-show-modal').fadeIn().find('.close').click(function(){
+                $(".black_bg").fadeOut();
+                $('.card-show-modal').fadeOut();
+            });
+        });
+        $('.send-sms').send_sms('sms','<?php echo profile('mobile'); ?>','showcard');
+        $('.send-voice').send_sms('voice','<?php echo profile('mobile'); ?>','showcard');
+        $('.card-show-do').click(function(){
+            if($('.card-show-authcode').val() != ''){
+                $.post('/index.php/user/user/ajax_card_show_account',{card_no:$('.card-show').data('cardNo'),authcode:$('.card-show-authcode').val()},function(result){
+                    if(result.status == '10000'){
+                        $('.account-info').text(result.data);
+                        $(".black_bg").fadeOut();
+                        $('.card-show-modal').fadeOut();
+                        $('.card-show').remove()
+                    }else{
+                        wsb_alert(result.msg,3);
+                    }
+                },'json');
+            }else{
+                wsb_alert('请输入短信验证码!',2)
+            }
+        });
     });
 </script>
 <!--userjs end-->

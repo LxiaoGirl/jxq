@@ -34,7 +34,7 @@
                     </div>
                     <div class="center">
                         <div class="height_half">
-                            <button class="cz" onclick="window.location.href='<?php echo site_url('user/user/recharge');?>'">充值</button><button class="tx" onclick="window.location.href='<?php echo site_url('user/user/withdrawals');?>'">提现</button><a href="<?php echo site_url('user/user/transaction_details');?>">查看交易明细</a><a href="<?php echo site_url('invest');?>">去投资</a>
+                            <button class="cz ls" onclick="window.location.href='<?php echo site_url('user/user/recharge');?>'">充值</button><button class="tx ls_1" onclick="window.location.href='<?php echo site_url('user/user/withdrawals');?>'">提现</button><a href="<?php echo site_url('user/user/transaction_details');?>">查看交易明细</a><a href="<?php echo site_url('invest');?>">去投资</a>
                         </div>
                     </div>
                     <div class="right">

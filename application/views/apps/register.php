@@ -20,6 +20,8 @@
 
                 <div class="clears line"></div>
                 <input placeholder="验证码" name="authcode" type="text" class="input-group-lg form-control">
+                <div class="clears line"></div>
+                <input placeholder="邀请码(可选)" name="invite_code" type="text" class="input-group-lg form-control">
             </div>
         </div>
 
@@ -82,12 +84,12 @@
                 data: {
                     'mobile': $(':input[name="mobile"]').val(),
                     'password': $(":input[name='password']").val(),
-                    'retype': $(":input[name='retype']").val(),
+                    'invite_code': $(":input[name='invite_code']").val(),
                     'authcode': $(":input[name='authcode']").val()
                 },
                 success: function (resut) {
-                    if (resut.code == 0) {
-                        window.location.replace('<?php echo site_url('apps/home/register_success'); ?>');
+                    if (resut.status == '10000') {
+                        window.location.replace('/index.php/apps/home/register_success');
                     } else {
                         my_alert(resut.msg);
                     }

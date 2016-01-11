@@ -25,15 +25,15 @@
         <p>
             作为国内领先的金融信息服务平台，沈阳网加互联网金融服务有限公司通过对P2P借贷信息的收集、验证、整理、发布、对接、分析，以及第三方合作（银行、第三方支付公司）对借贷资金进行核算、结算、支付等方式，为借贷双方提供了一站式金融信息服务。</p>
     </div>
-    <div class="log"><a href="https://www.zgwjjf.com/index.php/mobiles/home/ptjs" target="_blank"><img src="<?php echo assets('images/app/ptjs/ptjs_2.png'); ?>"></a></div>
+    <div class="log"><a href="/index.php/mobiles/home/ptjs" target="_blank"><img src="<?php echo assets('images/app/ptjs/ptjs_2.png'); ?>"></a></div>
     <div class="xgxx">
         <p><img src="<?php echo assets('images/app/ptjs/ptjs_3.png'); ?>"><font>企业QQ: 4007918333</font></p>
 
         <p><img src="<?php echo assets('images/app/ptjs/ptjs_4.png'); ?>"><font>微信服务号: juxueqiu</font></p>
 
         <p><img src="<?php echo assets('images/app/ptjs/ptjs_5.png'); ?>"><font>服务邮箱: service@zgwjjf.com</font></p>
-        <a href="http://www.zgwjjf.com" target="_blank"><p><img
-                    src="<?php echo assets('images/app/ptjs/ptjs_6.png'); ?>"><font>公司网址: <em>www.zgwjjf.com</em></font><font
+        <a href="http://www.juxueqiu.com" target="_blank"><p><img
+                    src="<?php echo assets('images/app/ptjs/ptjs_6.png'); ?>"><font>公司网址: <em>www.juxueqiu.com</em></font><font
                     class="fr">></font></p></a>
 
         <p><img src="<?php echo assets('images/app/ptjs/ptjs_7.png'); ?>"><font>沈阳市皇姑区北陵大街32号软件大厦</font></p>

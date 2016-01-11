@@ -41,7 +41,7 @@
                                         输入新用户名：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="text" value="" placeholder="请输入用户名" id="name" maxlength="15"/>
+                                        <input class="ifgre" type="text" value="" placeholder="请输入用户名" id="name" maxlength="15"/>
                                     </div>
                                 </div>
                                 <div class="p xgnc_p">
@@ -49,7 +49,7 @@
 											<span style="color:red;">仅能修改一次，修改后将无法修改</span>
                                     </div>
                                 </div>
-                                <button type="button" class="user_data_pop_but sub " id="name_sub">提交</button>
+                                <button type="button" class="user_data_pop_but sub ls" id="name_sub">提交</button>
                             </div>
                         </div>
                         <!--修改昵称_1-->
@@ -68,7 +68,7 @@
                                         <div class="popbody_p xb" ><span id="new_name"></span>，<font>这名字听上去真带劲～！</font></div>
                                     </div>
                                 </div>
-                                <button type="" class="user_data_pop_but sub close">完成</button>
+                                <button type="" class="user_data_pop_but sub close ls">完成</button>
                             </div>
                         </div>
                         <!--修改昵称_2-->
@@ -86,10 +86,10 @@
                                         手机验证码：
                                     </div>
                                     <div class="fl tl" style="width:34%">
-                                        <input type="text" value="" placeholder="请输入验证码" id="authcode">
+                                        <input type="text" class="ifhav" value="" placeholder="请输入验证码" id="authcode">
                                     </div>
                                     <div class="fl tl">
-                                        <input type="button" class="but_sent" id="but_sent_xgsj" value="获取验证码">
+                                        <input type="button" class="but_sent ls" id="but_sent_xgsj" value="获取验证码">
                                     </div>
                                 </div>
                                 <div class="p xgsjh_p">
@@ -97,7 +97,7 @@
                                         
                                     </div>
                                 </div>
-                                <button type="" class="user_data_pop_but sub " id="mobile_next" >下一步</button>
+                                <button type="" class="user_data_pop_but sub ls" id="mobile_next" >下一步</button>
                             </div>
                         </div>
                         <!--修改手机号_1-->
@@ -112,7 +112,7 @@
                                         要绑定的手机号：
                                     </div>
                                     <div class="fl tl" style="width:66%">
-                                        <input type="text" value="" placeholder="请输入验证码" id="new_mobile">
+                                        <input type="text" class="ifhav" value="" placeholder="请输入手机号" id="new_mobile">
                                     </div>
                                 </div>
                                 <div class="p xgsjh_p">
@@ -120,18 +120,18 @@
                                         手机验证码：
                                     </div>
                                     <div class="fl tl" style="width:34%">
-                                        <input type="text" value="" placeholder="请输入验证码" id="new_authcode">
+                                        <input type="text" class="ifhav" value="" placeholder="请输入验证码" id="new_authcode">
                                     </div>
                                     <div class="fl tl">
-                                        <input type="button" class="but_sent" id="but_sent_xgsj_1" value="获取验证码">
+                                        <input type="button" class="but_sent ls" id="but_sent_xgsj_1" value="获取验证码">
                                     </div>
                                 </div>
                                 <div class="p xgsjh_p">
-                                    <div class="fr tl tip_pop " id="new_mobile_explain">
+                                    <div class="fr tl tip_pop ls" id="new_mobile_explain">
                                         
                                     </div>
                                 </div>
-                                <button type="" class="user_data_pop_but sub " id="new_mobile_next">下一步</button>
+                                <button type="" class="user_data_pop_but sub ls" id="new_mobile_next">下一步</button>
                             </div>
                         </div>
                         <!--修改手机号_2-->
@@ -150,7 +150,7 @@
                                         <div class="popbody_p xb"><font>新的手机号码为：</font><span id="mobile_new">138****4564</span></div>
                                     </div>
                                 </div>
-                                <button type="" class="user_data_pop_but sub close">完成</button>
+                                <button type="" class="user_data_pop_but sub close ls">完成</button>
                             </div>
                         </div>
                         <!--修改手机号_3-->
@@ -163,7 +163,7 @@
                                 <span>修改邮箱</span><font class="fr close">×</font>
                             </div>
                             <div class="popbody tc">
-                                <div class="p xgyx_p">
+                                <div class="p xgyx_p" style=" height:180px">
                                     <div class="fl tr">
                                         <img src="<?php echo base_url('assets/images/user/xrt.png')?>">
                                     </div>
@@ -186,14 +186,14 @@
                                         输入邮箱：
                                     </div>
                                     <div class="fr tl">
-                                        <input type="text" value="" placeholder="请输入邮箱" id="email">
+                                        <input type="text" class="ifgre" value="" placeholder="请输入邮箱" id="email">
                                     </div>
                                 </div>
                                 <div class="p xgyx_p">
                                     <div class="fr tl tip_pop" id="email_explain">
                                     </div>
                                 </div>
-                                <button type="" class="user_data_pop_but sub " id="next_email">提交</button>
+                                <button type="" class="user_data_pop_but sub ls" id="next_email">提交</button>
                             </div>
                         </div>
                         <!--修改邮箱_1-->
@@ -212,7 +212,7 @@
                                     理财师邀请码：
                                 </div>
                                 <div class="fr tl">
-                                    <input type="text" value="" placeholder="请输入理财师邀请码" id="lcs"/>
+                                    <input type="text" class="ifgre" value="" placeholder="请输入理财师邀请码" id="lcs"/>
                                 </div>
                             </div>
                             <div class="p xgnc_p">
@@ -220,7 +220,7 @@
 
                                 </div>
                             </div>
-                            <button type="button" class="user_data_pop_but sub ajax-submit-button" data-loading-msg="正在处理..." id="lcs_sub">提交</button>
+                            <button type="button" class="user_data_pop_but sub ajax-submit-button ls" data-loading-msg="正在处理..." id="lcs_sub">提交</button>
                         </div>
                     </div>
                     <!--添加公司邀请码-->
@@ -239,7 +239,7 @@
                                     公司邀请码：
                                 </div>
                                 <div class="fr tl">
-                                    <input type="text" value="" placeholder="请输入公司邀请码" id="company"/>
+                                    <input type="text" class="ifgre" value="" placeholder="请输入公司邀请码" id="company"/>
                                 </div>
                             </div>
                             <div class="p xgnc_p">
@@ -247,7 +247,7 @@
 
                                 </div>
                             </div>
-                            <button type="button" class="user_data_pop_but sub " id="company_sub">提交</button>
+                            <button type="button" class="user_data_pop_but sub ls" id="company_sub">提交</button>
                         </div>
                     </div>
                     <!--添加公司邀请码-->
@@ -263,6 +263,23 @@
 <!--userjs start-->
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){
+        //INPUT框变色
+        $('.ifgre').focus(function(){
+            $(this).addClass('gre');
+        });
+        $('.ifgre').blur(function(){
+            if($.trim($(this).val())==''){
+                $(this).removeClass('gre');
+            }
+        });
+        $('.ifhav').focus(function(){
+            $(this).addClass('hav');
+        });
+        $('.ifhav').blur(function(){
+            if($.trim($(this).val())==''){
+                $(this).removeClass('hav');
+            }
+        });
 		//修改手机
         //修改呢称
         pop($('.xgnc'),$('.xgnc_1'),$('.xgnc_1').find('.close'));

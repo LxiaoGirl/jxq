@@ -46,18 +46,23 @@
     <?php endforeach;endif; ?>
 </div>
 <div class="help_hot fr">  
-   <ul class="help_list1">
-   <div class="help_hot_h">热点问题</div>
-       <div id="hot-help">
-           <?php if(isset($info) && $info): ?>
-               <div style=" background:#f2f2f2; line-height:44px; padding-left:20px; margin-bottom:35px"><b>问：<?php echo $info['title'];  ?></b><p><?php echo $info['content'];  ?></p></div>
 
-           <?php else:?>
-           <li><a href="#"><span class="title"></span></a></li>
-           <?php endif; ?>
+   <?php if(isset($info) && $info): ?>
+    <div class="help_list_main">
+       <div id="hot-help">
+           <div style=" background:#f2f2f2; line-height:44px; padding-left:20px; margin-bottom:35px"><b>问：<?php echo $info['title'];  ?></b><p><?php echo $info['content'];  ?></p></div>
        </div>
-   <div class="clear"></div>  
-   </ul>
+   </div>
+   <?php else:?>
+    <ul class="help_list1">
+       <div class="help_hot_h">热点问题</div>
+       <div id="hot-help">
+           <li><a href="#"><span class="title"></span></a></li>
+       </div>
+        <div class="clear"></div>
+    </ul>
+   <?php endif; ?>
+
    <div class="help_ad"><a href="#"><img src="../../../../assets/images/bigpic/help_ad.jpg" width="750" height="136"></a></div>
    </div>
 <div class="clear"></div>

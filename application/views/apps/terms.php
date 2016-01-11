@@ -88,7 +88,7 @@
                 <dd>9、投资人：指通过互联网平台成功注册账户的会员，有合法来源的闲余资金，可参考互联网平台的推荐自主选择出借一定金额的资金给投资接收人，且具有完全民事权利和行为能力的自然人。</dd>
                 -->
                 <dt>鉴于：</dt>
-                <dd>1、甲方是“网加”网站（<b>www.zgwjjf.com</b>、<b>www.zgwjjf.cn</b>，或简称“网加服务平台”）的注册用户，注册ID：
+                <dd>1、甲方是“网加”网站（<b>www.juxueqiu.com</b>、<b>www.juxueqiu.cn</b>，或简称“网加服务平台”）的注册用户，注册ID：
                     <em class="btn_a"><?php echo judge_empty($data['agreement'][9], $data['a_mobile']); ?></em>
                     。
                 </dd>

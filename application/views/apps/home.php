@@ -24,6 +24,22 @@
         </div>
     </div>
     <!-- banner end-->
+    <div class="row" style="background:#fff; position: relative;">
+        <img style=" border-bottom:1px solid #eeeeee;" src="../../../assets/images/app/201212191111.png" width="100%;">
+        <div class="row" style="position: absolute; left:0; top:0; width:100%; height:100%;">
+            <div style=" width:50%; height:100%; float:left;">
+                <p style="font-size:1.6rem; color:#333; line-height:2rem; padding-top:1rem; text-indent:37%;">累计注册(人)</p>
+                <p style="font-size:1.4rem; color:#da251c; line-height:2rem; text-indent:37%;"><?php echo rate_format(price_format($total['user_total'],2,false)); ?></p>
+            </div>
+            <div style=" width:50%; height:100%; float:left;">
+                <p style="font-size:1.6rem; color:#333; line-height:2rem; padding-top:1rem; text-indent:35%;">累计投资(元)</p>
+                <p style="font-size:1.4rem; color:#da251c; line-height:2rem; text-indent:35%;"><?php echo rate_format(price_format($total['invest_total'],2,false)); ?></p>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="font-size:1.6rem; color:#333; line-height:4rem; text-align:center; margin-bottom:1rem; background:#fff;">
+        <?php echo rate_format(price_format($total['risk_total'],2,false)); ?>元风险备用金保障您的资金安全
+    </div>
     <!-- 选项卡标题 -->
     <div class="row">
         <ul class="index_tab_title clearfix" id="months">

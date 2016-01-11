@@ -562,15 +562,15 @@ ajax_loading.prototype = {
 
             switch (ajax_submit_button_obj.tagName) {
                 case 'INPUT':
-                    if (!ajax_submit_button_text)ajax_submit_button_text = $(ajax_submit_button_obj).val();
+                    ajax_submit_button_text = $(ajax_submit_button_obj).val();
                     $(ajax_submit_button_obj).removeAttr('disabled').attr('disabled', true).val(ajax_submit_button_load_msg);
                     break;
                 case 'BUTTON':
-                    if (!ajax_submit_button_text)ajax_submit_button_text = $(ajax_submit_button_obj).html();
+                    ajax_submit_button_text = $(ajax_submit_button_obj).html();
                     $(ajax_submit_button_obj).removeAttr('disabled').attr('disabled', true).html(ajax_submit_button_load_msg);
                     break;
                 default:
-                    if (!ajax_submit_button_text)ajax_submit_button_text = $(ajax_submit_button_obj).html();
+                    ajax_submit_button_text = $(ajax_submit_button_obj).html();
                     $(ajax_submit_button_obj).removeAttr('disabled').attr('disabled', true).html(ajax_submit_button_load_msg);
             }
             //处理按钮背景变化
@@ -815,8 +815,8 @@ var  unixtime_style = function(unixtime,format){
     if(!format)return timestr.getFullYear()+"-"+timestr.getMonth()+1+"-"+timestr.getDate()+" "+timestr.getHours()+":"+timestr.getMinutes()+":"+timestr.getSeconds();
     format=format.replace("Y",timestr.getFullYear());
     format=format.replace("y",timestr.getYear());
-    format=format.replace("m",timestr.getMonth()+1);
-    format=format.replace("d",timestr.getDate());
+    format=format.replace("m",timestr.getMonth()+1<10?'0'+(timestr.getMonth()+1):timestr.getMonth()+1);
+    format=format.replace("d",timestr.getDate()<10?'0'+timestr.getDate():timestr.getDate());
     format=format.replace("w",timestr.getDay()||7);
     format=format.replace("H",timestr.getHours());
     format=format.replace("h",timestr.getHours());
@@ -861,8 +861,8 @@ var wsb_alert = function(msg, flag, url){
  * @param mode 类型
  */
 var calculator = function (amount, rate, months, mode) {
-    amount = parseFloat(amount)| 0;
-    rate = parseFloat(rate)| 0;
+    amount = parseFloat(amount)|| 0;
+    rate = parseFloat(rate)|| 0;
     months = parseFloat(months);
     mode = parseInt(mode);
     var interest = 0;

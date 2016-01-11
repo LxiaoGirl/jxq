@@ -92,7 +92,7 @@ class Intermediary extends MY_Controller{
 
         $this->_check_login();
         $this->_check_intermediary();
-        $this->_check_real_name();
+        $this->_check_real_name(true);
 
         if($this->session->userdata('per_page_ex'))$this->session->set_userdata(array('per_page_ex'=>FALSE));
         if($this->session->userdata('per_page'))$this->session->set_userdata(array('per_page'=>FALSE));
@@ -134,7 +134,7 @@ class Intermediary extends MY_Controller{
         }
         //验证居间人起始时间
         $this->_check_intermediary_time();
-
+        
         $data['inviter_no'] = $this->input->get('inviter_no')?$this->input->get('inviter_no'):'';
         $this->load->view(self::dir.'intermediary/guide',$data);
     }
@@ -177,7 +177,7 @@ class Intermediary extends MY_Controller{
     public function share_weixin(){
         $this->_check_login();
         $this->_check_intermediary();
-        $this->_check_real_name();
+        $this->_check_real_name(true);
 
         $data = array(
             'nickname'   =>$this->session->userdata('real_name')?$this->session->userdata('real_name'):$this->session->userdata('user_name'),
@@ -492,9 +492,26 @@ class Intermediary extends MY_Controller{
      * 实名验证
      * @return bool
      */
-    protected function _check_real_name(){
-        if($this->session->userdata('clientkind') != 1){
-            redirect(self::dir.'intermediary/real_name','location');
+    protected function _check_real_name($type=false){
+        if( !$this->session->userdata('uid'))redirect(self::dir.'home/real_name','location');
+
+        //加入企业认证后的实名验证
+        if($type){ //type=true 标识 严格检查 必须所有认证通过 =1|2
+            if($this->session->userdata('clientkind') !='1' && $this->session->userdata('clientkind') != '2'){
+                if(!$this->session->userdata('clientkind') || $this->session->userdata('clientkind') == '-1'){
+                    redirect(self::dir.'intermediary/real_name','location');
+                }else{
+                    exit('<h2>请进入PC版进行企业认证资料提交!</h2>');
+                }
+            }
+        }else{ //非严格认证 =1|2|-3|-4|-5 都进行了实名认证 但企业认证是部分资料不完整
+            if( !in_array($this->session->userdata('clientkind'),array('1','2','-3','-4','-5'))){
+                if($this->session->userdata('clientkind') == '-2'){
+                    exit('<h2>请进入PC版进行企业认证资料提交!</h2>');
+                }else{
+                    redirect(self::dir.'intermediary/real_name','location');
+                }
+            }
         }
     }
 

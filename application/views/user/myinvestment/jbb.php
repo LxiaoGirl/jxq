@@ -28,21 +28,21 @@
 					<p>服务费：<span id="service">0元</span></p>
 					<p>实收金额：<span id="real_amount">0</span>元</p>
                     <p class="blu">您可在排队信息中查看退出进度</p>
-                    <p class="but"><button class="qd" value=''>确定</button><button class="qx close">取消</button></p>
+                    <p class="but"><button class="qd ls" value=''>确定</button><button class="qx ls_1 close">取消</button></p>
                 </div>
                 <div class="pop pop_2">
                     <p class="tit">提取<span id="zong"></span>收益<font class="fr close">×</font></p>
                     <p>您将提取<span id="amount">0</span>元的<span id="zong_1"></span>收益</p>
 					<p>服务费：<span id="service_out">0元</span></p>
                     <p class="blu">提取收益后复利天数重新开始计算</p>
-                    <p class="but"><button class="qd" value="">确定</button><button class="qx close">取消</button></p>
+                    <p class="but"><button class="qd ls" value="">确定</button><button class="qx ls_1 close">取消</button></p>
                 </div>
                 <div class="pop_3">
                     <img src="../../../../assets/images/user/jbb_pop.png">
                 </div>
 				
             <!--弹出部分-->
-            <p class="jbb_tit">可领取的总收益（元）<button class="tq" value="总">提取</button><a href="<?php echo site_url('invest/index?c=4');?>"><button class="qgm">去购买</button></a><!--<font>我可以中途撤资吗？</font>--></p>
+            <p class="jbb_tit">可领取的总收益（元）<button class="tq ls" value="总">提取</button><button class="qgm ls_1"  onclick="window.location.href='<?php echo site_url('invest/index?c=4');?>'">去购买</button><!--<font>我可以中途撤资吗？</font>--></p>
             <p class="zsy"><?php echo round($jbb_receive['data']['receive'],2)?></p>
             <ul class="ul1">
                 <li>
@@ -65,7 +65,7 @@
             <ul class="ul2">
                 <a href=""><li class="active"><font>聚保宝活期理财</a></li></font>
                 <a href="<?php echo site_url('user/user/jbb_line');?>"><li><font>排队信息</a></li></font>
-                <a href="<?php echo site_url('user/user/jbb_history');?>"><li><font>历史预约</a></li></font>
+                <a href="<?php echo site_url('user/user/jbb_history');?>"><li><font>历史退出</a></li></font>
             </ul>
             <ul class="ul3">
 			<?php if($jbb_list['status']=='10000'):?>
@@ -128,19 +128,32 @@
 			var name = $(this).attr('tab');
 			$.post('/index.php/user/user/jbb_jbb_details?type_code='+e.attr('id'),{},function(result){
 				    var text = '<p class="month_lie_poptitle">';
-					text=text+'<span class="tc">项目名称</span>';
-					text=text+'<span class="tc">项目年利率</span>';
-					text=text+'<span class="tc">项目融资金额（元）</span>';
-					text=text+'<span class="tc">项目状态</span>';
+					text=text+'<span class="tc"><strong>项目名称</strong></span>';
+					text=text+'<span class="tc"><strong>项目年利率</strong></span>';
+					text=text+'<span class="tc"><strong>项目融资金额（元）</strong></span>';
+					text=text+'<span class="tc"><strong>项目状态</strong></span>';
 					text=text+'</p>';
 					result = JSON.parse(result);
 					if(result.status==10000){
+						var status = '-';
 					for(var i=0;i<result.data.length;i++){
+						if(result.data[i].status==2){
+							 status = '募集中';
+						}
+						if(result.data[i].status==3){
+							 status = '复审中';
+						}
 						if(result.data[i].status==4){
-							var status = '还款中';
+							 status = '还款中';
+						}
+						if(result.data[i].status==5){
+							 status = '还款完成';
+						}
+						if(result.data[i].status==6){
+							 status = '流标';
 						}
 						if(result.data[i].status==7){
-							var status = '还款完成';
+							 status = '还款完成';
 						}
 						text = text+'<p class="month_lie_popnr">';
 						text=text+'<span class="tc">'+result.data[i].subject+'</span>';

@@ -19,7 +19,7 @@
         <div class="yqfx">（把二维码分享到朋友圈，以获取更多的好友)</div>
     </div>
 </body>
-  <script src="https://www.zgwjjf.com/assets/js/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
+  <script type="text/javascript" src="/assets/js/jquery/jquery-1.11.1.min.js"></script>
   <script type="text/javascript" src="/assets/js/app/jquery.qrcode.min.js"></script>
   <script type="text/javascript">
         var w = $(".con-box").width()*0.64,h = w;

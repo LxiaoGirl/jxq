@@ -66,6 +66,7 @@ class Account_model extends CI_Model
                                     'city' => $this->input->post('bankaddr', TRUE),
                                     'remarks'   => '',
                                     'dateline'  => time(),
+                                    'status'  => 1
                                 );
 
                 $temp['data']['account'] = str_replace(' ', '', $temp['data']['account']);
@@ -172,7 +173,7 @@ class Account_model extends CI_Model
     		$temp['where'] = array(
 								'select' => join_field('card_no,real_name,account,remarks,dateline',self::card).','.join_field('bank_name,code,content',self::bank),
                                 'join'=> array('table' => self::bank,'where'=> self::bank.'.bank_id='.self::card.'.bank_id'),
-								'where'  => array(self::card.'.uid' => $temp['uid'])
+								'where'  => array(self::card.'.uid' => $temp['uid'],self::card.'.status' => 1)
     						);
 
     		$temp['data'] = $this->c->get_all(self::card, $temp['where']);

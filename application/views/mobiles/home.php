@@ -52,13 +52,29 @@
         </div>
     </div>
     <!-- banner end-->
+    <div class="row" style="background:#fff; position: relative;">
+        <img style=" border-bottom:1px solid #eeeeee;" src="../../../assets/images/app/201212191111.png" width="100%;">
+        <div class="row" style="position: absolute; left:0; top:0; width:100%; height:100%;">
+            <div style=" width:50%; height:100%; float:left;">
+                <p style="font-size:1.6rem; color:#333; line-height:2rem; padding-top:1rem; text-indent:37%;">累计注册(人)</p>
+                <p style="font-size:1.4rem; color:#da251c; line-height:2rem; text-indent:37%;"><?php echo rate_format(price_format($total['user_total'],2,false)); ?></p>
+            </div>
+            <div style=" width:50%; height:100%; float:left;">
+                <p style="font-size:1.6rem; color:#333; line-height:2rem; padding-top:1rem; text-indent:35%;">累计投资(元)</p>
+                <p style="font-size:1.4rem; color:#da251c; line-height:2rem; text-indent:35%;"><?php echo rate_format(price_format($total['invest_total'],2,false)); ?></p>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="font-size:1.6rem; color:#333; line-height:4rem; text-align:center; margin-bottom:1rem; background:#fff;">
+        <?php echo rate_format(price_format($total['risk_total'],2,false)); ?>元风险备用金保障您的资金安全
+    </div>
     <!-- 选项卡标题 -->
     <div class="row row-1">
         <ul class="index_tab_title clearfix" id="months">
-            <li class="current" m=""><a href="#">全部</a></li>
-            <li m="0-0.9"><a href="#">0.9个月</a></li>
-            <li m="3-3"><a href="#">3个月</a></li>
-            <li m="3-12"><a href="#">3-12个月</a></li>
+            <li class="current" data-month=""><a href="javascript:void (0);">全部</a></li>
+            <li data-month="0-0.9"><a href="javascript:void (0);">0.9个月</a></li>
+            <li data-month="3-3"><a href="javascript:void (0);">3个月</a></li>
+            <li data-month="3-12"><a href="javascript:void (0);">3-12个月</a></li>
         </ul>
     </div>
     <!-- 选项卡标题  end-->
@@ -101,69 +117,48 @@
 </body>
 <?php $this->load->view('common/mobiles/app_footer') ?>
 <script>
-    var g_m = '';  //月数类型
     $(function () {
-        // 循环 初始化
-        var list_view = new wb_listview({
-            'id': 'list',
-            'pageSize': 10,
-            'funcDeal': { //需要函数处理的数据
-                'rate': function (rate) {
-                    return rate_format(rate);
-                },
-                'amount': function (price) {
-                    return rate_format(price_format(price, 3, false));
-                },
-                'mode': function (mode) {
-                    return '<i class="dots_green"></i>' + borrow_mode(mode);
-                }
-            }
-        });
-        var slider_list = new wb_listview({
-            'id': 'index-slider'
-        });
-            slider_list.list('/index.php/mobiles/home/ajax_get_slider_list', function (obj, v) {
+        $("#index-slider").list_data({
+            data:'/index.php/mobiles/home/ajax_get_slider_list',
+            btn : true,
+            list_func : function(obj, v){
                 if (v.link_url && v.link_url != '#')obj.find('a').attr('href', v.link_url);
-            },function(){ gdFun("#homeslider");});
-        //ajax获取数据
-        var get_data = function () {
-            //拼接查询链接和条件
-            var condition = '';
-            if (g_m != '')condition += '?m=' + g_m;
-                list_view.init('/index.php/mobiles/home/get_project_list' + condition, function (obj, v) { //为每个循环对象 最特殊处理
-                    var now = Date.parse(new Date()) / 1000;
-                    if (v.status == 2 ||v.status == 3) {
-                        if (v.buy_time > now) {
-                            obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>未开始</span>');
-                        } else if (v.receive_rate == 100) {
-                            obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>融资完成</span>');
-                        } else if (v.due_date < now) {
-                            obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>投标结束</span>');
-                        } else {
-                            obj.find('.r_rate').attr('data-bfb', v.receive_rate);
-                        }
-                    } else if (v.status == 4) {
-                        obj.find('.r_rate').removeClass('bfb').addClass('index_huankuan').html('<span>还款中</span>');
-                    } else if (v.status == 7) {
-                        obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>交易结束</span>');
-                    } else {
-                        obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>' + borrow_status(v.status) + '</span>');
-                    }
-                    obj.find('.tap-span').attr('onclick', 'to_app_view(\'<?php echo site_url("mobiles/home/project_detail")?>?borrow_no=' + v.borrow_no + '\')')
-                }, function () {
-                    $("canvas").remove();bfbFun();
-                });
-        };
-        //为月数过滤 绑定事件
-        $("#months li").on('tap', function () {
-            $("#months li").removeClass('current');
-            $(this).addClass('current');
-            if (g_m != $(this).attr('m')) {
-                g_m = $(this).attr('m');
-                get_data();
+            },
+            callback : function(){
+                gdFun("#homeslider");
+                $("#index-slider .clone").css('opacity',1);
             }
         });
-        get_data();
+        $("#list").list_data({
+            data : '/index.php/mobiles/home/get_project_list',
+            page_size : 10,
+            event_type:'scroll',
+            value_func : {
+                'amount': function (price) {return rate_format(price_format(price, 3, false));},
+                'mode': function (mode) {return '<i class="dots_green"></i>' + mode;}
+            },
+            list_func : function(obj,v){
+                switch (parseInt(v.new_status)){
+                    case 2:
+                        obj.find('.r_rate').attr('data-bfb', v.receive_rate);
+                        break;
+                    case 4:
+                        obj.find('.r_rate').removeClass('bfb').addClass('index_huankuan').html('<span>'+ v.status_name+'</span>');
+                        break;
+                    default:
+                        obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>'+ v.status_name+'</span>');
+                }
+                obj.find('.tap-span').attr('onclick', 'window.location.href="/index.php/mobiles/home/project_detail?borrow_no='+v.borrow_no+'"')
+            },
+            callback : function(){$("canvas").remove();bfbFun();}
+        },function(ls_fun){
+            $("#months li").on('tap', function () {
+                $("#months li").removeClass('current');
+                var month = $(this).data('month') || '';
+                $(this).addClass('current');
+                ls_fun('/index.php/mobiles/home/get_project_list?m='+month);
+            });
+        });
     });
 </script>
 </html>

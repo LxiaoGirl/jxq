@@ -63,6 +63,15 @@
 <script type="text/javascript" src="<?php echo base_url('assets/js/plugins/jquery.date_input.pack.js')?>"></script> 
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){
+        //INPUT框变色
+        $('#recharge_amount').focus(function(){
+            $(this).addClass('hav');
+        });
+        $('#recharge_amount').blur(function(){
+            if($.trim($(this).val())==''){
+                $(this).removeClass('hav');
+            }
+        });
         var recharge_min = <?php echo $recharge_min; ?>;
         var now = parseInt('<?php echo date('Hi'); ?>');//当前服务器时间的时和分
         //为输入框绑定事件

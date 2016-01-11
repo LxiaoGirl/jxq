@@ -35,7 +35,7 @@
         <a class="hlogo" href="#"><span>聚雪球</span></a>
     </div>
     <div id="imgbox">
-        <img src="https://www.zgwjjf.com/assets/images/jujianren/pic1.jpg" width="100%" alt="聚雪球"/>
+        <img src="/assets/images/jujianren/pic1.jpg" width="100%" alt="聚雪球"/>
         <div id="dw">
             <img src="<?php echo $headimgurl?$headimgurl:'/assets/images/app/mrtx.png'; ?>" width="57%">
             <p><b><?php echo $nickname?$nickname:''; ?></b></p>
@@ -45,7 +45,7 @@
     </div>
     <div class="reg_btn">
         <?php if (!empty($inviter_no)): ?>
-            <a href="https://www.zgwjjf.com/index.php/jujianren/?inviter_no=<?php echo $inviter_no; ?>"></a>
+            <a href="/index.php/jujianren/?inviter_no=<?php echo $inviter_no; ?>"></a>
         <?php else: ?>
             <?php echo "您没有邀请人哦"; ?>
         <?php endif; ?>

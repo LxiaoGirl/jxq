@@ -14,22 +14,25 @@ class Home extends MY_Controller{
     const dir       = 'apps/';          //当前控制器controller model view目录
 
     //数据表 常量
-    const user        = 'user';               // 会员
-    const bank        = 'bank';               //银行
-    const card        = 'user_card';          //会员 银行卡
-    const cash        = 'cash_flow';          //资金记录
+    const user        = 'user';             // 会员
+    const bank        = 'bank';             //银行
+    const card        = 'user_card';        //会员之银行卡表
+    const cash        = 'cash_flow';        //资金流动【收支】记录表
     const cate        = 'product_category'; //项目分类表
-    const borrow      = 'borrow';             //借款表
-    const recharge    = 'user_recharge';      // 充值记录
-    const flow        = 'cash_flow';         // 现金记录
-    const payment     = 'borrow_payment';         // 现金记录
-    const snowballdtl = 'cdb_snowballdtl';   //活动表
-    const redbag      = 'cdb_redbag';   //活动表
-    const transfer    = 'user_transaction';   //活动表
+    const borrow      = 'borrow';           //借款【项目】表
+    const recharge    = 'user_recharge';    // 充值记录
+    const flow        = 'cash_flow';        // 现金记录
+    const payment     = 'borrow_payment';   // 投资还款记录表
+    const snowballdtl = 'cdb_snowballdtl';  //活动表
+    const redbag      = 'cdb_redbag';       //红包表
+    const transfer    = 'user_transaction'; //提现表
 
-    protected $_llpay_config = array();
+    protected $_llpay_config = array();    //连连支付需要的配置
+
+
     /**
      *构造函数
+     * 初始化部分内容和model
      */
     public function __construct(){
         parent::__construct();
@@ -48,26 +51,57 @@ class Home extends MY_Controller{
         }
 
         //加载必要model
-        $this->load->model('web_1/user_model','user');                         //用户
+        $this->load->model('web_1/user1_model','user');                         //用户
         $this->load->model('web_1/borrow_model', 'borrow');                   //借款
         $this->load->model('web_1/user/transaction_model', 'transaction'); //交易 充值提现
         $this->load->model(self::dir.'app_model', 'app');               //app model
         $this->load->model('web_1/send_model', 'send');                       //发送短信
         $this->load->model('web_1/user/account_model','account');           //会员银行帐户
+
+
+
+        $this->load->model('api/user_model','user_api');       //2.0版user相关model
+        $this->load->model('api/project_model','project_api'); //2.0版项目相关model
+        $this->load->model('api/cash_model','cash_api');       //2.0版资金相关model
+        $this->load->model('api/commons_model','commons_api'); //2.0版资金相关model
+
     }
 
 /************************************---注册---***********************************************/
     /**
-     * 注册
-     *
+     * 注册的显示和ajax处理
      */
     public function register(){
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->app->register();
+            $data = $this->user_api->register(
+                $this->input->post('mobile',true),
+                $this->input->post('password',true),
+                $this->input->post('authcode',true),'',
+                $this->input->post('invite_code',true)
+            );
+            if($data['status'] == '10000'){
+                $this->session->set_userdata($data['data']);
+            }
             exit(json_encode($data));
         }
+
         $this->load->view(self::dir.'register');
     }
+
+    /**
+     * 注册协议
+     */
+    public function register_agreement(){
+        $this->load->view(self::dir.'register_agreement');
+    }
+
+    /**
+     *注册成功提示页
+     */
+    public function register_success(){
+        $this->load->view(self::dir.'register_success');
+    }
+
 
     /**
      * 验证手机号码是否注册
@@ -106,20 +140,6 @@ class Home extends MY_Controller{
     public function is_mobile($mobile = ''){
         return (preg_match('/^1[345789](\d){9}$/', $mobile)) ? TRUE : FALSE;
     }
-
-    /**
-     * 注册协议
-     */
-    public function register_agreement(){
-        $this->load->view(self::dir.'register_agreement');
-    }
-
-    /**
-     *注册成功提示页
-     */
-    public function register_success(){
-        $this->load->view(self::dir.'register_success');
-    }
 /************************************---注册---***********************************************/
 
 
@@ -128,7 +148,11 @@ class Home extends MY_Controller{
      *主页
      */
     public function index(){
-        $this->load->view(self::dir.'home');
+        $temp['total'] = $this->cash_api->get_cash_total();
+        if($temp['total']['status'] == '10000'){
+            $data['total'] = $temp['total']['data'];
+        }
+        $this->load->view(self::dir.'home',$data);
     }
 
     /**
@@ -240,68 +264,12 @@ class Home extends MY_Controller{
      */
     public function ajax_invest(){
         if($this->input->is_ajax_request() == TRUE){
-            $data = $temp = array();
-            $data = array('code' => 1, 'msg' => '对不起，你提交的参数有误！','targeturl'=>'');
-
-            $temp['uid']       = $this->session->userdata('uid');
-            $temp['mobile']    = $this->session->userdata('mobile');
-            $temp['amount']    = (int)$this->input->post('amount');
-            $temp['password']  = trim($this->input->post('password', TRUE));
-            $temp['borrow_no'] = $this->input->post('borrow_no', TRUE);
-            $data['targeturl'] = '';
-
-            try
-            {
-                if(empty($temp['uid'])){
-                    throw new Exception('对不起，您还没有登录呢');
-                }
-
-                $temp['security'] = $this->session->userdata('security');
-                $temp['hash']     = $this->session->userdata('hash');
-                $temp['password'] = $this->c->password($temp['password'], $temp['hash']);
-
-                if(empty($temp['security'])){
-                    throw new Exception('对不起，您还没有设定资金密码');
-                }
-
-                if($temp['password'] != $temp['security']){
-                    throw new Exception('对不起，您输入的资金密码不正确!');
-                }
-
-                $temp['balance'] = $this->borrow->get_user_balance(); // 当前账户可用余额
-                $temp['detail']  = $this->borrow->get_borrow_detail($temp['amount'], $temp['borrow_no']);
-
-                if($temp['balance'] < $temp['amount']){
-                    throw new Exception('对不起，您的账户余额不足');
-                }
-
-                if($temp['detail']['uid'] == $temp['uid']){
-                    throw new Exception('对不起，您不能投自己的标');
-                }
-
-                if($temp['detail']['surplus'] == 0){
-                    throw new Exception('对不起，该项目已完成融资！');
-                }
-
-                if( ! empty($temp['detail']) && $temp['amount'] >= $temp['detail']['lowest']){
-                    $temp['amount'] = ($temp['detail']['surplus'] > $temp['amount']) ? $temp['amount'] : $temp['detail']['surplus'];
-                    $temp['query']  = $this->borrow->invest($temp['amount'], $temp['borrow_no'], $temp['balance'],3);//3是app
-
-                    if( ! empty($temp['query'])){
-                        $data = array(
-                            'code' => 0,
-                            'msg'  => sprintf('您(尾号为%s)已成功投资【%s】项目，投资金额为:%s元。公司会定期汇报您的收益情况，祝您生活愉快！', substr($temp['mobile'], -4), $temp['detail']['subject'], $temp['amount'])
-                        );
-                        //$this->send->send_sms($temp['mobile'], $data['msg'], 0, $temp['uid']);
-                    }
-                }else{
-                    throw new Exception('对不起，投标金额不能小于'.price_format($temp['detail']['lowest']));
-                }
-            }catch(Exception $e){
-                $data['msg'] = $e->getMessage();
-            }
-
-            unset($temp);
+            $data = $this->project_api->project_invest(
+                $this->session->userdata('mobile'),
+                (float)$this->input->post('amount',TRUE),
+                $this->input->post('password',TRUE),
+                $this->input->post('borrow_no',TRUE)
+            );
             exit(json_encode($data));
         }
     }
@@ -365,16 +333,13 @@ class Home extends MY_Controller{
      */
     public function real_name(){
         if($this->input->is_ajax_request() == TRUE){
-            $this->load->model('web_1/user/authentication_model','authentication');
-            $data        = $this->authentication->real_name();
-            $data['url'] =site_url(self::dir.'home/real_name_success');
+            $data        = $this->user_api->real_name($this->input->post('real_name',true),$this->input->post('nric',true),$this->session->userdata('uid'));
+            if($data['status'] == '10000'){
+                $this->session->set_userdata($data['data']);
+            }
             exit(json_encode($data));
         }
-        $data = array(
-            'real_name'=>$this->session->userdata('real_name'),
-            'nric'=>$this->session->userdata('nric')
-        );
-        $this->load->view(self::dir.'real_name',$data);
+        $this->load->view(self::dir.'real_name');
     }
 
     /**
@@ -395,7 +360,8 @@ class Home extends MY_Controller{
 
         $this->_check_realname();
         //查询用户 已有的银行卡
-        $data['card'] = $this->account->get_card_list();
+        $data['card'][] = $this->user_api->get_user_card($this->session->userdata('uid'))['data'];
+        if( !$data['card'][0])$data['card'] = array();
         $this->load->view(self::dir.'recharge',$data);
     }
 
@@ -423,32 +389,9 @@ class Home extends MY_Controller{
         //获取card_no  有card_no就是绑定银行卡的充值  没有则是其他银行卡的充值
         $card_no = $this->input->get('card_no',true);
         if($card_no){
-            $temp['uid']   = $this->session->userdata('uid');
-            $temp['where'] = array(
-                'select' => join_field('id,card_no,real_name,account,bank_id,remarks',self::card).','.join_field('code,bank_name',self::bank),
-                'where'  => array(
-                    join_field('card_no',self::card) => $card_no,
-                    join_field('uid',self::card)     => $temp['uid']
-                ),
-                'join'=>array(
-                    'table'=>self::bank,
-                    'where'=>join_field('bank_id',self::card).'='.join_field('bank_id',self::bank)
-                )
-            );
-            $data['card']  = $this->c->get_row(self::card, $temp['where']);
+            $data['card']  = $this->user_api->get_user_card($this->session->userdata('uid'))['data'];
         }else{
-            $temp['where'] = array(
-                'select' => 'bank_id,bank_name,code',
-                'where'  => array('status' => 1)
-                /*'where_in'=>array(
-                    'field'=>'bank_id',
-                    'value'=>array(100,102,103,104,105,308,302,303,305,310,307,309) //304 华夏 306广发
-				
-                )
-				*/
-            );
-
-            $data['bank'] = $this->c->get_all(self::bank, $temp['where']); //银行列表
+            $data['bank'] = $this->commons_api->get_bank('100,102,103,104,105,308,302,303,305,310,307,309')['data']; //银行列表
         }
         $this->load->view(self::dir.'recharge_form',$data);
     }
@@ -565,36 +508,38 @@ class Home extends MY_Controller{
             unset($temp);
         }else{
             $temp['recharge_no'] = $this->c->transaction_no(self::recharge, 'recharge_no');
-            $temp['account']     = (int)$this->input->post('account',true);
+            $temp['account']     = $this->input->post('account',true);
             $temp['amount']      = (float)$this->input->post('amount');
-            
-            $temp['bank_id']     =  (int)$this->input->post('bank_id');
-            $temp['bank_name']   = $this->input->post('bank_name');
-            $temp['card_id']     =  $this->input->post('card_id',true);
-            $temp['no_agree']    =  ''; //签约号
-            if(empty($temp['card_id'])){ //账户no。为空 则新曾银行账户
-                $temp['is_bind'] = $this->c->count(self::card,array('where'=>array('account'=>$temp['account'],'uid'=>$this->session->userdata('uid'))));
-                if($temp['is_bind'] == 0){ //不存在 则新增
-                    $temp['new_card_data'] = array(
-                        'card_no'   => $this->c->transaction_no(self::card, 'card_no'),
-                        'uid'       => $this->session->userdata('uid'),
-                        'real_name' => $this->session->userdata('real_name'),
-                        'account'   => $temp['account'],
-                        'bank_id'   => $temp['bank_id'],
-                        'bank_name' => $temp['bank_name'],
-                        'bankaddr'  => '默认地址',
-                        'province'  => '默认地址',
-                        'city'      => '默认地址',
-                        'remarks'   => '',
-                        'dateline'  => time(),
-                    );
-                    $query = $this->c->insert(self::card, $temp['new_card_data']);
-                    $temp['card_id'] = $query;
-                }
-            }else{
-                $temp['no_agree'] = $this->c->get_one(self::card,array('select'=>'remarks','where'=>array('id'=>$temp['card_id'])));
-            }
             if( ! empty($temp['amount']) &&  ! empty($temp['account'])){
+                $temp['bank_id']     =  (int)$this->input->post('bank_id');
+                $temp['bank_name']   = $this->input->post('bank_name');
+                $temp['card_id']     =  $this->input->post('card_id',true);
+                $temp['no_agree']    =  ''; //签约号
+                if(empty($temp['card_id'])){ //账户no。为空 则新曾银行账户
+//                    $temp['is_bind'] = $this->c->count(self::card,array('where'=>array('account'=>$temp['account'],'uid'=>$this->session->userdata('uid'),'status'=>1)));
+                    $temp['is_bind'] = $this->user_api->get_user_card($this->session->userdata('uid'),$temp['account'])['data'];
+                    if(empty($temp['is_bind'])){ //不存在 则新增
+                        $temp['new_card_data'] = array(
+                            'card_no'   => $this->c->transaction_no(self::card, 'card_no'),
+                            'uid'       => $this->session->userdata('uid'),
+                            'real_name' => $this->session->userdata('real_name'),
+                            'account'   => $temp['account'],
+                            'bank_id'   => $temp['bank_id'],
+                            'bank_name' => $temp['bank_name'],
+                            'bankaddr'  => '默认地址',
+                            'province'  => '默认地址',
+                            'city'      => '默认地址',
+                            'remarks'   => '',
+                            'dateline'  => time(),
+                            'status'  => 0
+                        );
+                        $query = $this->c->insert(self::card, $temp['new_card_data']);
+                        $temp['card_id'] = $query;
+                    }
+                }else{
+                    $temp['no_agree'] = $this->c->get_one(self::card,array('select'=>'remarks','where'=>array('id'=>$temp['card_id'])));
+                }
+
                 $temp['add_time'] = time();
                 $temp['data'] = array(
                     'recharge_no' => $temp['recharge_no'],
@@ -624,6 +569,8 @@ class Home extends MY_Controller{
                 }else{
                     redirect(self::dir.'home/recharge','refresh');
                 }
+            }else{
+                redirect('apps/home/recharge');
             }
         }
     }
@@ -718,28 +665,50 @@ class Home extends MY_Controller{
      */
     public function transfer(){
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->transaction->transfer();
+            //验证短信
+            $sms_check = $this->commons_api->validation_authcode(
+                $this->session->userdata('mobile'),
+                $this->input->post('authcode',true),
+                'transfer',
+                $this->session->userdata('uid')
+            );
+            if($sms_check['status'] != '10000'){
+                exit(json_encode($sms_check));
+            }
+
+            //执行体现处理
+            $data = $this->cash_api->user_transaction(
+                $this->session->userdata('uid'),
+                $this->input->post('amount',true),
+                $this->input->post('card_no',true),
+                $this->input->post('security',true)
+            );
+            //操作成功 处理余额session
+            if($data['status'] == '10000'){
+                $this->session->set_userdata(array('balance'=>$data['data']['balance']));
+            }
             exit(json_encode($data));
         }
 
-        $this->_check_realname();
+        $this->_check_realname(true);
         //查询 余额 和 绑定的银行卡信息
-        $data = array(
-            'balance' => (float)$this->user->get_user_balance(),
-            'card'    => $this->transaction->get_user_card()
-        );
+        $data['balance'] = (float)$this->cash_api->get_user_balance($this->session->userdata('uid'))['data']['balance'];
+        $data['card'][]  = $this->user_api->get_user_card($this->session->userdata('uid'))['data'];
         //没有绑定银行卡 则跳转到我的银行卡进行绑定
-        if(empty($data['card'])){
+        if(empty($data['card'][0])){
             redirect(self::dir.'home/my_card','location');
         }
+        //查询今日是否有提现
+        $data['today_transfer'] = $this->c->count('user_transaction',
+            array(
+                'where'=>array(
+                    'uid'=>$this->session->userdata('uid'),
+                    'add_time >='=>strtotime(date('Y-m-d').' 00:00:00'),
+                    'add_time <='=>time(),
+                )
+            )
+        );
         $this->load->view(self::dir.'transfer',$data);
-    }
-
-    /**
-     * 提现确认 暂无用
-     */
-    public function transfer_confirm(){
-        $this->load->view(self::dir.'transfer_confirm');
     }
 
     /**
@@ -859,8 +828,12 @@ class Home extends MY_Controller{
      *我的银行卡
      */
     public function my_card(){
-        $this->_check_realname();
-        $data['account'] = $this->account->get_card_list();
+        $this->_check_realname(true);
+
+        $data['account'][] = $this->user_api->get_user_card($this->session->userdata('uid'))['data'];
+
+        if(empty($data['account'][0]))$data['account'] = array();
+
         $this->load->view(self::dir.'my_card',$data);
     }
 
@@ -869,27 +842,33 @@ class Home extends MY_Controller{
      */
     public function my_card_bind(){
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->app->bind_card();
+            //验证短信
+            $sms_check = $this->commons_api->validation_authcode(
+                $this->session->userdata('mobile'),
+                $this->input->post('authcode',true),
+                'card_bind',
+                $this->session->userdata('uid')
+            );
+            if($sms_check['status'] != '10000'){
+                exit(json_encode($sms_check));
+            }
+
+            $data = $this->user_api->card_bind(
+                $this->session->userdata('uid'),
+                $this->input->post('amount',true),
+                $this->input->post('bank_id',true),
+                $this->input->post('bankaddr',true)
+            );
             exit(json_encode($data));
         }
 
         //银行列表
-        $temp['where'] = array(
-            'select' => 'bank_id,bank_name',
-            'where'  => array('status' => 1),
-            'where_in'=>array(
-                'field'=>'bank_id',
-                'value'=>array(100,102,103,104,105,308,302,303,305,310,307,309) //304 华夏 306广发
-            )
-        );
-        $data['bank'] = $this->c->get_all(self::bank, $temp['where']);
+        $data['bank'] = $this->commons_api->get_bank('100,102,103,104,105,308,302,303,305,310,307,309')['data'];
 
         //地址处理
-        $data['province'] = $this->borrow->get_region_list();
-        $_GET['region_id'] = 2;
-        $data['city'] = $this->borrow->get_region_list();
-        $_GET['region_id'] = 52;
-        $data['distic'] = $this->borrow->get_region_list();
+        $data['province']  = $this->commons_api->get_region(1)['data'];
+        $data['city']      = $this->commons_api->get_region(2)['data'];
+        $data['distic']    = $this->commons_api->get_region(52)['data'];
 
         $this->load->view(self::dir.'my_card_bind',$data);
     }
@@ -899,16 +878,15 @@ class Home extends MY_Controller{
      */
     public function ajax_get_region_list(){
         $temp = $data = array();
-        $temp['city'] = $this->borrow->get_region_list();
+
+        $data['city'] = $this->commons_api->get_region((int)$this->input->get('region_id'))['data'];
         $temp['type'] = $this->input->get('type');
         if( !empty($temp['city']) && $temp['type'] == 'city'){ //获取城市和地区
-            $data['city']      = $temp['city'];
-            unset($temp);
-            $_GET['region_id'] = $data['city'][0]['region_id'];
-            $data['district']  = $this->borrow->get_region_list();
+            $data['district']  = $this->borrow->get_region_list($data['city'][0]['region_id'])['data'];
         }else{ //值获取地区
-            $data = $temp['city'];
+            $data = $data['city'];
         }
+
         exit(json_encode($data));
     }
 
@@ -917,26 +895,22 @@ class Home extends MY_Controller{
      */
     public function my_card_unbind(){
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->app->unbind_card();
+            $data = $this->user_api->card_unbind(
+                $this->session->userdata('uid'),
+                $this->input->post('card_no',true),
+                $this->input->post('security',true)
+            );
             exit(json_encode($data));
         }
 
-        $temp =array();
-        $temp['card_no'] = $this->input->get('card_no',true);
-        $temp['uid'] = $this->session->userdata('uid');
+        $card_no = $this->input->get('card_no',true);
 
         //查询解绑的银行卡信息
-        if( ! empty($temp['card_no'])){
-            $temp['where'] = array(
-                'select' => join_field('card_no,real_name,account,remarks,dateline',self::card).','.join_field('bank_name,code',self::bank),
-                'join'   => array('table' => self::bank,'where'=> self::bank.'.bank_id='.self::card.'.bank_id'),
-                'where'  => array(self::card.'.uid' => $temp['uid'],self::card.'.card_no'=>$temp['card_no'])
-            );
-            $data = $this->c->get_row(self::card, $temp['where']);
+        if( ! empty($card_no)){
+            $data = $this->user_api->get_user_card($this->session->userdata('uid'),$card_no)['data'];
         }else{
             redirect(self::dir.'home/my_card','refresh');
         }
-        unset($temp);
 
         $this->load->view(self::dir.'my_card_unbind',$data);
     }
@@ -1382,9 +1356,26 @@ class Home extends MY_Controller{
      * 实名验证
      * @return bool
      */
-    protected function _check_realname(){
-        if($this->session->userdata('clientkind') != 1){
-            redirect(self::dir.'home/real_name','location');
+    protected function _check_realname($type=false){
+        if( !$this->session->userdata('uid'))redirect(self::dir.'home/real_name','location');
+
+        //加入企业认证后的实名验证
+        if($type){ //type=true 标识 严格检查 必须所有认证通过 =1|2
+            if($this->session->userdata('clientkind') !='1' && $this->session->userdata('clientkind') != '2'){
+                if(!$this->session->userdata('clientkind') || $this->session->userdata('clientkind') == '-1'){
+                    redirect(self::dir.'home/real_name','location');
+                }else{
+                    exit('<h2>请进入PC版进行企业认证资料提交!</h2>');
+                }
+            }
+        }else{ //非严格认证 =1|2|-3|-4|-5 都进行了实名认证 但企业认证是部分资料不完整
+            if( !in_array($this->session->userdata('clientkind'),array('1','2','-3','-4','-5'))){
+                if($this->session->userdata('clientkind') == '-2'){
+                    exit('<h2>请进入PC版进行企业认证资料提交!</h2>');
+                }else{
+                    redirect(self::dir.'home/real_name','location');
+                }
+            }
         }
     }
 

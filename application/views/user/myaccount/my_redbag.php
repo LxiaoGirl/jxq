@@ -33,7 +33,7 @@
                         <p class="title"><span class="wid15">金额（元）</span><span>描述</span><span>有效期</span><span class="wid15"></span></p>
 						<?php if($redbag_noreceive['status']!='10001'):?>
 						<?php foreach($redbag_noreceive['data']['data'] as $k => $v):?>
-                        <p class="lie"><span class="wid15"><?php echo $v['amount'];?></span><span><?php echo $v['active'];?></span><span><?php if($v['deadline']!=0):?><?php echo my_date($v['contract_time'],2);?>至<?php echo my_date($v['deadline'],2);?><?php else:?>永久有效<?php endif;?></span><span class="wid15"><button class="cancl" type="" id="receive" value="<?php echo $v['id'];?>">领取</button></span></p>
+                        <p class="lie"><span class="wid15"><?php echo $v['amount'];?></span><span><?php echo $v['active'];?></span><span><?php if($v['deadline']!=0):?><?php echo my_date($v['contract_time'],2);?>至<?php echo my_date($v['deadline'],2);?><?php else:?>永久有效<?php endif;?></span><span class="wid15"><button class="cancl ls" type="" id="receive" value="<?php echo $v['id'];?>">领取</button></span></p>
 						<?php endforeach;?>
 						<?php echo (isset($links))?$links:'';?>
 						<?php else:?>

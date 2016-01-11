@@ -17,7 +17,7 @@
 <div class="news_detail_w">
    <div class="news_detail_txt">
    <div style="font-size:24px;"><b><?php echo $data['title']; ?></b></div>
-   <div style="font-size:14px; padding-bottom:40px; padding-top:10px;"><?php echo date('Y-m-d',$data['add_time']); ?>   来源：<?php echo $data['source']?$data['source']:'沈阳网加'; ?></div>
+   <div style="font-size:14px; padding-bottom:40px; padding-top:10px;"><?php echo date('Y-m-d',$data['add_time']); ?>   来源：<?php echo $data['source']?(strpos($data['source'],site_url()) === false?$data['source']:'聚雪球'):'聚雪球'; ?></div>
    <p>
        <?php echo $data['content']; ?>
    </p>
@@ -36,7 +36,7 @@
    <div style="padding-left:20px;">
     <dl class="contact_dl">
    <dt>获取关于聚雪球的最新信息与资讯</dt>
-   <dd><img src="../../../../assets/images/about/contact/con_ico4.jpg">新浪微博：<a href="http://weibo.com/zgwjjf">http://weibo.com/zgwjjf</a></dd>
+   <dd><img src="../../../../assets/images/about/contact/con_ico4.jpg">新浪微博：<a href="http://weibo.com/juxueqiu">http://weibo.com/juxueqiu</a></dd>
    <dd><img src="../../../../assets/images/about/contact/con_ico5.jpg">微信公众号：</dd>
   </dl>
   <div style="position:relative; height:160px; border-bottom:2px solid #246b8f;">
