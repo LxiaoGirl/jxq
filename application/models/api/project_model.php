@@ -194,7 +194,7 @@ class Project_model extends CI_Model{
 	                $data['data']['data'][$key]['receive_rate'] = $this->_get_project_receive_rate($val['amount'],$val['receive'],$val['buy_time']);
 
 					$temp['status_array'] 						= $this->get_project_status($val['buy_time'],$val['due_date'],$data['data']['data'][$key]['receive_rate'],$val['status']);
-                    $data['data']['data'][$key]['status'] 		= $temp['status_array']['name'];//项目状态
+                    $data['data']['data'][$key]['status_name'] 		= $temp['status_array']['name'];//项目状态
                     $data['data']['data'][$key]['can_invest'] 	= $temp['status_array']['can_invest'];//项目状态
                     $data['data']['data'][$key]['new_status'] 	= $temp['status_array']['new_status'];//项目新状态
                     $data['data']['data'][$key]['mode'] 		= $this->_get_project_mode($val['mode']);//项目mode
@@ -309,13 +309,13 @@ class Project_model extends CI_Model{
             $data['msg'] = '项目id为空';
         }else{
             $temp['where'] = array(
-                'select'=>join_field('borrow_no,subject,mode,rate,months,type,amount,receive,add_time,buy_time,due_date,status,summary,repayment,content,lowest,max',self::borrow)
+                'select'=>join_field('borrow_no,subject,mode,rate,months,type,amount,receive,add_time,buy_time,due_date,status,summary,repayment,content,lowest,max,uid',self::borrow)
 						.','.join_field('category',self::category)
-						.','.join_field('company_short_name',self::guarantee).' as company_name',
-//                    .',user_a.user_name,user_a.mobile,user_a.nric,user_a.real_name,user_b.user_name as last_invester_name,',
+						.','.join_field('company_short_name',self::guarantee).' as company_name'
+                    .',user_a.user_name,user_a.mobile,user_a.nric,user_a.real_name,user_b.user_name as last_invester_name,',
                 'join'=>array(
-//                    array('table'=>self::user.' as user_a','where'=>join_field('uid',self::borrow).'= user_a.uid'),
-//                    array('table'=>self::user.' as user_b','where'=>join_field('last_investor',self::borrow).'= user_b.uid'),
+                    array('table'=>self::user.' as user_a','where'=>join_field('uid',self::borrow).'= user_a.uid'),
+                    array('table'=>self::user.' as user_b','where'=>join_field('last_investor',self::borrow).'= user_b.uid'),
                     array('table'=>self::category,'where'=>join_field('productcategory',self::borrow).'= '.join_field('cat_id',self::category)),
                     array('table'=>self::guarantee,'where'=>join_field('guarantee_id',self::borrow).'= '.join_field('id',self::guarantee))
                 ),
@@ -333,7 +333,7 @@ class Project_model extends CI_Model{
 				$data['data']['receive_rate'] = $this->_get_project_receive_rate($data['data']['amount'],$data['data']['receive'],$data['data']['buy_time']);
 
 				$temp['status_array'] 		= $this->get_project_status($data['data']['buy_time'],$data['data']['due_date'],$data['data']['receive_rate'],$data['data']['status']);
-                $data['data']['status'] 	= $temp['status_array']['name'];//状态
+                $data['data']['status_name'] 	= $temp['status_array']['name'];//状态
                 $data['data']['can_invest'] = $temp['status_array']['can_invest'];//是否克投资
                 $data['data']['new_status'] = $temp['status_array']['new_status'];//新状态
 
@@ -348,7 +348,7 @@ class Project_model extends CI_Model{
 
 	            //加密必要信息
 //	            $data['data']['mobile'] 	= $this->secret($data['data']['mobile'],5);
-//	            $data['data']['real_name'] 	= $this->secret($data['data']['real_name'],mb_strlen($data['data']['real_name'])-1);
+	            $data['data']['real_name'] 	= $this->secret($data['data']['real_name'],mb_strlen($data['data']['real_name'])-1);
 //	            $data['data']['nric'] 		= $this->secret($data['data']['nric'],10);
             }
         }
