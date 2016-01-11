@@ -18,7 +18,7 @@
                 <span class="wzjz tl"><?php echo $subject; ?> <!-- 名字 --></span>
             </div>
             <div class="tr half-img fl">
-                <span class="wzjz tr">状态：<?php echo borrow_status($status); ?>  <!-- 状态 --></span>
+                <span class="wzjz tr">状态：<?php echo $status_name; ?>  <!-- 状态 --></span>
             </div>
         </div>
         <div class="rate">

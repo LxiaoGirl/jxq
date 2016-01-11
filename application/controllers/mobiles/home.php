@@ -7,7 +7,7 @@
  */
 
 /**
- * app 控制器
+ * wap版控制器
  * Class Home
  */
 class Home extends MY_Controller{
@@ -25,9 +25,7 @@ class Home extends MY_Controller{
     const snowballdtl = 'cdb_snowballdtl';  //活动表
     const redbag      = 'cdb_redbag';       //红包表
     const transfer    = 'user_transaction'; //提现表
-
     protected $_llpay_config = array();    //连连支付需要的配置
-
 
     /**
      *构造函数
@@ -36,9 +34,7 @@ class Home extends MY_Controller{
     public function __construct(){
         parent::__construct();
 
-        if( ! $this->session->userdata('captcha'))$this->session->set_userdata(array('captcha'=>md5('wang')));//发送短信 处理
-        
-        //连连支付 配置一部通知地址和返回地址
+        //连连支付 配置异步通知地址和返回地址
         $this->_llpay_config['notify']     = site_url(self::dir.'home/llpay_notify');
         $this->_llpay_config['return_url'] = site_url(self::dir.'home/recharge_success');
 
@@ -49,20 +45,12 @@ class Home extends MY_Controller{
         }
 
         //加载必要model
-        $this->load->model('web_1/user1_model','user');                         //用户
-        $this->load->model('web_1/borrow_model', 'borrow');                    //借款
-        $this->load->model('web_1/user/transaction_model', 'transaction');     //交易 充值提现
-        $this->load->model(self::dir.'app_model', 'app');                     //app model
-        $this->load->model('web_1/send_model', 'send');                        //发送短信
-        $this->load->model('web_1/user/account_model','account');              //会员银行帐户
-
-
+        $this->load->model(self::dir.'app_model', 'app');     //app model
 
         $this->load->model('api/user_model','user_api');       //2.0版user相关model
         $this->load->model('api/project_model','project_api'); //2.0版项目相关model
         $this->load->model('api/cash_model','cash_api');       //2.0版资金相关model
-        $this->load->model('api/commons_model','commons_api'); //2.0版资金相关model
-
+        $this->load->model('api/commons_model','commons_api'); //2.0版公共数据相关model
     }
 
 
@@ -101,6 +89,7 @@ class Home extends MY_Controller{
      *
      */
     public function register(){
+        //ajax部分
         if($this->input->is_ajax_request() == TRUE){
             $data = $this->user_api->register(
                 $this->input->post('mobile',true),
@@ -153,10 +142,7 @@ class Home extends MY_Controller{
      */
     public function index(){
         //资金统计
-        $temp['total'] = $this->cash_api->get_cash_total();
-        if($temp['total']['status'] == '10000'){
-            $data['total'] = $temp['total']['data'];
-        }
+        $data['total'] = $this->cash_api->get_cash_total()['data'];
         $this->load->view(self::dir.'home',$data);
     }
 
@@ -170,7 +156,7 @@ class Home extends MY_Controller{
                 if($v['link_url'])$data[$k]['link_url'] = str_replace('__APP__',rtrim(self::dir,'/'),$v['link_url']);
             }
         }
-        exit(json_encode($data));
+        exit(json_encode(array('data'=>$data)));
     }
 
     /**
@@ -178,7 +164,10 @@ class Home extends MY_Controller{
      */
     public function get_project_list(){
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->app->get_project_list();
+            $category = $this->input->get('category',true);
+            $m = $this->input->get('m',true);
+            str_replace('-',',',$m);
+            $data = $this->project_api->get_project_list($category,'',$m,'','','')['data'];
             //过滤了其中的 link total 等数据
             if( ! empty($data['data'])){
                 exit(json_encode(array('data'=>array_merge($data['data']),'code'=>0))); //array_merge 处理了一下排序排序 下标由0开始
@@ -216,12 +205,15 @@ class Home extends MY_Controller{
      */
     public function project_detail(){
         //查询项目详情
-        $data = $this->borrow->get_borrow_info();
-        if(empty($data)){
-            redirect(self::dir.'home/index', 'refresh');
-        }
+        $borrow_no = $this->input->get('borrow_no',true);
+
+        $data = $this->project_api->get_project_info($borrow_no)['data'];
+        if(empty($data))redirect(self::dir.'home/index', 'refresh');
+
         //计划表  根据项目状态 确定调用数据库查询还是动态生成的还款计划
-        $data['repay_plan']=($data['status'] == 4 || $data['status'] == 7)?$this->borrow->get_repay_plan($this->input->get('borrow_no',true)):$this->borrow->set_repay_plan($this->input->get('borrow_no',true));
+        $data['repay_plan'] = $this->project_api->get_project_repayment_list($borrow_no)['data'];
+        $data['log'] = $this->project_api->get_project_invest_list($borrow_no,1,100)['data'];
+
         $this->load->view(self::dir.'project_detail',$data);
     }
 
@@ -229,13 +221,14 @@ class Home extends MY_Controller{
      *投资
      */
     public function project_invest(){
+        $this->_check_to_login();
         //获取借款项目单号borrow_no
         $borrow_no = $this->input->get('borrow_no',true);
         if(empty($borrow_no)){
             redirect(self::dir.'home/index','refresh');
         }
         //查询该项目信息
-        $data = $this->c->get_row(self::borrow,array('where'=>array('borrow_no'=>$borrow_no)));
+        $data = $this->project_api->get_project_info($borrow_no)['data'];
         if(empty($data)){
             redirect(self::dir.'home/index','refresh');
         }
@@ -246,19 +239,23 @@ class Home extends MY_Controller{
      *投资确认
      */
     public function project_invest_confirm(){
+        $this->_check_to_login();
         //获取投资的借款单号
         $borrow_no = $this->input->get('borrow_no',true);
         if(empty($borrow_no)){
             redirect(self::dir.'home/index','refresh');
         }
-        $data = $this->c->get_row(self::borrow,array('where'=>array('borrow_no'=>$borrow_no)));
+
+        $data = $this->project_api->get_project_info($borrow_no)['data'];
         if(empty($data)){
             redirect(self::dir.'home/index','refresh');
         }
+
         //获取将要投资的数目
         $data['to_invest'] = (float)$this->input->get('amount',true);
-        $data['balance'] = $this->borrow->get_user_balance(); // 当前账户可用余额
+        $data['balance'] = $this->cash_api->get_user_balance()['data']['balance']; // 当前账户可用余额
         if( ! $data['balance'])$data['balance']=0;
+
         $data['master'] = $this->session->userdata('uid');
 
         $this->load->view(self::dir.'project_invest_confirm',$data);
@@ -299,21 +296,36 @@ class Home extends MY_Controller{
      *借款的表单和处理
      */
     public function borrow(){
-        $data = array();
-
         if($this->input->is_ajax_request() == TRUE){
             $data = $this->app->apply();
             exit(json_encode($data));
         }
 
+        $this->_check_to_login();
         $data['p_type'] = (int)$this->input->get('type');   //借款类型
-        if(empty($data['p_type'])){
-            redirect(self::dir.'home/borrow_type','refresh');
-        }
+        if(empty($data['p_type']))redirect(self::dir.'home/borrow_type','refresh');
 
         //地址信息 省份 城市 地区  用于地址插件初始化 该get_region_list 用GET获取的参数region_id 所以修改$_get 的参数 获取各级地址信息
-        $data['province'] = $this->borrow->get_region_list();
+        $data['province'] = $this->commons_api->get_region(1)['data'];
         $this->load->view(self::dir.'borrow',$data);
+    }
+
+    /**
+     * 地区 的ajax处理
+     */
+    public function ajax_get_region_list(){
+        $temp = $data = array();
+
+        $region_id = (int)$this->input->get('region_id')?(int)$this->input->get('region_id'):2;
+        $data['city'] = $this->commons_api->get_region($region_id)['data'];
+        $temp['type'] = $this->input->get('type');
+        if( !empty($temp['type']) && $temp['type'] == 'city'){ //获取城市和地区
+            $data['district']  = $this->commons_api->get_region($data['city'][0]['region_id'])['data'];
+        }else{ //值获取地区
+            $data = $data['city'];
+        }
+
+        exit(json_encode($data));
     }
 
     /**
@@ -367,6 +379,7 @@ class Home extends MY_Controller{
         $this->_check_realname();
         //查询用户 已有的银行卡
         $data['card'][] = $this->user_api->get_user_card($this->session->userdata('uid'))['data'];
+        if( !$data['card'][0])$data['card'] = array();
         $this->load->view(self::dir.'recharge',$data);
     }
 
@@ -396,7 +409,6 @@ class Home extends MY_Controller{
         if($card_no){
             $data['card']  = $this->user_api->get_user_card($this->session->userdata('uid'))['data'];
         }else{
-
             $data['bank'] = $this->commons_api->get_bank('100,102,103,104,105,308,302,303,305,310,307,309')['data']; //银行列表
         }
         $this->load->view(self::dir.'recharge_form',$data);
@@ -710,7 +722,7 @@ class Home extends MY_Controller{
         $data['balance'] = (float)$this->cash_api->get_user_balance($this->session->userdata('uid'))['data']['balance'];
         $data['card'][]  = $this->user_api->get_user_card($this->session->userdata('uid'))['data'];
         //没有绑定银行卡 则跳转到我的银行卡进行绑定
-        if(empty($data['card'])){
+        if(empty($data['card'][0])){
             redirect(self::dir.'home/my_card','location');
         }
         //查询今日是否有提现
@@ -741,19 +753,18 @@ class Home extends MY_Controller{
      * 个人中心主页
      */
     public function my_center(){
-        $this->_check_to_login();
-
-        //可用余额和累计收益的统计
-        $total = $this->cash_api->get_user_cash_total($this->session->userdata('uid'));
-        if($total['status'] == '10000'){
-            $data['my_balance'] = $total['data']['balance'];        //可用余额
-            $data['all_income'] =  $total['data']['receive_interest_total'];
-        }else{
-            $data['my_balance'] = 0;        //可用余额
-            $data['all_income'] = 0;
+        if($this->input->is_ajax_request() == TRUE){
+            $uid = $this->session->userdata('uid');
+            session_write_close();
+            //可用余额和累计收益的统计
+            $total = $this->cash_api->get_user_cash_total($uid)['data'];
+            $data['data']['my_balance'] = (float)$total['balance'];        //可用余额
+            $data['data']['all_income'] = (float)$total['receive_interest_total'];
+            exit(json_encode($data));
         }
 
-        $this->load->view(self::dir.'my_center',$data);
+        $this->_check_to_login();
+        $this->load->view(self::dir.'my_center');
     }
 
     /**
@@ -761,14 +772,16 @@ class Home extends MY_Controller{
      */
     public function my_balance(){
         if($this->input->is_ajax_request() == TRUE){
-            $temp['total'] = $this->cash_api->get_user_cash_total($this->session->userdata('uid'));
-
-            $data['my_balance']            = $temp['total']['data']['balance']?$temp['total']['data']['balance']:0;//可用余额
-            $data['my_wait_principal']     = $temp['total']['data']['wait_principal_total']?$temp['total']['data']['wait_principal_total']:0;
-            $data['my_invest_freeze']      = $temp['total']['data']['invest_freeze_total']?$temp['total']['data']['invest_freeze_total']:0;         //投资冻结金额
-            $data['my_transfer_freeze']    = $temp['total']['data']['transfer_freeze_total']?$temp['total']['data']['transfer_freeze_total']:0;         //提现冻结金额
-            $data['my_amount']             = $temp['total']['data']['property_total']?$temp['total']['data']['property_total']:0;
-
+            $uid = $this->session->userdata('uid');
+            session_write_close();
+            $temp['total'] = $this->cash_api->get_user_cash_total($uid)['data'];
+            $data['data'] = array(
+                'my_balance'         => (float)$temp['total']['balance'],               //可用余额
+                'my_wait_principal'  => (float)$temp['total']['wait_principal_total'],  //待收本金
+                'my_invest_freeze'   => (float)$temp['total']['invest_freeze_total'],   //投资冻结金额
+                'my_transfer_freeze' => (float)$temp['total']['transfer_freeze_total'], //提现冻结金额
+                'my_amount'          => (float)$temp['total']['property_total']         //总资产
+            );
             unset($temp);
             exit(json_encode($data));
         }
@@ -794,19 +807,21 @@ class Home extends MY_Controller{
      */
     public function my_income(){
         if($this->input->is_ajax_request() == TRUE){
-            $data['my_invest']             =  (float)$this->app->get_user_invest_all();//我的总投资
-            $temp['my_principal_interest'] = $this->app->get_receive_principal_interest(); //我的已收本金和利息
-            $data['my_interest']           =  $temp['my_principal_interest']['receive_interest'];  //已收利息
-            $data['my_wait_principal']     =  round($data['my_invest'] - $temp['my_principal_interest']['receive_principal'],2) ;  //待收本金
-            
-            $temp['interest']              = $this->app->get_user_interest();//计算所有利息
-            $data['my_wait_interest']      =  $temp['interest']>0?round($temp['interest']-$temp['my_principal_interest']['receive_interest'],2):0;  //待收利息
-            $data['my_today_invest']       =  $this->user->get_today_amount();  //今日收益
-
+            $uid = $this->session->userdata('uid');
+            session_write_close();
+            $temp['total'] = $this->cash_api->get_user_cash_total($uid)['data'];
+            $data['data'] = array(
+                'my_invest'         => (float)$temp['total']['invest_total'],           //我的总投资
+                'my_interest'       => (float)$temp['total']['receive_interest_total'], //已收利息
+                'my_wait_principal' => (float)$temp['total']['wait_principal_total'],   //待收本金
+                'my_wait_interest'  => (float)$temp['total']['wait_interest_total'],    //待收利息
+                'my_today_invest'   => (float)$this->project_api->get_user_today_interest($this->session->userdata('uid'))['data']['interest']//今日收益
+            );
             unset($temp);
             exit(json_encode($data));
         }
 
+        $this->_check_to_login();
         $this->load->view(self::dir.'my_income');
     }
 
@@ -814,30 +829,8 @@ class Home extends MY_Controller{
      * 收益记录的ajax处理方法
      */
     public function ajax_get_interest_list(){
-        $data = $this->app->get_invest_list(TRUE);
+        $data = $this->project_api->get_user_project_list($this->session->userdata('uid'))['data'];
         if( ! empty($data['data'])){
-            foreach($data['data'] as $k=>$v){
-                //查询收益情况
-                $interest = $this->c->get_one(self::payment,array('select'=>'SUM(amount)','where'=>array('borrow_no'=>$v['borrow_no'],'type'=>3,'status'=>1,'uid'=>$this->session->userdata('uid'))));
-                if($interest){
-                    //如果有收益  根据收益数量判断
-                    if($interest  > $v['amount']){ //比投资额度大 说明已收益完成
-                        $data['data'][$k]['interest']       = round($interest-$v['amount'],2); //收益
-                        $data['data'][$k]['type']           = 1; //预计收益和已收益的标识
-                        $data['data'][$k]['haved_interest'] = 0;
-                    }else{
-                        //收益了一部分  前断计算
-                        $all_interest = $this->app->get_project_interest(array('mode'=>$v['mode'],'amount'=>$v['amount'],'months'=>$v['months'],'rate'=>$v['rate'],));
-                        $data['data'][$k]['interest']       = round($all_interest - $interest,2);
-                        $data['data'][$k]['haved_interest'] = $interest;
-                        $data['data'][$k]['type']           = 2;
-                    }
-                }else{
-                    $data['data'][$k]['interest']       = $this->app->get_project_interest(array('mode'=>$v['mode'],'amount'=>$v['amount'],'months'=>$v['months'],'rate'=>$v['rate'],));
-                    $data['data'][$k]['type']           = 0;
-                    $data['data'][$k]['haved_interest'] = 0;
-                }
-            }
             exit(json_encode(array('data'=>$data['data'],'msg'=>'ok','code'=>0)));
         }else{
             exit(json_encode(array('data'=>'','msg'=>'no data','code'=>1)));
@@ -894,22 +887,6 @@ class Home extends MY_Controller{
     }
 
     /**
-     * 地区 的ajax处理
-     */
-    public function ajax_get_region_list(){
-        $temp = $data = array();
-
-        $data['city'] = $this->commons_api->get_region((int)$this->input->get('region_id'))['data'];
-        $temp['type'] = $this->input->get('type');
-        if( !empty($temp['city']) && $temp['type'] == 'city'){ //获取城市和地区
-            $data['district']  = $this->borrow->get_region_list($data['city'][0]['region_id'])['data'];
-        }else{ //值获取地区
-            $data = $data['city'];
-        }
-        exit(json_encode($data));
-    }
-
-    /**
      *解绑银行卡
      */
     public function my_card_unbind(){
@@ -945,58 +922,13 @@ class Home extends MY_Controller{
      * 已投项目
      */
     public function my_project(){
-        //更多 的ajax处理
+        //ajax处理
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->app->get_invest_list();
+            $status = $this->input->get('status');
+            str_replace('-',',',$status);
+            $data = $this->project_api->get_user_project_list($this->session->userdata('uid'),$status)['data'];
 
             if( ! empty($data['data'])){
-                $temp = array();
-                $temp['uid'] = $this->session->userdata('uid');
-
-                foreach($data['data'] as $k => $v){
-                    if($v['status']=='2'||$v['status']=='3'){
-                        $start_time=$v['due_date'];
-                    }
-                    if($v['status']=='4'||$v['status']=='7'){
-                         $start_time=$v['confirm_time']-86400;
-                    }
-                    $data['data'][$k]['start_time']=date('Y-m-d',$start_time);
-                    $start_time=strtotime(date("Y-m-d",$start_time));
-                    $temp['where_time'] = array(
-                                'select'   => 'pay_date',
-                                'where'    => array('uid' => $temp['uid'], 'type' => '3' , 'borrow_no' => $v['borrow_no'] )
-                            );
-                    $last_time_re = $this->c->get_one(self::payment, $temp['where_time']);
-                    if($last_time_re!=''){
-                        $data['data'][$k]['last_time']=date("Y-m-d",strtotime($last_time_re));
-                        //$last_time=strtotime($last_time_re);
-                    }else{
-                        $data['data'][$k]['repay_plan']=($v['status'] == 4 || $v['status'] == 7)?$this->borrow->get_repay_plan($v['borrow_no']):$this->borrow->set_repay_plan($v['borrow_no']);
-                        foreach($data['data'][$k]['repay_plan'] as $k1 => $v1){
-                            $data['data'][$k]['last_time']=date("Y-m-d",strtotime($v1['repay_date']));
-                            break;
-                        }
-                        //$last_time=strtotime($data['data'][$k]['last_time']);
-                        unset($data['data'][$k]['repay_plan']);
-                    }
-                    
-
-                    //查询 是否 已还款完成
-                    $repay_interest = $this->c->get_one(self::payment,array('select'=>'SUM(amount)','where'=>array('borrow_no'=>$v['borrow_no'],'type'=>3,'status'=>1,'uid'=>$this->session->userdata("uid"))));
-                    if($repay_interest && $repay_interest>$v['amount']){
-//                        $data['data'][$k]['project_interest'] = round($repay_interest-$v['amount'],2);
-                        $data['data'][$k]['project_interest'] = bcsub($repay_interest,$v['amount'],2);//2015.12.16-wsb-修改为不进位保留两位小数
-                    }else{
-                        $data['data'][$k]['project_interest'] = $this->app->get_project_interest(array('mode'=>$v['mode'],'amount'=>$v['amount'],'rate'=>$v['rate'],'months'=>$v['months']));
-                        // if($repay_interest){
-                        //     $data['data'][$k]['project_interest'] = round($data['data'][$k]['project_interest']-$repay_interest,2);
-                        // }
-                    }
-
-                    $data['data'][$k]['dateline'] = date("Y-m-d",$data['data'][$k]['dateline'] );
-
-                }
-
                 exit(json_encode(array('data'=>$data['data'],'msg'=>'ok','code'=>0)));
             }else{
                 exit(json_encode(array('data'=>'','msg'=>'no data','code'=>1)));
@@ -1006,7 +938,8 @@ class Home extends MY_Controller{
         $this->load->view(self::dir.'my_project');
     }
 
-    public function terms(){
+    /*
+     public function terms(){
         $data = $temp = array();
 
         $temp['borrow_no'] = $this->input->get('borrow_no',TRUE);
@@ -1056,6 +989,7 @@ class Home extends MY_Controller{
 
         $this->load->view(self::dir.'terms', $data);
     }
+    */
 
     /**
      *  回款计划
@@ -1063,19 +997,8 @@ class Home extends MY_Controller{
     public function my_interest(){
         //更多 的ajax处理
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->app->get_invest_list(TRUE);
+            $data = $this->project_api->get_user_project_list($this->session->userdata('uid'))['data'];
             if( ! empty($data['data'])){
-                foreach($data['data'] as $k=>$v){
-                    $interest = $this->c->get_one(self::payment,array('select'=>'SUM(amount)','where'=>array('borrow_no'=>$v['borrow_no'],'type'=>3,'status'=>1,'uid'=>$this->session->userdata('uid'))));
-                    if($interest  > $v['amount']){ //收益总额大于本金 说明本金已还
-                        $data['data'][$k]['type']     = 1;
-                        $data['data'][$k]['interest'] = $interest;
-                    }else{
-                        $data['data'][$k]['type']     = 0;
-                        $data['data'][$k]['interest'] = $this->app->get_project_interest(array('mode'=>$v['mode'],'amount'=>$v['amount'],'months'=>$v['months'],'rate'=>$v['rate'],));
-                        $data['data'][$k]['interest'] = round($data['data'][$k]['interest']+$v['amount'],2);
-                    }
-                }
                 exit(json_encode(array('data'=>$data['data'],'msg'=>'ok','code'=>0)));
             }else{
                 exit(json_encode(array('data'=>'','msg'=>'no data','code'=>1)));
@@ -1160,30 +1083,75 @@ class Home extends MY_Controller{
             
         }
 
-        //合计的初值
+        $this->load->view(self::dir.'my_cash_log');
+    }
 
-        $data = array('income_total'=>0,'pay_total'=>0,'frozen_total'=>0);
+    /**
+     * cash_log 统计的ajax方法
+     */
+    public function ajax_get_cash_log_total(){
+        if($this->input->is_ajax_request() == TRUE){
+            $uid = $this->session->userdata('uid');
+            session_write_close();
 
-        
+            $data = array('income_total'=>0,'pay_total'=>0,'frozen_total'=>0);
 
-        $temp['my_invest_freeze']   = $this->app->get_user_invest_freeze();          //投资冻结金额
-        $temp['my_transfer_freeze'] = $this->app->get_user_transfer_freeze();         //提现冻结金额
-        
-        $data['frozen_total']       = round($temp['my_invest_freeze']+$temp['my_transfer_freeze'],2);//冻结合计
-        $data['income_total']       = $this->app->get_income_total();
-        $data ['pay_total']         = $this->app->get_pay_total(); 
+            $temp['my_invest_freeze']   = $this->cash_api->get_user_invest_freeze($uid);          //投资冻结金额
+            $temp['my_transfer_freeze'] = $this->cash_api->get_user_transfer_freeze($uid);         //提现冻结金额
+
+            $data['frozen_total']       = round($temp['my_invest_freeze']+$temp['my_transfer_freeze'],2);//冻结合计
+            $data['income_total']       = $this->get_income_total($uid);
+            $data ['pay_total']         = $this->get_pay_total($uid);
+
+            unset($temp);
+            exit(json_encode(array('data'=>$data)));
+        }
+    }
+    public function get_income_total($uid=0){
+        $query = 0;
+        $temp  = array();
+
+
+        if($uid > 0){
+            $temp['my_principal_interest'] = $this->cash_api->get_user_receive_principal_interest($uid); //我的已收本金和利息
+            $query =  $temp['my_principal_interest']['receive_interest'];  //已收利息
+
+            $temp['recharge_total'] = $this->c->get_one(self::recharge,array('select'=>'SUM(amount)','where'=>array('uid'=>$uid,'status >='=>1)));
+            $query = round($query+$temp['recharge_total'],2);
+        }
 
         unset($temp);
-
-        $this->load->view(self::dir.'my_cash_log',$data);
+        return $query;
     }
+    public function get_pay_total($uid=0){
+        $query = 0;
+        $temp  = array();
+
+        if($uid > 0){
+            $temp['where'] = array(
+                'select'   => 'sum(amount)+ sum(charge)',
+                'where'    => array('uid' => $uid, 'status' => 1)
+            );
+
+            $query = (float)$this->c->get_one('user_transaction', $temp['where']);
+        }
+
+        unset($temp);
+        return $query;
+    }
+
 
    /**
      *我的雪球
      */
     public function my_integral(){
 		$data_balance=array();
-		 $data_balance['balance']= $this->user->get_num_amount($this->session->userdata('uid'),self::snowballdtl,'balance');
+        $temp['where'] = array(
+            'select'   => 'balance',
+            'where'    => array('uid' => $this->session->userdata('uid')),
+            'order_by' => 'id desc'
+        );
+        $data_balance['balance'] = $this->c->get_one(self::snowballdtl, $temp['where']);
 		if($this->input->is_ajax_request() == TRUE){
             //status   支出 收入 全部的  标识参数
 
@@ -1357,28 +1325,6 @@ class Home extends MY_Controller{
 	
 
 
-/************************************--设置--***********************************************/
-
-    /**
-     * 验证app访问时 传递的uid
-     */
-    private function _check_uid(){
-        $temp =array();
-
-        //如果有get参数uid 且不为空  则查询 存储uid信息
-        if(isset($_GET['uid']) && !empty($_GET['uid'])){
-            //解密
-            $temp['uid'] = authcode($this->input->get('uid',TRUE),'',TRUE);
-            if( ! empty($temp['uid'])){
-                $temp['user'] = $this->c->get_row(self::user,array('where'=>array('uid'=>$temp['uid'])));
-                if( ! empty($temp['user'])){
-                    $this->session->set_userdata($temp['user']);
-                }
-            }
-        }
-
-        unset($temp);
-    }
 
     /**
      * 实名验证
@@ -1498,11 +1444,11 @@ class Home extends MY_Controller{
     }
 
 
-   /**
+    /**
    	 *yx 9-1
      * 注销
      */
-public function ajax_get_redbagdata(){
+    public function ajax_get_redbagdata(){
 		$data=array();
 	    $data = $this->app->ajax_get_redbagdata();
         if($this->input->is_ajax_request() == TRUE){
@@ -1589,5 +1535,13 @@ public function ajax_get_redbagdata(){
         if( !$this->session->userdata('uid')){
             redirect(self::dir.'home/login','location');
         }
+    }
+
+    /*******************************/
+    public function wx(){
+        $this->load->library('wx');
+        $data = $this->wx->authorization('userinfo');
+        echo '<meta name="viewport"content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>';
+        echo '<div style="width: 50%;margin: 20% auto;">头像:<img src="'.$data['headimgurl'].'" style="width:100px;height:100px;" /><br/>'.'用户名:'.$data['nickname'].'<br/></div>';
     }
 }

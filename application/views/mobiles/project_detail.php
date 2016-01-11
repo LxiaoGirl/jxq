@@ -240,7 +240,7 @@
                             </td>
                             <td>
                                 <span
-                                    class="c_333 f16"><?php echo date('Y-m-d', strtotime($repay_plan[0]['repay_date'])); ?></span>
+                                    class="c_333 f16"><?php echo date('Y-m-d', $repay_plan[0]['repay_date']); ?></span>
                             </td>
                         </tr>
                         <tr>
@@ -329,15 +329,11 @@
                             <?php foreach ($repay_plan as $k => $v): ?>
                                 <tr>
                                     <td class="text-center"><?php echo $v['repay_index']; ?></td>
-                                    <td class="text-center"><span
-                                            class="c_333"><?php echo my_date(strtotime($v['repay_date']), 2); ?></span>
+                                    <td class="text-center"><span class="c_333"><?php echo my_date($v['repay_date'], 2); ?></span>
                                     </td>
-                                    <td class="text-center"><span
-                                            class="c_333"><?php echo price_format($v['repay_amount'], 2, false); ?></span>
+                                    <td class="text-center"><span class="c_333"><?php echo price_format($v['repay_amount'], 2, false); ?></span>
                                     </td>
-                                    <td class="text-center"><span
-                                            class="c_333"><?php if ($v['repay_type'] == 1):echo '利息';
-                                            else:echo '本金';endif; ?></span></td>
+                                    <td class="text-center"><span class="c_333"><?php echo $v['repay_type']; ?></span></td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
@@ -370,7 +366,7 @@
                                             class="c_333"><?php echo price_format($v['amount'], 2, false); ?></span>
                                     </td>
                                     <td class="text-center"><span
-                                            class="c_333"><?php echo my_date($v['dateline'], 2); ?></span></td>
+                                            class="c_333"><?php echo my_date($v['pay_time'], 2); ?></span></td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php else: ?>
@@ -447,7 +443,7 @@
         bfbFun();
         $("#showDetail").on("tap", function (event) {
             event.preventDefault();
-            var dis = $("#xmxq").offset().top + 3;
+            var dis = $("#xmxq").offset().top - $('.header').height();
             var h = $("#xmxq>.xmxq_c").height();
             $('body,html').animate({scrollTop: dis}, 500);
             $("#xmxq").animate({

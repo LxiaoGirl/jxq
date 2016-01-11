@@ -47,6 +47,7 @@
                         <button  type="submit" id="reg_xyb" class="ajax-submit-button ls" data-loading-msg="提交中...">下一步</button>
                     </div>
                     <div class="yyzhdl">已有帐号，<a class="ls" href="<?php echo site_url('login');?>">立即登录</a></div>
+                    <div class="yyzhdl"><a class="ls_1" href="/index.php/login/company">企业注册入口 <font>></font></a></div>
                 </form>
                 </div>
             </div>

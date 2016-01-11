@@ -12,10 +12,10 @@
     <!-- 选项卡标题 -->
     <div class="row">
         <ul class="index_tab_title clearfix" id="months">
-            <li class="current" m=""><a href="#">全部</a></li>
-            <li m="0-0.9"><a href="#">0.9个月</a></li>
-            <li m="3-3"><a href="#">3个月</a></li>
-            <li m="3-12"><a href="#">3-12个月</a></li>
+            <li class="current" data-month=""><a href="javascript:void (0);">全部</a></li>
+            <li data-month="0-0.9"><a href="javascript:void (0);">0.9个月</a></li>
+            <li data-month="3-3"><a href="javascript:void (0);">3个月</a></li>
+            <li data-month="3-12"><a href="javascript:void (0);">3-12个月</a></li>
         </ul>
     </div>
     <!-- 选项卡标题  end-->
@@ -60,53 +60,41 @@
 </body>
 <?php $this->load->view('common/mobiles/app_footer') ?>
 <script>
-    var g_m = '',category = '<?php echo $category; ?>';
+    category = '<?php echo $category; ?>';
     $(function () {
-        var list_view = new wb_listview({
-            'id': 'list',
-            'pageSize': 10,
-            iscroll:true,
-            'funcDeal': {
-                'rate': function (rate) { return rate_format(rate);},
-                'amount': function (price) { return rate_format(price_format(price, 3, false)); },
-                'mode': function (mode) { return '<i class="dots_green"></i>' + borrow_mode(mode);}
-            }
-        });
-        var get_data = function () {
-            var condition = '?category=' + category;
-            if (g_m != '') condition += '&m=' + g_m;
-            list_view.init('/index.php/mobiles/home/get_project_list' + condition, function (obj, v) {
-                var now = Date.parse(new Date()) / 1000;
-                if (v.status == 2||v.status == 3) {
-                    if (v.buy_time > now) {
-                        obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>未开始</span>');
-                    } else if (v.receive_rate == 100) {
-                        obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>融资完成</span>');
-                    } else if (v.due_date < now) {
-                        obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>投标结束</span>');
-                    } else {
+        $("#list").list_data({
+            data : '/index.php/mobiles/home/get_project_list?category='+category,
+            page_size : 10,
+            is_scroll : true,
+            scroll_offset_height:$('.header').height()+$('#months').height(),
+            show_loading:true,
+            up_load : true,
+            value_func : {
+                'amount': function (price) {return rate_format(price_format(price, 3, false)); },
+                'mode': function (mode) {return '<i class="dots_green"></i>' + mode;}
+            },
+            list_func : function(obj,v){
+                switch (parseInt(v.new_status)){
+                    case 2:
                         obj.find('.r_rate').attr('data-bfb', v.receive_rate);
-                    }
-                } else if (v.status == 4) {
-                    obj.find('.r_rate').removeClass('bfb').addClass('index_huankuan').html('<span>还款中</span>');
-                } else if (v.status == 7) {
-                    obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>交易结束</span>');
-                } else {
-                    obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>' + borrow_status(v.status) + '</span>');
+                        break;
+                    case 4:
+                        obj.find('.r_rate').removeClass('bfb').addClass('index_huankuan').html('<span>'+ v.status_name+'</span>');
+                        break;
+                    default:
+                        obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>'+ v.status_name+'</span>');
                 }
-                obj.find('.tap-span').attr('onclick', 'window.location.href="<?php echo site_url("mobiles/home/project_detail");?>?borrow_no=' + v.borrow_no + '"')
-            },function(){ $("canvas").remove();bfbFun();});
-        };
-
-        $("#months li").on('tap', function () {
-            $("#months li").removeClass('current');
-            $(this).addClass('current');
-            if (g_m != $(this).attr('m')) {
-                g_m = $(this).attr('m');
-                get_data();
-            }
+                obj.find('.tap-span').attr('onclick', 'window.location.href="/index.php/mobiles/home/project_detail?borrow_no='+v.borrow_no+'"')
+            },
+            callback : function(){$("canvas").remove();bfbFun();}
+        },function(ls_fun){
+            $("#months li").on('click', function () {
+                $("#months li").removeClass('current');
+                var month = $(this).data('month');
+                $(this).addClass('current');
+                ls_fun('/index.php/mobiles/home/get_project_list?category='+category+'&m='+month);
+            });
         });
-        get_data();
     });
 </script>
 </html>

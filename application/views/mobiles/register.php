@@ -22,6 +22,7 @@
 
                 <div class="clears line"></div>
                 <input placeholder="验证码" name="authcode" type="text" class="input-group-lg form-control">
+
                 <div class="clears line"></div>
                 <input placeholder="邀请码(选填)" name="invite_code" type="text" class="input-group-lg form-control">
             </div>
@@ -29,22 +30,21 @@
 
         <div class="row">
             <div class="col-xs-6  mt20">
-                <a class="btn btn-success btn-block send-authcode" send-type="sms">发送短信</a>
+                <a class="btn btn-success btn-block sms">发送短信</a>
             </div>
 
             <div class="col-xs-6  mt20">
-                <a class="btn    btn-info btn-block send-authcode" send-type="voice">收听语音验证码</a>
+                <a class="btn btn-info btn-block voice">收听语音验证码</a>
             </div>
         </div>
         <div class="container">
             <div class="row mt20 mb20">
-                <button id="submit" type="submit" class="btn btn-lg btn-danger btn-block ajax-submit-button">立即注册
-                </button>
+                <button id="submit" type="submit" class="btn btn-lg btn-danger btn-block ajax-submit-button" data-loading-msg="注册中...">立即注册</button>
             </div>
         </div>
     </form>
     <p class="text-center mb20">
-        注册即代表您同意<a href="<?php echo site_url('mobiles/home/register_agreement'); ?>" class="c_blue">《聚雪球用户协议》</a>
+        注册即代表您同意<a href="/index.php/mobiles/home/register_agreement" class="c_blue">《聚雪球用户协议》</a>
     </p>
 
     <?php $this->load->view('common/mobiles/app_alert') ?>
@@ -55,13 +55,12 @@
 <script>
     $(function () {
         $('input[name="mobile"]').on('blur', function () {
-            $('.send-authcode').unbind('tap');
-            //发送验证码处理
-            send_authcode($('input[name="mobile"]').val(), 'register');
+            $('.sms').send_sms('sms',$('input[name="mobile"]').val(), 'register');
+            $('.voice').send_sms('voice',$('input[name="mobile"]').val(), 'register');
         });
 
-        var phone = /^1[3456789](\d){9}$/;
-        $('#submit').on('tap', function () {
+        $('#submit').on('click', function () {
+            var phone = /^1[3456789](\d){9}$/;
             var authcode = /[0-9]{6}/;//6位至20位数字、字母和特殊字符组成
             if (!phone.test($(':input[name="mobile"]').val())) {
                 my_alert('请输入正确格式手机号码！');
@@ -80,9 +79,10 @@
                 return false;
             }
             $.ajax({
-                url: '/index.php/mobiles/home/register',
+                url : '/index.php/mobiles/home/register',
                 dataType: 'json',
                 type: 'post',
+//                btn :'#submit',
                 data: {
                     'mobile': $(':input[name="mobile"]').val(),
                     'password': $(":input[name='password']").val(),

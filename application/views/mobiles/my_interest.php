@@ -27,14 +27,8 @@
                 <td class="text-center"><span class="c_red text-nowrap i_type">回款中</span></td>
                 <td class="text-center"><span class="iconfont icon-xiangyou1"></span></td>
             </tr>
-            <tr id="list-noData">
-                <td colspan="4" style="text-align: center;">暂无相关信息！</td>
-            </tr>
-            <tr id="list-noMoreData">
-                <td colspan="4" style="text-align: center;">没有更多信息了！</td>
-            </tr>
-            <tr id="list-loadingData">
-                <td colspan="4" style="text-align: center;">加载中...</td>
+            <tr id="no-data">
+                <td colspan="4" style="text-align: center;" class="no-data-msg">暂无相关信息！</td>
             </tr>
             </tbody>
         </table>
@@ -44,35 +38,20 @@
 </body>
 <?php $this->load->view('common/mobiles/app_footer') ?>
 <script>
-    var page_id = 1, page_size = 20;
     $(function () {
-        var list_view = new wb_listview({
-            'id': 'list',
-            'showLoading': true
-        });
-        var get_data = function () {
-            var condition = '';
-            condition += '?per_page=' + ((page_id - 1) * page_size) + '&limit=' + page_size;
-            $(window).unbind('scroll');
-            $.post('/index.php/mobiles/home/my_interest' + condition, {}, function (result) {
-                list_view.set_pageid(page_id);
-                list_view.list(result.data, function (obj, v) {
-                    obj.find(':first').attr('onclick', 'window.location.href="<?php echo site_url("mobiles/home/project_detail?borrow_no="); ?>' + v.borrow_no + '"');
-                    if (v.type == 1) {
-                        obj.find('.i_type').removeClass('c_red').addClass('c_green').text('回款成功');
-                    }
-                });
-                if (result.data) {
-                    page_id++;
-                    $(window).bind('scroll', function () {
-                        scroll_fun(function () {
-                            get_data();
-                        });
-                    });
+        $("#list").list_data({
+            data : '/index.php/mobiles/home/my_interest',
+            page_size : 20,
+            show_loading : true,
+            event_type : 'scroll',
+            list_func : function (obj, v) {
+                obj.find(':first').attr('onclick', 'window.location.href="/index.php/mobiles/home/project_detail?borrow_no=' + v.borrow_no + '"');
+                if (v.interest == v.interest_receive) {
+                    obj.find('.i_type').removeClass('c_red').addClass('c_green').text('回款成功');
                 }
-            }, 'json');
-        };
-        get_data();
+                obj.find('.interest').text(parseFloat(v.interest)+parseFloat(v.amount));
+            }
+        });
     });
 </script>
 </html>

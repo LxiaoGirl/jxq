@@ -12,7 +12,7 @@
 <div class="container-hy">
     <div class="hlogo"><img src="/assets/images/app/logo.png"></div>
     <div class="wrapper">
-        <form id="login_form" action="#" method="post">
+        <form id="login_form" action="#" method="post" onsubmit="return false;">
             <div id="shuru_box">
                 <p class="bottom_line">
                     <input id="hy_tel" type="text" name="mobile" value="" placeholder="手机号/用户名">
@@ -23,11 +23,13 @@
                 </p>
             </div>
             <p class="btn_box">
-                <input id="login_btn" type="submit" value="登录" class="ajax-submit-button">
+                <input id="login_btn" type="submit" value="登录" class="ajax-submit-button" data-loading-msg="登录中...">
             </p>
         </form>
-        <div id="link_box"><span><a href="<?php echo site_url('mobiles/home/register'); ?>">立即注册</a></span><a
-                href="<?php echo site_url('mobiles/home/forget'); ?>">忘记密码</a></div>
+        <div id="link_box">
+            <span><a href="/index.php/mobiles/home/register">立即注册</a></span>
+            <a href="/index.php/mobiles/home/forget">忘记密码</a>
+        </div>
     </div>
 </div>
 
@@ -48,12 +50,13 @@
                 return false;
             }
             $.ajax({
-                url: '/index.php/mobiles/home/login',
+                url : '/index.php/mobiles/home/login',
                 dataType: 'json',
+                btn : '#login_btn',
                 type: 'post',
                 data: {
-                    'mobile': $(':input[name="mobile"]').val(),
-                    'password': $(":input[name='password']").val()
+                    mobile: $(':input[name="mobile"]').val(),
+                    password: $(":input[name='password']").val()
                 },
                 success: function (resut) {
                     my_alert(resut.msg);
