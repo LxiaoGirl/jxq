@@ -132,7 +132,7 @@
             });
             if(type)type = 'city';
             var data = '';
-            $.post('/index.php/20150707/home/ajax_get_region_list?region_id='+pid+'&type='+type,{},function(rs){
+            $.post('/index.php/mobiles/home/ajax_get_region_list?region_id='+pid+'&type='+type,{},function(rs){
                 data = rs;
             },'json');
             return data;
