@@ -120,6 +120,7 @@
     $(function () {
         $("#index-slider").list_data({
             data:'/index.php/mobiles/home/ajax_get_slider_list',
+            btn : true,
             list_func : function(obj, v){
                 if (v.link_url && v.link_url != '#')obj.find('a').attr('href', v.link_url);
             },
