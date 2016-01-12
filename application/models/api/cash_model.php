@@ -19,6 +19,7 @@ class Cash_model extends CI_Model{
 	const jbb_dtl       = 'borrow_jbb_dtl';     // 聚保宝发标表
 	const recharge_jbb  = 'user_recharge_jbb';  //聚保宝提取收益审核表
 	const risk          = 'risk_money';         //风险保证金
+	const jbb_extract   = 'jbb_extract_dtl';    //聚保宝提取记录
 
     const run_date           = '2015-06-12';    //网站运行时间
     private $_transfer_min   = '50';            //提现最低金额
@@ -28,6 +29,7 @@ class Cash_model extends CI_Model{
      * Cash_model constructor.
      */
     public function __construct(){
+		 date_default_timezone_set('PRC');
         parent::__construct();
     }
 
@@ -41,7 +43,7 @@ class Cash_model extends CI_Model{
         $data = array(
             'name'   =>'用户余额',
             'status' =>'10001',
-            'msg'    =>'用户uid为空!',
+            'msg'    =>'登陆超时,请重新登陆!',
             'sign'   =>'',
             'data'   =>array('balance'=>0)
         );
@@ -131,7 +133,7 @@ class Cash_model extends CI_Model{
         $data = array(
             'name'=>'用户资金统计',
             'status'=>'10001',
-            'msg'=>'用户uid为空!',
+            'msg'=>'登陆超时,请重新登陆!',
             'sign'=>'',
             'data'=>array(
                 'property_total'          =>0,//总资产
@@ -195,7 +197,7 @@ class Cash_model extends CI_Model{
         $data = array(
             'name'   =>'用户各类别下投资金额统计',
             'status' =>'10001',
-            'msg'    =>'用户uid为空!',
+            'msg'    =>'登陆超时,请重新登陆!',
             'sign'   =>'',
             'data'   =>array()
         );
@@ -288,7 +290,7 @@ class Cash_model extends CI_Model{
             $data['msg'] = 'ok!';
             $data['status'] = '10000!';
         }else{
-            $data['msg'] = '用户uid为空!';
+            $data['msg'] = '登陆超时,请重新登陆!';
         }
         unset($temp);
         return $data;
@@ -317,7 +319,7 @@ class Cash_model extends CI_Model{
         $data = array(
             'name'   =>'用户资金记录',
             'status' =>'10001',
-            'msg'    =>'用户uid为空!',
+            'msg'    =>'登陆超时,请重新登陆!',
             'sign'   =>'',
             'data'   =>array()
         );
@@ -416,7 +418,7 @@ class Cash_model extends CI_Model{
         $data = array(
             'name'   =>'用户特定时间段资金记录收支统计',
             'status' =>'10001',
-            'msg'    =>'用户uid为空!',
+            'msg'    =>'登陆超时,请重新登陆!',
             'sign'   =>'',
             'data'   =>array(
                 'income_total'=>0,
@@ -476,7 +478,7 @@ class Cash_model extends CI_Model{
         $data = array(
             'name'   =>'用户充值记录',
             'status' =>'10001',
-            'msg'    =>'用户uid为空!',
+            'msg'    =>'登陆超时,请重新登陆!',
             'sign'   =>'',
             'data'   =>array()
         );
@@ -711,7 +713,7 @@ class Cash_model extends CI_Model{
         $data = array(
             'name'   =>'用户提现记录',
             'status' =>'10001',
-            'msg'    =>'用户uid为空!',
+            'msg'    =>'登陆超时,请重新登陆!',
             'sign'   =>'',
             'data'   =>array()
         );
@@ -1310,7 +1312,7 @@ class Cash_model extends CI_Model{
 				$days=0;	
 			}
 			$receive=round(jbb_no_product_amount($days,$rate,$amount),2);
-			$receives=$receives+round(jbb_product_amount($days,$rate,$amount),2);//得到总利息
+			$receives=$receives+round(jbb_no_product_amount($days,$rate,$amount),2);//得到总利息
 			}else{
 			$days=($v['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)>$v['closeday'])?($v['closeday']-$v['receive_days']):ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'];
 			$receive=round(jbb_product_amount($days,$rate,$amount),2);//得到利息
@@ -1318,16 +1320,16 @@ class Cash_model extends CI_Model{
 			}		
 			$balance = $this->get_user_balance($uid);
 			$balance = $balance['data']['balance'];
-			$service = $v['service_charge'];
-			$services = $services+round($service*$receive,2);
+			$service = round($v['service_charge']*$receive,2);
+			$services = $services+round($v['service_charge']*$receive,2);
 			
 				$this->db->trans_start();	
 				//转账过程
 				//生成聚保宝记录
 				$temp['jbb']  = array(
 					'receive_days' => $v['receive_days']+$days,
-					'service_amount' => $v['service_amount']+round($service*$receive,2),
-					'gain'         => $v['gain']+$receive
+					'service_amount' => $v['service_amount']+round($v['service_charge']*$receive,2),
+					'gain'         => $v['gain']+$receive-round($v['service_charge']*$receive,2)
 					);
 				$temp['jbb_where'] = array(
 					'where' => array('order_code' => $v['order_code'])
@@ -1336,9 +1338,9 @@ class Cash_model extends CI_Model{
 				//生成资金记录
 				$temp['cash']  = array(
 					'uid'		=> $v['uid'],
-					'type'		=> 20,
-					'amount'	=>$receive,
-					'balance'	=>$balance+$receive-round($service*$receive,2),
+					'type'		=> 21,
+					'amount'	=>$receive-round($v['service_charge']*$receive,2),
+					'balance'	=>$balance+$receive-round($v['service_charge']*$receive,2),
 					'source'	=>$v['order_code'],
 					'remarks'	=>'利息提取',
 					'dateline'	=>time()
@@ -1347,31 +1349,31 @@ class Cash_model extends CI_Model{
 				//生成结算记录
 				if($id!=0){
 					$temp['query_recharge_jbb']  = array(
-						'recharge_no'=> $this->c->transaction_no(self::recharge_jbb, 'recharge_no'),
+						'order_code'=> $v['order_code'],
 						'uid'		 => $v['uid'],
-						'type'		 => 0,
-						'amount'	 => $receive,
-						'source'	 => $v['order_code'],
-						'remarks'	 => '聚保宝利息提取',
-						'add_time'	 => time(),
-						'status'     => 0
+						'type'		 => 1,//提取利息
+						'amount'	 => $receive-$service,
+						'service_amount' => $service,
+						'status'	 => 0,
+						'exit_time'	 => time(),
+						'remarks'	 => '聚保宝提取利息'
 						);
-					$this->c->insert(self::recharge_jbb, $temp['query_recharge_jbb']);
+				$this->c->insert(self::jbb_extract, $temp['query_recharge_jbb']);
 				}
 				$this->db->trans_complete();	
 		}
 		if($id==0){
 					$temp['query_recharge_jbb']  = array(
-						'recharge_no'=> $this->c->transaction_no(self::recharge_jbb, 'recharge_no'),
-						'uid'		 => $uid,
-						'type'		 => 0,
+						'order_code'=> $this->c->transaction_no(self::jbb_extract, 'order_code'),
+						'uid'		 => $v['uid'],
+						'type'		 => 4,//一次性提取利息
 						'amount'	 => $receives-$services,
-						'source'	 => '',
-						'remarks'	 => '聚保宝一次性利息提取',
-						'add_time'	 => time(),
-						'status'     => 0
+						'service_amount' => $services,
+						'status'	 => 0,
+						'exit_time'	 => time(),
+						'remarks'	 => '聚保宝一次性提取利息'
 						);
-					$this->c->insert(self::recharge_jbb, $temp['query_recharge_jbb']);
+				$this->c->insert(self::jbb_extract, $temp['query_recharge_jbb']);
 				}
 		$query = $this->db->trans_status();
 		if(!empty($query)){
@@ -1412,7 +1414,7 @@ class Cash_model extends CI_Model{
 			return $data;
 		}
 		$temp['where'] = array(
-                'select' =>join_field('*',self::payment_jbb).','.join_field('rate',self::jbb_dtl).','.join_field('closeday',self::jbb).','.join_field('allawexit',self::jbb).','.join_field('counter_Fee',self::jbb).','.join_field('service_charge',self::jbb).','.join_field('time_limit',self::jbb),
+                'select' =>join_field('*',self::payment_jbb).','.join_field('rate',self::jbb_dtl).','.join_field('closeday',self::jbb).','.join_field('allawexit',self::jbb).','.join_field('counter_Fee',self::jbb).','.join_field('service_charge',self::jbb).','.join_field('time_limit',self::jbb).','.join_field('isrepeat',self::jbb),
                 'where'  =>array(
                     join_field('uid',self::payment_jbb)=>$uid,
 					join_field('id',self::payment_jbb)=>$id,
@@ -1433,30 +1435,72 @@ class Cash_model extends CI_Model{
 		$query='';
 		$receive=0;//利息
 		$counter_Fee = 0;//手续费
+		$service_charge = 0;//服务费
 		foreach($temp['data'] as $k => $v){		
-			$days=($v['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)>$v['closeday'])?($v['closeday']-$v['receive_days']):ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'];
 			$rate=$v['rate'];
-			$amount=$v['amount'];			
-			$receive=round(jbb_product_amount($days,$rate,$amount),2);//得到利息
-			$day = ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24);
+			$amount=$v['amount'];
+			if($v['isrepeat']==0){
+			if((ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'])>=$v['intervaldays']&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)<=$v['closeday']){
+				$days=floor((ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'])/$v['intervaldays'])*$v['intervaldays'];
+			}elseif((ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'])>$v['intervaldays']&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)>$v['closeday']){
+				$days=$v['closeday']-$v['receive_days'];
+			}else{
+				$days=0;	
+			}
+				$receive=round(jbb_no_product_amount($days,$rate,$amount),2);
+			}else{
+				$days=($v['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)>$v['closeday'])?($v['closeday']-$v['receive_days']):ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24)-$v['receive_days'];
+				$receive=round(jbb_product_amount($days,$rate,$amount),2);//得到利息
+			}
+				$day = ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24);
 			if($day<$v['time_limit']){
-				$counter_Fee = $v['counter_Fee']*$v['amount'];
+				$counter_Fee = round($v['counter_Fee']*$v['amount'],2);//手续费
+			}
+				$service_charge = round($v['service_charge']*$receive,2);//服务费
+			if($v['isrepeat']==0){
+				$expected_amount = round(jbb_no_product_amount($v['closeday'],$rate,$amount),2);
+			}else{
+				$expected_amount = round(jbb_product_amount($day,$rate,$amount),2);
 			}
 				//生成聚保宝退出记录
 				$temp['jbb']  = array(
 					'exit_time' => time(),//退出时间
-					'exit_days' => ceil((strtotime(date('Y-m-d'))-$v['interest_day'])/3600/24),//退出持有天数
+					'exit_days' => $day,//退出持有天数
 					'transfer_fee' =>  $counter_Fee,//手续费
-					'service_amount' => $v['service_amount']+$v['service_charge']*$receive,//服务费
-					'expected_amount' => round(jbb_product_amount($day,$rate,$amount),2),//预计收益
+					'service_amount' => $v['service_amount']+$service_charge+$counter_Fee,//服务费
+					'expected_amount' => $expected_amount,//预计收益
 					'real_amount' => $receive+$v['gain'],//真实收益
-					'interest_amount' =>  $receive+$v['amount']+$v['gain']- $counter_Fee-$v['service_charge']*$v['amount'],//本息收益
+					'interest_amount' =>  $receive+$v['amount']+$v['gain']- $counter_Fee-$service_charge,//本息收益
 					'status' => 2
 					);
 				$temp['jbb_where'] = array(
 					'where' => array('order_code' => $v['order_code'])
 					);
-				$query = $this->c->update(self::payment_jbb, $temp['jbb_where'], $temp['jbb']);			
+				$query = $this->c->update(self::payment_jbb, $temp['jbb_where'], $temp['jbb']);	
+				$temp['query_recharge_jbb']  = array(
+						'order_code'=> $v['order_code'],
+						'uid'		 => $v['uid'],
+						'type'		 => 2,//提取本金
+						'amount'	 => $v['amount']-$counter_Fee,
+						'counter_amount' => $counter_Fee,
+						'status'	 => 0,
+						'exit_time'	 => time(),
+						'remarks'	 => '聚保宝申请退出'
+						);
+				$this->c->insert(self::jbb_extract, $temp['query_recharge_jbb']);
+				if(round(jbb_product_amount($days,$rate,$amount),2)>0){
+					$temp['query_recharge']  = array(
+						'order_code'=> $v['order_code'],
+						'uid'		 => $v['uid'],
+						'type'		 => 3,//退出时产生利息
+						'amount'	 => $receive-round($v['service_charge']*$receive,2),
+						'service_amount' =>round($v['service_charge']*$receive,2),
+						'status'	 => 0,
+						'exit_time'	 => time(),
+						'remarks'	 => '聚保宝退出利息提取'
+						);
+				$this->c->insert(self::jbb_extract, $temp['query_recharge']);
+				}
 		}
 		if(!empty($query)){
 			$data = array(
@@ -1571,11 +1615,14 @@ class Cash_model extends CI_Model{
 			$amount=$temp['data']['amount'];	
 			$receive=round(jbb_product_amount($days,$rate,$amount),2);//得到利息
 			$service_charge = round($receive*$temp['data']['service_charge'],2);
+			if($day<$temp['data']['time_limit']){
+				$Fee = round($temp['data']['counter_Fee']*$temp['data']['amount'],2);
+			}
 			$temp['jbb']  = array(
 					'exit_time' => '',//退出时间
 					'exit_days' => '',//退出持有天数
 					'transfer_fee' =>  '',//手续费
-					'service_amount' => $temp['data']['service_amount']-$service_charge,//服务费
+					'service_amount' => $temp['data']['service_amount']-$service_charge-$Fee,//服务费
 					'expected_amount' => '',//预计收益
 					'real_amount' => '',//真实收益
 					'interest_amount' =>  '',//本息收益
