@@ -160,7 +160,7 @@ class Pay extends Login_Controller
         if( !is_numeric($delay) || $delay < 0)$delay=0;
         if($msg != '' && $delay > 0){
             header("Content-type:text/html;charset=utf-8");
-            echo '<h4 style="text-align: center;">'.$msg.','.$delay.'秒后跳转 <a href="'.site_url('user/recharge').'">直接跳转</a></h4>';
+            echo '<h4 style="text-align: center;">'.$msg.','.$delay.'秒后跳转 <a href="'.site_url('user/user/recharge').'">直接跳转</a></h4>';
         }
         header("Refresh:".$delay.";url=".$uri);
         exit();
