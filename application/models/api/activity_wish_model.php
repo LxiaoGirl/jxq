@@ -1,8 +1,12 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * 活动类 之 新年愿望
+ * Class Activity_wish_model
+ */
 class Activity_wish_model extends CI_Model{
     const wish  	  = 'activity_wish';     //愿望表
-    const wish_log   = 'activity_wish_log'; //愿望 帮助记录表
+    const wish_log   = 'activity_wish_log';  //愿望 帮助记录表
     const user	      = 'user'; 			 //用户表
 	const wish_limit = 1; 					 //每个人的愿望限制个数
 	const help_limit = 2; 					 //每个人的帮助限制次数
@@ -263,6 +267,10 @@ class Activity_wish_model extends CI_Model{
 		}
 	}
 
+	/**
+	 * 获取帮助结果  随机一个1-100的数字 验证80%几率
+	 * @return array
+	 */
 	protected function _get_help_result(){
 		$num = rand(0,100);
 		if($num < self::help_success_odds){

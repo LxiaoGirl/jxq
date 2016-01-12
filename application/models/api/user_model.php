@@ -358,7 +358,7 @@ class User_model extends CI_Model{
 		$data = array('name'=>'企业账户申请','status'=>'10001','msg'=>'服务器繁忙请稍后重试!','data'=>array());
 
 		if( !$uid){
-			$data['msg'] = '用户uid为空!';
+			$data['msg'] = '登陆超时,请重新登陆!';
 			return $data;
 		}
 		$temp['user_info'] = $this->c->get_row(self::user,array('where'=>array('uid'=>$uid)));
@@ -455,7 +455,7 @@ class User_model extends CI_Model{
 		$temp = array();
 		$data = array('name'=>'设置用户扩展信息','status'=>'10001','msg'=>'服务器繁忙请稍后重试!','data'=>array());
 		if( !$uid){
-			$data['msg'] = '用户uid为空!';
+			$data['msg'] = '登陆超时,请重新登陆!';
 			return $data;
 		}
 		$temp['user_info'] = $this->c->get_row(self::user,array('where'=>array('uid'=>$uid)));
@@ -523,7 +523,7 @@ class User_model extends CI_Model{
 		$temp = array();
 		$data = array('name'=>'获取用户扩展信息','status'=>'10001','msg'=>'服务器繁忙请稍后重试!','data'=>array());
 		if( !$uid){
-			$data['msg'] = '用户uid为空!';
+			$data['msg'] = '登陆超时,请重新登陆!';
 			return $data;
 		}
 		$temp['user_info'] = $this->c->get_row(self::user,array('where'=>array('uid'=>$uid)));
@@ -565,7 +565,7 @@ class User_model extends CI_Model{
 
 		//验证必要参数
 		if($uid <= 0 || !is_numeric($uid)){
-			$data['msg'] = '用户uid为空!';
+			$data['msg'] = '登陆超时,请重新登陆!';
 			return $data;
 		}
 
@@ -787,7 +787,7 @@ class User_model extends CI_Model{
 		if($code){
 			//验证用户信息
 			if($uid == 0){
-				$data['msg'] = '用户uid为空!';
+				$data['msg'] = '登陆超时,请重新登陆!';
 				return $data;
 			}
 			$temp['user_info'] = $this->c->get_row(self::user,array('where'=>array('uid'=>$uid)));
@@ -859,7 +859,7 @@ class User_model extends CI_Model{
 		if($code){
 			//验证用户信息
 			if($uid == 0){
-				$data['msg'] = '用户uid为空!';
+				$data['msg'] = '登陆超时,请重新登陆!';
 				return $data;
 			}
 			$temp['user_info'] = $this->c->get_row(self::user,array('where'=>array('uid'=>$uid)));
@@ -938,7 +938,7 @@ class User_model extends CI_Model{
 		$recharge_no = authcode($recharge_no,'',TRUE);
 
 		if($uid == 0){
-			$data['msg'] = '用户uid为空!';
+			$data['msg'] = '登陆超时,请重新登陆!';
 			$data['status'] = '10002';
 			return $data;
 		}
@@ -1011,7 +1011,7 @@ class User_model extends CI_Model{
 		$data = array('name'=>'绑定银行卡','status' => '10001', 'msg' => '你提交的数据有误,请重试！', 'data' => array());
 
 		if( !$uid){
-			$data['msg'] = '用户uid为空!';
+			$data['msg'] = '登陆超时,请重新登陆!';
 			return $data;
 		}
 
@@ -1525,7 +1525,7 @@ class User_model extends CI_Model{
 		if(empty($temp['name'])){ $data['msg'] = '昵称不能为空哦~'; return $data;}
 		if( ! preg_match('/^[a-zA-Z_\x80-\xff][a-zA-Z_0-9\x80-\xff]{4,21}$/',$name)){ $data['msg'] = '用户名建议为中文、字母或下划线开头以中文字母数字下划线组成的5到22位(一个中文为3位)!'; return $data;}
 		if($uid == 0){
-			$data['msg'] = '用户uid为空!';
+			$data['msg'] = '登陆超时,请重新登陆!';
 			return $data;
 		}
 		$temp['user_info'] = $this->c->get_row(self::user,array('where'=>array('uid'=>$uid)));

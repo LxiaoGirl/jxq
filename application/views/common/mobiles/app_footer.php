@@ -89,7 +89,7 @@
                                 my_alert(resut.msg);
                                 time(obj);
                             }else{
-                                my_alert('稍后聚雪球将通过电话4007-918-333拨打' +
+                                my_alert('稍后聚雪球将通过电话4008-382-182拨打' +
                                 '您的手机'+mobile+'告知验证码');
                                 time1(obj);
                             }

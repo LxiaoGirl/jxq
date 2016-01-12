@@ -1008,7 +1008,7 @@ class Project_model extends CI_Model{
 
 		//验证uid参数
 		if($uid == 0){
-			$data['msg'] = '用户uid为空!';
+			$data['msg'] = '登陆超时,请重新登陆!';
 			return $data;
 		}
 
@@ -1133,7 +1133,7 @@ class Project_model extends CI_Model{
         $data = array(
             'name'=>'获取用户资金统计',
             'status'=>'10001',
-            'msg'=>'用户uid为空!',
+            'msg'=>'登陆超时,请重新登陆!',
             'sign'=>'',
             'data'=>array(
                 'property_total' 			=> 0,//总资产
@@ -1184,7 +1184,7 @@ class Project_model extends CI_Model{
 		$temp   = array();
 
 		if( !$uid){
-			$data['msg'] = '用户uid为空!';
+			$data['msg'] = '登陆超时,请重新登陆!';
 			return $data;
 		}
 

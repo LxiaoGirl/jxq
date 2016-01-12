@@ -2028,7 +2028,7 @@
                 success: function (result) {
                     if(result.status == '10000'){
                         if(type == 'voice'){
-                            my_alert('稍后聚雪球将通过电话4007-918-333拨打' +
+                            my_alert('稍后聚雪球将通过电话4008-382-182拨打' +
                                 '您的手机'+mobile+'告知验证码!',1);
                         }else{
                             my_alert('短信已发送,请注意查收!',1);
