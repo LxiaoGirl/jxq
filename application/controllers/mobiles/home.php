@@ -253,7 +253,7 @@ class Home extends MY_Controller{
 
         //获取将要投资的数目
         $data['to_invest'] = (float)$this->input->get('amount',true);
-        $data['balance'] = $this->cash_api->get_user_balance()['data']['balance']; // 当前账户可用余额
+        $data['balance'] = $this->cash_api->get_user_balance($this->session->userdata('uid'))['data']['balance']; // 当前账户可用余额
         if( ! $data['balance'])$data['balance']=0;
 
         $data['master'] = $this->session->userdata('uid');
