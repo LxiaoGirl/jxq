@@ -1100,7 +1100,7 @@ class Project_model extends CI_Model{
 				//项目状态
 				$temp['receive_rate'] 			= $this->_get_project_receive_rate($val['amounts'],$val['receive']);
 				$temp['status_array'] 			= $this->get_project_status($val['buy_time'],$val['due_date'],$temp['receive_rate'],$val['status']);
-				$data['data']['data'][$key]['status'] 	= $temp['status_array']['name'];//项目状态
+				$data['data']['data'][$key]['status_name'] 	= $temp['status_array']['name'];//项目状态
 				$data['data']['data'][$key]['new_status'] 	= $temp['status_array']['new_status'];//项目新状态
 //				$temp['data']['data'][$key]['can_invest'] = $temp['status_array']['can_invest'];//项目是否可以投资
 				$data['data']['data'][$key]['mode'] = $this->_get_project_mode($val['mode']);//项目mode
