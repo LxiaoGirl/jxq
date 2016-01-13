@@ -85,7 +85,7 @@
         var is_detail = <?php echo $id; ?>;
         if( ! is_detail){
             each_html('hot-help','/index.php/about/ajax_get_news',{'page_id':1,'page_size':10,'category':'<?php echo $cat_id_str; ?>','order_by':'rank DESC'},'',true,function(obj,v){
-                obj.find('a').attr('href','<?php echo site_url('about/help_detail?id='); ?>'+ v.id+'&cat_id='+ v.cat_id)
+                obj.find('a').attr('href','<?php echo site_url('about/help?id='); ?>'+ v.id+'&cat_id='+ v.cat_id)
             });
         }
 	})
