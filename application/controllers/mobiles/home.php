@@ -996,7 +996,8 @@ class Home extends MY_Controller{
     public function my_interest(){
         //更多 的ajax处理
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->project_api->get_user_project_list($this->session->userdata('uid'))['data'];
+            $status = $this->input->post('status',true);
+            $data = $this->project_api->get_user_project_list($this->session->userdata('uid'),$status)['data'];
             if( ! empty($data['data'])){
                 exit(json_encode(array('data'=>$data['data'],'msg'=>'ok','code'=>0)));
             }else{
