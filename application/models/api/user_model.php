@@ -710,6 +710,7 @@ class User_model extends CI_Model{
 							$data['msg']   = '银行线路繁忙，请稍后提交信息!';
 						}
 					}else{
+						$this->_add_user_log('profile-real_name-fail', '更新个人资料-实名认证-开户失败！',$uid,$real_name);
 						$data['msg']   = '银行线路繁忙，请稍后提交信息!';
 					}
 					break;

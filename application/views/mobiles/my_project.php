@@ -91,7 +91,7 @@
             'top': $('.header').height()
         });
         $('#list').list_data({
-            data : '/index.php/mobiles/home/my_project',
+            data : '/index.php/mobiles/home/my_project?status=2-3',
             page_size : 10,
             show_loading:true,
             event_type : 'scroll',

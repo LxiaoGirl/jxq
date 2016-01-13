@@ -41,12 +41,13 @@
     $(function () {
         $("#list").list_data({
             data : '/index.php/mobiles/home/my_interest',
+            param:{status:'4,7'},
             page_size : 20,
             show_loading : true,
             event_type : 'scroll',
             list_func : function (obj, v) {
                 obj.find(':first').attr('onclick', 'window.location.href="/index.php/mobiles/home/project_detail?borrow_no=' + v.borrow_no + '"');
-                if (v.interest == v.interest_receive) {
+                if (v.new_status == 5 && v.interest == v.interest_receive) {
                     obj.find('.i_type').removeClass('c_red').addClass('c_green').text('回款成功');
                 }
                 obj.find('.interest').text(parseFloat(v.interest)+parseFloat(v.amount));

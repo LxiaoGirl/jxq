@@ -166,7 +166,6 @@ class Home extends MY_Controller{
         if($this->input->is_ajax_request() == TRUE){
             $category = $this->input->get('category',true);
             $m = $this->input->get('m',true);
-            str_replace('-',',',$m);
             $data = $this->project_api->get_project_list($category,'',$m,'','','')['data'];
             //过滤了其中的 link total 等数据
             if( ! empty($data['data'])){
@@ -253,7 +252,7 @@ class Home extends MY_Controller{
 
         //获取将要投资的数目
         $data['to_invest'] = (float)$this->input->get('amount',true);
-        $data['balance'] = $this->cash_api->get_user_balance()['data']['balance']; // 当前账户可用余额
+        $data['balance'] = $this->cash_api->get_user_balance($this->session->userdata('uid'))['data']['balance']; // 当前账户可用余额
         if( ! $data['balance'])$data['balance']=0;
 
         $data['master'] = $this->session->userdata('uid');
@@ -925,7 +924,7 @@ class Home extends MY_Controller{
         //ajax处理
         if($this->input->is_ajax_request() == TRUE){
             $status = $this->input->get('status');
-            str_replace('-',',',$status);
+            $status = str_replace('-',',',$status);
             $data = $this->project_api->get_user_project_list($this->session->userdata('uid'),$status)['data'];
 
             if( ! empty($data['data'])){
@@ -997,7 +996,8 @@ class Home extends MY_Controller{
     public function my_interest(){
         //更多 的ajax处理
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->project_api->get_user_project_list($this->session->userdata('uid'))['data'];
+            $status = $this->input->post('status',true);
+            $data = $this->project_api->get_user_project_list($this->session->userdata('uid'),$status)['data'];
             if( ! empty($data['data'])){
                 exit(json_encode(array('data'=>$data['data'],'msg'=>'ok','code'=>0)));
             }else{

@@ -1002,7 +1002,7 @@ class Project_model extends CI_Model{
 	 * 'interest_lately_time' => string '20151109' (length=8)
 	 * 'status' => string '还款中' (length=9)
 	 */
-	public function get_user_project_list($uid=0,$status_str='',$start_time=0,$end_time=0, $page_id=1,$page_size=10){
+	public function get_user_project_list($uid=0,$status_str='',$start_time=0,$end_time=0, $page_id=1,$page_size=0){
 		$temp = array();
 		$data = array('name'=>'用户已投项目列表','status'=>'10001','msg'=>'服务器繁忙请稍后重试!','sign'=>'','data'=>array());
 
@@ -1100,7 +1100,7 @@ class Project_model extends CI_Model{
 				//项目状态
 				$temp['receive_rate'] 			= $this->_get_project_receive_rate($val['amounts'],$val['receive']);
 				$temp['status_array'] 			= $this->get_project_status($val['buy_time'],$val['due_date'],$temp['receive_rate'],$val['status']);
-				$data['data']['data'][$key]['status'] 	= $temp['status_array']['name'];//项目状态
+				$data['data']['data'][$key]['status_name'] 	= $temp['status_array']['name'];//项目状态
 				$data['data']['data'][$key]['new_status'] 	= $temp['status_array']['new_status'];//项目新状态
 //				$temp['data']['data'][$key]['can_invest'] = $temp['status_array']['can_invest'];//项目是否可以投资
 				$data['data']['data'][$key]['mode'] = $this->_get_project_mode($val['mode']);//项目mode

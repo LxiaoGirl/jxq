@@ -65,7 +65,7 @@
                                 <span>实名认证</span><font class="fr close">×</font>
                             </div>
                             <div class="popbody tc">
-                                <div class="p smrz_p">
+                                <div class="p smrz_p" style="height:auto;">
                                     <div class="fl tr">
                                         <img src="<?php echo base_url('assets/images/user/xrt.png')?>">
                                     </div>
