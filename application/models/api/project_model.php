@@ -557,11 +557,12 @@ class Project_model extends CI_Model{
      * @param int $amount
      * @param string $security
      * @param string $borrow_no
+	 * @param int $source 投资来源 0 pc 1自动投 2 自动投取消 3 app 4 wap
      * @return array
      * balance=>0 剩余金额
      * status 10001 提示性错误 10002 未登陆  10003 未设置资金密码  10004 余额不足 10005 未实名
      */
-    public function project_invest($mobile='', $amount=0, $security='',$borrow_no=''){
+    public function project_invest($mobile='', $amount=0, $security='',$borrow_no='',$source=0){
         $temp = array();
         $data = array('name'=>'项目投资','status'=>'10001','msg'=>'服务器繁忙请稍后重试!','sign'=>'','data'=>array());
 
@@ -668,7 +669,7 @@ class Project_model extends CI_Model{
             return $data;
         }
 
-		$temp['query']  = $this->_invest($borrow_no, $amount, $temp['userinfo']['uid'],$temp['balance']);
+		$temp['query']  = $this->_invest($borrow_no, $amount, $temp['userinfo']['uid'],$temp['balance'],$source);
 
 		if( ! empty($temp['query'])){
             $data['status'] 		 = '10000';
@@ -689,9 +690,10 @@ class Project_model extends CI_Model{
 	 * @param string $borrow_no 借款编号
 	 * @param int $balance 帐户可用余额
 	 * @param int $uid
+	 * @param int $source 投资来源 0 pc 1自动投 2 自动投取消 3 app 4 wap
 	 * @return bool
 	 */
-	protected function _invest($borrow_no = '',$amount = 0, $uid=0,  $balance = 0){
+	protected function _invest($borrow_no = '',$amount = 0, $uid=0,  $balance = 0,$source=0){
 		$query = FALSE;
 		$temp  = array();
 
@@ -733,7 +735,8 @@ class Project_model extends CI_Model{
 					'charge'     => 0,
 					'dateline'   => time(),
 					'pay_time'   => time(),
-					'status'     => 1
+					'status'     => 1,
+					'automatic_type' =>$source
 				);
 
 				$this->c->insert(self::payment, $temp['payment']);

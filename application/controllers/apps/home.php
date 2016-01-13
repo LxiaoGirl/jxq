@@ -268,7 +268,7 @@ class Home extends MY_Controller{
                 $this->session->userdata('mobile'),
                 (float)$this->input->post('amount',TRUE),
                 $this->input->post('password',TRUE),
-                $this->input->post('borrow_no',TRUE)
+                $this->input->post('borrow_no',TRUE),3
             );
             exit(json_encode($data));
         }
