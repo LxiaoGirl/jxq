@@ -110,7 +110,10 @@
                 this.html_data.loading = this.option.id.find('#loading').length?this.option.id.find('#loading').clone():(this.option.id.find('#no-data').length?this.option.id.find('#no-data').clone():false);
                 if(this.html_data.loading && this.html_data.loading.attr('id')=='no-data')this.html_data.loading.attr('id','loading').find('.no-data-msg').html(this.temp_data.msg_loading);
                 this.html_data.more_button = this.option.id.find('#more-button').length?this.option.id.find('#more-button').clone():false;
-                this.option.id.find('#no-data').remove().find('#no-more').remove().find('#loading').clone().find('#more-button').remove();
+                this.option.id.find('#no-data').remove();
+                this.option.id.find('#no-more').remove();
+                this.option.id.find('#loading').remove();
+                this.option.id.find('#more-button').remove();
             }
             this.html_data.html = this.option.id.clone();
             if( ! this.option.is_scroll){

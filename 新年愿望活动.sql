@@ -20,7 +20,7 @@ CREATE TABLE `cdb_activity_wish_log` (
   `log_id`   INT unsigned NOT NULL AUTO_INCREMENT,
   `wish_id`  INT unsigned NOT NULL COMMENT '关联wish表的wish_id',
   `weixin_name` varchar(50) NOT NULL COMMENT '帮助者微信昵称',
-  `weixin_avtar` varchar(300) NOT NULL COMMENT '帮助者微信头像',
+  `weixin_avatar` varchar(300) NOT NULL COMMENT '帮助者微信头像',
   `openid`  varchar(50) NOT NULL COMMENT '帮助者微信openid',
   `description` varchar(300)  NOT NULL DEFAULT 0 COMMENT '描述性话语',
   `add_time`  int(10) unsigned NOT NULL DEFAULT '0' COMMENT '添加时间',
