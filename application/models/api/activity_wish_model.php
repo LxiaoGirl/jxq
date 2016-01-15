@@ -16,6 +16,7 @@ class Activity_wish_model extends CI_Model{
 		1=>'投资返现红包-50元',
 		2=>'注册祝福红包-20元',
 	);
+	//助力成功的描述语
 	protected $_description_success = array(
 		'这个才是正宗的摸金范儿，帮你的新年愿望助了力哦！【Ta的排名咻一下上升了%d位】',
 		'那就让他们见识见识摸金校尉的手段，帮你的新年愿望助了力哦~~【Ta的排名蹭蹭蹭上升了%d位】',
@@ -24,6 +25,7 @@ class Activity_wish_model extends CI_Model{
 		'如果新年没有收到我的礼物，请不要怀疑我们的感情，我有帮你的新年愿望助力了哦！',
 		'只能爱你you are my superstar，给朋友新年愿望助了力哦！'
 	);
+	//助力失败的描述语句
 	protected $_description_fail = array(
 		'你是猴子请来的逗逼，来一圈啥也没帮上',
 		'狗带，真心不是故意的，这次没成功，我会再接再厉哒',
@@ -31,6 +33,11 @@ class Activity_wish_model extends CI_Model{
 		'静悄悄的来，不带走一片云彩，丝毫没有给朋友助力',
 		'世界这么大，认识你真不幸，竟然没有给我助力'
 	);
+
+	const wish_start_time = '2016-01-05 10:00:00';//许愿开始时间
+	const wish_end_time	  = '2016-02-04 23:59:59';//许愿结束时间
+	const help_start_time = '2016-01-05 10:00:00';//助力开始时间
+	const help_end_time   = '2016-02-04 23:59:59';//助力结束时间
 
     public function __construct(){
         parent::__construct();
@@ -66,6 +73,10 @@ class Activity_wish_model extends CI_Model{
 			$data['msg'] = '数据异常,未匹配到当前用户信息!';
 			return $data;
 		}
+		//验证起始时间
+		if(time() < strtotime(self::wish_start_time)){$data['msg'] = '许愿活动尚未开始,请稍后!';return $data;}
+		if(time() > strtotime(self::wish_end_time)){$data['msg'] = '许愿活动已结束,谢谢参与!';return $data;}
+
 		//验证愿望id
 		if( !isset($this->_wish[$wish_type]) || $this->_wish[$wish_type] != $wish_name){
 			$data['msg'] = '数据异常,未匹配到该类型愿望!';
@@ -188,6 +199,11 @@ class Activity_wish_model extends CI_Model{
 			$data['msg'] = '分享给好友吧,自己不能帮自己!';
 			return $data;
 		}
+
+		//验证起始时间
+		if(time() < strtotime(self::help_start_time)){$data['msg'] = '助力尚未开始,请稍后!';return $data;}
+		if(time() > strtotime(self::help_end_time)){$data['msg'] = '助力已结束,谢谢参与!';return $data;}
+
 		//验证已帮助次数数
 		$temp['help_count'] = $this->c->count(self::wish_log,
 			array(
