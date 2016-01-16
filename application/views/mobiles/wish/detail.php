@@ -81,7 +81,7 @@
 </body>
 <script src="/assets/activity_wish/js/jquery-1.8.5.min.js"></script>
 <script src="/assets/js/app/jquery.list_data.1.1.js"></script>
-<script src="/assets/js/app/wx.js"></script>
+<script src="/assets/js/app/wx-1.js"></script>
     <script>
 
         $('.close').click(function(){
