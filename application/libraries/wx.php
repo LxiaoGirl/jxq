@@ -14,6 +14,8 @@ class CI_wx{
     const token_url = 'https://api.weixin.qq.com/sns/oauth2/access_token'; //获取全局token openid的地址
     const userinfo_url = 'https://api.weixin.qq.com/sns/userinfo'; //获取userinfo的地址
 
+    const log_dir = './application/logs/wx_ticket.txt';//微信分享js ticket 存储位置
+
 	function __construct(){
 		$this->_CI = &get_instance();
 	}
@@ -115,56 +117,29 @@ class CI_wx{
     }
 
 
-
+    /**
+     * 获取微信分享js接口ticket
+     * @param $url
+     * @return array|mixed
+     */
 
     public function get_jsapi_ticket($url){
-        $info = $this->_get_jsapi_ticket($this->_appid,$this->_appsecret);
-        $result = $this->_signature($info['ticket'],$url);
-        return $result;
-        /*
-        if(IS_AJAX){
-            $Token = M('zmf_a_gongzonghao_token')->where(array(
-                'ghid' => $ghid,
-                'appid' => $appid,
-            ))->find();
-            //$result =array();
-            if($Token){
-                if(time() - $Token['time']>=7200){
-                    $info = $this->_get_jsapi_ticket($appid,$secret);
-                    $result = $this->_signature($info['ticket'],$url);
-                    $Token['access_token'] = $info['token'];
-                    $Token['jsapi_ticket'] = $info['ticket'];
-                    $Token['time'] =time();
-                    M('zmf_a_gongzonghao_token')->save($Token);
-                }else{
-                    $result = $this->_signature($Token['jsapi_ticket'],$url);
-                }
-            }else{
-                $info = $this->_get_jsapi_ticket($appid,$secret);
-                $result = $this->_signature($info['ticket'],$url);
-                $Token= array(
-                    'ghid' => $ghid,
-                    'appid' => $appid,
-                    'access_token' => $info['token'],
-                    'jsapi_ticket' => $info['ticket'],
-                    'time' =>time(),
-                );
-                M('zmf_a_gongzonghao_token')->add($Token);
-            }
-            $this->ajaxreturn($result);
-        }*/
+        $ticket = json_decode($this->get_php_file(self::log_dir),true);
+        if ($ticket['timestamp'] < time()){
+            $ticket = $this->_get_jsapi_ticket();
+            $ticket['timestamp'] += 7000;
+            $this->set_php_file(self::log_dir,json_encode($ticket));
+        }
+        $data = $this->_signature($ticket['ticket'],$url);
+        return $data;
     }
 
-    private function _get_jsapi_ticket($appid,$secret){
-        $ACCESS_TOKEN = $this->get_access_token($appid,$secret);
+    private function _get_jsapi_ticket(){
+        $ACCESS_TOKEN = $this->getAccessToken();
         $result = $this->get_content("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token={$ACCESS_TOKEN}&type=jsapi");
-        if($result['errmsg'] == 'ok')
-            return array(
-                'ticket' => $result['ticket'],
-                'token'  => $ACCESS_TOKEN,
-            );
-        else
-            return false;
+        $data['ticket'] = $result['ticket'];
+        $data['token']  = $ACCESS_TOKEN;
+        return $data;
     }
     
     private function _signature($ticket,$url){
@@ -181,5 +156,22 @@ class CI_wx{
             'url'       => $url,
             'appid'     =>$this->_appid
         );
+    }
+
+    private function get_php_file($filename) {
+        return trim(file_get_contents($filename));
+    }
+    private function set_php_file($filename, $content) {
+        $fp = fopen($filename, "w");
+        fwrite($fp,$content);
+        fclose($fp);
+    }
+    private function getAccessToken() {
+        // 如果是企业号用以下URL获取access_token
+        // $url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=$this->_appid&corpsecret=$this->_appsecret";
+        $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$this->_appid&secret=$this->_appsecret";
+        $res = $this->get_content($url);
+        $access_token = $res['access_token']?$res['access_token']:'';
+        return $access_token;
     }
 }

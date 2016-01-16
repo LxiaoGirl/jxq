@@ -141,7 +141,7 @@ class Activity_wish_model extends CI_Model{
 
 		$temp['where'] = array(
 			'where'  => array(join_field($temp['filed'],self::wish)=>$temp['value']),
-			'select' => join_field('*',self::wish).','.join_field('real_name',self::user),
+			'select' => join_field('*',self::wish).','.join_field('real_name,inviter_no',self::user),
 			'join'	 => array(
 				'table' => self::user,
 				'where' => join_field('uid',self::wish).'='.join_field('uid',self::user)

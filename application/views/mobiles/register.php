@@ -24,7 +24,7 @@
                 <input placeholder="验证码" name="authcode" type="text" class="input-group-lg form-control">
 
                 <div class="clears line"></div>
-                <input placeholder="邀请码(选填)" name="invite_code" type="text" class="input-group-lg form-control">
+                <input placeholder="邀请码(选填)" name="invite_code" value="<?php echo $inviter_no?$inviter_no:''; ?>" type="text" class="input-group-lg form-control">
             </div>
         </div>
 

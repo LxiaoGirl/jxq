@@ -102,8 +102,8 @@ class Home extends MY_Controller{
             }
             exit(json_encode($data));
         }
-
-        $this->load->view(self::dir.'register');
+        $data['inviter_no'] = $this->input->get('inviter_no',true);
+        $this->load->view(self::dir.'register',$data);
     }
 
     /**

@@ -67,7 +67,7 @@
                              title="点击更换验证码"/>
                     </div>
                     <p class="but"><button id="login" data-loading-msg="登录中...">登录</button></p>
-                    <p class="a"><a class="fl" href="/index.php/mobiles/home/login">立即注册</a><a class="fr" href="/index.php/mobiles/home/forget">忘记密码？</a></p>
+                    <p class="a"><a class="fl" href="/index.php/mobiles/home/register?inviter_no=<?php echo $inviter_no; ?>">立即注册</a><a class="fr" href="/index.php/mobiles/home/forget">忘记密码？</a></p>
                 </div>
             </div>
         </div>
@@ -107,6 +107,25 @@
         var is_invested = parseInt('<?php echo $is_invested; ?>');
         var wish_type = 1;
         var wish_name = '';
+        var wish_set = function(){
+            $.ajax({
+                url:'/index.php/mobiles/wish/ajax_set_wish',
+                type:'post',
+                dataType:'json',
+                btn:'#wish',
+                data:{wish_type:wish_type,wish_name:wish_name},
+                success:function(rs){
+                    var wish = rs.data;
+                    if(rs.status == '10000'){
+                        window.location.href='/index.php/mobiles/wish/detail?wish_id='+wish['wish_id']+'&uid='+wish['uid'];
+                    }else if(rs.status == '10002'){
+                        my_alert(rs.msg,'/index.php/mobiles/wish/detail?wish_id='+wish[0]['wish_id']+'&uid='+wish[0]['uid'])
+                    }else{
+                        my_alert(rs.msg);
+                    }
+                }
+            });
+        }
         $(function () {
             ajax_loading_style(1,1);
             $(".hbxz").click(function(){
@@ -126,28 +145,13 @@
                         my_alert('你尚未投资过不能选择改类型愿望哦!');
                         return false;
                     }
-                    $('.hbpop').fadeIn();
+                    //$('.hbpop').fadeIn();
+                    wish_set();
                 }
             });
-            $('#wish').click(function(){
-                $.ajax({
-                    url:'/index.php/mobiles/wish/ajax_set_wish',
-                    type:'post',
-                    dataType:'json',
-                    btn:'#wish',
-                    data:{wish_type:wish_type,wish_name:wish_name},
-                    success:function(rs){
-                        var wish = rs.data;
-                        if(rs.status == '10000'){
-                            window.location.href='/index.php/mobiles/wish/detail?wish_id='+wish['wish_id']+'&uid='+wish['uid'];
-                        }else if(rs.status == '10002'){
-                            my_alert(rs.msg,'/index.php/mobiles/wish/detail?wish_id='+wish[0]['wish_id']+'&uid='+wish[0]['uid'])
-                        }else{
-                            my_alert(rs.msg);
-                        }
-                    }
-                });
-            });
+            /*$('#wish').click(function(){
+
+            });*/
             $('#login').click(function(){
                 if($("#mobile").val() == ''){
                     my_alert('请输入登录用户名!');
@@ -183,7 +187,8 @@
                                 return false;
                             }
                             $('.dlpop').fadeOut();
-                            $('.hbpop').fadeIn();
+                            //$('.hbpop').fadeIn();
+                            wish_set();
                         }else{
                             my_alert(rs.msg);
                         }

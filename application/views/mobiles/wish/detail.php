@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title><?php echo $title; ?></title>
     <meta charset="utf-8">
+    <meta name="description" content="<?php echo $title; ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!--H5页面窗口自动调整到设备宽度，并禁止用户缩放页面-->
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
@@ -24,7 +25,7 @@
 <body style="background:#fff;">
     <div><img src="/assets/activity_wish/images/14.jpg" alt="" width="100%"></div>
     <div>
-        <p class="tc sdzlj"><?php echo mb_strlen($wish['real_name'])==4?mb_substr($wish['real_name'],2):mb_substr($wish['real_name'],1); ?>的“
+        <p class="tc sdzlj"><?php echo (mb_strlen($wish['real_name'])==4?mb_substr($wish['real_name'],0,2):mb_substr($wish['real_name'],0,1)).str_repeat('*',mb_strlen($wish['real_name'])==4?2:1); ?>的“
             <?php if($wish['wish_type'] == 1): ?>
                 许愿助力金
             <?php else: ?>
@@ -51,14 +52,14 @@
                    </div>
                 </div>
                 <div class="ri">
-                    <p class="time add_time">4分钟前</p>
-                    <p class="nr description">这个才是正宗的摸金范儿啊，帮TA【增加了车贷宝1号181的收益率0.02%，持续5天【他的排名蹭蹭蹭的上升了1位】</p>
+                    <p class="time add_time"></p>
+                    <p class="nr description"></p>
                 </div>
             </li>
             <p class="jzgd" id="more-button">查看更多>></p>
         </ul>
     </div>
-    <button class="wyl" onclick="window.location.href='/index.php/mobiles/wish'">我要许愿</button>
+    <button class="wyl" onclick="window.location.href='/index.php/mobiles/wish?inviter_no=<?php echo $wish['inviter_no']; ?>'">我要许愿</button>
     <div><img id="down-load" src="/assets/activity_wish/images/15.jpg" alt="" width="100%"></div>
     <div class="gywm">
         <p>聚雪球是由沈阳市供销社、国资委以及沈阳网加互联网金融服务有限公司共同出资创办的一家专业互联网金融服务平台。</p>
@@ -80,11 +81,14 @@
 </body>
 <script src="/assets/activity_wish/js/jquery-1.8.5.min.js"></script>
 <script src="/assets/js/app/jquery.list_data.1.1.js"></script>
+<script src="/assets/js/app/wx.js"></script>
     <script>
+
         $('.close').click(function(){
             $('.pop').fadeOut();
         });
         var ls_refresh;
+        var inviter_no = '<?php echo $wish['inviter_no']; ?>';
         var wish_help = function(src){
             $.ajax({
                 url:'/index.php/mobiles/wish/ajax_help',
@@ -106,7 +110,7 @@
                         }else{
                             $('.zlpop').find('.ding').text('我也要许愿').unbind('click').bind('click',function(){
                                 $('.zlpop').fadeOut();
-                                window.location.replace('/index.php/mobiles/wish');
+                                window.location.replace('/index.php/mobiles/wish?inviter_no='+inviter_no);
                             }).before('<P class="ys" id="no-count">今天机会用进,明天再来吧</p>');
                         }
                         $('.zlpop').fadeIn();
@@ -122,7 +126,7 @@
                         }else{
                             $('.zlpop').find('.ding').text('我也要许愿').unbind('click').bind('click',function(){
                                 $('.zlpop').fadeOut();
-                                window.location.replace('/index.php/mobiles/wish');
+                                window.location.replace('/index.php/mobiles/wish?inviter_no='+inviter_no);
                             }).before('<P class="ys" id="no-count">今天机会用进,明天再来吧</p>');
                         }
                         $('.zlpop').fadeIn();
@@ -180,6 +184,14 @@
                     return;
                 }
             });
+            wx_share.conf.img = 'https://www.juxueqiu.com//assets/activity_wish/images/14.jpg';
+            wx_share.conf.ticket = '/index.php/mobiles/wish/ajax_get_ticket';
+            wx_share.conf.decription = '<?php echo $title;?>';
+            wx_share.share({
+                trigger:function(){},
+                success:function(){},
+                cancle:function(){}
+            })
         });
         var unixtime_style = function(unixtime,format){
             if(!unixtime)return '无';
