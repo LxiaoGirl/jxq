@@ -58,7 +58,7 @@ class Jujianren extends My_Controller{
 
             //如果有信息 获取头像和姓名
             if($user_info){
-                $data['nickname']   = $user_info['real_name']?$user_info['real_name']:$user_info['user_name'];
+                $data['nickname']   = $user_info['user_name']?$user_info['user_name']:$user_info['real_name'];
                 $data['headimgurl'] = $user_info['avatar']?$this->c->get_oss_image($user_info['avatar']):'';
             }else{
                 $data['inviter_no'] = '';

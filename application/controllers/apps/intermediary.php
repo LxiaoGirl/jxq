@@ -180,7 +180,7 @@ class Intermediary extends MY_Controller{
         $this->_check_real_name(true);
 
         $data = array(
-            'nickname'   =>$this->session->userdata('real_name')?$this->session->userdata('real_name'):$this->session->userdata('user_name'),
+            'nickname'   =>$this->session->userdata('user_name')?$this->session->userdata('user_name'):$this->session->userdata('real_name'),
             'headimgurl' =>$this->session->userdata('avatar')
         );
 
@@ -217,7 +217,7 @@ class Intermediary extends MY_Controller{
 
             if($userinfo){
                 if(!$openid){
-                    $data['nickname']   = $userinfo['real_name']?$userinfo['real_name']:$userinfo['user_name'];
+                    $data['nickname']   = $userinfo['user_name']?$userinfo['user_name']:$userinfo['real_name'];
                     $data['headimgurl'] = $userinfo['avatar']?$this->c->get_oss_image($userinfo['avatar']):'';
                 }else{
                     $this->load->library('wx');
