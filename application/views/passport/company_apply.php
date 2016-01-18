@@ -89,7 +89,7 @@
         </p>
         <p>
             <span class="z1"></span>
-            <span class="z2 sbut"><button type="button" class="ls ajax_submit-button" id="step-3-submit" data-loading-msg="提交中...">下一步</button></span>
+            <span class="z2 sbut"><button type="button" class="ls ajax-submit-button" id="step-3-submit" data-loading-msg="提交中...">下一步</button></span>
             <span class="z3"></span>
         </p>
     </form>

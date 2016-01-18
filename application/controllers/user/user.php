@@ -1025,7 +1025,7 @@ class User extends Login_Controller{
 	 * 验证企业用户注册情况
 	 */
 	protected function _check_company_user(){
-		if(in_array($this->session->userdata('clientkind'),array('-2','-3','-4','-5',))){
+		if($this->router->fetch_method() != 'real_name' && in_array($this->session->userdata('clientkind'),array('-2','-3','-4','-5',))){
 			redirect('login/company_apply');
 		}
 	}
