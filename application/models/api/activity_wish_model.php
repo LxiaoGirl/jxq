@@ -91,13 +91,13 @@ class Activity_wish_model extends CI_Model{
 			return $data;
 		}
 
-		if($wish_type == 1){
+		/*if($wish_type == 1){
 			$temp['is_invested'] = $this->c->count('borrow_payment',array('where'=>array('uid'=>$uid,'type'=>1)));
 			if( !$temp['is_invested']){
 				$data['msg'] = '你尚未投资不能选择改类型的愿望哦!';
 				return $data;
 			}
-		}
+		}*/
 		//添加愿望
 		$temp['data'] = array(
 			'uid' 		=> $uid,
@@ -141,7 +141,7 @@ class Activity_wish_model extends CI_Model{
 
 		$temp['where'] = array(
 			'where'  => array(join_field($temp['filed'],self::wish)=>$temp['value']),
-			'select' => join_field('*',self::wish).','.join_field('real_name,inviter_no',self::user),
+			'select' => join_field('*',self::wish).','.join_field('real_name,inviter_no,company',self::user),
 			'join'	 => array(
 				'table' => self::user,
 				'where' => join_field('uid',self::wish).'='.join_field('uid',self::user)
@@ -216,7 +216,7 @@ class Activity_wish_model extends CI_Model{
 			)
 		);
 		if($temp['help_count'] >= self::help_limit){
-			$data['msg']    = '每人每天可帮助'.self::help_limit.'次，你已经帮助过了!';
+			$data['msg']    = '每人每天可助力'.self::help_limit.'次，你已经助力过了!';
 			$data['status'] = '10002';
 			$data['data']['have_count'] = 0;
 			return $data;
@@ -296,8 +296,8 @@ class Activity_wish_model extends CI_Model{
 
 		$temp['where'] = array(
 			'where' => array(
-				'wish_id' => $wish_id,
-				'status'  => $status
+				'wish_id' => $wish_id
+				//'status'  => $status
 			),
 			'order_by'=>'add_time DESC'
 		);
@@ -366,7 +366,7 @@ class Activity_wish_model extends CI_Model{
 	 */
 	protected function _get_help_result(){
 		$num = rand(0,100);
-		if($num < self::help_success_odds){
+		if($num <= self::help_success_odds){
 			$query = 1;
 		}else{
 			$query = 0;

@@ -42,13 +42,13 @@
         <button class="bz wish-help" data-loading-msg="帮Ta实现愿望">帮Ta实现愿望</button>
     </div>
     <div class="syjl">
-        <h2>-收益记录-</h2>
-        <ul class="help-log">
+        <h2>-助力记录-</h2>
+        <ul class="help-log" style="visibility: hidden;">
             <li>
                 <div class="le">
                    <div class="tx">
                         <!--放头像的地方-->
-                        <img class="weixin_avatar" src="/assets/activity_wish/images/1.jpg" alt="" width="100%">
+                        <img class="weixin_avatar" src="" alt="" width="100%">
                    </div>
                 </div>
                 <div class="ri">
@@ -88,7 +88,7 @@
             $('.pop').fadeOut();
         });
         var ls_refresh;
-        var inviter_no = '<?php echo $wish['inviter_no']; ?>';
+        var inviter_no = '<?php echo $wish['inviter_no']?$wish['inviter_no']:($wish['company']?$wish['company']:''); ?>';
         var wish_help = function(src){
             $.ajax({
                 url:'/index.php/mobiles/wish/ajax_help',
@@ -111,7 +111,7 @@
                             $('.zlpop').find('.ding').text('我也要许愿').unbind('click').bind('click',function(){
                                 $('.zlpop').fadeOut();
                                 window.location.replace('/index.php/mobiles/wish?inviter_no='+inviter_no);
-                            }).before('<P class="ys" id="no-count">今天机会用进,明天再来吧</p>');
+                            }).before('<P class="ys" id="no-count">今天机会用尽,明天再来吧</p>');
                         }
                         $('.zlpop').fadeIn();
                         if(typeof ls_refresh == "function")ls_refresh();
@@ -146,7 +146,8 @@
             $(".help-log").list_data({
                 data:'/index.php/mobiles/wish/ajax_get_help_log',
                 param:{wish_id:'<?php echo $wish['wish_id']; ?>'},
-                page_size:2,
+                page_size:10,
+                page_size_first:2,
                 event_type:'click',
                 show_loading:'img-msg',
                 btn:true,

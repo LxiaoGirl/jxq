@@ -56,7 +56,7 @@ class wish extends MY_Controller{
         $data['inviter_no'] = $this->input->get('inviter_no',true);
         if($data['uid']){
             $data['clientkind'] = $this->session->userdata('clientkind');
-            $data['is_invested'] = $this->c->count('borrow_payment',array('where'=>array('uid'=>$data['uid'],'type'=>1)));
+            $data['is_invested'] = 1;//$this->c->count('borrow_payment',array('where'=>array('uid'=>$data['uid'],'type'=>1)));
             $wish = $this->wish->get_wish('',$data['uid'])['data'];
             if($wish)redirect('mobiles/wish/detail?wish_id='.$wish['wish_id'].'&uid='.$data['uid'],'location');
         }
@@ -70,10 +70,12 @@ class wish extends MY_Controller{
     public function detail(){
         //验证是否为本人从banner点击进入 不是则获取微信信息 [用户已登录 且get参数中携带uid信息 为banner进入]
         if( !$this->session->userdata('uid') || $this->session->userdata('uid') != $this->input->get('uid')){
-            if( !$this->session->userdata('openid')|| !$this->session->userdata('nickname')|| !$this->session->userdata('headimgurl'))
+            if( !$this->session->userdata('openid')|| !$this->session->userdata('nickname')|| !$this->session->userdata('headimgurl')){
                 $weixin_data = $this->wx->authorization('userinfo');
+                $this->session->set_userdata($weixin_data);
+            }
         }
-        $this->session->set_userdata($weixin_data);
+
         //验证必要参数 愿望id 和愿望id是否存在
         $wish_id = (int)$this->input->get('wish_id');
         if( !$wish_id)redirect('mobiles/wish/index','location');
@@ -103,7 +105,7 @@ class wish extends MY_Controller{
                 );
                 if($data['status'] == '10000'){
                     $this->session->set_userdata($data['data']);
-                    $data['data']['is_invested'] = $this->c->count('borrow_payment',array('where'=>array('uid'=>$data['data']['uid'],'type'=>1)));
+                    $data['data']['is_invested'] = 1;//$this->c->count('borrow_payment',array('where'=>array('uid'=>$data['data']['uid'],'type'=>1)));
                 }
             }else{
                 $data = array('status'=>'10001','msg'=>'验证码不正确!');

@@ -14,6 +14,7 @@
             list_one     : false, //是否单循环  否则多循环
             page_id      : 1,      //如果分页 默认第一页
             page_size    : false, //分页的每页数量 默认不分页
+            page_size_first    : false, //分页的第一页
             data         : '',     //数据来源 json 或链接
             param        : {},     //数据来源参数{}
             value_func   : {},     //循环中用到的数据处理函数 {'键名':function(键值){ return 处理后的键值;}
@@ -308,6 +309,7 @@
                 }
             }else{
                 this.temp_data.ajax_data = '';
+                this.temp_data.ajax_url = this.option.data;
                 var ajax_params = this.option.param;
                 var that = this;
                 this.temp_data.ajax_no_data = false;
@@ -315,17 +317,17 @@
 
                 if(this.option.page_size > 0){
                     ajax_params.page_id   = this.option.page_id;
-                    ajax_params.page_size = this.option.page_size;
-                    this.option.data += this.option.data.indexOf('?')>-1?'&page_id='+this.option.page_id:'?page_id='+this.option.page_id;
-                    this.option.data += '&page_size='+this.option.page_size;
-                    this.option.data += '&per_page='+((this.option.page_id-1)*this.option.page_size);
-                    this.option.data += '&limit='+this.option.page_size;
+                    ajax_params.page_size = this.option.page_id==1&&this.option.page_size_first>0?this.option.page_size_first:this.option.page_size;
+                    this.temp_data.ajax_url += this.temp_data.ajax_url.indexOf('?')>-1?'&page_id='+this.option.page_id:'?page_id='+this.option.page_id;
+                    this.temp_data.ajax_url += '&page_size='+(this.option.page_id==1&&this.option.page_size_first>0?this.option.page_size_first:this.option.page_size);
+                    this.temp_data.ajax_url += '&per_page='+((this.option.page_id-1)*(this.option.page_id==1&&this.option.page_size_first>0?this.option.page_size_first:this.option.page_size)-(this.option.page_size_first?this.option.page_size-this.option.page_size_first:0));
+                    this.temp_data.ajax_url += '&limit='+(this.option.page_id==1&&this.option.page_size_first>0?this.option.page_size_first:this.option.page_size);
                 }
                 this.temp_data.ajax_fail = false;
                 this.temp_data.ajax_over = false;
                 $.ajax({
                     type    : 'POST',
-                    url     : that.option.data,
+                    url     : that.temp_data.ajax_url,
                     data    : ajax_params,
                     btn     : that.option.btn,
                     dataType: 'json',
@@ -345,9 +347,9 @@
                         }else{
                             if(result && result.data.length){
                                 that.temp_data.links = result.links || '';
-                                that.temp_data.page_num_max = result.total&&that.option.page_size?Math.ceil(result.total/that.option.page_size):false;
+                                that.temp_data.page_num_max = result.total&&that.option.page_size?Math.ceil(result.total/(that.option.page_id==1&&that.option.page_size_first>0?that.option.page_size_first:that.option.page_size)):false;
                                 that.temp_data.ajax_data = result.data;
-                                if(that.option.page_size > 0 && result.data.length < that.option.page_size){
+                                if(that.option.page_size > 0 && result.data.length < (that.option.page_id==1&&that.option.page_size_first>0?that.option.page_size_first:that.option.page_size)){
                                     that.temp_data.ajax_no_more = true;
                                 }
                             }else {
@@ -375,7 +377,7 @@
                 var html = that.html_data.html.clone();
 
                 $(html).find(":first").addClass("loop"); //为循环的html item 加上loop class
-                v['key'] = that.option.page_size*(that.option.page_id-1)+i+1;
+                v['key'] = (that.option.page_id==1&&that.option.page_size_first>0?that.option.page_size_first:that.option.page_size)*(that.option.page_id-1)+i+1;
                 for(var key in v){
                     var val = v[key];
                     //使用数据处理函数
