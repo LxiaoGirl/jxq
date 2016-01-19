@@ -59,7 +59,7 @@
         <!--左侧-->
         <div class="main_l product">
             <ul>
-                <li>
+                <!--<li>
                     <h1>聚保宝<a href="https://www.juxueqiu.com/index.php/invest/index?c=4" class="fr">查看全部项目 > </a></h1>
                     <div class="product_body">
                         <div class="top">
@@ -87,22 +87,23 @@
                                 <button class="ls button1" onclick="window.location.href='https://www.juxueqiu.com/index.php/invest/detail_jbb?type_code=JBB04'">马上投资</button>
                             </div>
                         </div>
-<!--                        <div class="corner"></div>-->
+                       <div class="corner"></div>
                     </div>
-                </li>
+                </li>-->
                 <?php if($category): ?>
-                <h1>
+                <!--<h1>
                     <ul class="sy_xm_tit">
-                    <?php foreach($category as $k=>$v):?>
-                            <li <?php if($k==0): ?>class="active"<?php endif; ?> data-cat-id="<?php echo $v['cat_id']; ?>"><?php echo $v['category']; ?></li>
-                    <?php endforeach;?>
-                    <a href="<?php echo site_url('invest/index?c=1') ?>" class="fr all-project-tag">查看全部项目 > </a>
+                    <?php /*foreach($category as $k=>$v):*/?>
+                            <li <?php /*if($k==0): */?>class="active"<?php /*endif; */?> data-cat-id="<?php /*echo $v['cat_id']; */?>"><?php /*echo $v['category']; */?></li>
+                    <?php /*endforeach;*/?>
+                    <a href="<?php /*echo site_url('invest/index?c=1') */?>" class="fr all-project-tag">查看全部项目 > </a>
                     </ul>
-                </h1>
+                </h1>-->
                 <?php foreach($category as $key=>$val):?>
                     <?php if($val['project']):?>
-                        <li class="bidi <?php if($key==0): ?>active<?php endif; ?>">
+                        <li class=" <?php if($key==0): ?>active<?php endif; ?>"><!--class = bidi-->
                             <?php  foreach($val['project'] as $k=>$v): ?>
+                                <h1><?php echo $v['category'];; ?><a href="<?php echo site_url('invest/index?c='.$v['cat_id']) ?>" class="fr">查看全部项目 > </a></h1>
                             <div class="product_body">
                                 <div class="top">
                                     <div class="title fl"><a href="<?php echo site_url('invest/detail?borrow_no='.$v['borrow_no']); ?>"><?php echo $v['subject']; ?></a></div>
@@ -256,14 +257,14 @@
 	seajs.use(['jquery','sys','slider','wsb_sys'],function(){
 		tab($(".lcdrb"));
         //标地TAB
-        $('.sy_xm_tit').find('li').click(function(){
+        /*$('.sy_xm_tit').find('li').click(function(){
             $(this).addClass('active');
             $(this).siblings().removeClass('active');
             var i=$(this).index();
             $('.bidi').hide();
             $('.bidi').eq(i).fadeIn();
             $('.all-project-tag').attr('href','/index.php/invest/index?c='+$(this).data('catId'));
-        });
+        });*/
         //标地TAB
 		$(function(){
             //倒计时处理

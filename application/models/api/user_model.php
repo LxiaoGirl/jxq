@@ -353,7 +353,7 @@ class User_model extends CI_Model{
 	 * @param array $attachment 相关资料附件
 	 * @return array
 	 */
-	public function company_apply($uid=0,$attachment=array()){
+	public function company_apply($uid=0){
 		$temp = array();
 		$data = array('name'=>'企业账户申请','status'=>'10001','msg'=>'服务器繁忙请稍后重试!','data'=>array());
 
@@ -368,26 +368,6 @@ class User_model extends CI_Model{
 		}
 		if($temp['user_info']['clientkind'] != '-3' && $temp['user_info']['clientkind'] != '-5'){
 			$data['msg'] = '该用户当前状态不能进行企业认证资料提交!';
-			return $data;
-		}
-		if( !$attachment){
-			$data['msg'] = '提交的资料信息为空!';
-			return $data;
-		}
-		if( !isset($attachment['company_name']) || $attachment['company_name']==''){
-			$data['msg'] = '公司名称不能为空!!';
-			return $data;
-		}
-		if( !isset($attachment['company_code']) || $attachment['company_code']==''){
-			$data['msg'] = '公司注册码不能为空!!';
-			return $data;
-		}
-		if( !isset($attachment['company_bank_name']) || $attachment['company_bank_name']==''){
-			$data['msg'] = '公司开户银行不能为空!!';
-			return $data;
-		}
-		if( !isset($attachment['company_bank_account']) || $attachment['company_bank_account']==''){
-			$data['msg'] = '公司开户银行账号不能为空!!';
 			return $data;
 		}
 		$temp['balance'] = $this->_get_user_balance($uid);
@@ -408,11 +388,6 @@ class User_model extends CI_Model{
 		if($temp['card']){
 			$this->card_bind($uid,$temp['card']['company_bank_account']);
 		}*/
-		$temp['attachment_save'] = $this->set_user_extend_info($uid,10,$attachment);
-		if($temp['attachment_save']['status'] != '10000'){
-			$data['msg'] = $temp['attachment_save']['msg'];
-			return $data;
-		}
 		//冻结申请金额
 		$this->db->trans_start();
 		$temp['query'] = $this->c->update(self::user,array('where'=>array('uid'=>$uid)),array('clientkind'=>'-4'));

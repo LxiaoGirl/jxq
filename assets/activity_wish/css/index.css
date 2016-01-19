@@ -218,6 +218,7 @@ p.dlt font{
 .posab p a{
     color: #fcff00;
     font-size: 1.2rem;
+    padding-bottom: 1rem;
 }
 .posab p.pxcywtl{
     text-align: left;
@@ -405,7 +406,7 @@ button.ding{
     background: #333;
     color: #fff;
     line-height: 3rem;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     border-radius: 0.4rem;
-    padding: 1rem;
+    padding: 0.4rem;
 }

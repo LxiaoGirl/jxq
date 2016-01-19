@@ -90,15 +90,29 @@ class Login extends MY_Controller{
 					$this->input->set_cookie($cookie);
 				}
 
+				//企业注册成功时 显示成功页面
+				if($data['data']['clientkind'] == '2'){
+					$log = $this->c->count('user_log',array(
+							'where'=>array(
+								'uid'=>$this->session->userdata('uid'),
+								'module'=>'company_apply_success'
+							)
+					));
+					if( !$log){
+						$this->user->_add_user_log('company_apply_success','企业账户申请-成功',$this->session->userdata('uid'),$this->session->userdata('user_name'));
+						$data['url'] = site_url('login/company_apply_result');
+					}
+				}
+
 				//处理登录成功后的跳转
 				if($this->session->userdata('login_redirect_url')){
-					$data['url'] = $this->session->userdata('login_redirect_url');
+					if( !isset($data['url']) && !$data['url'])$data['url'] = $this->session->userdata('login_redirect_url');
 					$this->session->set_userdata(array('login_redirect_url'=>false));
 				}else{
 					if(in_array($data['data']['clientkind'],array('-2','-3','-4','-5'))){
 						$data['url'] = site_url('login/company_apply');
 					}else{
-						$data['url'] = site_url();
+						if( !isset($data['url']) && !$data['url'])$data['url'] = site_url();
 					}
 				}
 			}
@@ -349,13 +363,7 @@ class Login extends MY_Controller{
 	public function company_apply(){
 		//ajax处理部分
 		if($this->input->is_ajax_request() == TRUE){
-			$data_info = array(
-				'company_name'=>$this->input->post('company_name',true),
-				'company_code'=>$this->input->post('company_code',true),
-				'company_bank_name'=>$this->input->post('company_bank_name',true),
-				'company_bank_account'=>$this->input->post('company_bank_account',true),
-			);
-			$data = $this->user->company_apply($this->session->userdata('uid'),$data_info);
+			$data = $this->user->company_apply($this->session->userdata('uid'));
 			if($data['status'] == '10000'){
 				$this->session->set_userdata(array('balance'=>$data['data'],'clientkind'=>'-4'));
 			}
@@ -367,16 +375,19 @@ class Login extends MY_Controller{
 		//如果登录用户类型 不是-2【已企业注册但未填资料和提交文件实名开户等】 -3【已实名开户但未提交资料和申请】 -5【后台审核未通过 重新提交】跳转走回主页
 		//未登录则跳到登录登录后返回
 		if($this->session->userdata('uid') > 0){
-			if( !in_array(profile('clientkind'),array('-2','-3','-4','-5')))redirect('home');
+			if(in_array(profile('clientkind'),array('-4','-5')))redirect('login/company_apply_result');
+			if( !in_array(profile('clientkind'),array('-2','-3')))redirect('home');
 		}else{
 			redirect('login');
 		}
 		//查询用户已提交的部分资料信息
-		$data['info'] = $this->user->get_user_extend_info($this->session->userdata('uid'),10);
-		if($data['info']['status'] == '10000' && $data['info']['data']){
-			$data['info'] = $data['info']['data'];
-		}else{
-			$data['info'] = array();
+		$data['info'] = $this->user->get_user_extend_info($this->session->userdata('uid'),10)['data'];
+		if( !$data['info'])$data['info'] = array();
+
+		$data['page'] = 3;
+		if(isset($data['info']['company_name'])){
+			$data['page'] = 4;
+			if(isset($data['info']['business_license']) && isset($data['info']['account_permit']) && isset($data['info']['nric_copy']))$data['page'] = 5;
 		}
 
 		//获取余额信息
@@ -389,6 +400,85 @@ class Login extends MY_Controller{
 		$this->load->view('passport/company_apply',$data);
 	}
 
+	/**
+	 * 审核结果-通过 未通过 审核中
+	 */
+	public function company_apply_result(){
+		if($this->session->userdata('uid') > 0){
+			if(in_array(profile('clientkind'),array('-2','-3')))redirect('login/company_apply');
+			if( !in_array(profile('clientkind'),array('-4','-5')) && profile('clientkind') != 2)redirect('home');
+		}else{
+			redirect('login');
+		}
+
+		//查询用户已提交的部分资料信息
+		$data['info'] = $this->user->get_user_extend_info($this->session->userdata('uid'),10)['data'];
+		if( !$data['info'])$data['info'] = array();
+
+		$data['error_msg'] = profile('registration_status');
+		$this->load->view('passport/company_apply_result',$data);
+	}
+
+	/**
+	 * ajax获取定单号
+	 */
+	public function ajax_get_recharge_no(){
+		$data['data'] = urlencode(authcode($this->c->transaction_no(self::recharge, 'recharge_no')));
+		exit(json_encode($data));
+	}
+
+	/**
+	 * ajax保存公司信息
+	 */
+	public function ajax_set_company_info(){
+		$data = $this->user->real_name($this->input->post('real_name',true),$this->input->post('nric',true),$this->session->userdata('uid'),true);
+
+		if($data['status'] == '10000'){
+			$this->session->set_userdata($data['data']);
+			$data_info = array(
+				'company_name'=>$this->input->post('company_name',true)?$this->input->post('company_name',true):'',
+				'company_code'=>$this->input->post('company_code',true)?$this->input->post('company_code',true):'',
+				'company_bank_name'=>$this->input->post('company_bank_name',true)?$this->input->post('company_bank_name',true):'',
+				'company_bank_account'=>$this->input->post('company_bank_account',true)?$this->input->post('company_bank_account',true):'',
+			);
+			if($data_info['company_name']==''){
+				$data['msg'] = '公司名称不能为空!';
+				$data['status'] = '10001';
+				exit(json_encode($data));
+			}
+			if($data_info['company_code']==''){
+				$data['msg'] = '公司注册码不能为空!';
+				$data['status'] = '10001';
+				exit(json_encode($data));
+			}
+			if($data_info['company_bank_name']==''){
+				$data['msg'] = '公司开户银行不能为空!';
+				$data['status'] = '10001';
+				exit(json_encode($data));
+			}
+			if($data_info['company_bank_account']==''){
+				$data['msg'] = '公司开户银行账号不能为空!';
+				$data['status'] = '10001';
+				exit(json_encode($data));
+			}
+
+			$data = $this->user->set_user_extend_info($this->session->userdata('uid'),10,$data_info);
+		}
+
+		exit(json_encode($data));
+	}
+
+	/**
+	 * 重新提交处理
+	 */
+	public function ajax_company_apply_retry(){
+		$this->c->delete('user_info',array('where'=>array('uid'=>$this->session->userdata('uid'),'type'=>10)));
+		$this->c->update('user',array('where'=>array('uid'=>$this->session->userdata('uid'),'clientkind'=>'-5')),array('clientkind'=>'-3'));
+		$this->session->set_userdata('clientkind',$this->c->get_one('user',array('select'=>'clientkind','where'=>array('uid'=>$this->session->userdata('uid')))));
+		$data['status'] = '10000';
+		$this->user->_add_user_log('company_apply_retry','企业账户申请-重新提交',$this->session->userdata('uid'),$this->session->userdata('user_name'));
+		exit(json_encode($data));
+	}
 	/**
 	 * 公司注册附件上传ajax
 	 */

@@ -20,15 +20,14 @@
 <body>
 <!--	加载头部文件-->
 <?php $this->load->view('common/head'); ?>
-    <div id="step-3" class="row gs_zc1 gs_zc2 step">
+    <div id="step-3" <?php if($page != 3):?>style="display: none;"<?php endif; ?> class="row gs_zc1 gs_zc2 step">
     <h1>企业用户注册</h1>
     <img src="../../../../assets/images/passport/step_3.jpg" alt="">
-    <?php if(profile('clientkind') == '-5'): ?><h4 style="text-align: center;color: red;">审核未通过:<?php echo profile('registration_status'); ?></h4><?php endif; ?>
     <form action="" onsubmit="return false;">
         <h2>企业信息</h2>
         <p>
             <span class="z1">企业名称</span>
-            <span class="z2"><input type="text" class="ifhav" name="company_name" id="company-name" placeholder="请输入企业名称" maxlength="50" value="<?php echo isset($info['company_name'])?$info['company_name']:''; ?>" <?php if($info['company_name']  && profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?>></span>
+            <span class="z2"><input type="text" class="ifhav" name="company_name" id="company-name" placeholder="请输入企业名称" maxlength="50" value="<?php echo isset($info['company_name'])?$info['company_name']:''; ?>" <?php if(profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?>></span>
             <span class="z3"></span>
         </p>
         <p class="tip">
@@ -38,7 +37,7 @@
         </p>
         <p>
             <span class="z1">营业执照注册号</span>
-            <span class="z2"><input type="text" class="ifhav" name="company_code" id="company-code" placeholder="请输入营业执照注册号" maxlength="25" value="<?php echo isset($info['company_code'])?$info['company_code']:''; ?>" <?php if($info['company_code']  && profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?> /></span>
+            <span class="z2"><input type="text" class="ifhav" name="company_code" id="company-code" placeholder="请输入营业执照注册号" maxlength="25" value="<?php echo isset($info['company_code'])?$info['company_code']:''; ?>" <?php if(profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?> /></span>
             <span class="z3"></span>
         </p>
         <p class="tip">
@@ -48,7 +47,7 @@
         </p>
         <p>
             <span class="z1">企业开户银行</span>
-            <span class="z2"><input type="text" class="ifhav" name="company_bank_name" id="company-bank-name" placeholder="请输入企业开户银行" maxlength="20" value="<?php echo isset($info['company_bank_name'])?$info['company_bank_name']:''; ?>" <?php if($info['company_bank_name']  && profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?>/></span>
+            <span class="z2"><input type="text" class="ifhav" name="company_bank_name" id="company-bank-name" placeholder="请输入企业开户银行" maxlength="20" value="<?php echo isset($info['company_bank_name'])?$info['company_bank_name']:''; ?>" <?php if(profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?>/></span>
             <span class="z3"></span>
         </p>
         <p class="tip">
@@ -58,7 +57,7 @@
         </p>
         <p>
             <span class="z1">银行账号</span>
-            <span class="z2"><input type="text" class="ifhav" name="company_bank_account" id="company-bank-account" placeholder="请输入企业开户银行账号" value="<?php echo isset($info['company_bank_account'])?$info['company_bank_account']:''; ?>" <?php if($info['company_bank_account']  && profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?> /></span>
+            <span class="z2"><input type="text" class="ifhav" name="company_bank_account" id="company-bank-account" placeholder="请输入企业开户银行账号" value="<?php echo isset($info['company_bank_account'])?$info['company_bank_account']:''; ?>" <?php if(profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?> /></span>
             <span class="z3"></span>
         </p>
         <p class="tip">
@@ -95,10 +94,9 @@
     </form>
 </div>
 
-    <div id="step-4" style="display: none;" class="row gs_zc1 gs_zc3 step">
+    <div id="step-4" <?php if($page != 4):?>style="display: none;"<?php endif; ?> class="row gs_zc1 gs_zc3 step">
     <h1>企业用户注册</h1>
     <img src="../../../../assets/images/passport/step_4.jpg" alt="">
-    <?php if(profile('clientkind') == '-5'): ?><h4 style="text-align: center;color: red;">审核未通过:<?php echo profile('registration_status'); ?></h4><?php endif; ?>
     <form action="" onsubmit="return false;">
         <p>
             <span class="z1">企业营业执照</span>
@@ -162,17 +160,17 @@
     </form>
 </div>
 
-    <div id="step-5" style="display: none;" class="row gs_zc4 gs_zc5 step">
+    <div id="step-5" <?php if($page != 5):?>style="display: none;"<?php endif; ?> class="row gs_zc4 gs_zc5 step">
     <h1>企业用户注册</h1>
     <img src="../../../../assets/images/passport/step_5.jpg" alt="">
     <div style="overflow:hidden;">
         <div class="fl">
             <p class="p1">以下为您提交的注册信息</p>
             <div>
-                <p>企业名称：<font class="company-name-show"><?php echo $info['company_name']; ?></font></p>
-                <p>营业执照号码：<font class="company-code-show"><?php echo $info['company_code']; ?></font></p>
-                <p>企业开户银行：<font class="company-bank-name-show"><?php echo $info['company_bank_name']; ?></font></p>
-                <p>企业银行账号：<font class="company-bank-account-show"><?php echo $info['company_bank_account']; ?></font></p>
+                <p>企业名称：<font class="company-name-show"><?php echo isset($info['company_name'])?$info['company_name']:''; ?></font></p>
+                <p>营业执照号码：<font class="company-code-show"><?php echo isset($info['company_code'])?$info['company_code']:''; ?></font></p>
+                <p>企业开户银行：<font class="company-bank-name-show"><?php echo isset($info['company_bank_name'])?$info['company_bank_name']:''; ?></font></p>
+                <p>企业银行账号：<font class="company-bank-account-show"><?php echo isset($info['company_bank_account'])?$info['company_bank_account']:''; ?></font></p>
             </div>
         </div>
         <div class="fr">
@@ -187,8 +185,8 @@
         <div class="popnr">
             <p class="title">申请提示<font class="fr close">×</font></p>
             <p>请再次确认您的银行账号信息，一旦提交后，您将无法修改您的开户银行和开户银行账号。</p>
-            <p>开户银行：<font class="company-bank-name-show"><?php echo $info['company_bank_name']; ?></font></p>
-            <p>开户银行账号：<font class="company-bank-account-show"><?php echo $info['company_bank_account']; ?></font></p>
+            <p>开户银行：<font class="company-bank-name-show"><?php echo isset($info['company_bank_name'])?$info['company_bank_name']:''; ?></font></p>
+            <p>开户银行账号：<font class="company-bank-account-show"><?php echo isset($info['company_bank_account'])?$info['company_bank_account']:''; ?></font></p>
             <p class="red">认证费用：300元</p>
             <p><button type="button" class="ls ajax-submit-button" id="recharge-confirm-submit" data-loading-msg="申请提交中...">提交</button></p>
         </div>
@@ -199,10 +197,10 @@
     <h1>企业用户注册</h1>
     <img src="../../../../assets/images/passport/step_5.jpg" alt="">
     <h2>您已成功完成企业注册申请！</h2>
-    <p class="ti411">企业名称：<font class="company-name-show"><?php echo $info['company_name']; ?></font></p>
-    <p class="ti411">营业执照号码：<font class="company-code-show"><?php echo $info['company_code']; ?></font></p>
-    <p class="ti411">企业开户银行：<font class="company-bank-name-show"><?php echo $info['company_bank_name']; ?></font></p>
-    <p class="ti411">企业银行账号：<font class="company-bank-account-show"><?php echo $info['company_bank_account']; ?></font></p>
+    <p class="ti411">企业名称：<font class="company-name-show"><?php echo isset($info['company_name'])?$info['company_name']:''; ?></font></p>
+    <p class="ti411">营业执照号码：<font class="company-code-show"><?php echo isset($info['company_code'])?$info['company_code']:''; ?></font></p>
+    <p class="ti411">企业开户银行：<font class="company-bank-name-show"><?php echo isset($info['company_bank_name'])?$info['company_bank_name']:''; ?></font></p>
+    <p class="ti411">企业银行账号：<font class="company-bank-account-show"><?php echo isset($info['company_bank_account'])?$info['company_bank_account']:''; ?></font></p>
     <p class="tc"><button style="width:250px;" class="ls" type="button" onclick="window.location.href='/index.php/user/user/account_home'">进入个人中心</button></p>
 </div>
 </body>
@@ -214,6 +212,7 @@
         $('.step').hide();
         $('#step-'+num).show();
     };
+    var page = parseInt('<?php echo $page; ?>');
     seajs.use(['jquery','sys','wsb_sys'],function(){
         if(navigator.userAgent.indexOf("MSIE") > -1){
             wsb_alert('ie浏览器暂不支持本页文件上传,请使用谷歌火狐等其他浏览器',10);
@@ -241,8 +240,12 @@
                     $('.pop').fadeOut();
                     $('.popbj').fadeOut();
                 });
-                var company_name='',company_code='',company_bank_name='',company_bank_account='',
-                    company_user_name='<?php echo profile('real_name')?profile('real_name'):''; ?>',company_user_nric='<?php echo profile('nric')?profile('nric'):''; ?>',nric_rz = false;
+                var company_name='<?php echo isset($info['company_name'])?$info['company_name']:''; ?>',
+                    company_code='<?php echo isset($info['company_code'])?$info['company_code']:''; ?>',
+                    company_bank_name='<?php echo isset($info['company_bank_name'])?$info['company_bank_name']:''; ?>',
+                    company_bank_account='<?php echo isset($info['company_bank_account'])?$info['company_bank_account']:''; ?>',
+                    company_user_name='<?php echo profile('real_name')?profile('real_name'):''; ?>',
+                    company_user_nric='<?php echo profile('nric')?profile('nric'):''; ?>',nric_rz = false;
                 var balance = parseFloat('<?php echo isset($balance)?$balance:0; ?>');
                 //ajax上传
                 var jquery_ajax_upload_file = function(id,url,callback){
@@ -358,10 +361,13 @@
                         if(!company_user_nric) return false;
                     }
                     if(nric_rz){goto_page(4);return;}
-                    $.post('/index.php/user/user/real_name',{
+                    $.post('/index.php/login/ajax_set_company_info',{
                         real_name:company_user_name,
                         nric:company_user_nric,
-                        type:'company'
+                        company_name:company_name,
+                        company_code:company_code,
+                        company_bank_name:company_bank_name,
+                        company_bank_account:company_bank_account
                     },function(rs){
                         if(rs.status == '10000'){
                             $('#company-user-name').attr('readonly',true).attr('disabled',true);
@@ -391,7 +397,7 @@
                             if(rs !== false){
                                 if(rs.status == '10000'){
                                     $('#'+$(that).attr('id')+'-flag').val(1);
-                                    $('.'+$(that).attr('id')+'-tips').find('.percent').width('100%');;
+                                    $('.'+$(that).attr('id')+'-tips').find('.percent').width('100%');
                                     $('.'+$(that).attr('id')+'-tips').find('.result').addClass('cg');
                                 }else{
                                     $('.'+$(that).attr('id')+'-tips').find('.result').addClass('sb');
@@ -404,15 +410,15 @@
                 $("#step-4-submit").click(function(){
                     if( !company_name || !company_code || !company_bank_name || !company_bank_account || !company_user_name || !company_user_nric){ goto_page(3);return false;}
                         if($('#business-license-flag').val() == 0){
-                            $('.business-license-tips').html('请选择文件!');
+                            $('.business-license-cssb').html('请选择文件!');
                             return false;
                         }
                         if($('#account-permit-flag').val() == 0){
-                            $('.account-permit-tips').html('请选择文件!');
+                            $('.account-permit-cssb').html('请选择文件!');
                             return false;
                         }
                         if($('#nric-copy-flag').val() == 0){
-                            $('.nric-copy-tips').html('请选择文件!');
+                            $('.nric-copy-cssb').html('请选择文件!');
                             return false;
                         }
                     goto_page(5);
@@ -422,15 +428,10 @@
                 });
                 $("#recharge-confirm-submit").click(function(){
                     if(balance >= 300){
-                        $.post('/index.php/login/company_apply',{
-                            company_name:company_name,
-                            company_code:company_code,
-                            company_bank_name:company_bank_name,
-                            company_bank_account:company_bank_account
-                        },function(rs){
+                        $.post('/index.php/login/company_apply',{},function(rs){
                             if(rs.status == '10000'){
                                 $("#balance").text(rs.data);
-                                goto_page(6);
+                                window.location.href='/index.php/login/company_apply_result';
                             }else{
                                 wsb_alert(rs.msg,2);
                             }
@@ -442,9 +443,13 @@
 
                 //充值刷新
                 var is_auto = true;
-                var refresh_func = function(){
+                var is_autoing = false;
+                var g_recharge_no = '<?php echo $recharge_no; ?>';//全局存储的点单号
+                var rechargeNo;//自动刷新时使用的订单号
+                //手动刷新订单 方法
+                var refresh_func = function(recharge_no){
                     is_auto = false;
-                    $.post('/index.php/user/user/ajax_recharge_auto_refresh',{'recharge_no':'<?php echo $recharge_no; ?>'},function(rs){
+                    $.post('/index.php/user/user/ajax_recharge_auto_refresh',{'recharge_no':recharge_no},function(rs){
                         if(rs.status == '10000'){
                             $("#balance").text(rs.data);
                             balance = rs.data;
@@ -460,15 +465,22 @@
                         }
                     },'json');
                 };
+                //自动刷新订单方法
                 var recharge_auto_refresh = function(recharge_no){
+                    if(is_autoing){ //已经再自动获取里就仅改变订单号
+                        rechargeNo = recharge_no;
+                        return;
+                    }
                     var recharge_fresh_time = 0;
+                    rechargeNo = recharge_no;
                     var refresh_recharge = function(){
                         if( !is_auto){
-                            clearTimeout(recharge_fresh_time);
+                            clearTimeout(recharge_fresh_time);is_autoing=false;
                             return;
                         }
+                        is_autoing = true;
                         $(".recharge-refresh").unbind('click').text('刷新中...').css('color','#CCC');
-                        $.post('<?php echo site_url('user/user/ajax_recharge_auto_refresh'); ?>',{'recharge_no':'<?php echo $recharge_no; ?>'},function(rs){
+                        $.post('/index.php/user/user/ajax_recharge_auto_refresh',{'recharge_no':rechargeNo},function(rs){
                             if(rs.status == '10000'){
                                 $('#balance').html(rs.data);
                                 balance = rs.data;
@@ -484,15 +496,32 @@
                             }).text('刷新余额').css('color','#3cb5ec');
                         },'json');
                     };
-                    //5秒后开始执行刷新
+                    //7秒后开始执行刷新
                     recharge_fresh_time = setTimeout(function(){refresh_recharge();},7000);
                 };
-                $('.recharge-button').click(function(){
+                //充值的点击处理 绑定刷新按钮事件和自动刷新开启 并重新获取订单号
+                var recharge_deal = function(){
+                    var recharge_no_1 = g_recharge_no;
                     $(".recharge-refresh").unbind('click').bind('click',function(){
                         $(".recharge-refresh").unbind('click');
-                        refresh_func();
+                        refresh_func(recharge_no_1);
                     });
-                    recharge_auto_refresh();
+                    recharge_auto_refresh(recharge_no_1);
+                    //一秒后获取新的订单号
+                    var tt1 = setTimeout(function(){
+                        clearTimeout(tt1);
+                        $('.recharge-button').unbind('click').attr('href','javascript:void(0);');
+                        $.post('/index.php/login/ajax_get_recharge_no',{},function(rs){
+                            g_recharge_no = rs.data;
+                            $('.recharge-button').attr('href','/index.php/pay/pay/index?amount=300&recharge_no='+g_recharge_no)
+                            $('.recharge-button').click(function(){
+                                recharge_deal();
+                            });
+                        },'json');
+                    },1000);
+                };
+                $('.recharge-button').click(function(){
+                    recharge_deal();
                 });
             });
         }

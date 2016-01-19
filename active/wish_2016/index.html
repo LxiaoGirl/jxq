@@ -42,19 +42,19 @@
         }
         .con2{
             width: 100%;
-            height: 523px;
+            height: 522px;
             background: url(images/2.jpg)center no-repeat;
         }
         .p2{
             position: absolute;
-            width: 280px;
+            width: 270px;
             height: 150px;
             top: 200px;
             left: 250px;
         }
         .p3{
             position: absolute;
-            width: 280px;
+            width: 270px;
             height: 150px;
             top: 200px;
             left:700px;
@@ -71,21 +71,8 @@
         }
         .con3{
             width: 100%;
-            height: 612px;
+            height: 1087px;
             background: url(images/3.jpg)center no-repeat;
-        }
-        .con4{
-            width: 100%;
-            height: 475px;
-            background: url(images/4.jpg)center no-repeat;
-        }
-        .p4{
-            color: #333;
-            font-size: 14px;
-            line-height: 28px;
-            position: absolute;
-            left: 0px;
-            top: 150px;
         }
         .pop{
             position: fixed;
@@ -135,7 +122,6 @@
         .nr .erm{
             width: 280px;
             height: 280px;
-            background: #000;
             padding: 10px;
             margin-left: 50px;
             margin-top: 10px;
@@ -174,7 +160,7 @@
                 <p class="wz">1.打开微信，点击底部<font>【发现】</font>，然后点击<font>【扫一扫】</font>。</p>
                 <p class="wz">2.扫描下方二维码。</p>
                 <div class="erm">
-                    
+                    <img src="images/cli.jpg" alt="" width="100%">
                 </div>
             </div>
         </div>
@@ -194,22 +180,11 @@
             </div>
             <div class="p3">
                 <p class="p20">获得条件：</p>
-                <p class="p21">投资1000元或以上，返现50元，以红包的形式发放。</p>
+                <p class="p21">注册实名认证后，祝福语和返现20元，以红包的形式发放。</p>
             </div>
         </div>
     </div>
     <div class="con3">
-    </div>
-    <div class="con4">
-        <div class="conn">
-            <p class="p4">1.没有规则没有规则没有规则没有规则没有规则没有规则没有规则；</br>
-            2.没有规则没有规则没有规则没有规则；</br>
-            3.没有规则没有规则没有规则没有规则没有；</br>
-            4.没有规则没有规则没有规则没有规；</br>
-            5.没有规则没有规则没有规则没有规则没有规则；</br>
-            6.没有规则没有规则没有规则；</br>
-            7.本活动最终解释权归聚雪球所有。</p>
-        </div>
     </div>
     <div class="footer">
         <div class="row clearfix">
@@ -273,5 +248,14 @@
     </div>
 </body>
 <script type="text/javascript" src="/assets/js/jquery/jquery-1.8.5.min.js"></script>
-
+<script>
+jQuery(function($) {
+    $('.con1').find('button').click(function(){
+        $('.pop').fadeIn();
+        $('.pop').find('.fr').click(function(){
+            $('.pop').fadeOut();
+        })
+    })
+})
+</script>
 </html>
