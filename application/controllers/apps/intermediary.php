@@ -714,11 +714,12 @@ class Intermediary extends MY_Controller{
         $data = array();
         $uid = $this->session->userdata('uid');
         if($uid){
-            $data = $this->c->get_all(self::user,array('select'=>'user_name,uid,last_date','where'=>array('inviter'=>$uid)));
+            $data = $this->c->get_all(self::user,array('select'=>'user_name,uid,last_date,real_name','where'=>array('inviter'=>$uid)));
             if($data){
                 $sort_arr = array();
                 foreach($data as $k=>$v){
                     $v['amount']       = $this->_get_user_invest_all($v['uid']);
+                    $v['user_name'] = $v['real_name']?$v['real_name']:$v['user_name'];
                     // $v['active_level'] = $this->_get_active_level($v['last_date']);
                     $v['active_level'] = $v['last_date']?date('Y-m-d',$v['last_date']).'<br/>'.date('H:i:s',$v['last_date']):'--';
                     $data[$k]          = $v;
