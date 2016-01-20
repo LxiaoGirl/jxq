@@ -39,7 +39,7 @@
             </p>
             <p>
                 <span class="z1"></span>
-                <span class="z2"><input type="checkbox" checked>我同意<a href="/index.php/about/register_agreement" class="ls">《聚雪球企业用户注册协议》</a></span>
+                <span class="z2"><input type="checkbox" checked>我同意<a href="/index.php/about/register_agreement" class="ls">《聚雪球用户注册协议》</a></span>
                 <span class="z3"></span>
             </p>
             <p>
@@ -140,7 +140,7 @@
                                 break;
                             case '10002':
                                 mobile = '';
-                                wsb_alert(rs.msg,1,'/index.php/login/index?redirect_url=<?php echo urlencode(site_url('login/company_apply')); ?>');
+                                wsb_alert(rs.msg);//,1,'/index.php/login/index?redirect_url=<?php /*echo urlencode(site_url('login/company_apply'));*/ ?>'
                                 break;
                             default:
                                 mobile = '';

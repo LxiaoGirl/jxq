@@ -501,7 +501,8 @@ class Login extends MY_Controller{
 				if($temp['query']){
 					$data = array(
 						'status'=>'10000',
-						'msg'=>'上传成功!'
+						'msg'=>'上传成功!',
+						'data'=>$this->c->get_oss_image($temp['data']['file_path'].$temp['data']['file_name'])
 					);
 				}else{
 					$data = array(

@@ -171,6 +171,19 @@
                 <p>营业执照号码：<font class="company-code-show"><?php echo isset($info['company_code'])?$info['company_code']:''; ?></font></p>
                 <p>企业开户银行：<font class="company-bank-name-show"><?php echo isset($info['company_bank_name'])?$info['company_bank_name']:''; ?></font></p>
                 <p>企业银行账号：<font class="company-bank-account-show"><?php echo isset($info['company_bank_account'])?$info['company_bank_account']:''; ?></font></p>
+                <p>上传的证件：
+                    <font class="">
+                        <a class="business-license-img" href="<?php echo isset($info['business_license'])?$this->c->get_oss_image($info['business_license']):'javascript:void(0);'; ?>" target="_blank">
+                            <img src="<?php echo isset($info['business_license'])?$this->c->get_oss_image($info['business_license']):''; ?>" style="width: 50px;height: 50px;" />
+                        </a>
+                        <a class="account-permit-img" href="<?php echo isset($info['account_permit'])?$this->c->get_oss_image($info['account_permit']):'javascript:void(0);'; ?>" target="_blank">
+                            <img src="<?php echo isset($info['account_permit'])?$this->c->get_oss_image($info['account_permit']):''; ?>" style="width: 50px;height: 50px;" />
+                        </a>
+                        <a class="nric-copy-img" href="<?php echo isset($info['nric_copy'])?$this->c->get_oss_image($info['nric_copy']):'javascript:void(0);'; ?>" target="_blank">
+                            <img src="<?php echo isset($info['nric_copy'])?$this->c->get_oss_image($info['nric_copy']):''; ?>" style="width: 50px;height: 50px;" />
+                        </a>
+                    </font>
+                </p>
             </div>
         </div>
         <div class="fr">
@@ -295,7 +308,7 @@
                     if(company_user_nric  && flag)return;
                     if(/^[0-9]{15,18}$/.test($("#company-user-nric").val())){
                         if(is_nric($("#company-user-nric").val())){
-                            $(".company-user-nric-tip").text('ok!');
+                            $(".company-user-nric-tip").text('格式正确!');
                             company_user_nric = $("#company-user-nric").val();
                         }else{
                             company_user_nric = '';
@@ -303,14 +316,14 @@
                             $("#company-user-nric").focus();
                         }
                     }else{
-			company_user_nric = '';
+			            company_user_nric = '';
                         if(flag)$(".company-user-nric-tip").text('请输入正确格式的身份证号码!');
                     }
                 };
                 var user_name_check = function(flag){
                     if(company_user_name && flag)return;
                     if(/^[\u4E00-\u9FA5]{2,4}$/.test($('#company-user-name').val())){
-                        $(".company-user-name-tip").text('ok!');
+                        $(".company-user-name-tip").text('格式正确!');
                         company_user_name = $("#company-user-name").val();
                     }else{
                         company_user_name = '';
@@ -398,6 +411,7 @@
                                 if(rs.status == '10000'){
                                     $('#'+$(that).attr('id')+'-flag').val(1);
                                     $('.'+$(that).attr('id')+'-tips').find('.percent').width('100%');
+                                    $('.'+$(that).attr('id')+'-img').attr('href',rs.data).find('img').attr('src',rs.data);
                                     $('.'+$(that).attr('id')+'-tips').find('.result').addClass('cg');
                                 }else{
                                     $('.'+$(that).attr('id')+'-tips').find('.result').addClass('sb');
