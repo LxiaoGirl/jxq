@@ -306,7 +306,7 @@
                 //step-3
                 var nric_check = function(flag){
                     if(company_user_nric  && flag)return;
-                    if(/^[0-9]{15,18}$/.test($("#company-user-nric").val())){
+                    //if(/^[0-9]{15,18}$/.test($("#company-user-nric").val())){
                         if(is_nric($("#company-user-nric").val())){
                             $(".company-user-nric-tip").text('格式正确!');
                             company_user_nric = $("#company-user-nric").val();
@@ -315,10 +315,10 @@
                             $(".company-user-nric-tip").text('身份证号码格式不正确!');
                             $("#company-user-nric").focus();
                         }
-                    }else{
-			            company_user_nric = '';
-                        if(flag)$(".company-user-nric-tip").text('请输入正确格式的身份证号码!');
-                    }
+//                    }else{
+//			            company_user_nric = '';
+//                        if(flag)$(".company-user-nric-tip").text('请输入正确格式的身份证号码!');
+//                    }
                 };
                 var user_name_check = function(flag){
                     if(company_user_name && flag)return;
