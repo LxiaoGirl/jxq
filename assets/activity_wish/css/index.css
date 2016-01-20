@@ -126,6 +126,11 @@ div.hdlc p.top{
     top: 0;
     display: none;
 }
+@keyframes myfirst2
+{
+0%   {transform: scale(0.1,0.1);}
+100% {transform: scale(1,1);}
+}
 .popcon{
     width: 100%;
     min-width: 320px;
@@ -136,6 +141,7 @@ div.hdlc p.top{
     width: 90%;
     margin-left: 5%;
     position: relative;
+    animation:myfirst2 0.5s;
 }
 .posab{
     width: 100%;
@@ -155,12 +161,12 @@ em.close{
 }
 .posab p{
     margin: 0 2rem;
-    margin-top: 1.4rem;
+    margin-top: 1rem;
 }
 .posab p.inp{
     background: #fff;
     border-radius: 0.4rem;
-    height: 4rem;
+    height: 3.5rem;
     border:1px solid #ccc;
 }
 .posab p.inp img{
@@ -188,24 +194,24 @@ p.dlt font{
 .posab p.inp input{
     border:none;
     background: none;
-    line-height: 4rem;
+    line-height: 3.5rem;
     font-size: 1.4rem;
     color: #666;
     width: 16rem;
 }
 .yzmtp{
-    height: 4rem;
+    height: 3.5rem;
     width: 25%;
     float: right;
     margin-right:2rem;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
 }
 .yzmtp img{
     width: 100%;
     height: 100%;
 }
 .posab button{
-    margin-top: 2rem;
+    margin-top: 1rem;
     width: 100%;
     line-height: 4rem;
     font-size: 1.6rem;
@@ -348,6 +354,7 @@ p.jzgd{
     background: #e2544a;
     border-radius: 0.6rem;
     position: relative;
+    animation:myfirst2 0.5s;
 }
 .popzlimg{
     position: absolute;
@@ -409,4 +416,86 @@ button.ding{
     font-size: 1.2rem;
     border-radius: 0.4rem;
     padding: 0.4rem;
+}
+.ajx {
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: none;
+    z-index: 9999;
+}
+.ajx_nr {
+    opacity: 0.9;
+    position: fixed;
+    left: 50%;
+    top:50%;
+    width: 14rem;
+    height: 4rem;
+    background: #000;
+    border-radius: 0.8rem;
+    margin-left: -7rem;
+    margin-top: -4rem;
+    animation:myfirst1 0.5s;
+}
+@keyframes myfirst
+{
+0%   {transform: rotate(30deg);}
+100% {transform: rotate(3000deg);}
+}
+@keyframes myfirst1
+{
+0%   {transform: scale(0.1,0.1);}
+100% {transform: scale(1,1);}
+}
+.ajx_logo{
+    position: relative;
+    height: 3rem;
+    width: 3rem;
+    float: left;
+    margin: 0.5rem;
+}
+.ajx_tu {
+    height: 3rem;
+    width: 3rem;
+    animation:myfirst 5s infinite linear ;
+}
+.ajx_tu .ajx_quan{
+    position: absolute;
+    height: 3rem;
+    width: 3rem;
+    border: 0.2rem solid #FFF;
+    border-radius: 50%;
+}
+.four_one {
+    width:2.4rem;
+    height:1.5rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #000;
+    opacity: 0.7;
+}
+
+.ajx_j {
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+    line-height: 3rem;
+    text-align: center;
+    color: #fff;
+    font-size: 2rem;
+}
+
+.ajx_wz {
+    height: 4rem;
+    width: 10rem;
+    line-height: 4rem;
+    float: left;
+    color: #fff;
+    font-size: 2rem;
 }

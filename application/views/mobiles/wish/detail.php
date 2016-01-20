@@ -77,10 +77,9 @@
             </div>
         </div>
     </div>
-    <!--红包选择-->
 </body>
 <script src="/assets/activity_wish/js/jquery-1.8.5.min.js"></script>
-<script src="/assets/js/app/jquery.list_data.1.1.js"></script>
+<script src="/assets/js/app/jquery.list_data.1.2.js"></script>
 <script src="/assets/js/app/wx-1.js"></script>
     <script>
 
@@ -139,7 +138,7 @@
             });
         };
         $(function(){
-            ajax_loading_style(1,1);
+            ajax_loading_style(2,1);
             $(".wish-help").bind('click',function(){
                 wish_help('.wish-help');
             });
@@ -149,7 +148,7 @@
                 page_size:10,
                 page_size_first:2,
                 event_type:'click',
-                show_loading:'img-msg',
+                //show_loading:'img-msg',
                 btn:true,
                 value_func:{
                     add_time:function(v){
