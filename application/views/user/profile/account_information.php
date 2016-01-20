@@ -499,7 +499,7 @@
             }
 			var condition;
 			condition='?name='+name+'&f=1';
-			$.post('/index.php/user/user/Change_name'+condition,{},function(result){
+			$.post('/index.php/user/user/Change_name'+condition,{name:name},function(result){
                 if(result.status == '10000'){
                     $('#new_name').html(result.data);
                     $('#head_user_name_span').html(result.data);

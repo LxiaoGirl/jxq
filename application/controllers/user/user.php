@@ -518,9 +518,9 @@ class User extends Login_Controller{
 	 */
 	public function Change_name(){
 		if($this->input->is_ajax_request() == TRUE){
-			$data = $this->user->Change_name($this->input->get('name',true),$this->session->userdata('uid'));
+			$data = $this->user->Change_name($this->input->post('name',true),$this->session->userdata('uid'));
 			if($data['status'] == '10000'){
-				$this->session->set_userdata(array('user_name'=>$this->input->get('name',true)));
+				$this->session->set_userdata(array('user_name'=>$this->input->post('name',true)));
 			}
 
 			exit(json_encode($data));
