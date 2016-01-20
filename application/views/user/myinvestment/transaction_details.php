@@ -32,24 +32,11 @@
                         onclick="window.location.href='<?php echo site_url('user/user/transaction_details?type=auto&year='); ?>'+document.getElementById('year').value+'&month='+document.getElementById('month').value">自定义</li>
                     <select name="year" id="year">
                         <?php if(date('m') < '6'): ?>
-                        <option value="<?php echo date('Y')-1; ?>" <?php if($year == date('Y')-1): ?>selected<?php endif; ?>><?php echo date('Y'); ?>年</option>
+                        <option value="<?php echo date('Y')-1; ?>" <?php if($year == date('Y')-1): ?>selected<?php endif; ?>><?php echo date('Y')-1; ?>年</option>
                         <?php endif; ?>
-                        <option value="<?php echo date('Y'); ?>" <?php if($year == date('Y')): ?>selected<?php endif; ?>><?php echo date('Y'); ?>年</option>
+                        <option value="<?php echo date('Y'); ?>" <?php if($year == date('Y') || !$year): ?>selected<?php endif; ?>><?php echo date('Y'); ?>年</option>
                     </select>
-                    <select name="moth" id="month">
-
-                            <div id="year-<?php echo date('Y'); ?>" <?php if($year == date('Y')-1): ?> style="display: none;" <?php endif;?>>
-                            <?php for($i=date('m') < '6'?1:date('m')-6,$ym=date('m');$i<=$ym;$i++): ?>
-                                <option value="<?php echo $i; ?>" <?php if($month == $i): ?> selected<?php endif; ?>><?php echo $i; ?>月</option>
-                            <?php endfor;?>
-                            </div>
-
-                            <div id="year-<?php echo date('Y-1'); ?>" <?php if($year == date('Y') || $year == ''): ?> style="display: none;" <?php endif;?>>
-                            <?php if(date('m') < '6'): for($ym=date('m'),$i=6+$ym;$i<=12;$i++): ?>
-                                <option value="<?php echo $i; ?>" <?php if($month == $i): ?> selected<?php endif; ?>><?php echo $i; ?>月</option>
-                            <?php endfor;endif; ?>
-                            </div>
-                    </select>
+                    <select name="moth" id="month"></select>
                 </ul>
                 <ul class="tab_con tab_title_bule">
                     <li class="active">
@@ -87,8 +74,49 @@
 <script type="text/javascript">
     seajs.use(['jquery','sys'],function(){
         tab($('.pre_mon_tra_det'));
+        var m = parseInt('<?php echo date('m'); ?>');
+        var y = parseInt('<?php echo date('Y'); ?>');
+        var y1 = parseInt('<?php echo $year; ?>');
+        var m0 = parseInt('<?php echo $month; ?>');
+        var m1 = '',m2 = '';
+        if(m < 6){
+            for(var i=7+m;i<=12;i++){
+                var str = '';
+                if(y1 == y-1 && i == m0){
+                    str = '<option value="'+i+'" selected>'+i+'</option>';
+                }else{
+                    str= '<option value="'+i+'">'+i+'</option>';
+                }
+                m1 += str;
+            }
+        }
+        for(var j = (m<6?1:m-5);j<=m;j++){
+            var str1 = '';
+            if(y1 == y && j == m0){
+                str1 = '<option value="'+j+'" selected>'+j+'</option>';
+            }else{
+                str1= '<option value="'+j+'">'+j+'</option>';
+            }
+            m2 += str1;
+        }
+        $("#month").html(!y1||y==y1?m2:m1);
+        if($("#month").children().length == 1){
+            $('#month').unbind('click').bind('click',function(){
+                window.location.href='/index.php/user/user/transaction_details?type=auto&year='+$('#year').val()+'&month='+$('#month').val();
+            });
+        }
         $('#year').bind('change',function(){
-           $("#year"+$(this).val()).show().siblings().hide();
+            if($(this).val() == y){
+                $("#month").html(m2);
+            }else{
+                $("#month").html(m1);
+            }
+            $('#month').unbind('click');
+            if($("#month").children().length == 1){
+                $('#month').bind('click',function(){
+                    window.location.href='/index.php/user/user/transaction_details?type=auto&year='+$('#year').val()+'&month='+$('#month').val();
+                });
+            }
         });
         $('#month').bind('change',function(){
            window.location.href='/index.php/user/user/transaction_details?type=auto&year='+$('#year').val()+'&month='+$(this).val();

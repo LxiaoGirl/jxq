@@ -256,6 +256,7 @@ class User extends Login_Controller{
 				'year'=>isset($_GET['year'])?$this->input->get('year',true):'',
 				'month'=>isset($_GET['month'])?$this->input->get('month',true):'',
 		);
+
 		//验证时间段
 		switch($data['type']){
 			case 'd';
@@ -283,6 +284,16 @@ class User extends Login_Controller{
 			case 'auto';
 				if( !$data['year'])$data['year'] = date('Y');
 				if( !$data['month'])$data['month'] = date('m');
+				//过滤
+				if((int)date('m') < 6){
+					for($i=7+(int)date('m');$i<=12;$i++)$temp['date_condition'][date('Y')-1][]=$i;
+					for($i=1,$j=(int)date('m');$i<=$j;$i++)$temp['date_condition'][date('Y')][]=$i;
+				}else{
+					for($j=(int)date('m'),$i=$j-5;$i<=$j;$i++)$temp['date_condition'][date('Y')][]=$i;
+				}
+				if( !isset($temp['date_condition'][$data['year']]))$data['year'] = date('Y');
+				if( !in_array($data['month'],$temp['date_condition'][$data['year']]))$data['month'] = $temp['date_condition'][$data['year']][0];
+
 				$temp['start_time'] = strtotime($data['year'].'-'.$data['month'].'-01'.' 00:00:00');
 				$temp['end_time'] = strtotime(date('Y-m-d H:i:s',$temp['start_time']).' +1 month -1 day');
 				break;
