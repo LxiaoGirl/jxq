@@ -150,3 +150,12 @@
     var g_voice_last_time = parseInt('<?php echo profile('voice_last_send_time')?profile('voice_last_send_time'):0; ?>');
     var g_sms_last_time = parseInt('<?php echo profile('sms_last_send_time')?profile('sms_last_send_time'):0; ?>');
 </script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?5993eeaf965ed221b3064d7673308c4d";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
