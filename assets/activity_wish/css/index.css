@@ -126,11 +126,6 @@ div.hdlc p.top{
     top: 0;
     display: none;
 }
-@keyframes myfirst2
-{
-0%   {transform: scale(0.1,0.1);}
-100% {transform: scale(1,1);}
-}
 .popcon{
     width: 100%;
     min-width: 320px;
@@ -141,7 +136,6 @@ div.hdlc p.top{
     width: 90%;
     margin-left: 5%;
     position: relative;
-    animation:myfirst2 0.5s;
 }
 .posab{
     width: 100%;
@@ -438,17 +432,6 @@ button.ding{
     border-radius: 0.8rem;
     margin-left: -7rem;
     margin-top: -4rem;
-    animation:myfirst1 0.5s;
-}
-@keyframes myfirst
-{
-0%   {transform: rotate(30deg);}
-100% {transform: rotate(3000deg);}
-}
-@keyframes myfirst1
-{
-0%   {transform: scale(0.1,0.1);}
-100% {transform: scale(1,1);}
 }
 .ajx_logo{
     position: relative;
@@ -460,7 +443,6 @@ button.ding{
 .ajx_tu {
     height: 3rem;
     width: 3rem;
-    animation:myfirst 5s infinite linear ;
 }
 .ajx_tu .ajx_quan{
     position: absolute;
@@ -499,3 +481,39 @@ button.ding{
     color: #fff;
     font-size: 2rem;
 }
+/*CSS3动画*/
+@-webkit-keyframes myfirst
+{
+0% {-webkit-transform: rotate(30deg);}
+100%   {-webkit-transform: rotate(3000deg);}
+}
+@-webkit-keyframes myfirst3
+{
+0% {-webkit-transform: scale(0,0);}
+1% {-webkit-transform: scale(0.1,0.1);}
+100%   {-webkit-transform: scale(1,1);}
+}
+.ajx_tu {
+    animation:myfirst 5s infinite linear;
+    -webkit-animation:myfirst 5s infinite linear;
+}
+.ajx_nr {
+    -webkit-animation:myfirst3 0.5s;
+}
+.popnr,.popzl{
+    -webkit-animation:myfirst3 0.5s;
+}
+/*CSS3动画*/
+/*APP*/
+.appdl .tit{
+    text-align: center;
+    font-size: 2rem;
+    line-height: 4rem;
+    color: #fff;
+}
+.appdl .rhlq{
+    font-size: 1.2rem;
+    line-height: 2rem;
+    color: #fff;
+}
+/*APP*/
