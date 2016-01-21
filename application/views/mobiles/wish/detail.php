@@ -138,7 +138,7 @@
             });
         };
         $(function(){
-            ajax_loading_style(2,1);
+            ajax_loading_style(2,1,0.5);
             $(".wish-help").bind('click',function(){
                 wish_help('.wish-help');
             });

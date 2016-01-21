@@ -27,16 +27,19 @@
             up_load      : false, //上拉 加载更多
             up_load_offset: 0,     //上拉 加载更多 拉动距离
             show_loading : false, //是否显示加载中效果
+            loading_func : {},    //加载中效果函数 {start:func(){},end:function(){}}
             unique_key   : false, //数据中唯一键名
             event_type   : 'click',//分页触发事件 默认click
             loading_delay: 0,      //加载中 延迟时间
             list_fadein  : 0,      //单条延迟加载显示
             list_fadein_page_id  : 1,  //单条延迟加载显示 第几页开始
             append       : true,
-            btn          : false  //ajax 触发按钮选择器字符
+            btn          : false,  //ajax 触发按钮选择器字符
+            btn_delay    : 0      //ajax 触发效果延时
         };
         this.option = $.extend(this.option,option || {});
 
+        if(this.option.btn_delay == 0 && this.option.loading_delay > 0)this.option.btn_delay = this.option.loading_delay;
         if(typeof this.option.id == 'string')this.option.id = $('#'+this.option.id);
         if(!this.option.id) return;
 
@@ -228,9 +231,17 @@
                             break;
                         case 'loading':
                             if(flag){
-                                this.option.id.append(this.html_data.loading[0]);
+                                if(typeof this.option.loading_func.start == "function"){
+                                    this.option.loading_func.start();
+                                }else{
+                                    this.option.id.append(this.html_data.loading[0]);
+                                }
                             }else{
-                                this.option.id.find('#loading').remove();
+                                if(typeof this.option.loading_func.end == "function"){
+                                    this.option.loading_func.end();
+                                }else{
+                                    this.option.id.find('#loading').remove();
+                                }
                             }
                             break;
                         case 'error':
@@ -300,21 +311,35 @@
             this._loading('loading',true);
             this._event(false);
 
+            this.temp_data.ajax_data = '';
+            this.temp_data.ajax_url = this.option.data;
+            var ajax_params = this.option.param;
+            var that = this;
+            this.temp_data.ajax_no_data = false;
+            this.temp_data.ajax_no_more = false;
+
             if(typeof this.option.data == 'object'){
-                this.temp_data.ajax_data = this.option.data;
                 if(this.option.list_one){
+                    this.temp_data.ajax_data = this.option.data;
                     this._list_one();
                 }else{
+                    if(this.option.data && this.option.data.data.length){
+                        that.temp_data.links = this.option.data.links || '';
+                        that.temp_data.page_num_max = this.option.data.total&&that.option.page_size?Math.ceil(this.option.data.total/(that.option.page_id==1&&that.option.page_size_first>0?that.option.page_size_first:that.option.page_size)):false;
+                        that.temp_data.ajax_data = this.option.data.data;
+                        if(that.option.page_size > 0 && this.option.data.data.length < (that.option.page_id==1&&that.option.page_size_first>0?that.option.page_size_first:that.option.page_size)){
+                            that.temp_data.ajax_no_more = true;
+                        }
+                    }else {
+                        if(that.option.page_id == 1){
+                            that.temp_data.ajax_no_data = true;
+                        }else{
+                            that.temp_data.ajax_no_more = true;
+                        }
+                    }
                     this._list();
                 }
             }else{
-                this.temp_data.ajax_data = '';
-                this.temp_data.ajax_url = this.option.data;
-                var ajax_params = this.option.param;
-                var that = this;
-                this.temp_data.ajax_no_data = false;
-                this.temp_data.ajax_no_more = false;
-
                 if(this.option.page_size > 0){
                     ajax_params.page_id   = this.option.page_id;
                     ajax_params.page_size = this.option.page_id==1&&this.option.page_size_first>0?this.option.page_size_first:this.option.page_size;
@@ -330,6 +355,7 @@
                     url     : that.temp_data.ajax_url,
                     data    : ajax_params,
                     btn     : that.option.btn,
+                    btn_delay: that.option.btn_delay,
                     dataType: 'json',
                     error   :function(a,b,c){
                         that.temp_data.ajax_over = true;
@@ -2065,7 +2091,7 @@
  * @param end_delay 按钮恢复延时
  */
 var ajax_loading_style = function(type,bg_ch_enable,end_delay){
-    var temp_data = [],ajax_submit_button_load_msg = '提交中...',
+    var temp_data = [],ajax_submit_button_load_msg = '提交中...',layer_index,
     ajax_start_deal = function(str){
         if( str && $(str).length && $(str).get(0).tagName){
             var key = str.substr(1).replace('-','_');
@@ -2113,6 +2139,14 @@ var ajax_loading_style = function(type,bg_ch_enable,end_delay){
                 }
             }
         }
+    },
+    style_start = function(){ //加载效果开启函数
+        //layer_index = layer.load(2);
+        ajax_is_loading(1);
+    },
+    style_stop = function(){//加载效果结束函数
+        //layer.close(layer_index);
+        ajax_is_loading(false);
     };
     $(document).ajaxSend(function(e,x,option){
         switch (parseInt(type)){
@@ -2120,74 +2154,93 @@ var ajax_loading_style = function(type,bg_ch_enable,end_delay){
                 if(option.btn)ajax_start_deal(option.btn);
                 break;
             case 2://遮罩触发
-                //if(layer)layer.load(2);
-                ajax_is_loading(1);
+                if(option.btn != 'enable') {
+                    style_start();
+                }
                 break;
             case 3://自动二选一 优先按钮
                 if(option.btn){
                     ajax_start_deal(option.btn);
                 }else{
-                    //if(layer)layer.load(2);
-                    ajax_is_loading(1);
+                    style_start();
                 }
                 break;
             default://二者全部
                 if(option.btn)ajax_start_deal(option.btn);
-                //if(layer)layer.load(2);
-                ajax_is_loading(1);
+                style_start();
         }
 
     }).ajaxComplete(function(e,x,option){
+        if(option.btn_delay > 0)end_delay=option.btn_delay;
         switch (parseInt(type)){
             case 1://只是按钮触发
                 if(option.btn)ajax_end_deal(option.btn);
                 break;
             case 2://遮罩触发
-                //if(layer)layer.closeAll('loading');
-                if(end_delay >0){
-                    var tt1= setTimeout(function(){clearTimeout(tt1);ajax_is_loading(false);},end_delay*1000);
-                }else{
-                    ajax_is_loading(false);
+                if(option.btn != 'enable'){
+                    if(end_delay >0){
+                        var tt1= setTimeout(function(){clearTimeout(tt1);style_stop();},end_delay*1000);
+                    }else{
+                        style_stop();
+                    }
                 }
                 break;
             case 3://自动二选一 优先按钮
                 if(option.btn){
                     ajax_end_deal(option.btn);
                 }else{
-                    //if(layer)layer.closeAll('loading');
                     if(end_delay >0){
-                        var tt1= setTimeout(function(){clearTimeout(tt1);ajax_is_loading(false);},end_delay*1000);
+                        var tt1= setTimeout(function(){clearTimeout(tt1);style_stop();},end_delay*1000);
                     }else{
-                        ajax_is_loading(false);
+                        style_stop();
                     }
                 }
                 break;
             default://二者全部
                 if(option.btn)ajax_end_deal(option.btn);
-                //if(layer)layer.closeAll('loading');
                 if(end_delay >0){
-                    var tt1= setTimeout(function(){clearTimeout(tt1);ajax_is_loading(false);},end_delay*1000);
+                    var tt1= setTimeout(function(){clearTimeout(tt1);style_stop();},end_delay*1000);
                 }else{
-                    ajax_is_loading(false);
+                    style_stop();
                 }
         }
     });
 };
 
-$('body').find(':first').before('' +
-    '<div class="ajx" id="ajax-loading">' +
-    '<div class="ajx_nr">' +
-    '<div class="ajx_logo">' +
-    '<div class="ajx_tu">' +
-    '<div class="ajx_quan"></div>' +
-    '<div class="four_one"></div>' +
-    '</div>' +
-    '<div class="ajx_j">J</div>' +
-    '</div>' +
-    '<div class="ajx_wz">处理中...</div>' +
-    '</div>' +
-    '</div>' +
-'')
+/*****加载中效果*****/
+var create_link_tag = function(url){
+    var link_el=document.createElement("link");
+    link_el.setAttribute("rel", "stylesheet");
+    link_el.setAttribute("type", "text/css");
+    link_el.setAttribute("href", url);
+    var heads = document.getElementsByTagName("head");
+    if(heads.length)
+        heads[0].appendChild(link_el);
+    else
+        document.documentElement.appendChild(link_el);
+};
+var append_html = function(){
+    $(function(){
+        $('body').find(':first').before('' +
+            '<div class="ajx" id="ajax-loading">' +
+            '<div class="ajx_nr">' +
+            '<div class="ajx_logo">' +
+            '<div class="ajx_tu">' +
+            '<div class="ajx_quan"></div>' +
+            '<div class="four_one"></div>' +
+            '</div>' +
+            '<div class="ajx_j">J</div>' +
+            '</div>' +
+            '<div class="ajx_wz">处理中...</div>' +
+            '</div>' +
+            '</div>' +
+            '');
+    });
+}
+create_link_tag('/assets/css/app/ajax_loading.css');
+//ajax加载效果html
+append_html();
+
 var ajax_is_loading = function(flag){
     if(flag){
         $('#ajax-loading').fadeIn();
@@ -2195,3 +2248,5 @@ var ajax_is_loading = function(flag){
         $('#ajax-loading').fadeOut();
     }
 };
+/*****加载中效果*****/
+

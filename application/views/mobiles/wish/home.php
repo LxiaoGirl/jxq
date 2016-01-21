@@ -127,7 +127,7 @@
             });
         }
         $(function () {
-            ajax_loading_style(2,1);
+            ajax_loading_style(2,1,0.5);
             $(".hbxz").click(function(){
                 wish_type = $(this).data('wishType');
                 wish_name = $(this).data('wishName');

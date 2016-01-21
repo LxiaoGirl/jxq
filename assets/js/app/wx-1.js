@@ -81,6 +81,7 @@ var wx_share = {
                         'ghid' : this.conf.ghid,
                         'url' : window.location.href
                     },
+                    btn:'enable',
                     type : 'POST',
                     dataType :'json',
                     success : function(e){
