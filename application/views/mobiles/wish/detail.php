@@ -126,7 +126,7 @@
                             $('.zlpop').find('.ding').text('我也要许愿').unbind('click').bind('click',function(){
                                 $('.zlpop').fadeOut();
                                 window.location.replace('/index.php/mobiles/wish?inviter_no='+inviter_no);
-                            }).before('<P class="ys" id="no-count">今天机会用进,明天再来吧</p>');
+                            }).before('<P class="ys" id="no-count">今天机会用尽,明天再来吧</p>');
                         }
                         $('.zlpop').fadeIn();
                     }else{
