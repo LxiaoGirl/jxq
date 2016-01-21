@@ -149,7 +149,7 @@
                 page_size_first:2,
                 event_type:'click',
                 //show_loading:'img-msg',
-                btn:true,
+//                btn:true,
                 value_func:{
                     add_time:function(v){
                         var now = Date.parse(new Date())/1000;

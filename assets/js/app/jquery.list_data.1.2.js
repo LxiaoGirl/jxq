@@ -2154,7 +2154,7 @@ var ajax_loading_style = function(type,bg_ch_enable,end_delay){
                 if(option.btn)ajax_start_deal(option.btn);
                 break;
             case 2://遮罩触发
-                if(option.btn != 'enable') {
+                if(option.btn !== true) {
                     style_start();
                 }
                 break;
@@ -2177,7 +2177,7 @@ var ajax_loading_style = function(type,bg_ch_enable,end_delay){
                 if(option.btn)ajax_end_deal(option.btn);
                 break;
             case 2://遮罩触发
-                if(option.btn != 'enable'){
+                if(option.btn !== true){
                     if(end_delay >0){
                         var tt1= setTimeout(function(){clearTimeout(tt1);style_stop();},end_delay*1000);
                     }else{
