@@ -27,11 +27,11 @@ class Activity_wish_model extends CI_Model{
 	);
 	//助力失败的描述语句
 	protected $_description_fail = array(
-		'你是猴子请来的逗逼，来一圈啥也没帮上',
-		'狗带，真心不是故意的，这次没成功，我会再接再厉哒',
-		'损的就是你，不要再怀疑，就是没有帮你助力哦',
-		'静悄悄的来，不带走一片云彩，丝毫没有给朋友助力',
-		'世界这么大，认识你真不幸，竟然没有给我助力'
+		'你是猴子请来的逗逼，来一圈啥也没帮上~',
+		'狗带，真心不是故意的，这次没成功，我会再接再厉哒!',
+		'损的就是你，不要再怀疑，就是没有帮你助力哦!',
+		'静悄悄的来，不带走一片云彩，丝毫没有给朋友助力!',
+		'世界这么大，认识你真不幸，竟然没有给我助力!'
 	);
 
 	const wish_start_time = '2016-01-05 10:00:00';//许愿开始时间
@@ -384,9 +384,10 @@ class Activity_wish_model extends CI_Model{
 	protected function _get_help_description($now_ranking=0,$new_ranking=0){
 		if($now_ranking && $new_ranking){
 			if($new_ranking > $now_ranking){
-				$str = sprintf($this->_description_success[array_rand($this->_description_success)],$now_ranking-$now_ranking);
+				$str = sprintf($this->_description_success[rand(0,1)],$now_ranking-$now_ranking);
+//				$str = sprintf($this->_description_success[array_rand($this->_description_success)],$now_ranking-$now_ranking);
 			}else{
-				$str = $this->_description_success[rand(2,count($this->_description_success))];
+				$str = $this->_description_success[rand(2,count($this->_description_success)-1)];
 			}
 		}else{
 			$str = $this->_description_fail[array_rand($this->_description_fail)];
