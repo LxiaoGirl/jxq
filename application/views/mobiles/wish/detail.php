@@ -152,20 +152,26 @@
 //                btn:true,
                 value_func:{
                     add_time:function(v){
-                        var now = Date.parse(new Date())/1000;
+                        var now = parseInt(<?php echo time(); ?>);
                         var space = parseInt(now - v);
                         var str;
-                        if(space < 10){
-                            str = '刚刚';
-                        }else if(space < 60){
-                            str = space+'秒前';
-                        }else if(space < 3600){
-                            str = (Math.floor(space/60))+'分钟前';
-                        }else if(space < 24*3600){
-                            str = unixtime_style(v,'H:i');
+                        var is_today = new Date(parseInt(v) * 1000).getDate()==new Date(now*1000).getDate()?1:0;
+                        if(is_today){
+                            if(space < 10){
+                                str = '刚刚';
+                            }else if(space < 60){
+                                str = space+'秒前';
+                            }else if(space < 3600){
+                                str = (Math.floor(space/60))+'分钟前';
+                            }else if(space < 24*3600){
+                                str = unixtime_style(v,'H:i');
+                            }else{
+                                str = unixtime_style(v,'Y-m-d H:i');
+                            }
                         }else{
                             str = unixtime_style(v,'Y-m-d H:i');
                         }
+
                         return str;
                     }
                 }
