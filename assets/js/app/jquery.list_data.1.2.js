@@ -2240,12 +2240,18 @@ var append_html = function(){
 create_link_tag('/assets/css/app/ajax_loading.css');
 //ajax加载效果html
 append_html();
-
+var ajax_is_loading_time = 0;
 var ajax_is_loading = function(flag){
     if(flag){
+        ajax_is_loading_time = new Date().getTime();
         $('#ajax-loading').fadeIn();
     }else{
-        $('#ajax-loading').fadeOut();
+        var now_space  = new Date().getTime()- ajax_is_loading_time;
+        if(now_space < 1000){//保证加载显示的动画能有足够的时间
+            var tt2 = setTimeout(function(){ clearTimeout(tt2);$('#ajax-loading').fadeOut();},1000-now_space);
+        }else{
+            $('#ajax-loading').fadeOut();
+        }
     }
 };
 /*****加载中效果*****/
