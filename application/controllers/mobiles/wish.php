@@ -88,6 +88,9 @@ class wish extends MY_Controller{
 
         $data['title'] = $this->_title[array_rand($this->_title)];
 
+        $data['is_self'] = 'no';
+        if($data['wish']['openid'] == $this->session->userdata('openid'))$data['is_self'] = 'yes';
+
         $this->load->view('mobiles/wish/detail',$data);
     }
 

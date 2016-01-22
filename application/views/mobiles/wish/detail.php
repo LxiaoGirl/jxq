@@ -133,14 +133,29 @@
                         $('.zlpop').find('.popzlimg>img').attr('src','/assets/activity_wish/images/17.png');
                         $('.zlpop').find('.hs').html(rs.msg);
                         $('.zlpop').fadeIn();
+                        if(rs.status == '10004'){
+                            $('.zlpop').find('.ding').text('确定').unbind('click').bind('click',function(){
+                                $('.zlpop').fadeOut();
+                            });
+                        }
                     }
                 }
             });
         };
+        var is_self = '<?php echo $is_self; ?>';
         $(function(){
             ajax_loading_style(2,1,0.5);
             $(".wish-help").bind('click',function(){
-                wish_help('.wish-help');
+                if(is_self == 'yes'){
+                    $('.zlpop').find('.popzlimg>img').attr('src','/assets/activity_wish/images/17.png');
+                    $('.zlpop').find('.hs').html('分享给好友吧,自己不能为自己助力!');
+                    $('.zlpop').find('.ding').text('确定').unbind('click').bind('click',function(){
+                        $('.zlpop').fadeOut();
+                    });
+                    $('.zlpop').fadeIn();
+                }else{
+                    wish_help('.wish-help');
+                }
             });
             $(".help-log").list_data({
                 data:'/index.php/mobiles/wish/ajax_get_help_log',
