@@ -55,7 +55,7 @@
     </table>
 </div>
 </body>
-<?php $this->load->view('common/mobiles/app_footer') ?>
+<?php $this->load->view('common/apps/app_footer') ?>
 <script>
     $(function () {
         $("td a").on('tap', function () {

@@ -329,6 +329,19 @@ class Home extends MY_Controller{
     }
 
     /**
+     *2016-1-18  Colin新增，用户查询三方账户信息
+     */
+    public function third_party(){
+
+		$uid = $this->session->userdata('uid');
+
+        $data = $this->c->get_row(self::user,array('select'=>'real_name,firmid,vaccid','where'=>array('uid'=>$uid)));
+
+        $this->load->view(self::dir.'third_party',$data);
+    }
+	
+	
+    /**
      *实名认证
      */
     public function real_name(){
@@ -1531,7 +1544,7 @@ public function ajax_get_redbagdata(){
         redirect('mobiles/home/index','location');
     }
 
-
+/***************************聚宝宝自动投*****************************************/
     /**
      * 聚宝宝管理
      */
@@ -1543,6 +1556,64 @@ public function ajax_get_redbagdata(){
      * 自动投设置
      */
     public function my_auto_invest(){
-        $this->load->view(self::dir.'my_auto_invest');
+        $data = $this->app->automatic_judge();
+        if($data){
+            $this->auto_info();
+        }else{
+            $this->auto_start();
+        }
+    }
+
+    /**
+     * 自动投开启界面
+     */
+    public function auto(){
+        $data = $this->app->automatic_judge();
+        if($data){
+            $this->auto_info();
+        }else{
+            $this->auto_start();
+        }
+    }
+
+
+    /**
+     * 自动投开启界面
+     */
+    public function auto_start(){
+        $this->load->view(self::dir.'auto');
+    }
+
+    /**
+     * 自动投设置界面/修改
+     */
+    public function auto_form(){
+        $data['automatic_info'] = $this->app->automatic_info();
+        $data['product'] = $this->app->product_info();
+        $this->load->view(self::dir.'auto_form',$data);
+    }
+
+    /**
+     * 自动投关闭
+     */
+    public function auto_info(){
+        $data['automatic_info'] = $this->app->automatic_info();
+        $this->load->view(self::dir.'auto_info',$data);
+    }
+
+    /**
+     * 自动投提交
+     */
+    public function auto_sub(){
+        $data = $this->app->auto_form(0);
+        exit($data);
+    }
+
+    /**
+     * 自动投提交
+     */
+    public function auto_close(){
+        $data = $this->app->auto_form(1);
+        exit($data);
     }
 }

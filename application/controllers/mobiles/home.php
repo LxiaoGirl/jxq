@@ -51,6 +51,7 @@ class Home extends MY_Controller{
         $this->load->model('api/project_model','project_api'); //2.0版项目相关model
         $this->load->model('api/cash_model','cash_api');       //2.0版资金相关model
         $this->load->model('api/commons_model','commons_api'); //2.0版公共数据相关model
+		$this->load->model('api/other_model','other_api'); //2.0版其他相关model
     }
 
 
@@ -136,7 +137,158 @@ class Home extends MY_Controller{
     }
 
 
-    /***********************--主页和项目相关--*************************************************************************/
+    /**
+     * 自动投开启界面
+     */
+    public function auto(){
+		$data = $this->app->automatic_judge();
+		if($data){
+			$this->auto_info();
+		}else{
+			$this->auto_start();
+		}
+    }
+
+
+    /**
+     * 自动投开启界面
+     */
+    public function auto_start(){
+        $this->load->view(self::dir.'auto');
+    }
+
+    /**
+     * 自动投设置界面/修改
+     */
+    public function auto_form(){
+		$data['automatic_info'] = $this->app->automatic_info();
+		$data['product'] = $this->app->product_info();
+        $this->load->view(self::dir.'auto_form',$data);
+    }
+
+    /**
+     * 自动投关闭
+     */
+    public function auto_info(){
+		$data['automatic_info'] = $this->app->automatic_info();
+        $this->load->view(self::dir.'auto_info',$data);
+    }
+
+    /**
+     * 自动投提交
+     */
+    public function auto_sub(){	
+		$data = $this->app->auto_form(0);
+        exit($data);
+    }
+
+    /**
+     * 自动投提交
+     */
+    public function auto_close(){
+		$data = $this->app->auto_form(1);
+        exit($data);
+	}
+
+
+/************************************--聚保宝投资页面相关--***********************************************/
+	/**
+     *聚保宝主页
+     */
+    public function jbb(){
+		$data['project'] = $this->project_api->jbb_dtl_list();
+		if(!empty($data['project']['data'])){
+				foreach($data['project']['data'] as $k => $v){
+					$jbb_all_invest = $this->cash_api->jbb_all_invest($v['type_code']);//累计投资
+					$jbb_nums = $this->project_api->jbb_nums($v['type_code']);//累计入团
+					$data['project']['data'][$k]['jbb_all_invest'] = $jbb_all_invest['data']['jbb_all_invest'];
+					$data['project']['data'][$k]['jbb_nums'] = $jbb_nums['data']['jbb_nums'];
+				}
+			}
+        $this->load->view(self::dir.'jbb',$data);
+    }
+	/**
+     *聚保宝投资页面
+     */
+    public function jbb_add(){
+        $this->load->view(self::dir.'jbb_add');
+    }
+	/**
+     *聚保宝投资列表
+     */
+    public function jbb_invest_list(){	
+		$type_code =  $this->input->get('type_code',TRUE);
+		$data['detail_jbb'] =$this->project_api->detail_jbb_list($type_code,0,15);
+        $this->load->view(self::dir.'jbb_invest_list',$data);
+    }
+
+	
+	/**
+     *聚保宝投资列表到底部刷新
+     */
+    public function jbb_invest_list_add(){
+		$type_code =  $this->input->get('type_code',TRUE);
+		$per_page =  $this->input->get('page_id',TRUE);
+		if($this->input->is_ajax_request() == TRUE){
+			$data =$this->project_api->detail_jbb_list($type_code,$per_page,15);
+			exit(json_encode($data));
+		}
+    }
+	/**
+     *聚保宝投资页面
+     */
+    public function jbb_invest(){
+		$data = $temp =array();
+
+		$temp['type_code'] = $this->input->get('type_code',TRUE)?$this->input->get('type_code',TRUE):'';
+		if($temp['type_code'] == '')redirect('','location');
+		$data['jbb_all_invest'] = $this->cash_api->jbb_all_invest($temp['type_code']);//累计投资
+		$data['jbb_all_Earn'] = $this->cash_api->jbb_all_Earn($temp['type_code']);//累计赚取
+		$data['jbb_nums'] = $this->project_api->jbb_nums($temp['type_code']);//累计入团
+		$data['jbb_invest_nums'] = $this->project_api->jbb_invest_nums($temp['type_code']);//分散投资
+		$data['jbb'] = $this->project_api->jbb($temp['type_code']);//聚保宝产品
+		$data['jbb_list'] = $this->project_api->jbb_list($temp['type_code']);//聚保宝产品标的
+		$data['total'] = $this->project_api->detail_jbb_list($temp['type_code']);
+		if($data['total']['status']==10000){
+			$data['total'] = $data['total']['data']['total'];
+		}
+		//获取余额
+		if($this->session->userdata('uid')){
+			$temp['balance'] = $this->cash_api->get_user_balance($this->session->userdata('uid'));
+			if($temp['balance']['status'] == '10000'){
+				$data['balance'] = $temp['balance']['data']['balance'];
+			}
+		}else{
+			$data['balance'] = 0;
+		}
+
+		unset($temp);
+
+        $this->load->view(self::dir.'jbb_invest',$data);
+    }
+	/**
+     *聚保宝标的信息
+     */
+    public function jbb_subject(){
+		$temp['type_code'] = $this->input->get('type_code',TRUE)?$this->input->get('type_code',TRUE):'';
+		$data['details'] = $this->other_api->jbb_details($temp['type_code']);
+        $this->load->view(self::dir.'jbb_subject',$data);
+    }
+
+	/**
+     *聚保宝标的信息
+     */
+    public function ajax_jbb_sub(){
+		if($this->input->is_ajax_request() == TRUE){
+			$amount =  $this->input->post('amount',TRUE);
+			$security =  $this->input->post('security',TRUE);
+			$type_code =  $this->input->post('type_code',TRUE);
+			$data =  $this->project_api->jbb_invest($type_code,$this->session->userdata('mobile'),$security,$amount);
+			exit(json_encode($data));
+		}
+    }
+
+/***********************--主页和项目相关--*************************************************************************/
     /**
      *主页
      */
@@ -344,6 +496,18 @@ class Home extends MY_Controller{
         $this->load->view(self::dir.'profile');
     }
 
+	 /**
+     *2016-1-18  Colin新增，用户查询三方账户信息
+     */
+    public function third_party(){
+
+		$uid = $this->session->userdata('uid');
+
+        $data = $this->c->get_row(self::user,array('select'=>'real_name,firmid,vaccid','where'=>array('uid'=>$uid)));
+
+        $this->load->view(self::dir.'third_party',$data);
+    }
+	
     /**
      *实名认证的显示和ajax处理
      */

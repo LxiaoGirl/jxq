@@ -20,6 +20,8 @@ class App_model extends CI_Model{
 	const redbag = 'cdb_redbag';   //活动表
 	const authcode = 'authcode';   //验证码
 	const payment_jbb = 'borrow_payment_jbb';   //聚保宝 投资表
+	const automatic = 'user_automatic';   //自动投表
+	
 
     public function __construct(){
         parent::__construct();
@@ -1436,5 +1438,178 @@ class App_model extends CI_Model{
     }
 
 
+    /**
+     * 自动投设置1-7
+     */
+    public function auto_form($status = ''){
+        $query = FALSE;
+		$temp  = array();
+		$data = '服务器繁忙,请稍候在尝试！';
+		$temp['uid'] = $this->session->userdata('uid');
+		if($temp['uid']==''||$temp['uid']==0){
+			return '请登录后再操作！';
+		}
+		$temp['statue']=$status;
+		if($temp['statue']==0){
+			$temp['mode']=$this->input->get('mode',true);
+			if( ! empty($temp['uid']))
+			{
+				$balance=$this->_get_user_balance($temp['uid']);
+				if($temp['mode']==2) $temp['pzed']=$this->input->get('pe',true);else $temp['pzed']=$balance;
+				$temp['data'] = array(
+						'allamount' => $this->_get_allinvest($temp['uid']),//投资总额
+						'uid'  => $temp['uid'],
+						'balance'  => $balance,//可用余额
+						'dateline' => time(),//操作时间
+						'statue'  => '1',//按钮状态（1启动，0关闭）
+						'type'    => $this->input->get('type',true),//项目类型（0是全部类型）
+						'sy_min' => $this->input->get('sy',true),//收益最小
+						'jk_max'      => $this->input->get('qx',true),//期限最大
+						'pzsj_start'     => strtotime( $this->input->get('qx_start',true)),//配置期限开始
+						'pzsj_end'     => strtotime( $this->input->get('qx_end',true)),//配置期限结束
+						'mode'     => $temp['mode'],//投资模式
+						'balance_ye'     => $temp['pzed'],//可用配置余额
+						'balance_ze'      =>$temp['pzed']//配置总额
+				);
 
+				$temp['where'] = array('where' => array('uid' => $temp['uid']));
+				$temp['datas'] = $this->c->get_row(self::automatic, $temp['where']);
+				if($temp['datas']['uid']!=''){
+					$query = $this->c->update(self::automatic, $temp['where'], $temp['data']);
+				}else
+				{
+					$query = $this->c->insert(self::automatic, $temp['data']);
+
+				}
+
+			}
+		}
+		else{
+			$temp['data'] = array(
+					'automatic_type' => '2'//自动投设置
+			);
+			$temp['where'] = array('where' => array('uid' => $temp['uid'],'automatic_type'=>1));
+			$query = $this->c->update(self::payment, $temp['where'], $temp['data']);
+			$temp['data'] = array(
+					'statue'    => '0'//投标状态
+			);
+			$temp['where'] = array('where' => array('uid' => $temp['uid']));
+			$query = $this->c->update(self::automatic, $temp['where'], $temp['data']);
+		}
+		if($query){
+			$data = 'ok';
+		}
+		unset($temp);
+		return $data;
+    }
+
+
+
+
+	/**
+	 * 获取自动投详情
+	 *$uid 用户uid
+	 */
+	public function automatic_info(){
+		$temp = array();
+		$temp['uid'] = $this->session->userdata('uid');
+		if( ! empty($temp['uid']))
+		{
+			$temp['where'] = array('where'  => array('uid' => $temp['uid']));
+			$data = $this->c->get_row(self::automatic, $temp['where']);
+		}else{
+			$data = '非法操作！';
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+
+	/**
+	 * 获取自动投详情
+	 *$uid 用户uid
+	 */
+	public function automatic_judge(){
+		$temp = array();
+		$temp['uid'] = $this->session->userdata('uid');
+		if( ! empty($temp['uid']))
+		{
+			$temp['where'] = array('where'  => array('uid' => $temp['uid'],'statue' => 1));
+			$data = $this->c->get_row(self::automatic, $temp['where']);
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+
+	/**
+     * 获得产品分类
+     */
+    public function product_info(){
+        $temp = array();
+		
+		$temp['where'] = array(
+				'select'   => '*'
+            );
+		$data = $this->c->get_all(self::cate, $temp['where']);
+
+        unset($temp);
+        return $data;
+    }
+
+
+
+	/**
+	 * 获取会员余额
+	 *
+	 * @access private
+	 * @param  intege $uid 会员ID
+	 * @return float
+	 */
+
+	private function _get_user_balance($uid = 0)
+	{
+		$balance = 0;
+		$temp    = array();
+
+		if( ! empty($uid))
+		{
+			$temp['where'] = array(
+					'select'   => 'balance',
+					'where'    => array('uid' => (int)$uid),
+					'order_by' => 'id desc'
+			);
+
+			$balance = (float)$this->c->get_one(self::flow, $temp['where']);
+		}
+
+		unset($temp);
+		return $balance;
+	}
+
+
+
+	/**
+	 * 获取总投资金额
+	 *
+	 */
+
+	private function _get_allinvest($uid='')
+	{
+		$allinvest=0;
+		if( ! empty($uid))
+		{
+
+			$temp['where'] = array('select' => 'sum(amount)', 'where' => array('type' => '1','status' => '1','uid'=>$uid));
+
+			$allinvest = $this->c->get_one(self::payment, $temp['where']);
+		}
+		if($allinvest==null){
+			$allinvest=0;
+		}
+		unset($temp);
+		return $allinvest;
+	}
 }

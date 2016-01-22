@@ -89,7 +89,8 @@ class Pay_model extends CI_Model
      * @return array
      */
 	public function vpost($data){
-    $url='http://pasy.catainfo.com:9446/paysnet/PayInterfaceI';// 提交网关地址
+   // $url='http://pasy.catainfo.com:9446/paysnet/PayInterfaceI';// 提交网关地址
+    $url='http://59.46.93.78:9446/paysnet/PayInterfaceI';// 提交网关地址
     $curl = curl_init(); // 启动一个CURL会话
     curl_setopt($curl, CURLOPT_URL, $url); // 要访问的地址
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); // 对认证证书来源的检查

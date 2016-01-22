@@ -1,0 +1,183 @@
+.zdkg{
+    border-bottom: 1px solid #cccccc;
+    background: #fff;
+    margin-bottom: 1rem;
+    position: relative;
+    padding: 1rem 0; 
+}
+.zdkg p{
+    color: #adadad;
+    font-size: 1rem;
+    text-indent: 1rem;
+    line-height: 2rem;
+}
+.tbms p input{
+    width: 1.2rem;
+    height: 1.2rem;
+    position: relative;
+    top: 0.2rem;
+}
+.rq p input{
+    width: 40%;
+    height: 2.4rem;
+    position: relative;
+    top: 0.2rem;
+    border: 1px solid #ccc;
+    border-radius: 0.3rem;
+    margin: 1rem 0;
+}
+.tbms p input:last-child{
+    margin-left: 4rem;
+}
+.zdkg p.tot{
+    color: #1a1a1a;
+    font-size: 1.4rem;
+}
+.zdkg p.tot font{
+    color: #1798fe;
+    font-size: 1.2rem;
+    margin-left: 2rem;
+}
+.zdkg img{
+    position: absolute;
+    width: 4rem;
+    right: 10%;
+    top: 1.5rem;
+    display: none;
+}
+.zdtbsm{
+    border-top: 1px solid #cccccc;
+}
+.zdtbsm .smt{
+    border-bottom: 1px solid #cccccc;
+    position: relative;
+    overflow: hidden;
+}
+.zdtbsm .zdxz{
+    border-bottom: 1px solid #cccccc;
+    position: relative;
+    overflow: hidden;
+}
+.zdtbsm .zdxz{
+    line-height: 3rem;
+    text-indent: 1rem;
+}
+.zdtbsm .zdxz input,.zdtbsm .zdxz select{
+    margin-left: 1rem;
+    border: 1px solid #cccccc;
+    border-radius: 0.4rem;
+    color: #39a4ca;
+    font-size: 1.2rem;
+    width: 2.8rem;
+    text-indent: 0.6rem;
+}
+.zdtbsm .zdxz select{
+    width: 40%;
+}
+.zdtbsm .zdxz input.l{
+    width: 35%;
+}
+.zdtbsm .zdxz.xzh font{
+    color: #39a4ca;
+}
+.zdtbsm h2{
+    font-weight: 100;
+    color: #1a1a1a;
+    font-size: 1.4rem;
+    padding-left: 1rem;
+    line-height: 3.5rem;
+}
+.zdtbsm h2 img{
+    position: absolute;
+    width: 3.5rem;
+    right: 0;
+    top:0;
+}
+.zdtbsm h2 img.rot90{
+    transform:rotate(90deg);
+}
+.zdtbsm p{
+    color: #adadad;
+    font-size: 1rem;
+    line-height: 2rem;
+    padding: 1rem 1rem;
+    display: none;
+}
+button{
+    margin: 10% 1rem;
+    width: 80%;
+    height: 4rem;
+    background: #dc303b;
+    color: #fff;
+    border-radius: 0.4rem;
+    border: none;
+    cursor: pointer;
+}
+.tip{
+    color: #dc303b;
+    font-size: 1rem;
+    padding-left: 1rem;
+    display: none;
+}
+.pop{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(102,102,102,0.6);
+    left: 0;
+    top: 0;
+    z-index: 999;
+    display: none;
+}
+.pop .con{
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 6rem;
+    background: #fff;
+    border-radius: 1rem;
+    padding: 1rem;
+}
+.pop .con h1{
+    color: #1798fe;
+    font-size: 1.6rem;
+    text-indent: 1rem;
+    font-weight: 100;
+}
+.pop .con h1 font{
+    display: inline-block;
+    border-radius: 50%;
+    color: #dd3b45;
+    border:1px solid #dd3b45;
+    width: 1.6rem;
+    height: 1.6rem;
+    text-indent: 0;
+    text-align: center;
+    line-height: 1.5rem;
+    font-size: 1.2rem;
+}
+.pop .con h2{
+    font-weight: 100;
+    font-size: 1.4rem;
+    color: #2b2b2b;
+    line-height: 3rem;
+}
+.pop_y_k p{
+    overflow: hidden;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+.pop p button{
+    margin: 0;
+    padding: 0;
+}
+.pop p button.qr{
+    float: left;
+    width: 40%;
+    margin-right: 10%;
+    margin-left: 5%;    
+}
+.pop p button.qx{
+    float: left;
+    width: 40%;
+    background: #aaa;
+}
