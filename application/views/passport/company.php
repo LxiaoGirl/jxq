@@ -52,10 +52,12 @@
         <div class="pop">
             <div class="popnr">
                 <p class="title">企业用户注册须知<font class="fr close">×</font></p>
-                <p>欢迎您注册聚雪球企业用户，为了让您更好的享受我们为企业用户提供的服务，在注册之前，您需要准备以下材料：</p>
+                <p>欢迎您注册聚雪球企业用户，为了让您更好的享受我们为企业用户提供的服务，在注册之前，您需要准备以下材料：(复印件需加盖公章)</p>
                 <p>1.企业营业执照（扫描件）</p>
                 <p>2.企业银行开户许可证（扫描件）</p>
-                <p class="ie-msg-after">3.企业联系人身份证复印件（正反面）</p>
+                <p>3.企业联系人身份证复印件（正反面）</p>
+                <p>4.企业授权联系人的委托书（加盖公章）</p>
+                <p class="ie-msg-after" style="text-align: center;color:red;">&lt;&lt;<a style="color:red;" href="/assets/attorney.doc">委托书模版下载</a> &gt;&gt;</p>
                 <p><button type="button" class="ls close">我准备好了</button></p>
             </div>
         </div>

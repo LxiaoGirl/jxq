@@ -21,201 +21,223 @@
 <!--	加载头部文件-->
 <?php $this->load->view('common/head'); ?>
     <div id="step-3" <?php if($page != 3):?>style="display: none;"<?php endif; ?> class="row gs_zc1 gs_zc2 step">
-    <h1>企业用户注册</h1>
-    <img src="../../../../assets/images/passport/step_3.jpg" alt="">
-    <form action="" onsubmit="return false;">
-        <h2>企业信息</h2>
-        <p>
-            <span class="z1">企业名称</span>
-            <span class="z2"><input type="text" class="ifhav" name="company_name" id="company-name" placeholder="请输入企业名称" maxlength="50" value="<?php echo isset($info['company_name'])?$info['company_name']:''; ?>" <?php if(profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?>></span>
-            <span class="z3"></span>
-        </p>
-        <p class="tip">
-            <span class="z1"></span>
-            <span class="z2 company-name-tip">需与营业执照上的名称完全一致，信息审核成功后，此项不可修改。</span>
-            <span class="z3"></span>
-        </p>
-        <p>
-            <span class="z1">营业执照注册号</span>
-            <span class="z2"><input type="text" class="ifhav" name="company_code" id="company-code" placeholder="请输入营业执照注册号" maxlength="25" value="<?php echo isset($info['company_code'])?$info['company_code']:''; ?>" <?php if(profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?> /></span>
-            <span class="z3"></span>
-        </p>
-        <p class="tip">
-            <span class="z1"></span>
-            <span class="z2 company-code-tip">请输入15位营业执照注册号或18位的统一社会信用代码，信息审核成功后，此项不可修改。</span>
-            <span class="z3"></span>
-        </p>
-        <p>
-            <span class="z1">企业开户银行</span>
-            <span class="z2"><input type="text" class="ifhav" name="company_bank_name" id="company-bank-name" placeholder="请输入企业开户银行" maxlength="20" value="<?php echo isset($info['company_bank_name'])?$info['company_bank_name']:''; ?>" <?php if(profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?>/></span>
-            <span class="z3"></span>
-        </p>
-        <p class="tip">
-            <span class="z1"></span>
-            <span class="z2 company-bank-name-tip">需与企业银行开户许可证的开户银行完全一致，信息审核成功后，此项不可修改。</span>
-            <span class="z3"></span>
-        </p>
-        <p>
-            <span class="z1">银行账号</span>
-            <span class="z2"><input type="text" class="ifhav" name="company_bank_account" id="company-bank-account" placeholder="请输入企业开户银行账号" value="<?php echo isset($info['company_bank_account'])?$info['company_bank_account']:''; ?>" <?php if(profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?> /></span>
-            <span class="z3"></span>
-        </p>
-        <p class="tip">
-            <span class="z1"></span>
-            <span class="z2 company-bank-account-tip">需与企业银行开户许可证的开户账号完全一致，信息审核成功后，此项不可修改。</span>
-            <span class="z3"></span>
-        </p>
-        <h2>企业联系人资料</h2>
-        <p>
-            <span class="z1">联系人姓名</span>
-            <span class="z2"><input type="text" class="ifhav" name="company_user_name" id="company-user-name" placeholder="请输入企业联系人姓名" maxlength="10" value="<?php echo profile('real_name')?profile('real_name'):''; ?>" <?php if(profile('real_name')  && profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?> /></span>
-            <span class="z3"></span>
-        </p>
-        <p class="tip">
-            <span class="z1"></span>
-            <span class="z2 company-user-name-tip">需与下一步提交的证照信息一致，点击下一步会保存此项信息，成功后不可修改。</span>
-            <span class="z3"></span>
-        </p>
-        <p>
-            <span class="z1">联系人身份证号码</span>
-            <span class="z2"><input type="text" class="ifhav" name="company_user_nric" id="company-user-nric" placeholder="请输入企业联系人身份证号码" maxlength="18" value="<?php echo profile('nric')?profile('nric'):''; ?>"  <?php if(profile('nric')  && profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?> /></span>
-            <span class="z3"></span>
-        </p>
-        <p class="tip">
-            <span class="z1"></span>
-            <span class="z2 company-user-nric-tip">需与下一步提交的证照信息一致，点击下一步会保存此项信息，成功后不可修改。</span>
-            <span class="z3"></span>
-        </p>
-        <p>
-            <span class="z1"></span>
-            <span class="z2 sbut"><button type="button" class="ls ajax-submit-button" id="step-3-submit" data-loading-msg="提交中...">下一步</button></span>
-            <span class="z3"></span>
-        </p>
-    </form>
-</div>
+        <h1>企业用户注册</h1>
+        <img src="../../../../assets/images/passport/step_3.jpg" alt="">
+        <form action="" onsubmit="return false;">
+            <h2>企业信息</h2>
+            <p>
+                <span class="z1">企业名称</span>
+                <span class="z2"><input type="text" class="ifhav" name="company_name" id="company-name" placeholder="请输入企业名称" maxlength="50" value="<?php echo isset($info['company_name'])?$info['company_name']:''; ?>" <?php if(profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?>></span>
+                <span class="z3"></span>
+            </p>
+            <p class="tip">
+                <span class="z1"></span>
+                <span class="z2 company-name-tip">需与营业执照上的名称完全一致，信息审核成功后，此项不可修改。</span>
+                <span class="z3"></span>
+            </p>
+            <p>
+                <span class="z1">营业执照注册号</span>
+                <span class="z2"><input type="text" class="ifhav" name="company_code" id="company-code" placeholder="请输入营业执照注册号" maxlength="25" value="<?php echo isset($info['company_code'])?$info['company_code']:''; ?>" <?php if(profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?> /></span>
+                <span class="z3"></span>
+            </p>
+            <p class="tip">
+                <span class="z1"></span>
+                <span class="z2 company-code-tip">请输入15位营业执照注册号或18位的统一社会信用代码，信息审核成功后，此项不可修改。</span>
+                <span class="z3"></span>
+            </p>
+            <p>
+                <span class="z1">企业开户银行</span>
+                <span class="z2"><input type="text" class="ifhav" name="company_bank_name" id="company-bank-name" placeholder="请输入企业开户银行" maxlength="20" value="<?php echo isset($info['company_bank_name'])?$info['company_bank_name']:''; ?>" <?php if(profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?>/></span>
+                <span class="z3"></span>
+            </p>
+            <p class="tip">
+                <span class="z1"></span>
+                <span class="z2 company-bank-name-tip">需与企业银行开户许可证的开户银行完全一致，信息审核成功后，此项不可修改。</span>
+                <span class="z3"></span>
+            </p>
+            <p>
+                <span class="z1">银行账号</span>
+                <span class="z2"><input type="text" class="ifhav" name="company_bank_account" id="company-bank-account" placeholder="请输入企业开户银行账号" value="<?php echo isset($info['company_bank_account'])?$info['company_bank_account']:''; ?>" <?php if(profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?> /></span>
+                <span class="z3"></span>
+            </p>
+            <p class="tip">
+                <span class="z1"></span>
+                <span class="z2 company-bank-account-tip">需与企业银行开户许可证的开户账号完全一致，信息审核成功后，此项不可修改。</span>
+                <span class="z3"></span>
+            </p>
+            <h2>企业联系人资料</h2>
+            <p>
+                <span class="z1">联系人姓名</span>
+                <span class="z2"><input type="text" class="ifhav" name="company_user_name" id="company-user-name" placeholder="请输入企业联系人姓名" maxlength="10" value="<?php echo profile('real_name')?profile('real_name'):''; ?>" <?php if(profile('real_name')  && profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?> /></span>
+                <span class="z3"></span>
+            </p>
+            <p class="tip">
+                <span class="z1"></span>
+                <span class="z2 company-user-name-tip">需与下一步提交的证照信息一致，点击下一步会保存此项信息，成功后不可修改。</span>
+                <span class="z3"></span>
+            </p>
+            <p>
+                <span class="z1">联系人身份证号码</span>
+                <span class="z2"><input type="text" class="ifhav" name="company_user_nric" id="company-user-nric" placeholder="请输入企业联系人身份证号码" maxlength="18" value="<?php echo profile('nric')?profile('nric'):''; ?>"  <?php if(profile('nric')  && profile('clientkind')=='-4'): ?>readonly disabled<?php endif; ?> /></span>
+                <span class="z3"></span>
+            </p>
+            <p class="tip">
+                <span class="z1"></span>
+                <span class="z2 company-user-nric-tip">需与下一步提交的证照信息一致，点击下一步会保存此项信息，成功后不可修改。</span>
+                <span class="z3"></span>
+            </p>
+            <p>
+                <span class="z1"></span>
+                <span class="z2 sbut"><button type="button" class="ls ajax-submit-button" id="step-3-submit" data-loading-msg="提交中...">下一步</button></span>
+                <span class="z3"></span>
+            </p>
+        </form>
+    </div>
 
     <div id="step-4" <?php if($page != 4):?>style="display: none;"<?php endif; ?> class="row gs_zc1 gs_zc3 step">
-    <h1>企业用户注册</h1>
-    <img src="../../../../assets/images/passport/step_4.jpg" alt="">
-    <form action="" onsubmit="return false;">
-        <p>
-            <span class="z1">企业营业执照</span>
-            <span class="z2">
-                <input type="text" class="ifhav" id="business-license-show" readonly value="<?php echo isset($info['business_license'])?$info['business_license']:''; ?>" />
-                <input type="hidden" id="business-license-flag" value="<?php echo isset($info['business_license'])?1:0; ?>"  />
-            </span>
-            <span class="z3 business-license-tips">
-            <a href="javascript:void(0);" class="green" style="">
-                <?php if(profile('clientkind')=='-4'): ?>等待审核
-                <?php else: ?>
-                <input type="file" name="business_license" id="business-license" class="file-upload"/>选择文件
-                <?php endif; ?>
-            </a>
-            <i><i class="percent"></i></i>
-            <em class="result"></em>
-            </span>
-        </p>
-        <p class="business-license-cssb" style="line-height:20px;"></p>
-        <p>
-            <span class="z1">银行开户许可证</span>
-            <span class="z2">
-                <input type="text" class="ifhav" id="account-permit-show" readonly value="<?php echo isset($info['account_permit'])?$info['account_permit']:''; ?>" />
-                <input type="hidden" id="account-permit-flag" value="<?php echo isset($info['account_permit'])?1:0; ?>"  />
-            </span>
-            <span class="z3 account-permit-tips">
-            <a href="javascript:;" class="green" style="">
-                <?php if(profile('clientkind')=='-4'): ?>等待审核
-                <?php else: ?>
-                <input type="file" name="account_permit" id="account-permit" class="file-upload" />选择文件
-                <?php endif; ?>
-            </a>
-            <i><i class="percent"></i></i>
-            <em class="result"></em>
-            </span>
-        </p>
-        <p class="account-permit-cssb" style="line-height:20px;"></p>
-        <p>
-            <span class="z1">企业联系人身份证复印件</span>
-            <span class="z2">
-                <input type="text" class="ifhav" id="nric-copy-show"  readonly value="<?php echo isset($info['nric_copy'])?$info['nric_copy']:''; ?>" />
-                <input type="hidden" id="nric-copy-flag" value="<?php echo isset($info['nric_copy'])?1:0; ?>"  />
-            </span>
-            <span class="z3 nric-copy-tips">
-            <a href="javascript:;" class="green" style="">
-                <?php if(profile('clientkind')=='-4'): ?>等待审核
-                <?php else: ?>
-                <input type="file" name="nric_copy" id="nric-copy" class="file-upload" />选择文件
-                <?php endif; ?>
-            </a>
-            <i><i class="percent"></i></i>
-            <em class="result"></em>
-            </span>
-        </p>
-        <p class="nric-copy-cssb" style="line-height:20px;"></p>
-        <p>
-            <span class="z1"></span>
-            <span class="z2 sbut"><button type="button" class="hs" onclick="goto_page(3);">上一步</button><button type="button" class="ls" id="step-4-submit">下一步</button></span>
-            <span class="z3"></span>
-        </p>
-    </form>
-</div>
+        <h1>企业用户注册</h1>
+        <img src="../../../../assets/images/passport/step_4.jpg" alt="">
+        <form action="" onsubmit="return false;">
+            <p style="text-align: center;color:red;">注:上传的图片的大小需小于2M</p>
+            <p>
+                <span class="z1">企业营业执照</span>
+                <span class="z2">
+                    <input type="text" class="ifhav" id="business-license-show" readonly value="<?php echo isset($info['business_license'])?$info['business_license']:''; ?>" />
+                    <input type="hidden" id="business-license-flag" value="<?php echo isset($info['business_license'])?1:0; ?>"  />
+                </span>
+                <span class="z3 business-license-tips">
+                <a href="javascript:void(0);" class="green" style="">
+                    <?php if(profile('clientkind')=='-4'): ?>等待审核
+                    <?php else: ?>
+                    <input type="file" name="business_license" id="business-license" class="file-upload"/>选择文件
+                    <?php endif; ?>
+                </a>
+                <i><i class="percent"></i></i>
+                <em class="result"></em>
+                </span>
+            </p>
+            <p class="business-license-cssb" style="line-height:20px;"></p>
+            <p>
+                <span class="z1">银行开户许可证</span>
+                <span class="z2">
+                    <input type="text" class="ifhav" id="account-permit-show" readonly value="<?php echo isset($info['account_permit'])?$info['account_permit']:''; ?>" />
+                    <input type="hidden" id="account-permit-flag" value="<?php echo isset($info['account_permit'])?1:0; ?>"  />
+                </span>
+                <span class="z3 account-permit-tips">
+                <a href="javascript:;" class="green" style="">
+                    <?php if(profile('clientkind')=='-4'): ?>等待审核
+                    <?php else: ?>
+                    <input type="file" name="account_permit" id="account-permit" class="file-upload" />选择文件
+                    <?php endif; ?>
+                </a>
+                <i><i class="percent"></i></i>
+                <em class="result"></em>
+                </span>
+            </p>
+            <p class="account-permit-cssb" style="line-height:20px;"></p>
+            <p>
+                <span class="z1">企业联系人身份证复印件</span>
+                <span class="z2">
+                    <input type="text" class="ifhav" id="nric-copy-show"  readonly value="<?php echo isset($info['nric_copy'])?$info['nric_copy']:''; ?>" />
+                    <input type="hidden" id="nric-copy-flag" value="<?php echo isset($info['nric_copy'])?1:0; ?>"  />
+                </span>
+                <span class="z3 nric-copy-tips">
+                <a href="javascript:;" class="green" style="">
+                    <?php if(profile('clientkind')=='-4'): ?>等待审核
+                    <?php else: ?>
+                    <input type="file" name="nric_copy" id="nric-copy" class="file-upload" />选择文件
+                    <?php endif; ?>
+                </a>
+                <i><i class="percent"></i></i>
+                <em class="result"></em>
+                </span>
+            </p>
+            <p class="nric-copy-cssb" style="line-height:20px;"></p>
+            <p>
+                <span class="z1">企业授权联系人委托书</span>
+                <span class="z2">
+                    <input type="text" class="ifhav" id="proxy-statement-show"  readonly value="<?php echo isset($info['proxy_statement'])?$info['proxy_statement']:''; ?>" />
+                    <input type="hidden" id="proxy-statement-flag" value="<?php echo isset($info['proxy_statement'])?1:0; ?>"  />
+                </span>
+                <span class="z3 proxy-statement-tips">
+                <a href="javascript:;" class="green" style="">
+                    <?php if(profile('clientkind')=='-4'): ?>等待审核
+                    <?php else: ?>
+                    <input type="file" name="proxy_statement" id="proxy-statement" class="file-upload" />选择文件
+                    <?php endif; ?>
+                </a>
+                <i><i class="percent"></i></i>
+                <em class="result"></em>
+                </span>
+            </p>
+            <p class="proxy-statement-cssb" style="line-height:20px;"></p>
+            <p>
+                <span class="z1"></span>
+                <span class="z2 sbut"><button type="button" class="hs" onclick="goto_page(3);">上一步</button><button type="button" class="ls" id="step-4-submit">下一步</button></span>
+                <span class="z3"></span>
+            </p>
+        </form>
+    </div>
 
     <div id="step-5" <?php if($page != 5):?>style="display: none;"<?php endif; ?> class="row gs_zc4 gs_zc5 step">
-    <h1>企业用户注册</h1>
-    <img src="../../../../assets/images/passport/step_5.jpg" alt="">
-    <div style="overflow:hidden;">
-        <div class="fl">
-            <p class="p1">以下为您提交的注册信息</p>
-            <div>
-                <p>企业名称：<font class="company-name-show"><?php echo isset($info['company_name'])?$info['company_name']:''; ?></font></p>
-                <p>营业执照号码：<font class="company-code-show"><?php echo isset($info['company_code'])?$info['company_code']:''; ?></font></p>
-                <p>企业开户银行：<font class="company-bank-name-show"><?php echo isset($info['company_bank_name'])?$info['company_bank_name']:''; ?></font></p>
-                <p>企业银行账号：<font class="company-bank-account-show"><?php echo isset($info['company_bank_account'])?$info['company_bank_account']:''; ?></font></p>
-                <p>上传的证件：
-                    <font class="">
-                        <a class="business-license-img" href="<?php echo isset($info['business_license'])?$this->c->get_oss_image($info['business_license']):'javascript:void(0);'; ?>" target="_blank">
-                            <img src="<?php echo isset($info['business_license'])?$this->c->get_oss_image($info['business_license']):''; ?>" style="width: 50px;height: 50px;" />
-                        </a>
-                        <a class="account-permit-img" href="<?php echo isset($info['account_permit'])?$this->c->get_oss_image($info['account_permit']):'javascript:void(0);'; ?>" target="_blank">
-                            <img src="<?php echo isset($info['account_permit'])?$this->c->get_oss_image($info['account_permit']):''; ?>" style="width: 50px;height: 50px;" />
-                        </a>
-                        <a class="nric-copy-img" href="<?php echo isset($info['nric_copy'])?$this->c->get_oss_image($info['nric_copy']):'javascript:void(0);'; ?>" target="_blank">
-                            <img src="<?php echo isset($info['nric_copy'])?$this->c->get_oss_image($info['nric_copy']):''; ?>" style="width: 50px;height: 50px;" />
-                        </a>
-                    </font>
-                </p>
+        <h1>企业用户注册</h1>
+        <img src="../../../../assets/images/passport/step_5.jpg" alt="">
+        <div style="overflow:hidden;">
+            <div class="fl">
+                <p class="p1">以下为您提交的注册信息</p>
+                <div>
+                    <p>企业名称：<font class="company-name-show"><?php echo isset($info['company_name'])?$info['company_name']:''; ?></font></p>
+                    <p>营业执照号码：<font class="company-code-show"><?php echo isset($info['company_code'])?$info['company_code']:''; ?></font></p>
+                    <p>企业开户银行：<font class="company-bank-name-show"><?php echo isset($info['company_bank_name'])?$info['company_bank_name']:''; ?></font></p>
+                    <p>企业银行账号：<font class="company-bank-account-show"><?php echo isset($info['company_bank_account'])?$info['company_bank_account']:''; ?></font></p>
+                    <p>上传的证件：
+                        <font class="">
+                            <a class="business-license-img" href="<?php echo isset($info['business_license'])?$this->c->get_oss_image($info['business_license']):'javascript:void(0);'; ?>" target="_blank">
+                                <img src="<?php echo isset($info['business_license'])?$this->c->get_oss_image($info['business_license']):''; ?>" style="width: 50px;height: 50px;" />
+                            </a>
+                            <a class="account-permit-img" href="<?php echo isset($info['account_permit'])?$this->c->get_oss_image($info['account_permit']):'javascript:void(0);'; ?>" target="_blank">
+                                <img src="<?php echo isset($info['account_permit'])?$this->c->get_oss_image($info['account_permit']):''; ?>" style="width: 50px;height: 50px;" />
+                            </a>
+                            <a class="nric-copy-img" href="<?php echo isset($info['nric_copy'])?$this->c->get_oss_image($info['nric_copy']):'javascript:void(0);'; ?>" target="_blank">
+                                <img src="<?php echo isset($info['nric_copy'])?$this->c->get_oss_image($info['nric_copy']):''; ?>" style="width: 50px;height: 50px;" />
+                            </a>
+                            <a class="proxy-statement-img" href="<?php echo isset($info['proxy_statement'])?$this->c->get_oss_image($info['proxy_statement']):'javascript:void(0);'; ?>" target="_blank">
+                                <img src="<?php echo isset($info['proxy_statement'])?$this->c->get_oss_image($info['proxy_statement']):''; ?>" style="width: 50px;height: 50px;" />
+                            </a>
+                        </font>
+                    </p>
+                </div>
+            </div>
+            <div class="fr">
+                <p class="p1">当前账户余额：<span id="balance"><?php echo isset($balance)?$balance:'0.00'; ?></span>元 <a class="recharge-button" type="button" href="/index.php/pay/pay/index?amount=300&recharge_no=<?php echo $recharge_no; ?>" target="_blank">充值</a><button type="button" class="recharge-refresh ajax-submit-button" data-loading-msg="刷新中...">刷新余额</button></p>
+                <p class="p2">企业信息审核由第三方公司负责审核，需要收取审核费300元。如果由于您提供的资料错误导致审核失败，再次提交审核时需再次缴纳300元审核费。</p>
             </div>
         </div>
-        <div class="fr">
-            <p class="p1">当前账户余额：<span id="balance"><?php echo isset($balance)?$balance:'0.00'; ?></span>元 <a class="recharge-button" type="button" href="/index.php/pay/pay/index?amount=300&recharge_no=<?php echo $recharge_no; ?>" target="_blank">充值</a><button type="button" class="recharge-refresh ajax-submit-button" data-loading-msg="刷新中...">刷新余额</button></p>
-            <p class="p2">企业信息审核由第三方公司负责审核，需要收取审核费300元。如果由于您提供的资料错误导致审核失败，再次提交审核时需再次缴纳300元审核费。</p>
-        </div>
-    </div>
 
-    <p class="tc"><button class="hs" type="button" onclick="goto_page(4);">上一步</button><button class="ls" type="button" <?php if(profile('clientkind') != '-4'): ?> id="step-5-submit" <?php endif; ?>><?php if(profile('clientkind') == '-4'): ?>等待审核<?php else: ?>提交审核<?php endif; ?></button></p>
-    <div class="popbj recharge-confirm" style="display: none;"></div>
-    <div class="pop recharge-confirm" style="display: none;">
-        <div class="popnr">
-            <p class="title">申请提示<font class="fr close">×</font></p>
-            <p>请再次确认您的银行账号信息，一旦提交后，您将无法修改您的开户银行和开户银行账号。</p>
-            <p>开户银行：<font class="company-bank-name-show"><?php echo isset($info['company_bank_name'])?$info['company_bank_name']:''; ?></font></p>
-            <p>开户银行账号：<font class="company-bank-account-show"><?php echo isset($info['company_bank_account'])?$info['company_bank_account']:''; ?></font></p>
-            <p class="red">认证费用：300元</p>
-            <p><button type="button" class="ls ajax-submit-button" id="recharge-confirm-submit" data-loading-msg="申请提交中...">提交</button></p>
+        <p class="tc"><button class="hs" type="button" onclick="goto_page(4);">上一步</button><button class="ls" type="button" <?php if(profile('clientkind') != '-4'): ?> id="step-5-submit" <?php endif; ?>><?php if(profile('clientkind') == '-4'): ?>等待审核<?php else: ?>提交审核<?php endif; ?></button></p>
+        <div class="popbj recharge-confirm" style="display: none;"></div>
+        <div class="pop recharge-confirm" style="display: none;">
+            <div class="popnr">
+                <p class="title">申请提示<font class="fr close">×</font></p>
+                <p>请再次确认您的银行账号信息，一旦提交后，您将无法修改您的开户银行和开户银行账号。</p>
+                <p>开户银行：<font class="company-bank-name-show"><?php echo isset($info['company_bank_name'])?$info['company_bank_name']:''; ?></font></p>
+                <p>开户银行账号：<font class="company-bank-account-show"><?php echo isset($info['company_bank_account'])?$info['company_bank_account']:''; ?></font></p>
+                <p class="red">认证费用：300元</p>
+                <p><button type="button" class="ls ajax-submit-button" id="recharge-confirm-submit" data-loading-msg="申请提交中...">提交</button></p>
+            </div>
         </div>
     </div>
-</div>
 
     <div id="step-6" style="display: none;" class="row gs_zc4 step">
-    <h1>企业用户注册</h1>
-    <img src="../../../../assets/images/passport/step_5.jpg" alt="">
-    <h2>您已成功完成企业注册申请！</h2>
-    <p class="ti411">企业名称：<font class="company-name-show"><?php echo isset($info['company_name'])?$info['company_name']:''; ?></font></p>
-    <p class="ti411">营业执照号码：<font class="company-code-show"><?php echo isset($info['company_code'])?$info['company_code']:''; ?></font></p>
-    <p class="ti411">企业开户银行：<font class="company-bank-name-show"><?php echo isset($info['company_bank_name'])?$info['company_bank_name']:''; ?></font></p>
-    <p class="ti411">企业银行账号：<font class="company-bank-account-show"><?php echo isset($info['company_bank_account'])?$info['company_bank_account']:''; ?></font></p>
-    <p class="tc"><button style="width:250px;" class="ls" type="button" onclick="window.location.href='/index.php/user/user/account_home'">进入个人中心</button></p>
-</div>
+        <h1>企业用户注册</h1>
+        <img src="../../../../assets/images/passport/step_5.jpg" alt="">
+        <h2>您已成功完成企业注册申请！</h2>
+        <p class="ti411">企业名称：<font class="company-name-show"><?php echo isset($info['company_name'])?$info['company_name']:''; ?></font></p>
+        <p class="ti411">营业执照号码：<font class="company-code-show"><?php echo isset($info['company_code'])?$info['company_code']:''; ?></font></p>
+        <p class="ti411">企业开户银行：<font class="company-bank-name-show"><?php echo isset($info['company_bank_name'])?$info['company_bank_name']:''; ?></font></p>
+        <p class="ti411">企业银行账号：<font class="company-bank-account-show"><?php echo isset($info['company_bank_account'])?$info['company_bank_account']:''; ?></font></p>
+        <p class="tc"><button style="width:250px;" class="ls" type="button" onclick="window.location.href='/index.php/user/user/account_home'">进入个人中心</button></p>
+    </div>
 </body>
 <!--	加载头部文件-->
 <?php $this->load->view('common/footer'); ?>
@@ -400,6 +422,10 @@
 	                    wsb_alert('文件格式不正确,请选择jpg、jpeg、png、gif等格式文件',2);
 	                    return false;
 	                }
+                    if($(this).get(0).files[0].size > 1024*1024*2){
+                        wsb_alert('上传图片大小需小于2M!',2);
+                        return false;
+                    }
                     $('#'+$(that).attr('id')+'-show').val($(that).val());
                     if($(that).val() != ''){
                         $('.'+$(that).attr('id')+'-tips').find('.percent').width('0%');
@@ -423,16 +449,20 @@
                 });
                 $("#step-4-submit").click(function(){
                     if( !company_name || !company_code || !company_bank_name || !company_bank_account || !company_user_name || !company_user_nric){ goto_page(3);return false;}
-                        if($('#business-license-flag').val() == 0){
-                            $('.business-license-cssb').html('请选择文件!');
-                            return false;
-                        }
-                        if($('#account-permit-flag').val() == 0){
-                            $('.account-permit-cssb').html('请选择文件!');
-                            return false;
-                        }
-                        if($('#nric-copy-flag').val() == 0){
-                            $('.nric-copy-cssb').html('请选择文件!');
+                    if($('#business-license-flag').val() == 0){
+                        $('.business-license-cssb').html('请选择文件!');
+                        return false;
+                    }
+                    if($('#account-permit-flag').val() == 0){
+                        $('.account-permit-cssb').html('请选择文件!');
+                        return false;
+                    }
+                    if($('#nric-copy-flag').val() == 0){
+                        $('.nric-copy-cssb').html('请选择文件!');
+                        return false;
+                    }
+                    if($('#proxy-statement-flag').val() == 0){
+                            $('.proxy-statement-cssb').html('请选择文件!');
                             return false;
                         }
                     goto_page(5);

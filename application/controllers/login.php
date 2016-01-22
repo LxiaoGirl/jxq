@@ -385,9 +385,9 @@ class Login extends MY_Controller{
 		if( !$data['info'])$data['info'] = array();
 
 		$data['page'] = 3;
-		if(isset($data['info']['company_name'])){
+		if(isset($data['info']['company_name']) && isset($data['info']['company_code']) && isset($data['info']['company_bank_name']) && isset($data['info']['company_bank_account'])){
 			$data['page'] = 4;
-			if(isset($data['info']['business_license']) && isset($data['info']['account_permit']) && isset($data['info']['nric_copy']))$data['page'] = 5;
+			if(isset($data['info']['business_license']) && isset($data['info']['account_permit']) && isset($data['info']['nric_copy']) && isset($data['info']['proxy_statement']))$data['page'] = 5;
 		}
 
 		//获取余额信息
@@ -479,6 +479,7 @@ class Login extends MY_Controller{
 		$this->user->_add_user_log('company_apply_retry','企业账户申请-重新提交',$this->session->userdata('uid'),$this->session->userdata('user_name'));
 		exit(json_encode($data));
 	}
+
 	/**
 	 * 公司注册附件上传ajax
 	 */
@@ -491,32 +492,41 @@ class Login extends MY_Controller{
 		}else{
 			$dir = 'company_user_attachment/'.$this->session->userdata('uid').'/'; //文件保存路径
 			$file_name = $this->input->post('file_name',true);//file文件名 也是文件保存用到的key值
-			$temp = $this->c->upload($dir,$file_name,'jpg|png|gif|jpeg',$file_name);//执行上传 根据上传配置传到服务器目录或oss目录
-			if($temp['query']){
-				//保存上传信息
-				$temp['query'] = false;
-				if($temp['data'] && $temp['data']['file_name'] && $temp['data']['file_path']){
-					$temp['query'] = $this->user->set_user_extend_info($this->session->userdata('uid'),10,array($file_name=>$temp['data']['file_path'].$temp['data']['file_name']));
-				}
+
+			if($_FILES[$file_name]['size'] > 1024*1024*2){
+				$data = array(
+					'status'=>'10001',
+					'msg'=>'上传失败:上传图片大小需小于2M!'
+				);
+			}else{
+				$temp = $this->c->upload($dir,$file_name,'jpg|png|gif|jpeg',$file_name);//执行上传 根据上传配置传到服务器目录或oss目录
 				if($temp['query']){
-					$data = array(
-						'status'=>'10000',
-						'msg'=>'上传成功!',
-						'data'=>$this->c->get_oss_image($temp['data']['file_path'].$temp['data']['file_name'])
-					);
+					//保存上传信息
+					$temp['query'] = false;
+					if($temp['data'] && $temp['data']['file_name'] && $temp['data']['file_path']){
+						$temp['query'] = $this->user->set_user_extend_info($this->session->userdata('uid'),10,array($file_name=>$temp['data']['file_path'].$temp['data']['file_name']));
+					}
+					if($temp['query']){
+						$data = array(
+							'status'=>'10000',
+							'msg'=>'上传成功!',
+							'data'=>$this->c->get_oss_image($temp['data']['file_path'].$temp['data']['file_name'])
+						);
+					}else{
+						$data = array(
+							'status'=>'10001',
+							'msg'=>'上传失败:信息保存失败'
+						);
+					}
+
 				}else{
 					$data = array(
 						'status'=>'10001',
-						'msg'=>'上传失败:信息保存失败'
+						'msg'=>'上传失败:'.$temp['info']
 					);
 				}
-
-			}else{
-				$data = array(
-					'status'=>'10001',
-					'msg'=>'上传失败:'.$temp['info']
-				);
 			}
+
 		}
 
 		exit(json_encode($data));
