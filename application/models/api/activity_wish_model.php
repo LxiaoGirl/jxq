@@ -385,8 +385,8 @@ class Activity_wish_model extends CI_Model{
 	protected function _get_help_description($now_ranking=0,$new_ranking=0){
 		if($now_ranking && $new_ranking){
 			if($new_ranking > $now_ranking){
-				$str = sprintf($this->_description_success[rand(0,1)],$now_ranking-$now_ranking);
-//				$str = sprintf($this->_description_success[array_rand($this->_description_success)],$now_ranking-$now_ranking);
+				$str = sprintf($this->_description_success[rand(0,1)],$new_ranking-$now_ranking);
+//				$str = sprintf($this->_description_success[array_rand($this->_description_success)],$new_ranking-$now_ranking);
 			}else{
 				$str = $this->_description_success[rand(2,count($this->_description_success)-1)];
 			}
