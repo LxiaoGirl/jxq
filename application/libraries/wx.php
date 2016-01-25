@@ -8,8 +8,8 @@ class CI_wx{
     protected $_appid     = 'wx43bcf839ae10dab4';               //公众号appid
     protected $_appsecret = '34b60a4f8dedd64b363ea4b6ccde7a44'; //公众号appsecret
     protected $_CI        = '';
+    protected $_state     = '';
 
-    const state = '123';
     const code_url  = 'https://open.weixin.qq.com/connect/oauth2/authorize'; //获取code的地址
     const token_url = 'https://api.weixin.qq.com/sns/oauth2/access_token'; //获取全局token openid的地址
     const userinfo_url = 'https://api.weixin.qq.com/sns/userinfo'; //获取userinfo的地址
@@ -18,6 +18,7 @@ class CI_wx{
 
 	function __construct(){
 		$this->_CI = &get_instance();
+        $this->_state = uniqid();
 	}
 
     public function authorization($type='base'){
@@ -44,11 +45,11 @@ class CI_wx{
             return $this->_CI->input->get('code',true);
         }else{
             //取消授权
-            if($type == 'userinfo' && isset($_GET['state']) && $this->_CI->input->get('state') == self::state){
+            if($type == 'userinfo' && isset($_GET['state']) && $this->_CI->input->get('state') == $this->_state){
                 exit();
             }else{
                 $url=$this->get_current_url();
-                redirect(sprintf(self::code_url.'?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=%s#wechat_redirect',$this->_appid,urlencode($url),'snsapi_'.$type,self::state));
+                redirect(sprintf(self::code_url.'?appid=%s&redirect_uri=%s&response_type=code&scope=%s&state=%s#wechat_redirect',$this->_appid,urlencode($url),'snsapi_'.$type,$this->_state));
             }
         }
     }
