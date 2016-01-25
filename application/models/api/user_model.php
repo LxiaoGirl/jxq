@@ -179,6 +179,8 @@ class User_model extends CI_Model{
 				$query = $this->c->insert(self::user, $temp['data']);
 			}
 			if(!empty($query)){
+				$temp['is_bind_inviter'] = $temp['data']['inviter']?true:false;
+				$temp['is_bind_company'] = $temp['data']['company']?true:false;
 				$temp['where'] = array('where' => array('mobile' => $mobile));
 				$temp['data']  = $this->c->get_row(self::user, $temp['where']);
 				if( ! empty($temp['data'])){
@@ -186,6 +188,8 @@ class User_model extends CI_Model{
 					$data['msg']= '恭喜你,你的账号已经注册成功！';
 					$data['data']= $temp['data'];
 					$this->_add_user_log('register','注册',$temp['data']['uid'],$temp['data']['user_name']);
+					if($temp['is_bind_inviter'])$this->_add_user_log('invitation-intermediary','理财师邀请码绑定',$temp['data']['uid'],$temp['data']['user_name']);
+					if($temp['is_bind_company'])$this->_add_user_log('invitation-company','公司邀请码绑定',$temp['data']['uid'],$temp['data']['user_name']);
 				}
 			}
 		}else{
