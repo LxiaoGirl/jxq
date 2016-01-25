@@ -11,7 +11,7 @@
 <div class="row">
     <div class="find_pw">
         <h1>找回密码</h1>
-        <p class="sjhts">短信验证码发送至您的手机<?php echo secret($this->session->userdata('forget_mobile'),4) ?>上，请在输入框内填写您的验证码，若未收到请在倒计时后点击重新发送按钮。</p>
+        <p class="sjhts">短信验证码发送至您的手机<?php echo secret($this->session->userdata('forget_mobile'),4) ?>上，请在输入框内填写您的验证码，若未收到请在倒计时后点击重新发送按钮。<span class="voice-tips"></span></p>
         <form id="reg_2" action="" method="" accept-charset="utf-8" onsubmit="return false;">
         <div class="inp_pit">
             <div class="inp">
@@ -47,7 +47,10 @@ seajs.use(['jquery','sys','jqform','validator','wsb_sys'],function(){
         //INPUT框变色
     $(function(){
 	    //发送短信 处理
-	    $('.fsyzm').send_sms('sms','<?php echo profile("forget_mobile");?>','forget');
+	    $('.fsyzm').send_sms('sms','<?php echo profile("forget_mobile");?>','forget',function(rs){
+            $('.voice-tips').html('.短信接不到?<a href="javascript:void(0);" style="text-decoration: underline;" id="voice">试试语音验证码</a>');
+            $("#voice").send_sms('voice','<?php echo profile("forget_mobile");?>','forget');
+        });
 	    //$('.fsyzm').click();//直接触发
     });
     var pit_3=0;

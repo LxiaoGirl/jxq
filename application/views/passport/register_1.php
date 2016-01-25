@@ -18,7 +18,7 @@
                 <div class="step_2">
                 <form id="reg_2" action="" method="" accept-charset="utf-8" onsubmit="return false;">
                     <div class="title">用户注册</div>
-                    <p class="sjhts">短信验证码发送至您的手机<?php echo secret(profile('register_mobile'),4); ?>上，请在输入框内填写您的验证码，若未收到请在倒计时后点击重新发送按钮。</p>
+                    <p class="sjhts">短信验证码发送至您的手机<?php echo secret(profile('register_mobile'),4); ?>上，请在输入框内填写您的验证码，若未收到请在倒计时后点击重新发送按钮。<span id="voice-tips"></span></p>
                     <div class="inp_pit">
                         <div class="inp">
                             <input class="js_sjyzm" type="text" name="tpyzm" value="" placeholder="输入验证码" maxlength="6" />
@@ -84,7 +84,10 @@
         //INPUT框变色
         //发送短信 处理
         $(function(){
-            $('.fsyzm').send_sms('sms','<?php echo profile("register_mobile");?>','register');
+            $('.fsyzm').send_sms('sms','<?php echo profile("register_mobile");?>','register',function(){
+                $('#voice-tips').html('.短信接不到?<a href="javascript:void(0);" style="text-decoration: underline;" id="voice">试试语音验证码</a>');
+                $("#voice").send_sms('voice','<?php echo profile("register_mobile");?>','register');
+            });
             //$('.fsyzm').click();//直接触发
         });
         var pit_3=0,pit_4=0,pit_5=0,pit_6=0;

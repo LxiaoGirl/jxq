@@ -596,6 +596,8 @@
 					}else{
 						$('#reset_password_explain').html(result.msg);
 					}
+                    $("#reset_password_explain").append('.短信接不到?<a href="javascript:void(0);" style="text-decoration: underline;" id="voice-wjmm">试试语音验证码</a>');
+                    $("#voice-wjmm").send_sms('voice',mobile,'password');
 				});   
         })
 		$("#reset_verification").keyup(function(){
@@ -679,7 +681,8 @@
 				}else{
 					$('#fund_password_explain_one').html(result.msg);
 				}
-				
+                $("#fund_password_explain_one").append('.短信接不到?<a href="javascript:void(0);" style="text-decoration: underline;" id="voice-szzjmm">试试语音验证码</a>');
+                $("#voice-szzjmm").send_sms('voice',mobile,'security');
 			});
         })
 		$("#fund_password_sub").click(function(){
@@ -744,13 +747,11 @@
 				if(result.status=='10000'){
 					$('#fund_password_update_explain_one').html('验证码已发送至您的手机<?php echo secret($data['mobile'],5)?>，请注意查收');
 					dxdjs(_this);
-                    $('#fund_password_update_explain_one').append('<br/>短信接不到？<a href="javascript:void(0);" style="text-decoration: underline;" id="xgzjmm-voice" ' +
-                        'data-wait-time="<?php echo item("sms_space_time")?item("sms_space_time"):60; ?>" '+
-                    'data-last-time="<?php echo profile("voice_last_send_time")?profile("voice_last_send_time"):0; ?>">试试语音验证码</a>');
-                    $("#xgzjmm-voice").send_sms('voice',mobile,'security');
 				}else{
 					$('#fund_password_update_explain_one').html(result.msg);
-				}		
+				}
+                $("#fund_password_update_explain_one").append('.短信接不到?<a href="javascript:void(0);" style="text-decoration: underline;" id="voice-szzjmm">试试语音验证码</a>');
+                $("#voice-szzjmm").send_sms('voice',mobile,'security');
 			});
         })
 		$("#login_password_update_sub").click(function(){
@@ -828,7 +829,8 @@
 				}else{
 					$('#fund_password_forget_explain_one').html(result.msg);
 				}
-				
+                $("#fund_password_forget_explain_one").append('.短信接不到?<a href="javascript:void(0);" style="text-decoration: underline;" id="voice-wjjzmm">试试语音验证码</a>');
+                $("#voice-wjzjmm").send_sms('voice',mobile,'security');
 			});
         })
 		$("#login_password_forget_sub").click(function(){
