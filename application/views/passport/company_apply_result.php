@@ -39,6 +39,7 @@
         <a href="<?php echo $this->c->get_oss_image($info['business_license']); ?>" target="_blank"><img class="ap-img" src="<?php echo $this->c->get_oss_image($info['business_license']); ?>" style="width: 100px;height: 100px;"/></a>
         <a href="<?php echo $this->c->get_oss_image($info['account_permit']); ?>" target="_blank"><img class="ap-img" src="<?php echo $this->c->get_oss_image($info['account_permit']); ?>" style="width: 100px;height: 100px;"/></a>
         <a href="<?php echo $this->c->get_oss_image($info['nric_copy']); ?>" target="_blank"><img class="ap-img" src="<?php echo $this->c->get_oss_image($info['nric_copy']); ?>" style="width: 100px;height: 100px;"/></a>
+        <a href="<?php echo $this->c->get_oss_image($info['proxy_statement']); ?>" target="_blank"><img class="ap-img" src="<?php echo $this->c->get_oss_image($info['proxy_statement']); ?>" style="width: 100px;height: 100px;"/></a>
         </font>
     </p>
     <p class="ti411" style="font-size: 16px;color:red;margin: 10px auto;">

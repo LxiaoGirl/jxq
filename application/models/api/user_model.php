@@ -376,8 +376,8 @@ class User_model extends CI_Model{
 		}
 		$temp['balance'] = $this->_get_user_balance($uid);
 		if($temp['balance'] < 300){
-			$data['msg'] = '你的余额不够认证费用请充值后重试!';
-			return $data;
+//			$data['msg'] = '你的余额不够认证费用请充值后重试!';
+//			return $data;
 		}
 		//处理银行账号信息
 		/*$temp['card'] = array();
@@ -405,7 +405,7 @@ class User_model extends CI_Model{
 				'remarks'  => '企业账号申请费用',
 				'dateline' => time(),
 			);
-			$temp['query'] = $this->c->insert(self::flow, $temp['data']);
+			//$temp['query'] = $this->c->insert(self::flow, $temp['data']);
 		}
 
 		$this->db->trans_complete();

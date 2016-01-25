@@ -98,7 +98,7 @@
         <h1>企业用户注册</h1>
         <img src="../../../../assets/images/passport/step_4.jpg" alt="">
         <form action="" onsubmit="return false;">
-            <p style="text-align: center;color:red;">注:上传的图片的大小需小于2M</p>
+            <p style="text-align: center;color:red;">注:上传的图片的大小需小于2M &lt;&lt;<a style="color:red;text-decoration: underline;" href="/assets/attorney.doc">委托书模版下载</a> &gt;&gt;</p>
             <p>
                 <span class="z1">企业营业执照</span>
                 <span class="z2">
@@ -210,7 +210,8 @@
             </div>
             <div class="fr">
                 <p class="p1">当前账户余额：<span id="balance"><?php echo isset($balance)?$balance:'0.00'; ?></span>元 <a class="recharge-button" type="button" href="/index.php/pay/pay/index?amount=300&recharge_no=<?php echo $recharge_no; ?>" target="_blank">充值</a><button type="button" class="recharge-refresh ajax-submit-button" data-loading-msg="刷新中...">刷新余额</button></p>
-                <p class="p2">企业信息审核由第三方公司负责审核，需要收取审核费300元。如果由于您提供的资料错误导致审核失败，再次提交审核时需再次缴纳300元审核费。</p>
+                <p class="p2">企业信息审核由第三方公司负责审核</p>
+                   <!-- ，需要收取审核费300元。如果由于您提供的资料错误导致审核失败，再次提交审核时需再次缴纳300元审核费。-->
             </div>
         </div>
 
@@ -222,7 +223,7 @@
                 <p>请再次确认您的银行账号信息，一旦提交后，您将无法修改您的开户银行和开户银行账号。</p>
                 <p>开户银行：<font class="company-bank-name-show"><?php echo isset($info['company_bank_name'])?$info['company_bank_name']:''; ?></font></p>
                 <p>开户银行账号：<font class="company-bank-account-show"><?php echo isset($info['company_bank_account'])?$info['company_bank_account']:''; ?></font></p>
-                <p class="red">认证费用：300元</p>
+                <!--<p class="red">认证费用：300元</p>-->
                 <p><button type="button" class="ls ajax-submit-button" id="recharge-confirm-submit" data-loading-msg="申请提交中...">提交</button></p>
             </div>
         </div>
@@ -471,18 +472,18 @@
                     $('.recharge-confirm').fadeIn();
                 });
                 $("#recharge-confirm-submit").click(function(){
-                    if(balance >= 300){
+//                    if(balance >= 300){
                         $.post('/index.php/login/company_apply',{},function(rs){
                             if(rs.status == '10000'){
-                                $("#balance").text(rs.data);
+                                //$("#balance").text(rs.data);
                                 window.location.href='/index.php/login/company_apply_result';
                             }else{
                                 wsb_alert(rs.msg,2);
                             }
                         },'json');
-                    }else{
-                        wsb_alert('余额不足请先充值后来提交!',2)
-                    }
+//                    }else{
+//                        wsb_alert('余额不足请先充值后来提交!',2)
+//                    }
                 });
 
                 //充值刷新
