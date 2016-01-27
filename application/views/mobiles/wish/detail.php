@@ -190,6 +190,7 @@
                 page_size_first:2,
                 event_type:'click',
                 //show_loading:'img-msg',
+                loading_delay:1,
                 //btn:true,
                 btn_hide_first:true,
                 value_func:{
