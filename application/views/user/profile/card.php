@@ -142,8 +142,8 @@
                         </div>
                     </div>
                     <div class="p smrz_p" style="margin-top:10px;">
-                        <button class="send-sms green" style="width: 120px;height: 40px;margin: 0 10px;">发生短信</button>
-                        <button class="send-voice ls" style="width: 120px;height: 40px;margin: 0 10px;">发生语音</button>
+                        <button class="send-sms green" style="width: 120px;height: 40px;margin: 0 10px;">发送短信</button>
+                        <button class="send-voice ls" style="width: 120px;height: 40px;margin: 0 10px;">发送语音</button>
                     </div>
                     <button type="button" style="width: 120px;height: 40px;margin: 10px;" class="card-show-do ajax-submit-button ls" data-loading-msg="查询中..." >显示</button>
                 </div>

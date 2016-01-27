@@ -25,7 +25,12 @@ class CI_wx{
         $code = $this->get_code($type);
         if( !$code)$this->error_info('获取code失败!');
         $data['code'] = $code;
-        $token_openid = $this->get_openid_token($code);
+        $token_openid = $this->get_openid_token($code,false);
+        if($token_openid === false){
+            unset($_GET['code']);
+            unset($_GET['state']);
+            $this->get_code($type);
+        }
         $data['token'] = $token_openid['token'];
         $data['openid'] = $token_openid['openid'];
         if($type == 'userinfo'){
@@ -57,12 +62,17 @@ class CI_wx{
     /**
      * 获取token 和openid
      * @param string $code
+     * @param boolean $showError
      * @return array
      */
-    public function get_openid_token($code=''){
+    public function get_openid_token($code='',$showError=true){
         $rs=$this->get_content(self::token_url.sprintf('?appid=%s&secret=%s&code=%s&grant_type=authorization_code',$this->_appid,$this->_appsecret,$code));
         if(isset($rs['errcode']) && isset($rs['errmsg'])){
-            $this->error_info('code:'.$rs['errcode'].',msg:'.$rs['errmsg']);
+            if($showError){
+                $this->error_info('code:'.$rs['errcode'].',msg:'.$rs['errmsg']);
+            }else{
+                return false;
+            }
         }
         return array('token'=>$rs['access_token'],'openid'=>$rs['openid']);
     }
