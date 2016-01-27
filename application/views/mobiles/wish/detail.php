@@ -21,8 +21,24 @@
     <!-- winphone系统a、input标签被点击时产生的半透明灰色背景怎么去掉 -->
     <meta name="msapplication-tap-highlight" content="no">
     <link rel="stylesheet" href="/assets/activity_wish/css/index.css">
+    <style>
+        .lazy{position: fixed; left: 0; top: 0; width: 100%;height: 100%;background:#fff;z-index: 99999;}
+    </style>
 </head>
 <body style="background:#fff;">
+    <div class="lazy">
+        <div class="ajx_nr">
+            <div class="ajx_logo">
+                <div class="ajx_tu">
+                    <div class="ajx_quan"></div>
+                    <div class="four_one"></div>
+                </div>
+                <div class="ajx_j">J</div>
+            </div>
+            <div class="ajx_wz">处理中...</div>
+        </div>
+    </div>
+
     <div><img src="/assets/activity_wish/images/14.jpg" alt="" width="100%"></div>
     <div>
         <p class="tc sdzlj"><?php echo (mb_strlen($wish['real_name'])==4?mb_substr($wish['real_name'],0,2):mb_substr($wish['real_name'],0,1)).str_repeat('*',mb_strlen($wish['real_name'])==4?2:1); ?>的“
@@ -89,62 +105,72 @@
         var ls_refresh;
         var inviter_no = '<?php echo $wish['inviter_no']?$wish['inviter_no']:($wish['company']?$wish['company']:''); ?>';
         var wish_help = function(src){
+            ajax_is_loading(true);
             $.ajax({
                 url:'/index.php/mobiles/wish/ajax_help',
                 data:{wish_id:'<?php echo $wish['wish_id']; ?>'},
                 dataType:'json',
-                btn:src,
+                btn:true,
                 type:'post',
                 error:function(a,b,c){console.log(a+b+c)},
                 success:function(rs){
-                    $("#no-count").remove();
-                    if(rs.status == '10000'){
-                        $('.zlpop').find('.popzlimg>img').attr('src','/assets/activity_wish/images/18.png');
-                        $('.zlpop').find('.hs').html(rs.msg);
-                        var rs_data = rs.data;
-                        if(rs_data.have_count > 0){
-                            $('.zlpop').find('.ding').text('再顶一次').unbind('click').bind('click',function(){
-                                wish_help(true);
-                            });
+                    ajax_is_loading();
+                    var tt1= setTimeout(function(){
+                        clearTimeout(tt1);
+                        $("#no-count").remove();
+                        if(rs.status == '10000'){
+                            $('.zlpop').find('.popzlimg>img').attr('src','/assets/activity_wish/images/18.png');
+                            $('.zlpop').find('.hs').html(rs.msg);
+                            var rs_data = rs.data;
+                            if(rs_data.have_count > 0){
+                                $('.zlpop').find('.ding').text('再顶一次').unbind('click').bind('click',function(){
+                                    wish_help(true);
+                                });
+                            }else{
+                                $('.zlpop').find('.ding').text('我也要许愿').unbind('click').bind('click',function(){
+                                    $('.zlpop').fadeOut();
+                                    window.location.replace('/index.php/mobiles/wish?inviter_no='+inviter_no);
+                                }).before('<P class="ys" id="no-count">今天机会用尽,明天再来吧</p>');
+                            }
+                            $('.zlpop').fadeIn();
+                            if(typeof ls_refresh == "function")ls_refresh();
+                        }else if(rs.status == '10002'){
+                            $('.zlpop').find('.popzlimg>img').attr('src','/assets/activity_wish/images/17.png');
+                            $('.zlpop').find('.hs').html(rs.msg);
+                            var rs_data = rs.data;
+                            if(rs_data.have_count > 0){
+                                $('.zlpop').find('.ding').text('再顶一次').unbind('click').bind('click',function(){
+                                    wish_help(true);
+                                });
+                            }else{
+                                $('.zlpop').find('.ding').text('我也要许愿').unbind('click').bind('click',function(){
+                                    $('.zlpop').fadeOut();
+                                    window.location.replace('/index.php/mobiles/wish?inviter_no='+inviter_no);
+                                }).before('<P class="ys" id="no-count">今天机会用尽,明天再来吧</p>');
+                            }
+                            $('.zlpop').fadeIn();
                         }else{
-                            $('.zlpop').find('.ding').text('我也要许愿').unbind('click').bind('click',function(){
-                                $('.zlpop').fadeOut();
-                                window.location.replace('/index.php/mobiles/wish?inviter_no='+inviter_no);
-                            }).before('<P class="ys" id="no-count">今天机会用尽,明天再来吧</p>');
+                            $('.zlpop').find('.popzlimg>img').attr('src','/assets/activity_wish/images/17.png');
+                            $('.zlpop').find('.hs').html(rs.msg);
+                            $('.zlpop').fadeIn();
+                            if(rs.status == '10004'){
+                                $('.zlpop').find('.ding').text('确定').unbind('click').bind('click',function(){
+                                    $('.zlpop').fadeOut();
+                                });
+                            }
                         }
-                        $('.zlpop').fadeIn();
-                        if(typeof ls_refresh == "function")ls_refresh();
-                    }else if(rs.status == '10002'){
-                        $('.zlpop').find('.popzlimg>img').attr('src','/assets/activity_wish/images/17.png');
-                        $('.zlpop').find('.hs').html(rs.msg);
-                        var rs_data = rs.data;
-                        if(rs_data.have_count > 0){
-                            $('.zlpop').find('.ding').text('再顶一次').unbind('click').bind('click',function(){
-                                wish_help(true);
-                            });
-                        }else{
-                            $('.zlpop').find('.ding').text('我也要许愿').unbind('click').bind('click',function(){
-                                $('.zlpop').fadeOut();
-                                window.location.replace('/index.php/mobiles/wish?inviter_no='+inviter_no);
-                            }).before('<P class="ys" id="no-count">今天机会用尽,明天再来吧</p>');
-                        }
-                        $('.zlpop').fadeIn();
-                    }else{
-                        $('.zlpop').find('.popzlimg>img').attr('src','/assets/activity_wish/images/17.png');
-                        $('.zlpop').find('.hs').html(rs.msg);
-                        $('.zlpop').fadeIn();
-                        if(rs.status == '10004'){
-                            $('.zlpop').find('.ding').text('确定').unbind('click').bind('click',function(){
-                                $('.zlpop').fadeOut();
-                            });
-                        }
-                    }
+                    },1000);
+
                 }
             });
         };
         var is_self = '<?php echo $is_self; ?>';
         $(function(){
-            ajax_loading_style(2,1,0.5);
+            window.onload = function(){
+                setTimeout(function(){$('.lazy .ajx_nr').hide(1);$('.lazy').hide(2);},500);
+            };
+
+            ajax_loading_style(2,1);
             $(".wish-help").bind('click',function(){
                 if(is_self == 'yes'){
                     $('.zlpop').find('.popzlimg>img').attr('src','/assets/activity_wish/images/17.png');
@@ -164,7 +190,8 @@
                 page_size_first:2,
                 event_type:'click',
                 //show_loading:'img-msg',
-//                btn:true,
+                //btn:true,
+                btn_hide_first:true,
                 value_func:{
                     add_time:function(v){
                         var now = parseInt(<?php echo time(); ?>);

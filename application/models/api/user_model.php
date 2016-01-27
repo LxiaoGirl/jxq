@@ -172,7 +172,7 @@ class User_model extends CI_Model{
 
 			//如果有记录 但没密码 执行修改操作
 			if($temp['info'] && $temp['info']['password'] == ''){
-				$query = $this->c->update(self::user, array('where'=>$temp['info']['uid']), $temp['data']);
+				$query = $this->c->update(self::user, array('where'=>array('uid'=>$temp['info']['uid'])), $temp['data']);
 			}
 			//没有纪律 执行添加
 			if( ! $temp['info']){

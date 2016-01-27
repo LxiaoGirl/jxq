@@ -35,6 +35,7 @@
             list_fadein_page_id  : 1,  //单条延迟加载显示 第几页开始
             append       : true,
             btn          : false,  //ajax 触发按钮选择器字符
+            btn_hide_first : false,    //隐藏第一次加载时的效果
             btn_delay    : 0      //ajax 触发效果延时
         };
         this.option = $.extend(this.option,option || {});
@@ -350,11 +351,13 @@
                 }
                 this.temp_data.ajax_fail = false;
                 this.temp_data.ajax_over = false;
+
+                var ajax_btn = this.option.btn === true?true:((this.option.page_id == 1 && this.option.btn_hide_first == true)?true:this.option.btn);
                 $.ajax({
                     type    : 'POST',
                     url     : that.temp_data.ajax_url,
                     data    : ajax_params,
-                    btn     : that.option.btn,
+                    btn     : ajax_btn,
                     btn_delay: that.option.btn_delay,
                     dataType: 'json',
                     error   :function(a,b,c){

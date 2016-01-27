@@ -20,8 +20,24 @@
     <!-- winphone系统a、input标签被点击时产生的半透明灰色背景怎么去掉 -->
     <meta name="msapplication-tap-highlight" content="no">
     <link rel="stylesheet" href="/assets/activity_wish/css/index.css">
+    <style>
+        .lazy{position: fixed; left: 0; top: 0; width: 100%;height: 100%;background:#fff;z-index: 99999;}
+    </style>
 </head>
 <body>
+    <div class="lazy">
+        <div class="ajx_nr">
+            <div class="ajx_logo">
+                <div class="ajx_tu">
+                    <div class="ajx_quan"></div>
+                    <div class="four_one"></div>
+                </div>
+                <div class="ajx_j">J</div>
+            </div>
+            <div class="ajx_wz">处理中...</div>
+        </div>
+    </div>
+
     <div><img src="/assets/activity_wish/images/1.jpg" alt="" width="100%"></div>
     <div class="hb1 hbxz" data-wish-type="1" data-wish-name="投资返现红包-50元"><img src="/assets/activity_wish/images/2.jpg" alt="" width="100%"></div>
     <div class="hb2 hbxz" data-wish-type="2" data-wish-name="注册祝福红包-20元"><img src="/assets/activity_wish/images/3.jpg" alt="" width="100%"></div>
@@ -115,19 +131,26 @@
                 btn:'#wish',
                 data:{wish_type:wish_type,wish_name:wish_name},
                 success:function(rs){
-                    var wish = rs.data;
-                    if(rs.status == '10000'){
-                        window.location.href='/index.php/mobiles/wish/detail?wish_id='+wish['wish_id']+'&uid='+wish['uid'];
-                    }else if(rs.status == '10002'){
-                        my_alert(rs.msg,'/index.php/mobiles/wish/detail?wish_id='+wish[0]['wish_id']+'&uid='+wish[0]['uid'])
-                    }else{
-                        my_alert(rs.msg);
-                    }
+                    var tt1 = setTimeout(function(){
+                        clearTimeout(tt1);
+                        var wish = rs.data;
+                        if(rs.status == '10000'){
+                            window.location.href='/index.php/mobiles/wish/detail?wish_id='+wish['wish_id']+'&uid='+wish['uid'];
+                        }else if(rs.status == '10002'){
+                            my_alert(rs.msg,'/index.php/mobiles/wish/detail?wish_id='+wish[0]['wish_id']+'&uid='+wish[0]['uid'])
+                        }else{
+                            my_alert(rs.msg);
+                        }
+                    },1000);
                 }
             });
-        }
+        };
         $(function () {
-            ajax_loading_style(2,1,0.5);
+            window.onload = function(){
+                setTimeout(function(){$('.lazy .ajx_nr').hide(1);$('.lazy').hide(2);},500);
+            };
+
+            ajax_loading_style(2,1);
             $(".hbxz").click(function(){
                 wish_type = $(this).data('wishType');
                 wish_name = $(this).data('wishName');
