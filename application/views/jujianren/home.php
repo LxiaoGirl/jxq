@@ -346,7 +346,7 @@
                     dataType:'json',
                     data:{mobile:mobile,password:$("#pwd").val(),inviter_no:inviter_no,authcode:authcode},
                     error:function(a,b,c){
-                        $("#chkcpwd").html('服务器繁忙,请稍后重试！').addClass("error").show();
+                        $("#chkcpwd").html('网络异常,请稍后重试！').addClass("error").show();
                         $("#pass_btn").removeAttr("disabled").html('注册').css({
                             background:"#da251c",
                             cursor:"pointer"
