@@ -225,11 +225,11 @@
             $("#down-load").click(function(){
                 var u = navigator.userAgent;
                 if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
-                    window.location.href='<?php echo site_url('snowballapp.apk'); ?>';
+                    window.location.href='<?php echo base_url('snowballapp.apk'); ?>';
                     return;
                 }
                 if (u.indexOf('iPhone') > -1 || u.indexOf('iPad') > -1) {//苹果手机 ipad
-                    window.location.href='https://appsto.re/cn/ApWE9.i';
+                    window.location.href='http://mp.weixin.qq.com/mp/redirect?url=<?php echo urlencode('https://appsto.re/cn/ApWE9.i'); ?>';
                     return;
                 }
             });
