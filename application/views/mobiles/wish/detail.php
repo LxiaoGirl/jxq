@@ -223,7 +223,8 @@
             });
 
             $("#down-load").click(function(){
-                var u = navigator.userAgent;
+                window.location.href = 'http://www.appurl.cc/631410';
+                /*var u = navigator.userAgent;
                 if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
                     window.location.href='<?php echo base_url('snowballapp.apk'); ?>';
                     return;
@@ -231,7 +232,7 @@
                 if (u.indexOf('iPhone') > -1 || u.indexOf('iPad') > -1) {//苹果手机 ipad
                     window.location.href='http://mp.weixin.qq.com/mp/redirect?url=<?php echo urlencode('https://appsto.re/cn/ApWE9.i'); ?>';
                     return;
-                }
+                }*/
             });
             wx_share.conf.img = 'https://www.juxueqiu.com//assets/activity_wish/images/14.jpg';
             wx_share.conf.ticket = '/index.php/mobiles/wish/ajax_get_ticket';
