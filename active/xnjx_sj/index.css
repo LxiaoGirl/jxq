@@ -1,0 +1,77 @@
+user agent stylesheetdiv {display: block;}
+* {outline: 0;padding: 0;margin: 0;}
+html,body,button,dd,dl,dt,fieldset,form,h1,h2,h3,h4,h5,h6,input,legend,li,ol,p,select,table,td,textarea,th,ul,img {margin:0;padding:0;}
+input, button, select,p,a{font-family:'microsoft yahei',Verdana,Arial,Helvetica,sans-serif;}
+fieldset,img {border:0;}
+img{border: 0;}
+ol,ul,li {list-style:none;}
+address,em {font-style:normal;}
+table {border-collapse:collapse;}
+html {font-size:8px;}
+@media screen and (min-width:384px) {
+    html {
+        font-size: 10px;
+    }
+}
+@media screen and (min-width:448px) {
+    html {
+        font-size: 12px;
+    }
+}
+@media screen and (min-width:512px) {
+    html {
+        font-size: 14px;
+    }
+}
+@media screen and (min-width:576px) {
+    html {
+        font-size: 16px;
+    }
+}
+@media screen and (min-width:630px) {
+    html {
+        font-size: 17px;
+    }
+}
+.tc{text-align: center;}
+.tl{text-align: left;}
+.tr{text-align: right;}
+.fl{float: left;}
+.fr{float: right;}
+a , a:focus, a:hover{
+  text-decoration: none;
+}
+body{
+    min-width:320px;
+    font-size:62.5%;
+    font-family:'microsoft yahei',Verdana,Arial,Helvetica,sans-serif;
+    -webkit-text-size-adjust:none;
+    /*去除最小字号限制*/
+    max-width: 640px;
+    width:100%;
+    margin:0 auto;
+    background: url(images/1.jpg) center;
+    background-size: contain;
+}
+.con{width: 100%; position: relative; overflow: hidden;}
+.con img{float: left;}
+.p1{width: 100%; position:absolute;text-align: center;font-size: 1rem;color: #f9d398;top:40%;-webkit-transform: scale(0.8,0.8);}
+@media screen and (min-width:512px) {
+    .p1 {
+        -webkit-transform: scale(1,1);
+    }
+}
+.nr{width: 100%; overflow: hidden;}
+.nr .cell{width: 100%; overflow: hidden;}
+.nr img{width: 38%; float: left;margin-left: 31%; display: block;}
+.nr p{width: 80%;margin-left: 10%; display: block;}
+.nr .p2{color: #000;font-size: 1.2rem;line-height: 1.8rem;margin-top: 1rem;}
+.nr .p3{color: #b00002;font-size: 1.2rem;line-height: 1.8rem; padding-left: 0.5rem;}
+.nr .p3 font{font-weight: bold;}
+.p4{color: #000;font-size: 1.2rem;line-height: 1.8rem;margin-top: 1rem; position: absolute;top: 0; width: 80%;padding: 0 10%;}
+.p5{color: #b00002;font-size: 1.2rem;line-height: 1.8rem; position: absolute;top: 3rem; width: 800%;padding: 0 10%;text-indent: 0.5rem;}
+.p6{position: absolute;top: 6rem; width: 100%;line-height: 3rem; text-align: center;}
+.p6 button{width: 60%;height: 3rem;color: #fff; font-size: 1.4rem;background: #e03133;border-radius: 0.6rem;border: none;}
+.p7{color: #b00002;font-size: 1.2rem;line-height: 1.8rem; position: absolute;top: 0; width: 80%;padding: 0 10%;text-indent: 0.5rem;}
+.p8{color: #b00002;font-size: 1.2rem;line-height: 1.8rem; position: absolute;top: 1.8rem; width: 76%;padding: 0 11%;}
+.p9{color: #f7c184;font-size: 1.2rem;line-height: 1.8rem; position: absolute;bottom: 1.8rem; width: 100%;text-align: center;}

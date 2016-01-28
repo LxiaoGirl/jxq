@@ -1011,7 +1011,8 @@ class Cash_model extends CI_Model{
 		$temp['where'] = array(
                 'select' =>join_field('*',self::borrow),
                 'where'  =>array(
-					join_field('type_code',self::payment) => $type_code
+					join_field('type_code',self::payment) => $type_code,
+					join_field('status',self::borrow).' != ' => 7,
                 ),
 				'group_by' =>join_field('borrow_no',self::payment),
                 'join'=>array(
@@ -1236,13 +1237,29 @@ class Cash_model extends CI_Model{
                 )
             );
 		$temp['data'] = $this->c->get_all(self::payment,$temp['where']);
+		$temp['where'] = array(
+                'select' =>join_field('borrow_no',self::payment),
+                'where'  =>array(
+					join_field('status',self::payment_jbb)=>1,
+					join_field('uid',self::payment_jbb)=>$uid,
+					join_field('type',self::payment)=>3
+                ),
+				'group_by' =>join_field('borrow_no',self::payment),
+                'join'=>array(
+                    'table'=>self::payment_jbb,
+                    'where'=>join_field('type_code',self::payment).' = concat('.join_field('product_type',self::payment_jbb).','.join_field('number_periods',self::payment_jbb).')'
+                )
+            );
+		$temp['data_ok'] = $this->c->get_all(self::payment,$temp['where']);
+		$num_ok = count($temp['data_ok']);
 		$num = count($temp['data']);
+		
 		if(!empty($temp['data'])){
 			$data = array(
 				'status' => '10000',
 				'msg' => 'ok!',
 				'data' => array(
-					'mate_nums' => $num
+					'mate_nums' => $num-$num_ok
 				)
 			);
 		}else{
@@ -1632,6 +1649,15 @@ class Cash_model extends CI_Model{
 				'where' => array('order_code' => $temp['data']['order_code'])
 				);
 			$query = $this->c->update(self::payment_jbb, $temp['jbb_where'], $temp['jbb']);
+			$temp['jbb']  = array(
+					'status' => 3//取消
+					);
+			$temp['jbb_where'] = array(
+				'where' => array('order_code' => $temp['data']['order_code']),
+				'where_in' =>  array('field'=>'type','value'=>array(2,3)),
+				'status' => 0
+				);
+			$query = $this->c->update(self::jbb_extract, $temp['jbb_where'], $temp['jbb']);
 			if(!empty($query)){
 				$data = array(
 				'status' => '10000',
@@ -1967,7 +1993,7 @@ class Cash_model extends CI_Model{
     protected function _get_cash_log_type($type=1){
         $type_name = '';
 
-        if(in_array($type,array(1,7,4,11))){
+        if(in_array($type,array(1,7,4,11,21,22))){
             $type_name = '收入';
         }else{
             $type_name = '支出';
@@ -2016,6 +2042,12 @@ class Cash_model extends CI_Model{
                     break;
 		        case '20':
                     $remarks_name = '活期产品';
+                    break;
+		        case '21':
+                    $remarks_name = '利息提取';
+                    break;
+		        case '22':
+                    $remarks_name = '聚保宝产品退出';
                     break;
             }
         }
