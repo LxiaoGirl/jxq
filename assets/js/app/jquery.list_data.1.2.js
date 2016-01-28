@@ -365,6 +365,7 @@
                         that.temp_data.ajax_fail = true;
                         that._loading('loading',false);
                         that._loading('error');
+                        that._event(true);
                         console.log('ajax访问出错:'+that.option.data+'['+b+'-'+c+']');
                     },
                     success : function (result) {
