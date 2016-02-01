@@ -47,7 +47,15 @@
                     <p>企业经营资金周转</p>
                 </a>
             </td>
-			<td width="50%" valign="middle">               
+			<td width="50%" valign="middle">
+                <a href="javascript:void(0);"
+                   data-url="<?php echo site_url('apps/home/jbb_one'); ?>">
+                    <span class="iconfont c_red"><img src="../../../assets/images/app/jbb.png" height="100%" width="100%"></span>
+
+                    <h2 class="c_red">聚保宝</h2>
+
+                    <p>灵活型理财产品</p>
+                </a>
             </td>
         </tr>
         
