@@ -49,7 +49,7 @@
                 <button id="btn_tj" type="button" class="btn btn-lg btn-danger btn-block">确认提现</button>
             </div>
         </div>
-        <p style="text-align:center;">每笔提现将扣除2元手续费,每日首笔提现减免手续费</p>
+        <p style="text-align:center;">温馨提示：16点前申请提现款项，提现金额T+1个工作日到帐，16点后申请的提现款项T+2个工作日到帐，每笔提现扣除银行转账费2块,每日首笔提现减免手续费。如有疑问请联系客服，客服电话4007-918-333。</p>
     </div>
 </div>
 
