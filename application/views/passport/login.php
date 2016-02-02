@@ -30,7 +30,7 @@
                         <div class="inp">
                             <img class="inpr hs" src="../../../../assets/images/passport/zc_suo.png">
                             <img class="inpr ls" src="../../../../assets/images/passport/zc_suo_ok.png">
-                            <input class="reg_sj js_mm" type="password" name="sjh" value="<?php echo $password; ?>" placeholder="请输入密码" maxlength="20" />
+                            <input class="reg_sj js_mm" type="password" name="mm" value="<?php echo $password; ?>" placeholder="请输入密码" maxlength="20" />
                         </div>
                         <div class="pit"></div>
                     </div>
