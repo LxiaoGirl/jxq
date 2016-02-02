@@ -288,6 +288,173 @@ class Home extends MY_Controller{
 		}
     }
 
+
+
+
+	/**
+     *聚保宝购买页表
+     */
+    public function jbb_list(){
+		$page_id =  $this->input->get('page_id',TRUE);
+		$uid = $this->session->userdata('uid');
+		$data['jbb_list'] = $this->project_api->jbb_per_list($uid,1,6,$page_id);//列表
+		$this->load->view(self::dir.'jbb_list',$data);
+    }
+
+	/**
+     *聚保宝购买页表加载
+     */
+    public function jbb_list_info(){
+		$page_id =  $this->input->get('page_id',TRUE);
+		$uid = $this->session->userdata('uid');
+		$data = $this->project_api->jbb_per_list($uid,1,6,$page_id);//列表
+		exit(json_encode($data));
+    }
+
+
+
+	/**
+     *聚保宝排队页表加载
+     */
+    public function jbb_list_line(){
+		$page_id =  $this->input->get('page_id',TRUE);
+		$uid = $this->session->userdata('uid');
+		$data = $this->project_api->jbb_per_list($uid,2,6,$page_id);//列表
+		exit(json_encode($data));
+    }
+
+
+	/**
+     *聚保宝信息页面
+     */
+    public function jbb_one(){
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$data['jbb_receive'] = $this->cash_api->jbb_receive($uid);//可领取收益
+		$data['cumulative_yield'] = $this->cash_api->jbb_cumulative_yield($uid);//累计提取收益
+		$data['add_amount'] = $this->cash_api->jbb_add_amount($uid);//累计加入
+		$data['buy_nums'] = $this->cash_api->jbb_buy_nums($uid);//购买笔数
+		$data['mate_nums'] = $this->cash_api->jbb_mate_nums($uid);//配标数目
+		$this->load->view(self::dir.'jbb_one',$data);
+    }
+
+
+
+
+	/**
+     *聚保宝提取总收益
+     */
+    public function jbb_interest(){
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$id = $this->input->get('id',true);//投标id
+		$data = $this->cash_api->jbb_receive($uid,$id);
+		exit(json_encode($data));
+	}
+
+
+	/**
+	 * 聚保宝申请退出手续费
+	 */
+	public function jbb_poundage(){
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$id = $this->input->get('id',true);//投标id
+		$data = $this->cash_api->jbb_poundage($uid,$id);
+		exit(json_encode($data));
+	}
+
+
+
+
+	/**
+	 * 聚保宝申请退出
+	 */
+	public function jbb_out(){
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$id = $this->input->get('id',true);//投标id
+		$data = $this->cash_api->jbb_out($uid,$id);
+		exit(json_encode($data));
+	}
+
+
+
+	/**
+	 * 聚保宝提取利息
+	 */
+	public function jbb_sub_receive(){
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$id = $this->input->get('id',true);//投标id
+		$data = $this->cash_api->jbb_sub_receive($uid,$id);
+		exit(json_encode($data));
+	}
+
+
+
+	/**
+     *聚保宝退出列表
+     */
+    public function jbb_out_list(){
+		$uid = $this->session->userdata('uid');
+		$data['jbb_list'] = $this->project_api->jbb_per_list($uid,2,6);//列表
+		$this->load->view(self::dir.'jbb_out_list',$data);
+    }
+
+	/**
+	 * 聚保宝取消退出
+	 */
+	public function jbb_off(){
+		$data = array();
+		$uid = $this->session->userdata('uid');
+		$id = $this->input->get('id',true);//投标id
+		$data = $this->cash_api->jbb_off($uid,$id);
+		exit(json_encode($data));
+	}
+
+
+	/**
+     *聚保宝详细页
+     */
+    public function jbb_user(){
+		$id =  $this->input->get('id',TRUE);
+		$uid = $this->session->userdata('uid');
+		$data = $this->project_api->jbb_per_info($id,$uid);
+		$this->load->view(self::dir.'jbb_user',$data);
+    }
+
+
+
+	/**
+     *聚保宝详细页
+     */
+    public function jbb_userinfo(){
+		$type_code =  $this->input->get('type_code',TRUE);
+		$tab_amount =  $this->input->get('tab_amount',TRUE);
+		$data = $this->cash_api->jbb_jbb_details($type_code,$tab_amount);//列表
+		exit(json_encode($data));
+    }
+
+
+
+		/**
+     *聚保宝历史退出
+     */
+    public function jbb_user_history(){
+		$uid = $this->session->userdata('uid');
+		$data['jbb_list'] = $this->project_api->jbb_per_list($uid,3,6);//列表
+		$this->load->view(self::dir.'jbb_user_history',$data);
+    }
+	/**
+     *聚保宝历史页表加载
+     */
+    public function jbb_history_line(){
+		$page_id =  $this->input->get('page_id',TRUE);
+		$uid = $this->session->userdata('uid');
+		$data = $this->project_api->jbb_per_list($uid,3,6,$page_id);//列表
+		exit(json_encode($data));
+    }
 /***********************--主页和项目相关--*************************************************************************/
     /**
      *主页
@@ -305,7 +472,10 @@ class Home extends MY_Controller{
         $data = $this->c->get_all('article',array('where'=>array('cat_id'=>32,'status'=>1),'select'=>'source,link_url','order_by'=>'id DESC'));
         if($data){
             foreach($data as $k=>$v){
-                if($v['link_url'])$data[$k]['link_url'] = str_replace('__APP__',rtrim(self::dir,'/'),$v['link_url']);
+                if($v['link_url'] && $v['link_url'] != '#' && $v['link_url'] != 'javascript:void(0);'){
+                    $data[$k]['link_url'] = str_replace('__APP__',rtrim(self::dir,'/'),$v['link_url']);
+                    $data[$k]['link_url'].= strpos($data[$k]['link_url'],'?')?'&ENV=WAP':'?ENV=WAP';
+                }
             }
         }
         exit(json_encode(array('data'=>$data)));

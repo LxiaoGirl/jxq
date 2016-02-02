@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" type="text/css" href="index.css">
-    <title>首页</title>
+    <title>新年加息</title>
 </head>
 <body>
     <div class="con con1">
@@ -32,7 +32,7 @@
             <img src="images/3.jpg" width="100%">
             <p class="p4">【有效期限】</p>
             <p class="p5">永久有效</p>
-            <p class="p6"><button type="button">马上投资</button></p>
+            <p class="p6"><button type="button" id="invest">马上投资</button></p>
     </div>
     <div class="nr">
         <div class="cell">
@@ -48,4 +48,33 @@
         <p class="p9">---本活动最终解释权归聚雪球所有---</p>
     </div>
 </body>
+<script>
+    var $_GET = (function(){
+        var url = window.document.location.href.toString();
+        var u = url.split("?");
+        if(typeof(u[1]) == "string"){
+            u = u[1].split("&");
+            var get = {};
+            for(var i in u){
+                var j = u[i].split("=");
+                get[j[0]] = j[1];
+            }
+            return get;
+        } else {
+            return {};
+        }
+    })();
+    document.getElementById('invest').onclick = function(){
+        if($_GET['ENV'] == 'APP'){
+            var u = navigator.userAgent;
+            if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+                window.Jxq.toWebView('/index.php/apps/home/jbb_invest?type_code=JBB04');
+            }else{
+                window.location.href='/index.php/apps/home/jbb_invest?type_code=JBB04';
+            }
+        }else{
+            window.location.href = "/index.php/mobiles/home/jbb_invest?type_code=JBB04";
+        }
+    };
+</script>
 </html>
