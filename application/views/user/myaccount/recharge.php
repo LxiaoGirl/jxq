@@ -34,6 +34,12 @@
                             <p>温馨提示：网加禁止信用卡充值、套现等行为，一经发现将予以处罚，包括但不限于：限制收款、冻结账户、永久停止服务，并会影响银行征信记录。网上银行充值过程中请耐心等待，充值成功后，请不要关闭浏览器，充值成功后返回网加，充值金额才能打入您的账号。如有问题，请联系客服。如有充值扣款但是余额并未更新，可能是由于您的操作不规范，您可以在充值记录中点击充值失败，系统将会与银行核实充值交易。
                             </p>
                         </div>
+                        <?php if(date('Ymd',time()) >= 20160206 && date('Ymd',time()) <= 20160214): ?>
+                            <div class="zysx" style="margin-top: 10px;">
+                                <p>温馨提示：网银支付系统将于2016-02-6  至 2016-02-14 这段时间内停止使用，2016-02-15 恢复使用
+                                </p>
+                            </div>
+                        <?php else: ?>
                         <div class="fl rechar">请输入充值金额：</div>
                         <div class="fr rechar">
                             <p><input id="recharge_amount" type="text" name=""/> <a href="javascript:void(0);" id="qrcz" target="_blank">确认充值</a></p>
@@ -48,6 +54,7 @@
                                 <button type="button">充值成功</button><button class="czsb" type="button">充值失败</button>
                             </div>
                         </div>
+                        <?php endif; ?>
                     </form>
                     </li>
                 </ul>

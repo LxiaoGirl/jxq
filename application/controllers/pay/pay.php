@@ -49,6 +49,10 @@ class Pay extends Login_Controller
              $this->_redirect('user/user/account_security',3,'聚雪球平台每日凌晨23:30-00:30间不可充值，为银行日切时间，请大家避开此时间段充值。带来不便，敬请谅解。望周知！');
          }
 
+         if((int)date('Ymd') >= 20160206 && (int)date('Ymd') <= 20160214){
+             $this->_redirect('user/user/account_security',3,'温馨提示：网银支付系统将于2016-02-6  至 2016-02-14 这段时间内停止使用，2016-02-15 恢复使用');
+         }
+
         //接受参数
         $temp['bank']        = $this->input->post('bank');
         $temp['recharge_no'] = authcode($this->input->get('recharge_no',TRUE),'',TRUE);
