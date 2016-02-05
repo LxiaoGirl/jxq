@@ -26,6 +26,7 @@ class App_model extends CI_Model{
     public function __construct(){
         parent::__construct();
         $this->load->model('web_1/send_model','send');
+        $this->load->model('web_1/user1_model','user');
         $this->load->library('form_validation');
         $this->lang->load('form');
     }
