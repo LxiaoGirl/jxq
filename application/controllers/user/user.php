@@ -162,9 +162,9 @@ class User extends Login_Controller{
 		//验证实名
 		if($this->session->userdata('clientkind') != "1" && $this->session->userdata('clientkind') != "2"){
 			if(in_array($this->session->userdata('clientkind'),array('-2','-3','-4','-5'))){
-				redirect('login/company_apply', 'refresh');
+				redirect('login/company_apply');
 			}else{
-				redirect('user/user/account_security?type=real_name', 'refresh');
+				redirect('user/user/account_security?type=real_name');
 			}
 		}
 
@@ -173,7 +173,11 @@ class User extends Login_Controller{
 
 		$data['bank'] = $this->user->get_user_card($uid);
 		if($data['bank']['status'] != '10000'){
-			redirect('user/user/card', 'refresh');
+			redirect('user/user/card');
+		}
+
+		if( !$this->session->userdata('security')){
+			redirect('user/user/account_security?type=change_security');
 		}
 
 		$data['balance'] = $this->cash->get_user_balance($uid);

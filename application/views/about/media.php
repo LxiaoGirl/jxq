@@ -28,7 +28,7 @@
                 <div class="lf fl">
                   <h3><?php echo $top['title']; ?></h3>
                   <p><?php echo $top['description']; ?></p>
-                  <a href="<?php echo $top['link_url']; ?>" target="_blank">查看详情</a>
+                  <a href="<?php echo $top['link_url']?$top['link_url']:'/index.php/about/news_detail?id='.$top['id']; ?>" target="_blank">查看详情</a>
                 </div>
                 <div class="rig fl">
                   <img src="<?php echo $top['source']; ?>">
@@ -44,7 +44,7 @@
                         <font><?php echo date('Y.m',$v['update_time']); ?></font>
                     </div>
                     <div class="rigt">
-                        <h4><a href="<?php echo $v['link_url']; ?>" target="_blank"><?php echo $v['title']; ?></a></h4>
+                        <h4><a href="<?php echo $v['link_url']?$v['link_url']:'/index.php/about/news_detail?id='.$v['id']; ?>" target="_blank"><?php echo $v['title']; ?></a></h4>
                         <p><?php echo $v['description']?mb_substr($v['description'],0,40):''; ?></p>
                     </div>
                 </li>

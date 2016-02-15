@@ -17,7 +17,7 @@
 <div class="news_detail_w">
    <div class="news_detail_txt">
    <div style="font-size:24px;"><b><?php echo $data['title']; ?></b></div>
-   <div style="font-size:14px; padding-bottom:40px; padding-top:10px;"><?php echo date('Y-m-d',$data['add_time']); ?>   来源：<?php echo $data['source']?(strpos($data['source'],site_url()) === false?$data['source']:'聚雪球'):'聚雪球'; ?></div>
+   <div style="font-size:14px; padding-bottom:40px; padding-top:10px;"><?php echo date('Y-m-d',$data['add_time']); ?>   来源：<?php echo $data['source']?((strpos($data['source'],site_url()) === false && substr($data['source'],0,1) != '/')?$data['source']:'聚雪球'):'聚雪球'; ?></div>
    <p>
        <?php echo $data['content']; ?>
    </p>

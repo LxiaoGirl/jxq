@@ -8,7 +8,7 @@ class CI_Sms {
 	//短信 通道配置
 	protected $_sms_config       = array(
 		'username'        =>'cqdx008',                            //用户名
-		'password'        =>'ty111',                              //密码
+		'password'        =>'qazwsx76321',                              //密码
 		'receive_number'  =>'',
 		'message_content' =>'',                                   //密码
 		'wsdl_url'        =>'http://61.156.157.209:8889/api.php', //webserver 短信通道地址

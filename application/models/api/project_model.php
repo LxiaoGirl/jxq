@@ -673,9 +673,10 @@ class Project_model extends CI_Model{
 
 		if( ! empty($temp['query'])){
             $data['status'] 		 = '10000';
-            $data['msg'] 			 = sprintf('您(尾号为%s)已成功投资【%s】项目，投资金额为:%s元。公司会定期汇报您的收益情况，祝您生活愉快！', substr($mobile, -4), $temp['detail']['subject'], $amount);
+            $data['msg'] 			 = sprintf('【聚雪球】您(尾号为%s)已成功投资[%s]项目，投资金额为:%s元。公司会定期汇报您的收益情况，祝您生活愉快！', substr($mobile, -4), $temp['detail']['subject'], $amount);
             $data['data']['balance'] = round($temp['balance'] - $amount, 2);
 
+			$this->_send_sms_msg($mobile,$data['msg'],$temp['userinfo']['uid']);
 //			$this->load->model('send_model', 'send');
 //			$this->send->send_sms($mobiles, $data['msg'], 0, $temp['userinfo']['uid']);
 		}
@@ -1296,10 +1297,25 @@ class Project_model extends CI_Model{
 	 * @param string $type_code
 	 * @param string $periods_number
 	 * @return array
+	 *'status'  编码（10000 成功 10001 失败）
+	 *'msg'		说明
+	 *'data'=>array(      返回数据
+	 *		type_name   //发布名称  （string）
+	 *		type_code   //项目编码（string）
+	 *		rate   //利息（float）
+	 *		balance   //已投金额（decimal）
+	 *		development_amount   //开放额度（decimal）
+	 *		start_amount   //起头金额（decimal）
+	 *		all_amount   //单人投资最大额度（decimal）
+	 *		start_day   //起头日期（int）
+	 *		start_time   //起头时间（int）  0-24  代表每个时间点 
+	 *		type   //投资状态（int） 1 投资中  2  满额度
+	 *		view_rate   //利率显示方式（string）
+	 *)   
 	 */
 	public function jbb_list($type_code = ''){
 		$data = $temp = array();
-		$data = array(
+	 	$data = array(
 				'name'=>'聚保宝项目',
 				'status'=>'10001',
 				'msg'=>'暂无相关信息!'
@@ -1314,7 +1330,6 @@ class Project_model extends CI_Model{
 		}
 		if(!empty($temp['data'])){
 			$data = array(
-				'name'=>'聚保宝项目列表',
 				'status'=>'10000',
 				'msg'=>'ok!',
 				'data'=>$temp['data']
@@ -1326,11 +1341,23 @@ class Project_model extends CI_Model{
 
 	/**
 	 * 聚保宝详情列表
-	 * @param string $type_code
-	 * @param int $page
+	 * @param string $type_code  聚保宝编号
+	 * @param int $page_size   每页条数
+	 * @param int $per_page   起始条数
 	 * @return array
+	 *'status'  编码
+	 *'msg'		说明
+	 *'data'=>array(      返回数据
+	 *	'data' => arrar(
+	 *		order_code   //编码  （string）
+	 *		user_name   //用户名（string）
+	 *		amount   //投资金额（int）
+	 *		purchase_time   //投资时间（int）
+	 *		user_name   //用户姓名（string）
+	 *	)   
+	 *)
 	 */
-	public function detail_jbb_list($type_code = '',$per_page = 0){
+	public function detail_jbb_list($type_code = '',$per_page = 0,$page_size = 5){
 		$data = $temp = array();
 		$data = array(
 				'name'=>'聚保宝项目',
@@ -1350,7 +1377,7 @@ class Project_model extends CI_Model{
                 'where' => join_field('uid', self::payment_jbb).' = '.join_field('uid', self::user)
                 )
 			);
-			$temp['data'] = $this->c->show_page(self::payment_jbb, $temp['where'],"",0,5,$per_page);
+			$temp['data'] = $this->c->show_page(self::payment_jbb, $temp['where'],"",0,$page_size,$per_page);
 		}
 		if(!empty($temp['data'])){
 			$data = array(
@@ -1368,6 +1395,11 @@ class Project_model extends CI_Model{
 	 * @param string $type_code
 	 * @param string $periods_number
 	 * @return array
+	 *'status'  编码
+	 *'msg'		说明
+	 *'data'=>array(      返回数据
+	 *'jbb_nums'   累计入团人数
+	 *)
 	 */
 	public function jbb_nums($type_code = ''){
 		$data = $temp = array();
@@ -1405,29 +1437,46 @@ class Project_model extends CI_Model{
 	/**
 	 * 聚保宝分散投资数
 	 * @param string $type_code
-	 * @param string $periods_number
 	 * @return array
+	 *'status'  编码
+	 *'msg'		说明
+	 *'data'=>array(      返回数据
+	 *'jbb_invest_nums'   分散投资数目
+	 *)
 	 */
 	public function jbb_invest_nums($type_code = ''){
 		$data = $temp = array();
 		$data = array(
-				'name'=>'聚保宝累计入团人数',
+				'name'=>'聚保宝分散投资数',
 				'status'=>'10001',
 				'msg'=>'暂无相关信息!'
 			);
 		$temp['where'] = array(
 			'select'   => '*',
 			'like'	   =>array('field'=>'type_code','match'=>$type_code,'flag'=>'both'),
+			'where'	   =>array(
+					'type' => 1
+				),
 			'group_by' => 'borrow_no'
 		);
 		$temp['data'] = $this->c->get_all(self::payment, $temp['where']);
+		$temp['where'] = array(
+			'select'   => '*',
+			'like'	   =>array('field'=>'type_code','match'=>$type_code,'flag'=>'both'),
+			'where'	   =>array(
+					'type' => 3
+				),
+			'group_by' => 'borrow_no'
+		);
+		$temp['data_ok'] = $this->c->get_all(self::payment, $temp['where']);
+		$num_ok = count($temp['data_ok']);
 		$num = count($temp['data']);
 		if(!empty($temp['data'])){
 			$data = array(
 				'status'=>'10000',
 				'msg'=>'ok!',
 				'data'=>array(
-					'jbb_invest_nums' => $num
+					'jbb_invest_nums' => $num-$num_ok
 				)
 			);
 		}else{
@@ -1445,19 +1494,22 @@ class Project_model extends CI_Model{
 
 	/**
 	 * 聚保宝个人中心投资列表(历史)
-	 * @param string $type_code
-	 * @param string $periods_number
+	 * @param int $uid  //用户uid
+	 * @param int $status  //投资状态  1 投资中 2 申请退出中 3 已退出
+	 * @param int $page_size //每页条数
 	 * @return array
 	 */
-	public function jbb_per_list($uid = '',$status = 1){
+	public function jbb_per_list($uid = '',$status = 1,$page_size = 4 , $page_id = 0){
+		date_default_timezone_set('PRC');
 		$data = $temp = array();
 		$data = array(
-				'name'=>'聚保宝累计入团人数',
+				'name'=>'聚保宝个人中心投资列表',
 				'status'=>'10001',
-				'msg'=>'暂无相关信息!'
+				'msg'=>'暂无相关信息!',
+				'data'=>$temp['data']['data']
 			);
 		$temp['where'] = array(
-                'select'   => join_field('*', self::payment_jbb).','.join_field('ave_rate', self::jbb).','.join_field('time_limit', self::jbb).','.join_field('type_name', self::jbb).','.join_field('allawexit', self::jbb).','.join_field('rate', self::jbb_dtl).','.join_field('closeday', self::jbb).','.join_field('isrepeat', self::jbb).','.join_field('intervaldays', self::jbb),
+                'select'   => join_field('*', self::payment_jbb).','.join_field('ave_rate', self::jbb).','.join_field('time_limit', self::jbb).','.join_field('type_name', self::jbb).','.join_field('allawexit', self::jbb).','.join_field('rate', self::jbb_dtl).','.join_field('closeday', self::jbb).','.join_field('isrepeat', self::jbb).','.join_field('intervaldays', self::jbb).','.join_field('counter_Fee', self::jbb),
                 'where'    => array(
                     join_field('uid', self::payment_jbb) => $uid,
                     join_field('status', self::payment_jbb) => $status
@@ -1481,13 +1533,146 @@ class Project_model extends CI_Model{
 		}else{
 			$temp['where']['order_by'] = join_field('purchase_time', self::payment_jbb).' desc';
 		}
-		$temp['data'] = $this->c->show_page(self::payment_jbb, $temp['where'],'',0,4);	
+		$temp['data'] = $this->c->show_page(self::payment_jbb, $temp['where'],'',0,$page_size,$page_id*$page_size);	
 		if(!empty($temp['data']['data'])){
 			if($status==2){
 				foreach($temp['data']['data'] as $k => $v){
 					$temp['data']['data'][$k]['num'] = $this->jbb_present_ranking($v['product_type'],$v['id']);
 				}
 			}
+			if($status==1){
+				foreach($temp['data']['data'] as $k1 => $v1){
+					if($v1['allawexit']==1){
+						$temp['data']['data'][$k1]['hold_mode'] = '可长期持有';//持有方式
+					}else{
+						$temp['data']['data'][$k1]['hold_mode'] = my_date(($v1['interest_day']+$v1['time_limit']*3600*24),2);//持有方式
+					}
+					if(ceil((strtotime(date('Y-m-d'))-$v1['interest_day'])/3600/24)<$v1['closeday']){
+						$temp['data']['data'][$k1]['application_exit'] = ($v1['closeday']-ceil((strtotime(date('Y-m-d'))-$v1['interest_day'])/3600/24)).'天后可申请退出'.'(已持有'.ceil((strtotime(date('Y-m-d'))-$v1['interest_day'])/3600/24).'天)';//退出方式
+						$temp['data']['data'][$k1]['exit_button_status'] = 0;//退出按钮是否可点（0 不可点 1 可点）
+					}elseif($v1['allawexit']==0){
+						$temp['data']['data'][$k1]['application_exit'] = '已到期-正在审核..(已持有'.ceil((strtotime(date('Y-m-d'))-$v1['interest_day'])/3600/24).'天)';//退出方式
+						$temp['data']['data'][$k1]['exit_button_status'] = 0;//退出按钮是否可点（0 不可点 1 可点）
+					}else{
+						$temp['data']['data'][$k1]['application_exit'] = '申请退出';//退出方式
+						$temp['data']['data'][$k1]['exit_button_status'] = 1;//退出按钮是否可点（0 不可点 1 可点）
+					}
+					$day = (ceil((strtotime(date('Y-m-d'))-$v1['interest_day'])/3600/24)>$v1['closeday'])?$v1['closeday']:ceil((strtotime(date('Y-m-d'))-$v1['interest_day'])/3600/24);
+					$days = ($v1['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$v1['interest_day'])/3600/24)>$v1['closeday'])?($v1['closeday']-$v1['receive_days']):ceil((strtotime(date('Y-m-d'))-$v1['interest_day'])/3600/24)-$v1['receive_days'];
+					if($v1['isrepeat']==0){
+						$temp['data']['data'][$k1]['compound'] = round(jbb_no_product_amount($day,$v1['rate'],$v1['amount']),2);//(产生收益/复利天数)
+						$temp['data']['data'][$k1]['product_benefit'] = $v1['gain'];//(已领取收益/产品收益)
+					}else{
+						$temp['data']['data'][$k1]['product_benefit'] = round(jbb_product_amount($days,$v1['rate'],$v1['amount']),2);//(已领取收益/产品收益)
+						if($v1['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$v1['interest_day'])/3600/24)>$v1['closeday']){
+							$temp['data']['data'][$k1]['compound'] = $v1['closeday']-$v1['receive_days'];//(产生收益/复利天数)
+						}else{
+							$temp['data']['data'][$k1]['compound'] = ceil((strtotime(date('Y-m-d'))-$v1['interest_day'])/3600/24)-$v1['receive_days'];//(产生收益/复利天数)
+						}
+					}
+					if($v1['isrepeat']==0 && $v1['receive_days'] == $v1['closeday']){
+						$temp['data']['data'][$k1]['profit_button_status'] = 2;//收益全部提取完毕
+					}elseif($v1['isrepeat']==0 && (ceil((strtotime(date('Y-m-d'))-$v1['interest_day'])/3600/24)-$v1['receive_days'])<$v1['intervaldays']){
+						$temp['data']['data'][$k1]['profit_button'] = $v1['intervaldays']-(ceil((strtotime(date('Y-m-d'))-$v1['interest_day'])/3600/24)-$v1['receive_days']);
+						$temp['data']['data'][$k1]['profit_button_status'] = 0;
+					}else{
+						$temp['data']['data'][$k1]['profit_button_status'] = 1;
+					}
+					
+				}
+			}
+			$data = array(
+				'status'=>'10000',
+				'msg'=>'ok!',
+				'data'=>$temp['data']
+			);
+		}
+		unset($temp);
+		return $data;
+	}
+
+
+
+
+	/**
+	 * 聚保宝个人中心投资单页(手机应用)
+	 * @param int $uid  //投资表id
+	 * @param int $uid  //用户uid
+	 * @param int $status  //投资状态  1 投资中 2 申请退出中 3 已退出
+	 * @param int $page_size //每页条数
+	 * @return array
+	 */
+	public function jbb_per_info($id = 0,$uid = '',$status = 1){
+		date_default_timezone_set('PRC');
+		$data = $temp = array();
+		$data = array(
+				'name'=>'聚保宝个人中心投资列表',
+				'status'=>'10001',
+				'msg'=>'暂无相关信息!'
+			);
+		$temp['where'] = array(
+                'select'   => join_field('*', self::payment_jbb).','.join_field('ave_rate', self::jbb).','.join_field('time_limit', self::jbb).','.join_field('type_name', self::jbb).','.join_field('allawexit', self::jbb).','.join_field('rate', self::jbb_dtl).','.join_field('closeday', self::jbb).','.join_field('isrepeat', self::jbb).','.join_field('intervaldays', self::jbb).','.join_field('counter_Fee', self::jbb),
+                'where'    => array(
+                    join_field('uid', self::payment_jbb) => $uid,
+					join_field('id', self::payment_jbb) => $id,
+                    join_field('status', self::payment_jbb) => $status
+                ),
+                'join'     => array(
+					array(
+                       'table' => self::jbb,
+					   'where' => join_field('type_code', self::jbb).' = '.join_field('product_type', self::payment_jbb)
+                    ),
+                    array(
+                       'table' => self::jbb_dtl,
+                       'where' => join_field('product_type', self::payment_jbb).' = '.join_field('type_code', self::jbb_dtl).' and '.join_field('number_periods', self::payment_jbb).' = '.join_field('periods_number', self::jbb_dtl)
+                    )
+                
+                )
+            );
+		$temp['data'] = $this->c->get_row(self::payment_jbb, $temp['where'],'',0,$page_size,$page_id*$page_size);	
+		if(!empty($temp['data'])){
+			if($status==2){
+					$temp['data']['num'] = $this->jbb_present_ranking($temp['data']['product_type'],$temp['data']['id']);
+			}
+			if($status==1){
+					if($temp['data']['allawexit']==1){
+						$temp['data']['hold_mode'] = '可长期持有';//持有方式
+					}else{
+						$temp['data']['hold_mode'] = my_date(($temp['data']['interest_day']+$temp['data']['time_limit']*3600*24),2);//持有方式
+					}
+					if(ceil((strtotime(date('Y-m-d'))-$temp['data']['interest_day'])/3600/24)<$temp['data']['closeday']){
+						$temp['data']['application_exit'] = ($temp['data']['closeday']-ceil((strtotime(date('Y-m-d'))-$temp['data']['interest_day'])/3600/24)).'天后可申请退出'.'(已持有'.ceil((strtotime(date('Y-m-d'))-$temp['data']['interest_day'])/3600/24).'天)';//退出方式
+						$temp['data']['exit_button_status'] = 0;//退出按钮是否可点（0 不可点 1 可点）
+					}elseif($temp['data']['allawexit']==0){
+						$temp['data']['application_exit'] = '已到期-正在审核..(已持有'.ceil((strtotime(date('Y-m-d'))-$temp['data']['interest_day'])/3600/24).'天)';//退出方式
+						$temp['data']['exit_button_status'] = 0;//退出按钮是否可点（0 不可点 1 可点）
+					}else{
+						$temp['data']['application_exit'] = '申请退出';//退出方式
+						$temp['data']['exit_button_status'] = 1;//退出按钮是否可点（0 不可点 1 可点）
+					}
+					$day = (ceil((strtotime(date('Y-m-d'))-$temp['data']['interest_day'])/3600/24)>$temp['data']['closeday'])?$temp['data']['closeday']:ceil((strtotime(date('Y-m-d'))-$temp['data']['interest_day'])/3600/24);
+					$days = ($temp['data']['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$temp['data']['interest_day'])/3600/24)>$temp['data']['closeday'])?($temp['data']['closeday']-$temp['data']['receive_days']):ceil((strtotime(date('Y-m-d'))-$temp['data']['interest_day'])/3600/24)-$temp['data']['receive_days'];
+					if($temp['data']['isrepeat']==0){
+						$temp['data']['compound'] = round(jbb_no_product_amount($day,$temp['data']['rate'],$temp['data']['amount']),2);//(产生收益/复利天数)
+						$temp['data']['product_benefit'] = $temp['data']['gain'];//(已领取收益/产品收益)
+					}else{
+						$temp['data']['product_benefit'] = round(jbb_product_amount($days,$temp['data']['rate'],$temp['data']['amount']),2);//(已领取收益/产品收益)
+						if($temp['data']['allawexit']==0&&ceil((strtotime(date('Y-m-d'))-$temp['data']['interest_day'])/3600/24)>$temp['data']['closeday']){
+							$temp['data']['compound'] = $temp['data']['closeday']-$temp['data']['receive_days'];//(产生收益/复利天数)
+						}else{
+							$temp['data']['compound'] = ceil((strtotime(date('Y-m-d'))-$temp['data']['interest_day'])/3600/24)-$temp['data']['receive_days'];//(产生收益/复利天数)
+						}
+					}
+					if($temp['data']['isrepeat']==0 && $temp['data']['receive_days'] == $temp['data']['closeday']){
+						$temp['data']['profit_button_status'] = 2;
+					}elseif($temp['data']['isrepeat']==0 && (ceil((strtotime(date('Y-m-d'))-$temp['data']['interest_day'])/3600/24)-$temp['data']['receive_days'])<$temp['data']['intervaldays']){
+						$temp['data']['profit_button'] = $temp['data']['intervaldays']-(ceil((strtotime(date('Y-m-d'))-$temp['data']['interest_day'])/3600/24)-$temp['data']['receive_days']);
+						$temp['data']['profit_button_status'] = 0;
+					}else{
+						$temp['data']['profit_button_status'] = 1;
+					}
+					
+				}
 			$data = array(
 				'status'=>'10000',
 				'msg'=>'ok!',
@@ -2952,5 +3137,28 @@ class Project_model extends CI_Model{
 			return $new_rate;
 		}
 		return $rate;
+	}
+
+	/**
+	 * 直接发送特定内容的短信
+	 * @param string $mobile 电话
+	 * @param string $msg    内容
+	 * @param int $uid       用户uid
+	 */
+	protected function _send_sms_msg($mobile='',$msg='',$uid=0){
+		$this->load->library('api/Sms');
+		$query = $this->sms->send($mobile,$msg);
+		if($query){
+			$logs = array(
+				'code'        => '',
+				'ip_address' => $this->input->ip_address(),
+				'send_time'  => time(),
+				'uid'         => $uid,
+				'type'        => 0,
+				'target'      => $mobile,
+				'content'     => $msg
+			);
+			$this->c->insert('authcode', $logs);
+		}
 	}
 }
