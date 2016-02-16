@@ -175,7 +175,7 @@
         function time(o) {
             if (wait == 0) {
                 o.removeAttribute("disabled");
-                o.value="获取语音验证码";
+                o.value="语音验证码";
                 wait = 60;
             } else {
                 o.setAttribute("disabled", true);
@@ -217,7 +217,7 @@
         function time1(o) {
             if (wait1 == 0) {
                 o.removeAttribute("disabled");
-                o.value="获取语音验证码";
+                o.value="短信验证码";
                 wait1 = 60;
             } else {
                 o.setAttribute("disabled", true);
