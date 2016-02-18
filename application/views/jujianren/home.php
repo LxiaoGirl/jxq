@@ -25,10 +25,10 @@
         <div class="box">
             <input id="code" name="captcha" maxlength="6" class="shuru code" type="text" value="" placeholder="请输入验证码"/>
             <span class="codepic"> <img id="imgCode" src="<?php echo site_url('send/captcha'); ?>" width="79px"
-                style="float:left;margin-top:10px;" alt="验证码"
+                style="float:left;margin-top:2px;height: 40px;" alt="验证码"
                 onclick="javascript:this.src = '<?php echo site_url('send/captcha'); ?>?t='+ new Date().valueOf()"
                 title="点击更换验证码"/>
-            <a style="float:left;color:#7c7c7c;margin-top:12px;" onclick="document.getElementById('imgCode').click();">看不清验证码</a></span>
+            <a style="float:left;color:#7c7c7c;margin-top:6px;" onclick="document.getElementById('imgCode').click();">看不清验证码</a></span>
             <p class="clear" id="chkcode"></p>
         </div>
         <div class="box" style="padding:0px;">
@@ -101,6 +101,7 @@
             }else{
                 if(/^1[345789][0-9]{9}$/.test($("#username").val())){
                     //手机号验证开始
+                    $(".tishi").show().removeClass("error").addClass("success").html("正在验证手机号码...");
                     $.ajax({
                         type: 'POST',
                         url: '/index.php/login/ajax_is_register',
@@ -305,28 +306,34 @@
         $("#pass_btn").css("background","#CCC").attr("disabled",true);
         var chkpwd = false;
         var chkcpwd = false;
-        $("#pwd").keyup(function(){
-            if($(this).val()==""){
+        var check_pwd = function(flag){
+            if(flag && chkpwd == true) return;
+            if($("#pwd").val()==""){
                 $("#chkpwd").html("请填写密码！").addClass("error").show();
                 chkpwd = false;
-            }else if($(this).val().length<6||$(this).val().length>16){
+            }else if($("#pwd").val().length<6||$("#pwd").val().length>16){
                 $("#chkpwd").html("密码在6~16位之间！").addClass("error").show();
                 chkpwd = false;
             }else{
-                $("#chkpwd").html("设置成功").removeClass("error").addClass("success").show();
+                $("#chkpwd").html("格式正确").removeClass("error").addClass("success").show();
                 chkpwd = true;
             }
+        };
+        $("#pwd").keyup(function(){
+            check_pwd();
+        }).blur(function(){
+            check_pwd(true);
         });
-        //密码验证结束
-        $("#cpwd").keyup(function(){
-            if($(this).val()==""){
+        var check_pwd_retry = function(flag){
+            if(flag && chkcpwd == true) return;
+            if($("#cpwd").val()==""){
                 $("#chkcpwd").html("请再次输入密码！").addClass("error").show();
                 chkcpwd = false;
-            }else if($(this).val()!=$("#pwd").val()){
+            }else if($("#cpwd").val()!=$("#pwd").val()){
                 $("#chkcpwd").html("两次密码输入不一致！").addClass("error").show();
                 chkcpwd = false;
             }else{
-                $("#chkcpwd").html("设置成功").removeClass("error").addClass("success").show();
+                $("#chkcpwd").html("格式正确").removeClass("error").addClass("success").show();
                 chkcpwd = true;
                 $("#pass_btn").css({
                     background:"#da251c",
@@ -334,6 +341,12 @@
                 });
                 $("#pass_btn").removeAttr("disabled");
             }
+        };
+        //密码验证结束
+        $("#cpwd").keyup(function(){
+            check_pwd_retry();
+        }).blur(function(){
+            check_pwd_retry(true);
         });
         //重复密码验证
         $("#pass_btn").click(function(){

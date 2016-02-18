@@ -840,7 +840,8 @@ class Cash_model extends CI_Model{
             'where'    => array(
                 join_field('type', self::payment)   => 1,
                 join_field('status', self::payment) => 1,
-                join_field('real_name', self::user).' !='=>'沈阳网加互联网金融服务有限公司'
+                join_field('real_name', self::user).' !='=>'沈阳网加互联网金融服务有限公司',
+                join_field('uid', self::user).' !='=> 51990
             ),
             'where_in' => array('field'=>join_field('status',self::borrow),'value'=>array(4,7)),
             'join'     => array(
@@ -1005,7 +1006,7 @@ class Cash_model extends CI_Model{
 	 * @param  string $type_code  投资编号
 	 * @return $data  
 	 */
-	public function jbb_jbb_details($type_code = ''){
+	public function jbb_jbb_details($type_code = '',$tab_amount = 0){
 		$data = array('status'=>'10001','msg'=>'数据有误，请稍候尝试!');
         $temp = array();
 		$temp['where'] = array(
@@ -1021,6 +1022,23 @@ class Cash_model extends CI_Model{
                 )
             );
 		$temp['data'] = $this->c->get_all(self::borrow,$temp['where']);
+		$all_amount = 0;
+		for($i=0;$i<count($temp['data']);$i++){
+			$all_amount = $all_amount + $temp['data'][$i]['amount'];
+		}
+		$add_amount = 0;
+		if($all_amount !=0 && $tab_amount != 0){
+			for($j=0;$j<count($temp['data']);$j++){
+				if($j<(count($temp['data'])-1)){
+					$add_amount = (int)((int)($add_amount*10000) + (int)($tab_amount*$temp['data'][$j]['amount']/$all_amount*10000))/10000;
+				}
+				if($j==(count($temp['data'])-1)){
+					$temp['data'][$j]['sx'] = (int)((int)($tab_amount*10000) - (int)($add_amount*10000))/10000;//匹配金额（最后补充）
+				}else{
+					$temp['data'][$j]['sx'] = (int)($tab_amount*$temp['data'][$j]['amount']/$all_amount*10000)/10000;//匹配金额
+				}
+			}
+		}
 		if(!empty($temp['data'])){
 			$data = array(
 				'status' => '10000',
@@ -1484,9 +1502,9 @@ class Cash_model extends CI_Model{
 					'exit_time' => time(),//退出时间
 					'exit_days' => $day,//退出持有天数
 					'transfer_fee' =>  $counter_Fee,//手续费
-					'service_amount' => $v['service_amount']+$service_charge+$counter_Fee,//服务费
+					'service_amount' => $v['service_amount']+$service_charge,//服务费
 					'expected_amount' => $expected_amount,//预计收益
-					'real_amount' => $receive+$v['gain'],//真实收益
+					'real_amount' => $receive+$v['gain']-$v['service_amount']-$service_charge,//真实收益
 					'interest_amount' =>  $receive+$v['amount']+$v['gain']- $counter_Fee-$service_charge,//本息收益
 					'status' => 2
 					);
@@ -1639,7 +1657,7 @@ class Cash_model extends CI_Model{
 					'exit_time' => '',//退出时间
 					'exit_days' => '',//退出持有天数
 					'transfer_fee' =>  '',//手续费
-					'service_amount' => $temp['data']['service_amount']-$service_charge-$Fee,//服务费
+					'service_amount' => $temp['data']['service_amount']-$service_charge,//服务费
 					'expected_amount' => '',//预计收益
 					'real_amount' => '',//真实收益
 					'interest_amount' =>  '',//本息收益
