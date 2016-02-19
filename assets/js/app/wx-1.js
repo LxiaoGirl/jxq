@@ -109,7 +109,7 @@ var wx_share = {
     //分享朋友圈
     shareFriends : function(json){
         wx.onMenuShareTimeline({
-            title: wx_share.conf.title, // 分享标题
+            title: json.title || wx_share.conf.title, // 分享标题
             link: wx_share.conf.url, // 分享链接
             imgUrl: wx_share.conf.img, // 分享图标
             trigger: function (res) {

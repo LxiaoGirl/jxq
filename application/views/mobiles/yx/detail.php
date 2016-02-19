@@ -205,6 +205,7 @@ jQuery(function($) {
     wx_share.conf.ticket = '/index.php/mobiles/yx/ajax_get_ticket';
     wx_share.conf.desc = '一年一次，<?php echo $wish['weixin_name']; ?>请亲朋友好友来吃团圆饭了，都来捧场，棒棒哒!';
     wx_share.share({
+        title:'一年一次，<?php echo $wish['weixin_name']; ?>请亲朋友好友来吃团圆饭了，都来捧场，棒棒哒!',
         trigger:function(){},
         success:function(){},
         cancle:function(){}
