@@ -1,0 +1,523 @@
+user agent stylesheetdiv {display: block;}
+* {outline: 0;margin: 0;padding: 0;-webkit-text-size-adjust:none;}
+html,body,button,dd,dl,dt,fieldset,form,h1,h2,h3,h4,h5,h6,input,legend,li,ol,p,select,table,td,textarea,th,ul,img {margin:0;padding:0;}
+input, button, select,p,a{font-family:'microsoft yahei',Verdana,Arial,Helvetica,sans-serif;}
+fieldset,img {border:0;}
+img{border: 0;}
+ol,ul,li {list-style:none;}
+address,em {font-style:normal;}
+table {border-collapse:collapse;}
+* {
+/*苹果手持设备的浏览器属性，意思是：点击它，它就会出现一个半透明的灰色背景。webkit是苹果浏览器引擎，tap点击，highlight背景高亮，color颜色，颜色用数值调节。*/
+-webkit-tap-highlight-color: rgba(0,0,0,0);
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+-ms-box-sizing: border-box;
+box-sizing: border-box;
+}
+.dis_no{
+    display: none;
+}
+html {
+    font-size: 100px;
+    font-size: calc(100vw/3.2);
+}
+@media screen and (min-width: 340px) {
+    html {
+        font-size:106.25px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 360px) {
+    html {
+        font-size:112.5px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 380px) {
+    html {
+        font-size:118.75px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 400px) {
+    html {
+        font-size:125px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 420px) {
+    html {
+        font-size:131.25px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 440px) {
+    html {
+        font-size:137.5px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 460px) {
+    html {
+        font-size:143.75px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 480px) {
+    html {
+        font-size:150px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 500px) {
+    html {
+        font-size:156.25px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 520px) {
+    html {
+        font-size:162.5px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 540px) {
+    html {
+        font-size:168.75px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 560px) {
+    html {
+        font-size:175px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 580px) {
+    html {
+        font-size:181.25px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 600px) {
+    html {
+        font-size:187.5px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 620px) {
+    html {
+        font-size:193.75px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 640px) {
+    html {
+        font-size:200px;
+    }
+}
+@media screen and (min-width: 660px) {
+    html {
+        font-size:206.25px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 680px) {
+    html {
+        font-size:212.5px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 700px) {
+    html {
+        font-size:218.75px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 720px) {
+    html {
+        font-size:225px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 740px) {
+    html {
+        font-size:234.25px;
+        font-size: calc(100vw/3.2);
+    }
+}
+body{font-size: 12px;}
+input{font-size: 0.12rem;color: #666;}
+input{
+    -webkit-appearance: none;
+}
+.tc{text-align: center;}
+.tl{text-align: left;}
+.tr{text-align: right;}
+.fl{float: left;}
+.fr{float: right;}
+a , a:focus, a:hover{
+  text-decoration: none;
+}
+/*AJAX加载*/
+.sys_alert{
+    position: fixed;
+    max-width:750px;
+    min-width: 320px;
+    width: 100%;
+    margin: 0 auto;
+    top:40%;
+    text-align: center;
+    z-index: 9000;
+}
+.sys_alert p{
+    color: #fff;
+    background: rgba(0,0,0,0.7);
+    border-radius: 0.02rem;
+    line-height: 0.18rem;
+    font-size: 0.12rem;
+    display: inline-block;
+    padding: 0.04rem;
+}
+.lazy{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background:#fff;
+    z-index: 7000;
+}
+.ajx {
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10000;
+}
+.ajx_nr {
+    opacity: 0.9;
+    position: fixed;
+    left: 50%;
+    top:50%;
+    width: 1.4rem;
+    height: 0.4rem;
+    background: #000;
+    border-radius: 0.08rem;
+    margin-left: -0.7rem;
+    margin-top: -0.4rem;
+}
+.ajx_logo{
+    position: relative;
+    height: 0.3rem;
+    width: 0.3rem;
+    float: left;
+    margin: 0.05rem;
+}
+.ajx_tu {
+    height: 0.3rem;
+    width: 0.3rem;
+}
+.ajx_tu .ajx_quan{
+    position: absolute;
+    height: 0.3rem;
+    width: 0.3rem;
+    border: 0.02rem solid #FFF;
+    border-radius: 50%;
+}
+.four_one {
+    width:0.24rem;
+    height:0.15rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #000;
+    opacity: 0.7;
+}
+.ajx_j {
+    width: 0.3rem;
+    height: 0.3rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+    line-height: 0.3rem;
+    text-align: center;
+    color: #fff;
+    font-size: 0.2rem;
+}
+.ajx_wz {
+    height: 0.4rem;
+    width: 1rem;
+    line-height: 0.4rem;
+    float: left;
+    color: #fff;
+    font-size: 0.2rem;
+}
+@-webkit-keyframes myfirst
+{
+0% {-webkit-transform: rotate(30deg);}
+100%   {-webkit-transform: rotate(1500deg);}
+}
+@-webkit-keyframes myfirst1
+{
+0% {-webkit-transform: scale(0,0);}
+1% {-webkit-transform: scale(0.1,0.1);}
+100%   {-webkit-transform: scale(1,1);}
+}
+.ajx_tu {
+    -webkit-animation:myfirst 2s infinite linear;
+}
+.ajx_nr {
+    -webkit-animation:myfirst1 0.5s;
+}
+/*AJAX加载*/
+.con{
+    position: relative;
+    overflow: hidden;
+    float: left;
+    margin-top: -1px;
+}
+.con.conbj{
+    background: url(../images/9.jpg)center;
+    background-size: cover;
+    color: #e0cba1;
+    font-size: 0.14rem;
+}
+.con.conbj1{
+    background: url(../images/18.jpg)center;
+    background-size: cover;
+}
+.con img{
+    float: left;
+    display: block;
+}
+.con .pab{
+    text-align: center;
+    font-size: 0.12rem;
+    color: #fff6cb;
+    position: absolute;
+    left: 0;
+    top:0;
+    width: 100%;
+    height: 100%;
+    line-height: 0.25rem;
+}
+.con.conbj p{
+    margin: 0.1rem;
+}
+.con .pab1{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.con .pab1 .pre{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.con .pab1 .pre .njrxx{
+    position: absolute;
+    left: 0;
+    top: 80%;
+    overflow: hidden;
+    transition: top 2s;
+    -moz-transition: top 1s;	/* Firefox 4 */
+    -webkit-transition: top 1s;	/* Safari 和 Chrome */
+    -o-transition: top 1s;
+    -ms-transition: top 1s;
+}
+.con .pab1 .pre .njrxx .imgco{
+    position: relative;
+    overflow: hidden;
+}
+.con .pab1 .pre .njrxx .imgco .posa{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+.con .pab1 .pre .njrxx .imgco .posa p{
+    font-size: 0.14rem;
+    line-height: 0.44rem;
+    width: 100%;
+    color: #fff;
+    text-align: center;
+}
+.con2 p{
+    text-align: left;
+    font-size: 0.14rem;
+    color: #fff;
+    padding: 0 10%;
+}
+.con2 p font{
+    color: #fee950;
+}
+.con2 p span{
+    color: #e3cb74;
+    float: right;
+}
+.con3 select{
+    width: 0.5rem;
+    height: 0.24rem;
+    background: none;
+    border: none;
+    position: absolute;
+    left: 29%;
+    top:29.5%;
+    color: #e3cb74;
+    font-size: 0.14rem;
+}
+.con3 input{
+    width: 0.5rem;
+    height: 0.24rem;
+    background: #b30000;
+    border: none;
+    position: absolute;
+    left: 29%;
+    top:29.5%;
+    color: #e3cb74;
+    font-size: 0.14rem;
+    pointer-events: none;
+    text-align: center;
+}
+.con .pab1 .pre .kh{
+    position: absolute;
+    width: 0.37rem;
+    height: 0.37rem;
+    background: url(../images/27.png) center no-repeat;
+    background-size: 100% 100%;
+}
+.con .pab1 .pre .kh img{
+    width: 0.37rem;
+    height: 0.37rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border:0.025rem solid #fff;
+}
+.kh.kh1{
+    left: 50%;
+    top:19%;
+    margin-left: -0.185rem;
+}
+.kh.kh2{
+    left: 22%;
+    top:26%;
+}
+.kh.kh3{
+    left: 12%;
+    top:44%;
+}
+.kh.kh4{
+    left: 22%;
+    top:64%;
+}
+.kh.kh5{
+    left: 50%;
+    top:70%;
+    margin-left: -0.185rem;
+}
+.kh.kh6{
+    left: 66%;
+    top:64%;
+}
+.kh.kh7{
+    left: 76%;
+    top:44%;
+}
+.kh.kh8{
+    left: 66%;
+    top:26%;
+}
+.pop{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 200%;
+    background: rgba(0,0,0,0.75);
+    z-index: 20;
+}
+.popnr{
+    margin-top: 20%;
+}
+.popnr_nr{
+    background: url(../images/12.png) center;
+    background-size: 100% 100%;
+    float: left;
+    display: block;
+    width: 100%;
+    padding: 0 20%;
+    margin-top: -1px;
+    color: #7b5719;
+    font-size: 0.14rem;
+}
+.pop.pop1 .popnr_nr{
+    max-height: 2rem;
+    overflow-y: scroll;
+}
+.pop p.tit{
+    text-align: center;
+    color: #7b5719;
+    line-height: 0.3rem;
+}
+.pop p font{
+    display: inline-block;
+    overflow: hidden;
+    white-space:nowrap; 
+}
+.pop p font:nth-child(1){
+    width: 10%;
+}
+.pop p font:nth-child(2){
+    width: 34%;
+    margin-right: 2%;
+}
+.pop p font:nth-child(3){
+    width: 27%;
+}
+.pop p font:nth-child(4){
+    width: 27%;
+}
+.pop p.tit span{
+    background: #dec58f;
+    padding: 0.02rem 0.05rem;
+}
+.popnr img{
+    float: left;
+}
+.xf{
+    position: fixed;
+    width: 1.15rem;
+    right: 0;
+    top:45%;
+    z-index: 10;
+}
+.conwz{
+    font-size: 0.14rem;
+    color: #fff;
+    line-height: 0.2rem;
+    padding: 0.1rem;
+    background: #d9301f;
+}
+.fx{
+    width: 90%;
+    height: 0.47rem;
+    position: absolute;
+    margin-left: 5%;
+    margin-top: 0.1rem;
+}
+.popo{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 20;
+    display: none;
+}

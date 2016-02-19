@@ -14,12 +14,6 @@ class Yx extends MY_Controller{
         parent::__construct();
         $this->load->model('api/activity_yx_model','wish'); //活动类-新年元宵活动model类
         $this->load->library('wx');                         //微信类
-
-        $this->session->set_userdata(array(
-            'openid'=>'23123aaa',
-            'nickname'=>'a',
-            'headimgurl'=>'asd'
-        ));
     }
 
     /**
@@ -32,10 +26,11 @@ class Yx extends MY_Controller{
             $this->session->set_userdata($data);
         }
 
-        //查询是否已经开启活动[领桌子] 如果有 跳转到活动详情页面
-        $wish = $this->wish->get_wish($this->session->userdata('openid'))['data'];
+        //查询是否已经取得活动资格[领桌子] 如果有 跳转到活动详情页面
+        $wish = $this->wish->get_wish('',$this->session->userdata('openid'))['data'];
         if($wish)redirect('mobiles/yx/detail?wish_id='.$wish['wish_id']);
 
+        $data['start'] = $this->wish->get_start_time() <= time() ?'Y':'N';
         //显示页面
         $this->load->view('mobiles/yx/home',$data);
     }
@@ -57,9 +52,7 @@ class Yx extends MY_Controller{
         $data['wish'] = $this->wish->get_wish($wish_id)['data'];
         if( !$data['wish'])redirect('mobiles/yx/index');
 
-        //查询排名
-        $data['ranking'] = $this->wish->get_wish_ranking($wish_id)['data'];
-
+        $data['join'] = 'N';//是否入座的标识
         //入座-如果当前微信不是该id活动者微信 执行参与处理
         if($data['wish']['openid'] != $this->session->userdata('openid')){
             $seat_array = $this->wish->set_wish_log(
@@ -67,14 +60,21 @@ class Yx extends MY_Controller{
                 $this->session->userdata('nickname'),
                 $this->session->userdata('headimgurl'),
                 $this->session->userdata('openid')
-            )['data'];
-
-            //计算当前openid座位情况
-            $data['seat_id'] = floor(($seat_array['remarks']+1)/self::desk_seat);//当前桌
+            );
+            if($seat_array['status'] == '10000' || $seat_array['status'] == '10002'){
+                //计算当前openid座位情况
+                $data['desk_id'] = floor(($seat_array['remarks']+1)/self::desk_seat)+1;//当前桌
+                $data['wish']['ranking_value'] += 1;//入座成功 人数+1
+                $data['join'] = 'Y';//刚加入和已加入
+            }else{
+                $data['desk_id'] = floor($data['wish']['ranking_value']/self::desk_seat)+1;//最后桌
+            }
         }else{
-            $data['seat_id'] = floor($data['wish']['ranking_value']/self::desk_seat);//最后桌
+            $data['desk_id'] = floor($data['wish']['ranking_value']/self::desk_seat)+1;//最后桌
         }
-
+        //查询排名
+        $data['ranking'] = $this->wish->get_wish_ranking($wish_id)['data'];
+        $data['desk_count'] = ceil($data['wish']['ranking_value']/self::desk_seat);
         //显示页面
         $this->load->view('mobiles/yx/detail',$data);
     }
@@ -108,7 +108,11 @@ class Yx extends MY_Controller{
      */
     public function ajax_set_wish(){
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->wish->set_wish($this->session->userdata('openid'));
+            $data = $this->wish->set_wish(
+                $this->session->userdata('openid'),
+                $this->session->userdata('nickname'),
+                $this->session->userdata('headimgurl')
+            );
             exit(json_encode($data));
         }
     }
@@ -118,7 +122,7 @@ class Yx extends MY_Controller{
      */
     public function ajax_get_help_log(){
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->wish->get_wish_log($this->input->post('wish_id',true))['data'];
+            $data = $this->wish->get_wish_log($this->input->post('wish_id',true),1,$this->input->post('page_id',true),self::desk_seat)['data'];
             exit(json_encode($data));
         }
     }
@@ -130,9 +134,12 @@ class Yx extends MY_Controller{
         exit(json_encode($this->wx->get_jsapi_ticket($this->input->post('url'))));
     }
 
+    /**
+     * 获取排行榜列表
+     */
     public function ajax_get_ranking_list(){
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->wish->get_ranking_list()['data'];
+            $data = $this->wish->get_wish_ranking_list()['data'];
             exit(json_encode($data));
         }
     }

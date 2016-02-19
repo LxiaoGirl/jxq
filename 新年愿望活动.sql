@@ -28,3 +28,6 @@ CREATE TABLE `cdb_activity_wish_log` (
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '失败成功标识 1 成功 0 失败 用于统计每个帮助者帮助的次数',
   PRIMARY KEY (`log_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+#元宵活动新增
+ALTER TABLE cdb_activity_wish ADD weixin_name varchar(50) DEFAULT '' COMMENT '微信昵称';
+ALTER TABLE cdb_activity_wish ADD weixin_avatar varchar(300) DEFAULT ''  COMMENT '微信头像';
