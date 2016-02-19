@@ -6,14 +6,14 @@
  */
 class Activity_yx_model extends CI_Model{
     const wish  	 = 'activity_wish';      //愿望表
-    const wish_log  = 'activity_wish_log';  //愿望 帮助记录表
+    const wish_log  = 'activity_wish_log';   //愿望 帮助记录表
     const user	     = 'user'; 			 	 //用户表
 	//愿望
 	const wish_type = 3;
 	const wish_name = '元宵请客';
 
 	const wish_start_time = '2016-02-17 10:00:00';//许愿开始时间
-	const wish_end_time	   = '2016-02-26 23:59:59';//许愿结束时间
+	const wish_end_time	  = '2016-02-26 23:59:59';//许愿结束时间
 	const help_start_time = '2016-02-17 10:00:00';//其他用户参与开始时间
 	const help_end_time   = '2016-02-26 23:59:59';//其他用户参与结束时间
 
@@ -23,9 +23,6 @@ class Activity_yx_model extends CI_Model{
 
 	/**
 	 * 许愿【添加愿望】
-	 * @param int $uid
-	 * @param int $wish_type
-	 * @param string $wish_name
 	 * @param string $openid
 	 * @return array
 	 */
@@ -38,8 +35,8 @@ class Activity_yx_model extends CI_Model{
 			return $data;
 		}
 		//验证起始时间
-		if(time() < strtotime(self::wish_start_time)){$data['msg'] = '许愿活动尚未开始,请稍后!';return $data;}
-		if(time() > strtotime(self::wish_end_time)){$data['msg'] = '许愿活动已结束,谢谢参与!';return $data;}
+		if(time() < strtotime(self::wish_start_time)){$data['msg'] = '活动尚未开始,请稍后!';return $data;}
+		if(time() > strtotime(self::wish_end_time)){$data['msg'] = '活动已结束,谢谢参与!';return $data;}
 
 		//验证已许愿个数
 		$temp['wish_id'] = $this->c->get_one(self::wish,array('where'=>array('openid'=>$openid),'select'=>'wish_id'));
@@ -60,7 +57,7 @@ class Activity_yx_model extends CI_Model{
 		);
 		$temp['query'] = $this->c->insert(self::wish,$temp['data']);
 		if($temp['query']){
-			$data['msg'] 	= '请客成功!';
+			$data['msg'] 	= '操作成功!';
 			$data['status'] = '10000';
 			$temp['data']['wish_id'] = $temp['query'];
 			$data['data']   = $temp['data'];
@@ -92,7 +89,6 @@ class Activity_yx_model extends CI_Model{
 				$data['msg'] = '暂无相关信息!';
 			}
 		}
-
 
 		unset($temp);
 		return $data;
@@ -140,8 +136,8 @@ class Activity_yx_model extends CI_Model{
 		}
 
 		//验证起始时间
-		if(time() < strtotime(self::help_start_time)){$data['msg'] = '助力尚未开始,请稍后!';return $data;}
-		if(time() > strtotime(self::help_end_time)){$data['msg'] = '助力已结束,谢谢参与!';return $data;}
+		if(time() < strtotime(self::help_start_time)){$data['msg'] = '尚未开始,请稍后!';return $data;}
+		if(time() > strtotime(self::help_end_time)){$data['msg'] = '已结束,谢谢参与!';return $data;}
 
 		//验证已帮助次数数
 		$temp['help_count'] = $this->c->count(self::wish_log,
@@ -160,13 +156,23 @@ class Activity_yx_model extends CI_Model{
 
 		$this->db->trans_start();
 
+		//总入座人生+1
 		$this->c->set(
 			self::wish,
 			array('where'=>array('wish_id'=>$wish_id,'wish_type'=>self::wish_type)),
 			array('field'=>'ranking_value','value'=>'`ranking_value`+1')
 		);
 
-		$temp['remarks'] = $this->c->get_one(self::wish,array('where'=>array('wish_id'=>$wish_id,'wish_type'=>self::wish_type),'select'=>'ranking_value'));
+		//获取总人数
+		$temp['remarks'] = $this->c->get_one(self::wish,
+			array(
+				'where'=>array(
+					'wish_id'=>$wish_id,
+					'wish_type'=>self::wish_type
+				),
+				'select'=>'ranking_value'
+			)
+		);
 		//添加愿望帮助记录
 		$temp['data'] = array(
 			'wish_id' 		=> $wish_id,
@@ -253,6 +259,29 @@ class Activity_yx_model extends CI_Model{
 		$data['status'] = '10000';
 		$data['data']   = $temp['ranking'];
 		$data['msg']    = 'ok!';
+
+		unset($temp);
+		return $data;
+	}
+
+	public function get_wish_ranking_list($limit=10){
+		$data = array('name'=>'获取愿望排名列表','status'=>'10001','msg'=>'服务器繁忙请稍后重试!','data'=>array());
+		$temp = array();
+		$limit = (int)$limit?(int)$limit:10;
+
+		$temp['data'] = $this->get_all(self::wish,array(
+			'where'=>array('wish_type'=>self::wish_type),
+			'order_by'=>'ranking_value DESC',
+			'limit'=>$limit
+		));
+		if($temp['data']){
+			$data['status'] = '10000';
+			$data['data']   = $temp['data'];
+			$data['msg']    = 'ok!';
+		}else{
+			$data['msg']    = '暂无相关信息!';
+		}
+
 
 		unset($temp);
 		return $data;

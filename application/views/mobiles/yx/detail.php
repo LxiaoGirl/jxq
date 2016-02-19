@@ -52,21 +52,17 @@
                    </div>
                 </div>
                 <div class="ri">
-                    <p class="time add_time"></p>
-                    <p class="nr description"></p>
+                    <p class="nr weixin_name"></p>
                 </div>
             </li>
-            <p class="jzgd" id="more-button">查看更多>></p>
         </ul>
     </div>
-    <button class="wyl" onclick="window.location.href='/index.php/mobiles/wish?inviter_no=<?php echo $wish['inviter_no']; ?>'">我要许愿</button>
-    <div><img id="down-load" src="/assets/activity_wish/images/15.jpg" alt="" width="100%"></div>
+    <button class="wyl" onclick="window.location.href='/index.php/mobiles/yx/index'">我也要请客</button>
 </body>
 <script src="/assets/activity_wish/js/jquery-1.8.5.min.js"></script>
 <script src="/assets/js/app/jquery.list_data.1.2.js"></script>
 <script src="/assets/js/app/wx-1.js"></script>
     <script>
-
         $('.close').click(function(){
             $('.pop').fadeOut();
         });
@@ -79,68 +75,20 @@
             $(".help-log").list_data({
                 data:'/index.php/mobiles/yx/ajax_get_help_log',
                 param:{wish_id:'<?php echo $wish['wish_id']; ?>'},
-                page_size:10,
-                page_size_first:2,
-                event_type:'click',
-                //show_loading:'img-msg',
-                loading_delay:1,
-                //btn:true,
-                btn_hide_first:true,
-                value_func:{
-                    add_time:function(v){
-                        var now = parseInt(<?php echo time(); ?>);
-                        var space = parseInt(now - v);
-                        var str;
-                        var is_today = new Date(parseInt(v) * 1000).getDate()==new Date(now*1000).getDate()?1:0;
-                        if(is_today){
-                            if(space < 10){
-                                str = '刚刚';
-                            }else if(space < 60){
-                                str = space+'秒前';
-                            }else if(space < 3600){
-                                str = (Math.floor(space/60))+'分钟前';
-                            }else if(space < 24*3600){
-                                str = unixtime_style(v,'H:i');
-                            }else{
-                                str = unixtime_style(v,'Y-m-d H:i');
-                            }
-                        }else{
-                            str = unixtime_style(v,'Y-m-d H:i');
-                        }
-
-                        return str;
-                    }
+                page_size:8,
+                btn:true,
+                callback:function(list_func){
+                    //nodata  nomored 上一页 下一页
                 }
-            },function(ls_func){
-                ls_refresh = ls_func;
             });
             wx_share.conf.img = 'https://www.juxueqiu.com//assets/activity_wish/images/14.jpg';
-            wx_share.conf.ticket = '/index.php/mobiles/wish/ajax_get_ticket';
-            wx_share.conf.decription = '<?php echo $title;?>';
+            wx_share.conf.ticket = '/index.php/mobiles/yx/ajax_get_ticket';
+            wx_share.conf.decription = '谢谢谢谢谢谢';
             wx_share.share({
                 trigger:function(){},
                 success:function(){},
                 cancle:function(){}
             })
         });
-        var unixtime_style = function(unixtime,format){
-            if(!unixtime)return '无';
-            var timestr = new Date(parseInt(unixtime) * 1000);
-            if(!format)return timestr.getFullYear()+"-"+timestr.getMonth()+1+"-"+timestr.getDate()+" "+timestr.getHours()+":"+timestr.getMinutes()+":"+timestr.getSeconds();
-            format=format.replace("Y",timestr.getFullYear());
-            format=format.replace("y",timestr.getYear());
-            format=format.replace("m",timestr.getMonth()+1<10?'0'+(timestr.getMonth()+1):timestr.getMonth()+1);
-            format=format.replace("d",timestr.getDate()<10?'0'+timestr.getDate():timestr.getDate());
-            format=format.replace("w",timestr.getDay()||7);
-            format=format.replace("H",timestr.getHours());
-            format=format.replace("h",timestr.getHours());
-            format=format.replace("i",timestr.getMinutes());
-            format=format.replace("s",timestr.getSeconds());
-            if(timestr.getHours() > 12){
-                format=format.replace("am",'pm');
-                format=format.replace("上午",'下午');
-            }
-            return format;
-        };
     </script>
 </html>

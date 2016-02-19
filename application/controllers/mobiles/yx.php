@@ -1,20 +1,20 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Created by PhpStorm.
- * User: keren
- * Date: 16-1-11
- * Time: 下午9:54
+ * 2016-新年元宵活动控制器类
+ * Class Yx
  */
 class Yx extends MY_Controller{
+    const desk_seat = 8;
     /**
      * 构造函数 加载必要model
      * wish constructor.
      */
     public function __construct(){
         parent::__construct();
-        $this->load->model('api/activity_yx_model','wish'); //活动类-新年愿望
-        $this->load->library('wx');                           //微信类
+        $this->load->model('api/activity_yx_model','wish'); //活动类-新年元宵活动model类
+        $this->load->library('wx');                         //微信类
+
         $this->session->set_userdata(array(
             'openid'=>'23123aaa',
             'nickname'=>'a',
@@ -23,24 +23,28 @@ class Yx extends MY_Controller{
     }
 
     /**
-     * 新年愿望活动 主页
+     * 新年元宵活动 主页
      */
     public function index(){
+        //微信授权获取微信用户信息 如果session中已有则不在获取
         if( !$this->session->userdata('openid')|| !$this->session->userdata('nickname')|| !$this->session->userdata('headimgurl')){
             $data = $this->wx->authorization('userinfo');
             $this->session->set_userdata($data);
         }
 
+        //查询是否已经开启活动[领桌子] 如果有 跳转到活动详情页面
         $wish = $this->wish->get_wish($this->session->userdata('openid'))['data'];
         if($wish)redirect('mobiles/yx/detail?wish_id='.$wish['wish_id']);
 
+        //显示页面
         $this->load->view('mobiles/yx/home',$data);
     }
 
     /**
-     * 新年愿望活动 详情
+     * 新年元宵活动 详情
      */
     public function detail(){
+        //微信授权获取微信用户信息 如果session中已有则不在获取
         if( !$this->session->userdata('openid') || !$this->session->userdata('nickname') || !$this->session->userdata('headimgurl')){
             $weixin_data = $this->wx->authorization('userinfo');
             $this->session->set_userdata($weixin_data);
@@ -55,11 +59,23 @@ class Yx extends MY_Controller{
 
         //查询排名
         $data['ranking'] = $this->wish->get_wish_ranking($wish_id)['data'];
-        //入座
+
+        //入座-如果当前微信不是该id活动者微信 执行参与处理
         if($data['wish']['openid'] != $this->session->userdata('openid')){
-            $a = $this->wish->set_wish_log($wish_id,$this->session->userdata('nickname'),$this->session->userdata('headimgurl'),$this->session->userdata('openid'));
+            $seat_array = $this->wish->set_wish_log(
+                $wish_id,
+                $this->session->userdata('nickname'),
+                $this->session->userdata('headimgurl'),
+                $this->session->userdata('openid')
+            )['data'];
+
+            //计算当前openid座位情况
+            $data['seat_id'] = floor(($seat_array['remarks']+1)/self::desk_seat);//当前桌
+        }else{
+            $data['seat_id'] = floor($data['wish']['ranking_value']/self::desk_seat);//最后桌
         }
 
+        //显示页面
         $this->load->view('mobiles/yx/detail',$data);
     }
 
@@ -88,7 +104,7 @@ class Yx extends MY_Controller{
     }
 
     /**
-     * 许愿的ajax方法
+     * 开启活动[领桌子]ajax方法
      */
     public function ajax_set_wish(){
         if($this->input->is_ajax_request() == TRUE){
@@ -107,7 +123,17 @@ class Yx extends MY_Controller{
         }
     }
 
+    /**
+     * 微信js获取授权到ajax方法
+     */
     public function ajax_get_ticket(){
         exit(json_encode($this->wx->get_jsapi_ticket($this->input->post('url'))));
+    }
+
+    public function ajax_get_ranking_list(){
+        if($this->input->is_ajax_request() == TRUE){
+            $data = $this->wish->get_ranking_list()['data'];
+            exit(json_encode($data));
+        }
     }
 }
