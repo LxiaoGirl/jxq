@@ -57,7 +57,7 @@ class Activity_yx_model extends CI_Model{
 			'wish_name' => self::wish_name,
 			'openid' 	=> $openid,
 			'add_time' 	=> time(),
-			'weixin_name'=> $wx_name,
+			'weixin_name'=> urlencode($wx_name),
 			'weixin_avatar'=> $wx_avatar
 		);
 		$temp['query'] = $this->c->insert(self::wish,$temp['data']);
@@ -97,6 +97,7 @@ class Activity_yx_model extends CI_Model{
 			$temp['data'] = $this->c->get_row(self::wish,$temp['where']);
 			if($temp['data']){
 				$data['data'] = $temp['data'];
+				$data['data']['weixin_name'] = urldecode($data['data']['weixin_name']);
 				$data['msg']  = 'ok!';
 				$data['status']  = '10000';
 			}else{
@@ -180,7 +181,7 @@ class Activity_yx_model extends CI_Model{
 		//添加愿望帮助记录
 		$temp['data'] = array(
 			'wish_id' 		=> $wish_id,
-			'weixin_name' 	=> $wx_name,
+			'weixin_name' 	=> urlencode($wx_name),
 			'weixin_avatar' => $wx_avatar,
 			'openid' 		=> $openid,
 			'description' 	=> '',
@@ -234,6 +235,9 @@ class Activity_yx_model extends CI_Model{
 		unset($temp['data']['links']);
 		$data['data'] = $temp['data'];
 		if($temp['data']['data']){
+			foreach($data['data']['data'] as $k=>$v){
+				$data['data']['data'][$k]['weixin_name'] = urldecode($v['weixin_name']);
+			}
 			$data['status'] = '10000';
 			$data['msg'] 	= 'ok!';
 		}else{
@@ -286,6 +290,9 @@ class Activity_yx_model extends CI_Model{
 			$data['status'] = '10000';
 			$data['data']   = $temp['data'];
 			$data['msg']    = 'ok!';
+			foreach($data['data'] as $k=>$v){
+				$data['data'][$k]['weixin_name'] = urldecode($v['weixin_name']);
+			}
 		}else{
 			$data['msg']    = '暂无相关信息!';
 		}

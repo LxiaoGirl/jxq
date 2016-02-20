@@ -68,7 +68,7 @@
             <div class="pab">
                 <select name="zhuo1">
                     <?php if($desk_count > 1): ?>
-                        <?php for($i=1;$i<=$desk_count;$i++): ?>
+                        <?php for($i=$desk_count;$i>=1;$i--): ?>
                             <option value="<?php echo $i; ?>" <?php if($i == $desk_id): echo 'selected';endif; ?>>第<?php echo $i; ?>桌</option>
                         <?php endfor; ?>
                     <?php else: ?>
@@ -201,6 +201,7 @@ jQuery(function($) {
         }
     });
     get_customer(desk_id);
+    wx_share.conf.title = '祝元宵节快乐！阖家团圆';
     wx_share.conf.img = 'https://www.juxueqiu.com/assets/activity_wish/active_yx/images/yx_share.jpg';
     wx_share.conf.ticket = '/index.php/mobiles/yx/ajax_get_ticket';
     wx_share.conf.desc = '一年一次，<?php echo $wish['weixin_name']; ?>请亲朋友好友来吃团圆饭了，都来捧场，棒棒哒!';

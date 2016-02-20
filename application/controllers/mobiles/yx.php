@@ -63,15 +63,17 @@ class Yx extends MY_Controller{
             );
             if($seat_array['status'] == '10000' || $seat_array['status'] == '10002'){
                 //计算当前openid座位情况
-                $data['desk_id'] = floor(($seat_array['remarks']+1)/self::desk_seat)+1;//当前桌
+                $data['desk_id'] = ceil(($seat_array['data']['remarks']+1)/self::desk_seat);//当前桌
                 $data['wish']['ranking_value'] += 1;//入座成功 人数+1
                 $data['join'] = 'Y';//刚加入和已加入
             }else{
-                $data['desk_id'] = floor($data['wish']['ranking_value']/self::desk_seat)+1;//最后桌
+                $data['desk_id'] = ceil($data['wish']['ranking_value']/self::desk_seat);//最后桌
             }
         }else{
-            $data['desk_id'] = floor($data['wish']['ranking_value']/self::desk_seat)+1;//最后桌
+            $data['desk_id'] = ceil($data['wish']['ranking_value']/self::desk_seat);//最后桌
         }
+
+        if($data['desk_id'] == 0)$data['desk_id'] = 1;
         //查询排名
         $data['ranking'] = $this->wish->get_wish_ranking($wish_id)['data'];
         $data['desk_count'] = ceil($data['wish']['ranking_value']/self::desk_seat);
