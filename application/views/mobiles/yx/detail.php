@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" type="text/css" href="/assets/activity_wish/active_yx/css/index.css">
+    <link rel="stylesheet" type="text/css" href="/assets/activity_wish/active_yx/css/index-1.css">
     <title>阖家团圆</title>
 </head>
 <body>
@@ -32,7 +32,9 @@
         <!--有的页面要底部-->
     </div>
     <!--懒加载-->
-
+    <audio  autoplay="autoplay">
+        <source src="/assets/activity_wish/active_yx/yxjbj.mp3" type="audio/mpeg">
+    </audio>
     <div class="body">
         <div class="con">
             <img src="/assets/activity_wish/active_yx/images/20.jpg" width="100%" alt="">
@@ -75,14 +77,26 @@
                         <option value="1">第1桌</option>
                     <?php endif; ?>
                 </select>
-                <input type="text" name="zhuo" value="第<?php echo $desk_id; ?>桌">
+                <input type="text" name="zhuo" value="第<?php echo $desk_id; ?>桌" readonly="readonly">
             </div>
         </div>
         <div class="con conwz cus-name" style="width: 100%;"></div>
         <div class="con">
             <img src="/assets/activity_wish/active_yx/images/23.jpg" width="100%" alt="">
             <div class="fx"></div>
-            <div class="download" style="width: 90%;height: 0.47rem; position: absolute;margin-left: 5%;margin-top: 1.5rem;"></div>
+        </div>
+        <div class="con">
+            <img src="/assets/activity_wish/active_yx/images/31.jpg" width="100%" alt="">
+        </div>
+        <div class="con">
+            <img src="/assets/activity_wish/active_yx/images/32.jpg" width="100%" alt="">
+        </div>
+        <div class="con">
+            <img src="/assets/activity_wish/active_yx/images/33.jpg" width="100%" alt="">
+        </div>
+        <div class="con">
+            <img src="/assets/activity_wish/active_yx/images/34.jpg" width="100%" alt="">
+            <div class="download" style="width: 90%;height: 0.47rem; position: absolute;margin-left: 5%;margin-top: 0.8rem;"></div>
         </div>
         <div class="con">
             <img src="/assets/activity_wish/active_yx/images/24.jpg" width="100%" alt="">
@@ -98,6 +112,21 @@
     </div>
     <div class="popo">
         <img src="/assets/activity_wish/active_yx/images/30.png" width="100%" alt="">
+    </div>
+    <div class="popo1">
+        <div class="zwp"></div>
+        <img src="/assets/activity_wish/active_yx/images/35.png" width="100%" alt="" class="close">
+        <div class="txpo">
+            <span><img class="popo1-customer-headimgurl" src="" width="100%" alt=""></span>
+        </div>
+        <p class="jrmc popo1-customer-name"></p>
+        <div class="anorwz popo1-yes">
+            <img src="/assets/activity_wish/active_yx/images/36.png" width="100%" alt="">
+            <div class="pabbut popo1-yes-btn"></div>
+        </div>
+        <div class="anorwz popo1-no">
+            <p>未领取团圆饭</p>
+        </div>
     </div>
     <div class="pop pop1">
         <div class="popnr">
@@ -135,6 +164,9 @@ jQuery(function($) {
     $('.popo').click(function(){
         $(".popo").fadeOut();
     });
+    $('.close').click(function(){
+        $(".popo1").fadeOut();
+    });
 
     var cus = [];
     var get_customer = function(id){
@@ -143,7 +175,7 @@ jQuery(function($) {
         if(typeof  cus[id] != "undefined"){
             var cus_name = '',cus_max = 1;
             $(cus[id]).each(function(i,v){
-                $(".kh"+(i+1)).html('<img src="'+ v.weixin_avatar+'" width="100%;" alt="'+ v.weixin_name+'" />');
+                $(".kh"+(i+1)).html('<img src="'+ v.weixin_avatar+'" width="100%;" alt="'+ v.weixin_name+'"  class="cus-ls" data-wish-id="'+ (v.customer_wish_id?v.customer_wish_id:0) +'" />');
                 cus_name += (cus_name?'、':'')+v.weixin_name;
                 cus_max = i+1;
             });
@@ -153,7 +185,22 @@ jQuery(function($) {
                 }
             }
             $(".cus-name").html(cus_name);
-
+            $(".cus-ls").unbind('clcik').bind('click',function(){
+                var wid = $(this).data('wishId');
+                if($(this).data('wishId') == 0){
+                    $(".popo1-no").show();
+                    $(".popo1-yes").hide();
+                }else{
+                    $(".popo1-no").hide();
+                    $(".popo1-yes").show();
+                    $(".popo1-yes-btn").unbind('click').bind('click',function(){
+                        window.location.href='/index.php/mobiles/yx/detail?wish_id='+wid;
+                    });
+                }
+                $(".popo1-customer-name").html($(this).attr('alt'));
+                $(".popo1-customer-headimgurl").attr('src',$(this).attr('src'));
+                $(".popo1").fadeIn();
+            });
         }else{
             if(id != desk_id)_ajax_lo();
             $.ajax({
@@ -175,7 +222,7 @@ jQuery(function($) {
                         _ajax_cg();
                         var cus_name = '',cus_max = 1;
                         $(rs.data).each(function(i,v){
-                            $(".kh"+(i+1)).html('<img src="'+ v.weixin_avatar+'" width="100%;" alt="'+ v.weixin_name+'" />');
+                            $(".kh"+(i+1)).html('<img src="'+ v.weixin_avatar+'" width="100%;" alt="'+ v.weixin_name+'" class="cus-ls" data-wish-id="'+ (v.customer_wish_id?v.customer_wish_id:0) +'" />');
                             cus_name += (cus_name?'、':'')+v.weixin_name;
                             cus_max = i+1;
                         });
@@ -185,6 +232,22 @@ jQuery(function($) {
                             }
                         }
                         $(".cus-name").html(cus_name);
+                        $(".cus-ls").unbind('clcik').bind('click',function(){
+                            var wid = $(this).data('wishId');
+                            if($(this).data('wishId') == 0){
+                                $(".popo1-no").show();
+                                $(".popo1-yes").hide();
+                            }else{
+                                $(".popo1-no").hide();
+                                $(".popo1-yes").show();
+                                $(".popo1-yes-btn").unbind('click').bind('click',function(){
+                                    window.location.href='/index.php/mobiles/yx/detail?wish_id='+wid;
+                                });
+                            }
+                            $(".popo1-customer-name").html($(this).attr('alt'));
+                            $(".popo1-customer-headimgurl").attr('src',$(this).attr('src'));
+                            $(".popo1").fadeIn();
+                        });
                         cus[id] = rs.data;
                     },500);
                 }
@@ -222,15 +285,22 @@ jQuery(function($) {
         },
         success:function(rs){
             if(rs){
+                var ranking_value_prev = 0;
+                var ranking = 0;
                 $(rs).each(function(i,v){
-                    $('.popnr_nr').append('<p><font>'+(i+1)+'</font><font>'+ v.weixin_name+'</font><font>'+(Math.ceil(v.ranking_value/8))+'桌</font><font>'+ v.ranking_value+'人</font></p>');
+                    if(v.ranking_value != ranking_value_prev)ranking += 1;
+                    $('.popnr_nr').append('<p><font>'+ranking+'</font><font style="color:#d03432;">'+ v.weixin_name+'</font><font>'+(Math.ceil(v.ranking_value/8))+'桌</font><font>'+ v.ranking_value+'人</font></p>');
+                    ranking_value_prev = v.ranking_value;
                 });
             }
         }
     });
     $(".download").click(function(){
         window.location.href = 'http://www.appurl.cc/631410';
-    })
+    });
+    if('<?php echo $wish['ranking_value']==0&&$wish['openid']==$this->session->userdata('openid'); ?>'){
+        $('.popo').fadeIn();
+    }
 });
 </script>
 </html>

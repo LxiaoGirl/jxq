@@ -138,7 +138,7 @@ class CI_wx{
         $ticket = json_decode($this->get_php_file(self::log_dir),true);
         if ($ticket['timestamp'] < time()){
             $ticket = $this->_get_jsapi_ticket();
-            $ticket['timestamp'] += 7000;
+            $ticket['timestamp'] = time()+7000;
             $this->set_php_file(self::log_dir,json_encode($ticket));
         }
         $data = $this->_signature($ticket['ticket'],$url);

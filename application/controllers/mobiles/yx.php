@@ -141,7 +141,7 @@ class Yx extends MY_Controller{
      */
     public function ajax_get_ranking_list(){
         if($this->input->is_ajax_request() == TRUE){
-            $data = $this->wish->get_wish_ranking_list()['data'];
+            $data = $this->wish->get_wish_ranking_list(55)['data'];
             exit(json_encode($data));
         }
     }

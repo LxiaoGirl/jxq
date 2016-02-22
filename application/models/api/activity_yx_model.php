@@ -97,7 +97,7 @@ class Activity_yx_model extends CI_Model{
 			$temp['data'] = $this->c->get_row(self::wish,$temp['where']);
 			if($temp['data']){
 				$data['data'] = $temp['data'];
-				$data['data']['weixin_name'] = urldecode($data['data']['weixin_name']);
+				$data['data']['weixin_name'] = mb_substr(str_replace('%','',urldecode($data['data']['weixin_name'])),0,5);
 				$data['msg']  = 'ok!';
 				$data['status']  = '10000';
 			}else{
@@ -224,11 +224,15 @@ class Activity_yx_model extends CI_Model{
 		$this->_set_cutpage_params($page_id,$page_size);
 
 		$temp['where'] = array(
+			'select'=>join_field('wish_id',self::wish).' as customer_wish_id,'.join_field('weixin_name,weixin_avatar',self::wish_log),
 			'where' => array(
-				'wish_id' => $wish_id
-				//'status'  => $status
+				join_field('wish_id',self::wish_log) => $wish_id
 			),
-			'order_by'=>'add_time ASC'
+			'order_by'=>join_field('add_time',self::wish_log).' ASC',
+			'join'=>array(
+				'table'=>self::wish,
+				'where'=>join_field('openid',self::wish_log).'='.join_field('openid',self::wish).' AND '.join_field('wish_type',self::wish).'='.self::wish_type
+			)
 		);
 		$temp['data'] = $this->c->show_page(self::wish_log,$temp['where']);
 
@@ -236,7 +240,7 @@ class Activity_yx_model extends CI_Model{
 		$data['data'] = $temp['data'];
 		if($temp['data']['data']){
 			foreach($data['data']['data'] as $k=>$v){
-				$data['data']['data'][$k]['weixin_name'] = urldecode($v['weixin_name']);
+				$data['data']['data'][$k]['weixin_name'] = mb_substr(str_replace('%','',urldecode($v['weixin_name'])),0,5);
 			}
 			$data['status'] = '10000';
 			$data['msg'] 	= 'ok!';
@@ -263,10 +267,10 @@ class Activity_yx_model extends CI_Model{
 		}
 
 		$temp['ranking_value'] = $this->c->get_one(self::wish,array('select'=>'ranking_value','where'=>array('wish_id'=>$wish_id)));
-		$temp['ranking'] = (int)$this->c->get_one(self::wish,array('select'=>'COUNT(*)+1','where'=>array('ranking_value >'=>$temp['ranking_value'],'wish_type'=>self::wish_type)));
+		$temp['ranking'] = $this->c->get_all(self::wish,array('where'=>array('ranking_value >'=>$temp['ranking_value'],'wish_type'=>self::wish_type),'group_by'=>'ranking_value'));
 
 		$data['status'] = '10000';
-		$data['data']   = $temp['ranking'];
+		$data['data']   = count($temp['ranking'])+1;
 		$data['msg']    = 'ok!';
 
 		unset($temp);
@@ -291,7 +295,7 @@ class Activity_yx_model extends CI_Model{
 			$data['data']   = $temp['data'];
 			$data['msg']    = 'ok!';
 			foreach($data['data'] as $k=>$v){
-				$data['data'][$k]['weixin_name'] = urldecode($v['weixin_name']);
+				$data['data'][$k]['weixin_name'] = mb_substr(str_replace('%','',urldecode($v['weixin_name'])),0,5);
 			}
 		}else{
 			$data['msg']    = '暂无相关信息!';
