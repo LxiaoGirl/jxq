@@ -94,6 +94,9 @@
         <div class="con">
             <img src="/assets/activity_wish/active_yx/images/33.jpg" width="100%" alt="">
         </div>
+        <div class="con conwz" style="text-align: right;width: 100%;">
+            <a href="/active/yx_2016/index.html" style="color: #DD9559;">查看详情 &nbsp;&nbsp;&gt;</a>
+        </div>
         <div class="con">
             <img src="/assets/activity_wish/active_yx/images/34.jpg" width="100%" alt="">
             <div class="download" style="width: 90%;height: 0.47rem; position: absolute;margin-left: 5%;margin-top: 0.8rem;"></div>
