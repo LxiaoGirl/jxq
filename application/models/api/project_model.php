@@ -2061,7 +2061,7 @@ class Project_model extends CI_Model{
 			$status_arr['name'] = '未开始';
 			$status_arr['new_status'] = 1;
         }elseif($status == 2 && $receive_rate == 100){
-			$status_arr['name'] = '融资完成';
+			$status_arr['name'] = '复审中';
 			$status_arr['new_status'] = 3;
         }elseif($receive_rate < 100 && $due_date < time()){
 			$status_arr['name'] = '投标结束';

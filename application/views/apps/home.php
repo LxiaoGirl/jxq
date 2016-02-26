@@ -40,6 +40,43 @@
     <div class="row" style="font-size:1.6rem; color:#333; line-height:4rem; text-align:center; margin-bottom:1rem; background:#fff;">
         <?php echo rate_format(price_format($total['risk_total'],2,false)); ?>元风险备用金保障您的资金安全
     </div>
+	 <!--聚保宝-->
+	 	<?php
+date_default_timezone_set('PRC');
+$starttimestr = "2016-2-5 10:00:00";
+$endtimestr = "2016-3-23 23:59:59";
+$starttime = strtotime($starttimestr);
+$endtime = strtotime($endtimestr);
+$nowtime = time();
+if ($nowtime<$starttime){
+}else if ($endtime>=$nowtime){
+	?>
+    <div class="row" style="margin-bottom:1rem; background:#fff;">
+        <p style="font-size:1rem;color:#999999;line-height:3rem; border-bottom:1px solid #eeeeee;">
+            <font style="font-size:1.8rem; color:#da251c; line-height:3.2rem; padding: 0 1rem;">聚保宝</font><font>随存随取，活期理财</font>
+			<a href="https://www.juxueqiu.com/active/yx_2016/index.html?ENV=APP"><img style="position: relative;width:5rem;" src="../../../assets/images/invest/jbb_jxhb.jpg" alt=""></a>
+			<a href="<?php echo site_url('apps/home/jbb_one	');?>"><font style="Float:right;font-size:1rem; color:#666; line-height:3.2rem; padding: 0 1rem;">更多></font></a>
+        </p>
+        <div style="padding:2rem 0; overflow:hidden;">
+            <div style="width:33%; border-right:1px solid #eee; height:6rem; float:left; text-align:center;">
+                <p><font style="width:3.5rem; height:3.5rem; display:inline-block; background:#83bf73; border-radius: 50%; color:#fff; font-size:2.4rem; line-height:3.5rem">稳</font></p>
+                <p style=" color:#666; font-size:1.4rem; line-height:2.5rem">聚稳赢</p>
+            </div>
+            <div style="width:33%; border-right:1px solid #eee; height:6rem; float:left; text-align:center;">
+                <p style=" color:#da251c; font-size:3.6rem; line-height:3rem">9.6<font style=" color:#666; font-size:1.6rem;">%</font></p>
+                <p style=" color:#666; font-size:1.2rem; line-height:2.2rem">年化收益率</p>
+            </div>
+            <div style="width:33%; height:6rem; float:left; text-align:center;">
+                <p style=" color:#666; font-size:1.2rem; line-height:2.2rem">1000元起投</p>
+                <button type="button" style="border:1px solid #da251c; border-radius:0.2rem; background:#fff; font-size:1.4rem; color:#da251c; padding: 0.6rem 1rem;" id="jbb_invest">立即投资</button>
+            </div>
+        </div>
+    </div>
+<?php
+}else{
+}
+?>
+    <!--聚保宝end-->
     <!-- 选项卡标题 -->
     <div class="row">
         <ul class="index_tab_title clearfix" id="months">
@@ -86,6 +123,10 @@
 <script>
     var g_m='',page_id= 1,page_size=10;  //月数类型 分页 id   数量
     $(function(){
+		//聚保宝投资
+		$('#jbb_invest').click(function(){
+			window.location.href="/index.php/apps/home/jbb_invest?type_code=JBB04";
+		});
         // 循环 初始化
         var list_view = new wb_listview({
             'id':'list',
@@ -113,7 +154,7 @@
                         if(v.buy_time > now){
                             obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>未开始</span>');
                         }else if(v.receive_rate == 100){
-                            obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>融资完成</span>');
+                            obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>复审中</span>');
                         }else if(v.due_date < now){
                             obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>投标结束</span>');
                         }else{

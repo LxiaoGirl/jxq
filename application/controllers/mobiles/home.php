@@ -1352,16 +1352,16 @@ class Home extends MY_Controller{
             $temp['status'] = (int)$this->input->get('status');
 			switch($temp['status']){
                 case 1://收入 待确定
-                    $temp['in_str'] = array(1,7);
+                    $temp['in_str'] = array(1,7,11,21,22);
                     break;
                 case 2://支出
-                    $temp['in_str'] = array(2,5,10);
+                    $temp['in_str'] = array(2,5,10,20);
                     break;
                 case 3://冻结
                     $temp['in_str'] = array(3,4);
                     break;
                 default:
-                    $temp['in_str'] = array(1,2,3,4,5,10);
+                    $temp['in_str'] = array(1,2,3,4,5,7,10,11,20,21,22);
             }
 
             if($temp['status'] == 3){ //投资冻结

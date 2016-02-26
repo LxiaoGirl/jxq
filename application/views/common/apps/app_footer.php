@@ -187,7 +187,7 @@
                 str = '募集中';
                 break;
             case '3':
-                str = '融资完成';
+                str = '复审中';
                 break;
             case '4':
                 str = '还款中';

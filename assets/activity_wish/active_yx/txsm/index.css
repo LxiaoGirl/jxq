@@ -1,0 +1,184 @@
+user agent stylesheetdiv {display: block;}
+* {outline: 0;margin: 0;padding: 0;-webkit-text-size-adjust:none;}
+html,body,button,dd,dl,dt,fieldset,form,h1,h2,h3,h4,h5,h6,input,legend,li,ol,p,select,table,td,textarea,th,ul,img {margin:0;padding:0;}
+input, button, select,p,a{font-family:'microsoft yahei',Verdana,Arial,Helvetica,sans-serif;}
+fieldset,img {border:0;}
+img{border: 0;}
+ol,ul,li {list-style:none;}
+address,em {font-style:normal;}
+table {border-collapse:collapse;}
+* {
+/*苹果手持设备的浏览器属性，意思是：点击它，它就会出现一个半透明的灰色背景。webkit是苹果浏览器引擎，tap点击，highlight背景高亮，color颜色，颜色用数值调节。*/
+-webkit-tap-highlight-color: rgba(0,0,0,0);
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+-ms-box-sizing: border-box;
+box-sizing: border-box;
+}
+.dis_no{
+    display: none;
+}
+html {
+    font-size: 100px;
+    font-size: calc(100vw/3.2);
+}
+@media screen and (min-width: 340px) {
+    html {
+        font-size:106.25px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 360px) {
+    html {
+        font-size:112.5px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 380px) {
+    html {
+        font-size:118.75px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 400px) {
+    html {
+        font-size:125px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 420px) {
+    html {
+        font-size:131.25px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 440px) {
+    html {
+        font-size:137.5px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 460px) {
+    html {
+        font-size:143.75px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 480px) {
+    html {
+        font-size:150px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 500px) {
+    html {
+        font-size:156.25px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 520px) {
+    html {
+        font-size:162.5px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 540px) {
+    html {
+        font-size:168.75px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 560px) {
+    html {
+        font-size:175px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 580px) {
+    html {
+        font-size:181.25px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 600px) {
+    html {
+        font-size:187.5px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 620px) {
+    html {
+        font-size:193.75px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 640px) {
+    html {
+        font-size:200px;
+    }
+}
+@media screen and (min-width: 660px) {
+    html {
+        font-size:206.25px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 680px) {
+    html {
+        font-size:212.5px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 700px) {
+    html {
+        font-size:218.75px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 720px) {
+    html {
+        font-size:225px;
+        font-size: calc(100vw/3.2);
+    }
+}
+@media screen and (min-width: 740px) {
+    html {
+        font-size:234.25px;
+        font-size: calc(100vw/3.2);
+    }
+}
+input{font-size: 0.12rem;color: #666;}
+body{
+    min-width:320px;
+    font-family:'microsoft yahei',Verdana,Arial,Helvetica,sans-serif;
+    -webkit-text-size-adjust:none;
+    /*去除最小字号限制*/
+    max-width: 750px;
+    width:100%;
+    margin:0 auto;
+    background: #fff;
+    font-size: 12px;
+}
+.dody{
+    padding: 0 0.15rem;
+}
+.dody h1{
+    color: #333333;
+    font-size: 0.14rem;
+    line-height: 0.3rem;
+    font-weight: 100;
+    border-bottom: 1px solid #eee;
+}
+.dody p{
+    font-size: 0.12rem;
+    color: #333;
+    line-height: 0.2rem;
+    padding: 0.02rem 0;
+}
+.dody p font{
+    color: #da251c;
+}
+p.img img{
+    width: 100%;
+    float: left;
+}

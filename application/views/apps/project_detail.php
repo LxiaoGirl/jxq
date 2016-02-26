@@ -140,7 +140,7 @@
                                 <?php elseif ($status == 2 && $due_date < time()): ?>
                                     投标已结束
                                 <?php elseif ($status == 2 && $receive_rate == 100): ?>
-                                    融资完成
+                                    复审中
                                 <?php elseif ($status == 2 && $buy_time > time()): ?>
                                     尚未开始
                                 <?php else: echo borrow_status($status); endif; ?>
@@ -427,7 +427,7 @@
                     <?php elseif ($due_date < time()): ?>
                         投标已结束
                     <?php elseif ($receive_rate == 100): ?>
-                        融资完成
+                        复审中
                     <?php else: ?>
                         立即投标
                     <?php endif; ?>

@@ -77,6 +77,12 @@ class Yx extends MY_Controller{
         //查询排名
         $data['ranking'] = $this->wish->get_wish_ranking($wish_id)['data'];
         $data['desk_count'] = ceil($data['wish']['ranking_value']/self::desk_seat);
+
+        //
+        $data['is_end'] = $this->wish->get_end_time()<time()?'Y':'N';
+        $data['is_self'] = $data['wish']['openid'] == $this->session->userdata('openid')?'Y':'N';
+        $data['prize'] = $this->get_prize($data['ranking']);
+
         //显示页面
         $this->load->view('mobiles/yx/detail',$data);
     }
@@ -144,5 +150,40 @@ class Yx extends MY_Controller{
             $data = $this->wish->get_wish_ranking_list(55)['data'];
             exit(json_encode($data));
         }
+    }
+
+    public function ajax_get_wish_prize(){
+        if($this->input->is_ajax_request() == TRUE){
+            $data = $this->wish->get_wish_prize($this->input->post('wish_id'),$this->session->userdata('openid'),$this->session->userdata('uid'));
+            exit(json_encode($data));
+        }
+    }
+
+    public function ajax_get_lucky_list(){
+        if($this->input->is_ajax_request() == TRUE){
+            $data = $this->wish->get_lucky_list();
+            exit(json_encode($data));
+        }
+    }
+
+    public function txsm(){
+        $this->load->view('mobiles/yx/txsm');
+    }
+
+    protected function get_prize($ranking){
+        $amount = '';
+        if($ranking >= 1 && $ranking <= 5){
+            $amount = '200元';
+        }else if($ranking > 5 && $ranking <= 15){
+            $amount = '100元';
+        }else if($ranking > 15 && $ranking <= 35){
+            $amount = '30元';
+        }else{
+            //验证随机红包个数
+            $lucky_have = $this->wish->get_lucky_surplus();
+            if($lucky_have)$amount = '随机红包';
+        }
+
+        return $amount;
     }
 }

@@ -17,6 +17,17 @@ class Activity_yx_model extends CI_Model{
 	const help_start_time = '2016-02-11 10:00:00';//其他用户参与开始时间
 	const help_end_time   = '2016-02-26 23:59:59';//其他用户参与结束时间
 
+	const lucky_prize_limit = 25;                 //幸运奖数量限制
+	//奖品设置 对应数据库prize字段值
+	const prize_one 	= 1;	//一等奖
+	const prize_two 	= 2;	//2等奖
+	const prize_three 	= 3;	//3等奖
+	const prize_four 	= 4;	//4等奖 幸运奖
+	const prize_one_value 	= 200;		//一等奖
+	const prize_two_value 	= 100;		//2等奖
+	const prize_three_value = 30;		//3等奖
+	const prize_four_value 	= 0;		//4等奖 幸运奖 随机
+
     public function __construct(){
         parent::__construct();
     }
@@ -224,7 +235,7 @@ class Activity_yx_model extends CI_Model{
 		$this->_set_cutpage_params($page_id,$page_size);
 
 		$temp['where'] = array(
-			'select'=>join_field('wish_id',self::wish).' as customer_wish_id,'.join_field('weixin_name,weixin_avatar',self::wish_log),
+			'select'=>join_field('wish_id',self::wish).' as customer_wish_id,'.join_field('weixin_name,weixin_avatar,openid',self::wish_log),
 			'where' => array(
 				join_field('wish_id',self::wish_log) => $wish_id
 			),
@@ -311,6 +322,169 @@ class Activity_yx_model extends CI_Model{
 	 */
 	public function get_start_time(){
 		return strtotime(self::wish_start_time);
+	}
+	/**
+	 * 获取结束时间
+	 */
+	public function get_end_time(){
+		return strtotime(self::wish_end_time);
+	}
+
+	/**
+	 * 领奖
+	 * @param int $wish_id
+	 * @param string $openid
+	 * @param int $uid
+	 * @return array
+	 */
+	public function get_wish_prize($wish_id=0, $openid='', $uid=0){
+		$data = array('name'=>'获取奖品','status'=>'10001','msg'=>'服务器繁忙请稍后重试!','data'=>array());
+		$temp = array();
+
+		//验证必要参数
+		if( !$wish_id || !$openid){
+			$data['msg'] = '出错了!';
+			return $data;
+		}
+		if( !$uid){
+			$data['msg'] = '请先登录!';
+			return $data;
+		}
+
+		//验证愿望信息和openid是否对应
+		$temp['wish'] = $this->get_wish($wish_id)['data'];
+		if( !$temp['wish']){
+			$data['msg'] = '出错了!';
+			return $data;
+		}
+		if($temp['wish']['openid'] != $openid){
+			$data['msg'] = '信息不一致!';
+			return $data;
+		}
+		//验证改愿望是否已被领取奖品
+		if($temp['wish']['is_prize'] == 1){
+			$data['msg'] = '该奖品已被领取，不能重复领取!';
+			return $data;
+		}
+
+		//验证用户信息 实名 活动结束时间
+		$temp['user'] = $this->c->get_row(self::user,array('where'=>array('uid'=>$uid)));
+		if( !$temp['user']){
+			$data['msg'] = '账户信息不存在!';
+			return $data;
+		}
+		if($temp['user']['clientkind'] != 1 && $temp['user']['clientkind'] != 2){
+			$data['msg'] = '请先实名认证!';
+			$data['status'] = '10002';
+			return $data;
+		}
+		if(time() <= strtotime(self::wish_end_time)){
+			$data['msg'] = '活动结束才能领奖!';
+			$data['status'] = '10002';
+			return $data;
+		}
+
+		//验证改uid是否绑定过 领过奖
+		$temp['user_is_prize'] = $this->c->count(self::wish,array('where'=>array('uid'=>$uid,'wish_type'=>self::wish_type)));
+		if($temp['user_is_prize']){
+			$data['msg'] = '该聚雪球账户已领过奖了，请更换账户或注册!';
+			return $data;
+		}
+		//根据排名 获得奖品情况
+		$temp['ranking'] = $this->get_wish_ranking($wish_id)['data'];
+		if($temp['ranking'] >= 1 && $temp['ranking'] <= 5){
+			//1-5名
+			$temp['prize'] = self::prize_one_value;
+			$temp['prize_level'] = self::prize_one;
+		}elseif($temp['ranking'] > 5 && $temp['ranking'] <= 15){
+			//6-15名
+			$temp['prize'] = self::prize_two_value;
+			$temp['prize_level'] = self::prize_two;
+		}elseif($temp['ranking'] > 15 && $temp['ranking'] <= 35){
+			//16-35名
+			$temp['prize'] = self::prize_three_value;
+			$temp['prize_level'] = self::prize_three;
+		}else{
+			//其他 幸运奖
+			//$temp['lucky_prize_count'] = $this->get_lucky_prize_count();
+
+			//if($temp['lucky_prize_count'] < self::lucky_prize_limit){
+				$temp['prize_level'] = self::prize_four;
+				$temp['is_recharge'] = $this->c->count('user_recharge',array('where'=>array('uid'=>$uid,'status'=>1)));
+				if($temp['is_recharge'] > 0){
+					$temp['prize'] = rand(1,5);
+				}else{
+					$temp['prize'] = rand(10,20);
+				}
+//			}else{
+//				$temp['prize_level'] = 0;
+//				$temp['prize'] = 0;
+//			}
+
+		}
+
+		$this->db->trans_start();
+
+		$temp['update_data'] = array(
+			'uid' 			=> $uid,
+			'is_prize' 		=> 1,
+			'prize_level' 	=> $temp['prize_level'],
+			'prize' 		=> $temp['prize'],
+			'prize_time' 	=> time()
+		);
+		$temp['red_envelope'] = array(
+			'uid' => $uid,
+			'flag' => 4,
+			'Remark' => '2016元宵活动',
+			'active' => '现金红包',
+			'amount' => $temp['prize'],
+			'source' => '2016元宵活动现金红包',
+			'contract_time' => time(),
+			'receive_time' => 0,
+			'deadline' => 0,
+			'status' => 0
+		);
+		$temp['query'] = $this->c->update(self::wish,array('where'=>array('wish_id'=>$wish_id)),$temp['update_data']);
+		if($temp['query']){
+			//查询红包发送情况 没有则发送
+			$temp['red_envelope_count'] = (int)$this->c->count('redbag',array('where'=>array('uid'=>$uid,'flag'=>4)));
+			if($temp['red_envelope_count'] == 0){
+				$temp['query'] = $this->c->insert('redbag',$temp['red_envelope']);
+			}
+		}
+
+		$this->db->trans_complete();
+		$temp['query'] = $this->db->trans_status();
+
+		if($temp['query']){
+			$data['status'] = '10000';
+			$data['msg'] = '领奖成功!';
+		}
+		unset($temp);
+		return $data;
+	}
+
+	/**
+	 * 获取幸运奖发放数量
+	 * @return int
+	 */
+	public function get_lucky_prize_count(){
+		$count = (int)$this->c->count(self::wish,array('where'=>array('wish_type'=>self::wish_type,'prize'=>self::prize_four,'is_prize'=>1)));
+		return $count;
+	}
+
+	public function get_lucky_surplus(){
+		return self::lucky_prize_limit - $this->get_lucky_prize_count();
+	}
+
+	public function get_lucky_list(){
+		$data = $this->c->get_all(self::wish,array('where'=>array('wish_type'=>self::wish_type,'is_prize'=>1,'prize_level'=>self::prize_four)));
+		if($data){
+			foreach($data as $k=>$v){
+				$data[$k]['weixin_name'] = mb_substr(str_replace('%','',urldecode($v['weixin_name'])),0,5);
+			}
+		}
+		return $data;
 	}
 
 	/**

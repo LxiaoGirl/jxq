@@ -20,7 +20,7 @@
         <div class="invest_cen">
             <p class="title_top"><font class="frist" style="width:29%">时间</font><font style="width:45%">项目</font><font class="last" style="width:25%">状态</font></p>
             <div id="list" style="visibility: hidden;">
-                <div class="nr"><div class="frist dateline">0</div><div class="subject" style="white-space: nowrap;"><span class="blue subject_1">车贷宝</span></br><span class="red invest_amount">0.00</span></div><div class="last r_rate">融资完成</div></div>
+                <div class="nr"><div class="frist dateline">0</div><div class="subject" style="white-space: nowrap;"><span class="blue subject_1">车贷宝</span></br><span class="red invest_amount">0.00</span></div><div class="last r_rate">复审中</div></div>
             </div>
         </div>
     </div>
@@ -63,7 +63,7 @@
                         if(v.buy_time > now){
                             obj.find('.r_rate').html('未开始');
                         }else if(v.receive_rate == 100){
-                            obj.find('.r_rate').html('融资完成');
+                            obj.find('.r_rate').html('复审中');
                         }else if(v.due_date < now){
                             obj.find('.r_rate').html('投标结束');
                         }else{

@@ -79,7 +79,7 @@
                         if (v.buy_time > now) {
                             obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>未开始</span>');
                         } else if (v.receive_rate == 100) {
-                            obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>融资完成</span>');
+                            obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>复审中</span>');
                         } else if (v.due_date < now) {
                             obj.find('.r_rate').removeClass('bfb').addClass('index_wancheng').html('<span>投标结束</span>');
                         } else {

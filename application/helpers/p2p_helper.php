@@ -211,7 +211,7 @@ if( ! function_exists('borrow_status'))
     			$str = '募集中';
     			break;
     		case '3':
-    			$str = '融资完成';
+    			$str = '复审中';
     			break;
             case '4':
                 $str = '还款中';
@@ -423,7 +423,7 @@ if( ! function_exists('jbb_icon'))
                 $str = 'wen';
                 break;
             default:
-                $str = 'fu';
+                $str = 'nofind';
                 break;
         }
 
@@ -460,7 +460,7 @@ if( ! function_exists('jbb_word'))
                 $str = '稳';
                 break;
             default:
-                $str = '稳';
+                $str = '未设置';
                 break;
         }
 
@@ -706,7 +706,7 @@ if( ! function_exists('borrow_status'))
     			$str = '募集中';
     			break;
     		case '3':
-    			$str = '融资完成';
+    			$str = '复审中';
     			break;
             case '4':
                 $str = '还款中';

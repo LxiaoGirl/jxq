@@ -80,7 +80,7 @@
             $.post('/index.php/apps/home/my_cash_log' + condition, {}, function (result) {
                 list_view.set_pageid(page_id);
                 list_view.list(result.data, function (obj, v) {
-                    if (v.type == 1 || v.type == 7) {
+                    if (v.type == 1 || v.type == 7 || v.type == 11 || v.type == 21 || v.type == 22) {
                         obj.find('.amount').removeClass('c_blue').addClass('c_green').prepend('<span>+</span>');
                         obj.find('.log-type').html('收入');
                     } else {
@@ -110,6 +110,15 @@
                                 break;
                             case '10':
                                 ramarks = '还款扣款';
+                                break;
+                            case '11':
+                                ramarks = '红包';
+                                break;
+                            case '21':
+                                ramarks = '利息提取';
+                                break;
+                            case '22':
+                                ramarks = '聚保宝产品退出';
                                 break;
                         }
                         obj.find('.remarks').html(ramarks);
