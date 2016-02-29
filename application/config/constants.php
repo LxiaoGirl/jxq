@@ -37,5 +37,16 @@ define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
 
+/*
+|--------------------------------------------------------------------------
+| WAP版目录
+|--------------------------------------------------------------------------
+|
+*/
+define('WAP_CTRL_DIR',	                       	'wap/');//手机网页版-控制器目录
+define('WAP_MOD_DIR',	                       	'wap/');//手机网页版-模型目录
+define('WAP_VIEW_DIR',	                       	'wap/');//手机网页版-页面目录
+
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

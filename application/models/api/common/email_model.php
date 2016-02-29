@@ -290,6 +290,6 @@ class Email_model extends CI_Model{
 	 * @return bool
 	 */
 	public function is_email($email=''){
-		return ( ! empty($email) && preg_match('/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i', $email)) ? TRUE : FALSE;
+		return ( ! empty($email) && preg_match('/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/', $email)) ? TRUE : FALSE;
 	}
 }

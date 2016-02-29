@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <mate name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <script src="../../../../assets/js/mobiles/jquery-2.1.1.min.js"></script>
+    <script src="../../../../assets/js/mobiles/sys.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../../assets/css/mobiles/index.css">
+    <title>登录</title>
+</head>
+<body>
+    <div class="lslogo">
+        <div class="bhlogo"><img src="../../../../assets/images/mobiles/19.jpg" alt="" height="100%"></div>
+        <div class="jxqwz"><img src="../../../../assets/images/mobiles/20.jpg" alt="" height="100%"></div>
+        <div class="fh">×</div>
+    </div>
+    <div class="inp_zu">
+        <ul class="flex">
+            <li class="flex_gd"><img src="../../../../assets/images/mobiles/21.jpg" alt="" height="100%"></li>
+            <li class="flex_auto">
+                <input type="text" placeholder="手机号/用户名/邮箱">
+            </li>
+        </ul>
+        <ul class="flex">
+            <li class="flex_gd"><img src="../../../../assets/images/mobiles/22.jpg" alt="" height="100%"></li>
+            <li class="flex_auto bor_no">
+                <input type="password" placeholder="登录密码">
+            </li>
+        </ul>
+    </div>
+    <button class="button1 dl">立即登录</button>
+    <p class="dl"><a href="">注册账号</a>|<a href="">忘记密码？</a></p>
+    <!--懒加载-->
+    <div class="lazy">
+        <div class="ajx_nr ajx_nr_1">
+            <div class="ajx_logo">
+                <div class="ajx_tu">
+                    <div class="ajx_quan"></div>
+                    <div class="four_one"></div>
+                </div>
+                <div class="ajx_j">J</div>
+            </div>
+            <div class="ajx_wz">处理中...</div>
+        </div>
+    </div>
+    <!--懒加载-->
+</body>
+<script>
+jQuery(function($) {
+    //模拟AJAX效果
+    $('button').click(function(){
+        _ajax_lo();
+        setTimeout("_ajax_cg()",3000)
+    })
+    //input 输入时缩小失去焦点时放大
+    var fdzt=0;
+    $('input').focus(function(){
+        $(this).addClass('fou')
+    });
+    $('input').blur(function(){
+        $(this).removeClass('fou')
+    });
+    $(document).click(function(){
+        if($('.fou').length !=0)fdzt=1;
+        if($('.fou').length ==0)fdzt=0;
+        if(fdzt==1){
+            $('.bhlogo').addClass('bs')
+            $('.bhlogo').removeClass('bs1')
+            $('.bhlogo').slideUp(500)
+        }else{
+            $('.bhlogo').removeClass('bs')
+            $('.bhlogo').addClass('bs1')
+            $('.bhlogo').slideDown(500)
+        }
+    })
+})
+</script>
+</html>
