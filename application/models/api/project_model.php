@@ -676,7 +676,8 @@ class Project_model extends CI_Model{
             $data['msg'] 			 = sprintf('【聚雪球】您(尾号为%s)已成功投资[%s]项目，投资金额为:%s元。公司会定期汇报您的收益情况，祝您生活愉快！', substr($mobile, -4), $temp['detail']['subject'], $amount);
             $data['data']['balance'] = round($temp['balance'] - $amount, 2);
 
-			$this->_send_sms_msg($mobile,$data['msg'],$temp['userinfo']['uid']);
+			$temp['sms_template'] = implode(',',array(substr($mobile, -4),$temp['detail']['subject'],$amount));
+			$this->_send_sms_msg($mobile,$temp['sms_template'],$data['msg'],$temp['userinfo']['uid']);
 //			$this->load->model('send_model', 'send');
 //			$this->send->send_sms($mobiles, $data['msg'], 0, $temp['userinfo']['uid']);
 		}
@@ -3142,12 +3143,14 @@ class Project_model extends CI_Model{
 	/**
 	 * 直接发送特定内容的短信
 	 * @param string $mobile 电话
+	 * @param string $template 短信模板填充数据 都好分割的字符串
 	 * @param string $msg    内容
 	 * @param int $uid       用户uid
 	 */
-	protected function _send_sms_msg($mobile='',$msg='',$uid=0){
-		$this->load->library('api/Sms');
-		$query = $this->sms->send($mobile,$msg);
+	protected function _send_sms_msg($mobile='',$template='',$msg='',$uid=0){
+		$this->load->library('api/Smsnew');
+		$query = $this->smsnew->send($mobile,'2020',$template);
+
 		if($query){
 			$logs = array(
 				'code'        => '',

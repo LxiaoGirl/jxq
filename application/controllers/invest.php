@@ -137,7 +137,7 @@ class Invest extends MY_Controller{
 		$type_code =  $this->input->get('type_code',TRUE);
 		$per_page =  $this->input->get('per_page',TRUE);
 		if($this->input->is_ajax_request() == TRUE){
-			$data =$this->project->detail_jbb_list($type_code,$per_page);
+			$data =$this->project->detail_jbb_list($type_code,$per_page,5);
 			exit(json_encode($data));
 		}
 		
